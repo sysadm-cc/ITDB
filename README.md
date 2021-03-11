@@ -1,4 +1,4 @@
-![关注微信公众号@网管小贾](./qrcode.png "关注微信公众号@网管小贾")
+![关注微信公众号@网管小贾](https://github.com/sysadm-cc/ITDB/blob/main/qrcode.png "关注微信公众号@网管小贾")
 
 微信公众号: @网管小贾
 
