@@ -79,7 +79,7 @@
 			<div style="z-index: 999;">
             <Header :style="{position: 'fixed', width: '100%', marginLeft: '0px'}">
                 <Layout>
-				<i-menu mode="horizontal" theme="light" active-name="1" @on-select="name=>topmenuselect(name)">
+				<i-menu mode="horizontal" theme="light" :active-name="isfullscreen == true ? '1' : '3'" @on-select="name=>topmenuselect(name)">
 					
 					<!--面包屑-->
 					<div class="layout-breadcrumb">
@@ -91,12 +91,43 @@
 					
 					<!--头部导航菜单-->
                     <div class="layout-nav">
-					
-						<Submenu name="1">
+
+						<!--Item 1-->
+						<!-- <Menu-item name="1">
+						<Dropdown>
+							<Badge dot :offset="[20, 0]">
+								<Icon type="ios-list-box-outline" size="22"></Icon>
+							</Badge>
+						</Menu-item> -->
+
+						<Menu-item name="1">
+						<div>
+							<Tooltip v-if="isfullscreen" placement="bottom" content="关闭全屏" transfer="true">
+								<Icon type="ios-contract" size="20" @click.native="handleFullScreen()" style="cursor:pointer;"></Icon>
+							</Tooltip>
+							<Tooltip v-else placement="bottom" content="全屏" transfer="true">
+								<Icon type="ios-expand" size="20" @click.native="handleFullScreen()" style="cursor:pointer;"></Icon>
+							</Tooltip>
+						</div>
+						</Menu-item>
+
+						<!--Item 2-->
+						<Menu-item name="2">
+							<Dropdown>
+								<Icon type="ios-create-outline" size="24"></Icon>
+								<Dropdown-menu slot="list" style="width: 220px">
+									<Dropdown-item>
+										<strong>嗯... 暂时还没有新的处理信息！</strong>
+									</Dropdown-item>
+							</Dropdown>
+						</Menu-item>
+
+						<!--Item 3-->
+						<Submenu name="3">
 							<template slot="title">
-								<Icon type="ios-person" size="20"></Icon>{{ $user['displayname'] ?? 'Unknown User'}}
+								<Icon type="ios-contact" size="24"></Icon>{{ $user['displayname'] ?? 'Unknown User'}}
 							</template>
-							<Menu-Item name="1-1"><Icon type="ios-exit-outline"></Icon>退出登录</Menu-Item>
+							<Menu-Item name="3-1"><Icon type="ios-exit-outline"></Icon>退出登录</Menu-Item>
 						</Submenu>
 					
                     </div>
