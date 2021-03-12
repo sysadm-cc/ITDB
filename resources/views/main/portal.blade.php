@@ -31,7 +31,9 @@ Main(Portal) -
 		<i-col span="5">
 			<Card>
 				<p slot="title">
-					硬件 Manage your H/W items PCs, Switches, Phones, etc
+					<Tooltip placement="top-start" content="Manage your H/W items (PCs, Switches, Phones, etc)" max-width="220"  theme="light">
+						<Icon type="ios-desktop"></Icon> 硬件 Hardware
+					</Tooltip>
 					@hasanyrole('role_smt_config|role_super_admin')
 					<span style="float:right">
 						<a href="#" target="_blank">配置</a>
@@ -59,7 +61,9 @@ Main(Portal) -
 		<i-col span="5">
 			<Card>
 				<p slot="title">
-					软件（2020版）
+					<Tooltip placement="top-start" max-width="220" content="Manage your software" theme="light">
+						<Icon type="ios-paper"></Icon> 软件 Software
+					</Tooltip>
 					@hasanyrole('role_smt_config|role_super_admin')
 					<span style="float:right">
 						<a href="#" target="_blank">配置</a>
@@ -87,7 +91,9 @@ Main(Portal) -
 		<i-col span="5">
 			<Card>
 				<p slot="title">
-					发票
+					<Tooltip placement="top-start" max-width="220" content="Manage your Invoices" theme="light">
+						发票 Invoices
+					</Tooltip>
 				</p>
 				<p v-for="item in CardList_Invoices">
 					<span v-if="item.name">
@@ -111,7 +117,9 @@ Main(Portal) -
 		<i-col span="5">
 			<Card>
 				<p slot="title">
-					报表
+					<Tooltip placement="top-start" max-width="220" content="View Reports" theme="light">
+					<Icon type="ios-stats"></Icon> 报表 Reports
+					</Tooltip>
 				</p>
 				<p v-for="item in CardList_Reports">
 					<span v-if="item.name">
@@ -140,7 +148,9 @@ Main(Portal) -
 		<i-col span="5">
 			<Card>
 				<p slot="title">
-					合同
+					<Tooltip placement="top-start" max-width="220" content="Manage your contracts (Support, Licenses, Leases, etc)" theme="light">
+						合同 Contracts
+					</Tooltip>
 					@hasanyrole('role_smt_config|role_super_admin')
 					<span style="float:right">
 						<a href="#" target="_blank">配置</a>
@@ -168,7 +178,9 @@ Main(Portal) -
 		<i-col span="5">
 			<Card>
 				<p slot="title">
-					代理商
+					<Tooltip placement="top-start" max-width="220" content="Manage Agents (H/W & S/W Manufacturers & Vendors, Buyers, Contractors)" theme="light">
+						代理商 Agents
+					</Tooltip>
 					@hasanyrole('role_smt_config|role_super_admin')
 					<span style="float:right">
 						<a href="#" target="_blank">配置</a>
@@ -196,7 +208,9 @@ Main(Portal) -
 		<i-col span="5">
 			<Card>
 				<p slot="title">
-					树形浏览
+					<Tooltip placement="top-start" max-width="220" content="View items by type, by user, by agent" theme="light">
+						树形浏览 Tree Explorer
+					</Tooltip>
 				</p>
 				<p v-for="item in CardList_TreeExplorer">
 					<span v-if="item.name">
@@ -220,7 +234,9 @@ Main(Portal) -
 		<i-col span="5">
 			<Card>
 				<p slot="title">
-					文档
+					<Tooltip placement="top-start" max-width="220" content="File Maintenance" theme="light">
+					<Icon type="ios-document"></Icon> 文件 Files
+					</Tooltip>
 				</p>
 				<p v-for="item in CardList_Files">
 					<span v-if="item.name">
@@ -248,7 +264,9 @@ Main(Portal) -
 		<i-col span="5">
 			<Card>
 				<p slot="title">
-					机架
+					<Tooltip placement="top-start" max-width="220" content="Add/View Racks" theme="light">
+						机架 Racks
+					</Tooltip>
 					@hasanyrole('role_smt_config|role_super_admin')
 					<span style="float:right">
 						<a href="#" target="_blank">配置</a>
@@ -276,7 +294,9 @@ Main(Portal) -
 		<i-col span="5">
 			<Card>
 				<p slot="title">
-					位置场所
+					<Tooltip placement="top-start" max-width="220" content="Manage item locations" theme="light">
+						位置场所 Locations
+					</Tooltip>
 					@hasanyrole('role_smt_config|role_super_admin')
 					<span style="float:right">
 						<a href="#" target="_blank">配置</a>
@@ -304,7 +324,9 @@ Main(Portal) -
 		<i-col span="5">
 			<Card>
 				<p slot="title">
-					打印标签
+					<Tooltip placement="top-start" max-width="220" content="select and print labels for your items" theme="light">
+						<Icon type="ios-pricetags"></Icon> 打印标签 Print Labels
+					</Tooltip>
 				</p>
 				<p v-for="item in CardList_PrintLabels">
 					<span v-if="item.name">
@@ -328,7 +350,9 @@ Main(Portal) -
 		<i-col span="5">
 			<Card>
 				<p slot="title">
-					系统配置
+					<Tooltip placement="top-start" max-width="220" content="Manage various parameters (Users, Tags, Dates, Currency,...)" theme="light">
+					<Icon type="ios-settings"></Icon> 系统配置 Settings
+					</Tooltip>
 				</p>
 				<p v-for="item in CardList_Settings">
 					<span v-if="item.name">
