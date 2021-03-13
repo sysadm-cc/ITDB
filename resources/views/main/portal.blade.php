@@ -44,7 +44,9 @@ Main(Portal) -
 					<span v-if="item.name">
 						<a :href="item.url" target="_blank"><Icon type="ios-link"></Icon>&nbsp;&nbsp;@{{ item.name }}</a>
 						<span style="float:right">
-							Percent: @{{ item.percent }}%
+							<span style="color: rgb(158, 167, 180);font-size:12px;">
+								@{{ item.detail }}
+							</span>
 						</span>
 					</span>
 					<span v-else>
@@ -74,7 +76,9 @@ Main(Portal) -
 					<span v-if="item.name">
 						<a :href="item.url" target="_blank"><Icon type="ios-link"></Icon>&nbsp;&nbsp;@{{ item.name }}</a>
 						<span style="float:right">
-							Percent: @{{ item.percent }}%
+							<span style="color: rgb(158, 167, 180);font-size:12px;">
+								@{{ item.detail }}
+							</span>
 						</span>
 					</span>
 					<span v-else>
@@ -99,7 +103,7 @@ Main(Portal) -
 					<span v-if="item.name">
 						<a :href="item.url" target="_blank"><Icon type="ios-link"></Icon>&nbsp;&nbsp;@{{ item.name }}</a>
 						<span style="float:right">
-							Percent: @{{ item.percent }}%
+							@{{ item.detail }}
 						</span>
 					</span>
 					<span v-else>
@@ -125,7 +129,7 @@ Main(Portal) -
 					<span v-if="item.name">
 						<a :href="item.url" target="_blank"><Icon type="ios-link"></Icon>&nbsp;&nbsp;@{{ item.name }}</a>
 						<span style="float:right">
-							Percent: @{{ item.percent }}%
+							@{{ item.detail }}
 						</span>
 					</span>
 					<span v-else>
@@ -161,7 +165,7 @@ Main(Portal) -
 					<span v-if="item.name">
 						<a :href="item.url" target="_blank"><Icon type="ios-link"></Icon>&nbsp;&nbsp;@{{ item.name }}</a>
 						<span style="float:right">
-							Percent: @{{ item.percent }}%
+							@{{ item.detail }}
 						</span>
 					</span>
 					<span v-else>
@@ -191,7 +195,7 @@ Main(Portal) -
 					<span v-if="item.name">
 						<a :href="item.url" target="_blank"><Icon type="ios-link"></Icon>&nbsp;&nbsp;@{{ item.name }}</a>
 						<span style="float:right">
-							Percent: @{{ item.percent }}%
+							@{{ item.detail }}
 						</span>
 					</span>
 					<span v-else>
@@ -216,7 +220,7 @@ Main(Portal) -
 					<span v-if="item.name">
 						<a :href="item.url" target="_blank"><Icon type="ios-link"></Icon>&nbsp;&nbsp;@{{ item.name }}</a>
 						<span style="float:right">
-							Percent: @{{ item.percent }}%
+							@{{ item.detail }}
 						</span>
 					</span>
 					<span v-else>
@@ -242,7 +246,7 @@ Main(Portal) -
 					<span v-if="item.name">
 						<a :href="item.url" target="_blank"><Icon type="ios-link"></Icon>&nbsp;&nbsp;@{{ item.name }}</a>
 						<span style="float:right">
-							Percent: @{{ item.percent }}%
+							@{{ item.detail }}
 						</span>
 					</span>
 					<span v-else>
@@ -277,7 +281,7 @@ Main(Portal) -
 					<span v-if="item.name">
 						<a :href="item.url" target="_blank"><Icon type="ios-link"></Icon>&nbsp;&nbsp;@{{ item.name }}</a>
 						<span style="float:right">
-							Percent: @{{ item.percent }}%
+							@{{ item.detail }}
 						</span>
 					</span>
 					<span v-else>
@@ -307,7 +311,7 @@ Main(Portal) -
 					<span v-if="item.name">
 						<a :href="item.url" target="_blank"><Icon type="ios-link"></Icon>&nbsp;&nbsp;@{{ item.name }}</a>
 						<span style="float:right">
-							Percent: @{{ item.percent }}%
+							@{{ item.detail }}
 						</span>
 					</span>
 					<span v-else>
@@ -332,7 +336,7 @@ Main(Portal) -
 					<span v-if="item.name">
 						<a :href="item.url" target="_blank"><Icon type="ios-link"></Icon>&nbsp;&nbsp;@{{ item.name }}</a>
 						<span style="float:right">
-							Percent: @{{ item.percent }}%
+							@{{ item.detail }}
 						</span>
 					</span>
 					<span v-else>
@@ -358,7 +362,7 @@ Main(Portal) -
 					<span v-if="item.name">
 						<a :href="item.url" target="_blank"><Icon type="ios-link"></Icon>&nbsp;&nbsp;@{{ item.name }}</a>
 						<span style="float:right">
-							Percent: @{{ item.percent }}%
+							@{{ item.detail }}
 						</span>
 					</span>
 					<span v-else>
@@ -407,206 +411,182 @@ var vm_app = new Vue({
 
 		CardList_Hardware: [
 			{
-				name: '模块一',	url: "#", percent: 65,
+				name: '查询',	url: '#', detail: '查询硬件信息',
 			},
 			{
-				name: '模块一',	url: "#", percent: 65,
+				name: '添加',	url: '#', detail: '添加硬件信息',
 			},
 			{
-				name: '',	url: "#", percent: 65,
+				name: '项目类型',	url: '#', detail: '查看/修改项目类型',
 			},
 			{
-				name: '',	url: "#", percent: 65,
+				name: '状态类型',	url: '#', detail: '查看/修改状态类型',
 			},
 		],
 
 		CardList_Software: [
 			{
-				name: '模块一',
-				url: "#",
-				percent: 65,
+				name: '查询',	url: '#', detail: '查询软件信息',
 			},
 			{
-				name: '模块二',
-				url: "#",
-				percent: 15,
+				name: '添加',	url: '#', detail: '添加软件信息',
 			},
 			{
-				name: '模块三',
-				url: "#",
-				percent: 85,
+				name: '',	url: '#', detail: '',
 			},
 			{
-				name: '模块四',
-				url: "#",
-				percent: 85,
+				name: '',	url: '#', detail: '',
 			},
 		],
 
 		CardList_Invoices: [
 			{
-				name: '模块三',
-				url: "#",
-				percent: 85,
+				name: '查询',	url: '#', detail: '',
 			},
 			{
-				name: '',
-				url: '',
-				percent: 0,
+				name: '添加',	url: '#', detail: '',
 			},
 			{
-				name: '',
-				url: '',
-				percent: 0,
+				name: '',	url: '#', detail: '',
 			},
 			{
-				name: '',
-				url: '',
-				percent: 0,
+				name: '',	url: '#', detail: '',
 			},
 		],
 
 		// 每行最后一个，也就是第四个必须保持4行
 		CardList_Reports: [
 			{
-				name: '模块一',
-				url: "#",
-				percent: 65,
+				name: '报表',	url: '#', detail: '',
 			},
 			{
-				name: '模块一',
-				url: "#",
-				percent: 65,
+				name: '',	url: '#', detail: '',
 			},
 			{
-				name: '',
-				url: '',
-				percent: 0,
+				name: '',	url: '#', detail: '',
 			},
 			{
-				name: '',
-				url: '',
-				percent: 0,
+				name: '',	url: '#', detail: '',
 			},
 		],
 
 		CardList_Contracts: [
 			{
-				name: '模块一',	url: "#", percent: 65,
+				name: '查询',	url: '#', detail: '',
 			},
 			{
-				name: '模块一',	url: "#", percent: 65,
+				name: '添加',	url: '#', detail: '',
 			},
 			{
-				name: '',	url: "#", percent: 65,
+				name: '合同类型',	url: '#', detail: '',
 			},
 			{
-				name: '',	url: "#", percent: 65,
+				name: '',	url: '#', detail: '',
 			},
 		],
 
 		CardList_Agents: [
 			{
-				name: '模块一',	url: "#", percent: 65,
+				name: '查询',	url: '#', detail: '',
 			},
 			{
-				name: '模块一',	url: "#", percent: 65,
+				name: '添加',	url: '#', detail: '',
 			},
 			{
-				name: '',	url: "#", percent: 65,
+				name: '',	url: '#', detail: '',
 			},
 			{
-				name: '',	url: "#", percent: 65,
+				name: '',	url: '#', detail: '',
 			},
 		],
 
 		CardList_TreeExplorer: [
 			{
-				name: '模块一',	url: "#", percent: 65,
+				name: '浏览',	url: '#', detail: '',
 			},
 			{
-				name: '模块一',	url: "#", percent: 65,
+				name: '',	url: '#', detail: '',
 			},
 			{
-				name: '',	url: "#", percent: 65,
+				name: '',	url: '#', detail: '',
 			},
 			{
-				name: '',	url: "#", percent: 65,
-			},
-		],
-
-		CardList_Racks: [
-			{
-				name: '模块一',	url: "#", percent: 65,
-			},
-			{
-				name: '模块一',	url: "#", percent: 65,
-			},
-			{
-				name: '',	url: "#", percent: 65,
-			},
-			{
-				name: '',	url: "#", percent: 65,
-			},
-		],
-
-		CardList_Locations: [
-			{
-				name: '模块一',	url: "#", percent: 65,
-			},
-			{
-				name: '模块一',	url: "#", percent: 65,
-			},
-			{
-				name: '',	url: "#", percent: 65,
-			},
-			{
-				name: '',	url: "#", percent: 65,
+				name: '',	url: '#', detail: '',
 			},
 		],
 
 		CardList_Files: [
 			{
-				name: '模块一',	url: "#", percent: 65,
+				name: '查询',	url: '#', detail: '',
 			},
 			{
-				name: '模块一',	url: "#", percent: 65,
+				name: '添加',	url: '#', detail: '',
 			},
 			{
-				name: '',	url: "#", percent: 65,
+				name: '',	url: '#', detail: '',
 			},
 			{
-				name: '',	url: "#", percent: 65,
+				name: '',	url: '#', detail: '',
+			},
+		],
+
+		CardList_Racks: [
+			{
+				name: '查询',	url: '#', detail: '',
+			},
+			{
+				name: '添加',	url: '#', detail: '',
+			},
+			{
+				name: '',	url: '#', detail: '',
+			},
+			{
+				name: '',	url: '#', detail: '',
+			},
+		],
+
+		CardList_Locations: [
+			{
+				name: '查询',	url: '#', detail: '',
+			},
+			{
+				name: '添加',	url: '#', detail: '',
+			},
+			{
+				name: '',	url: '#', detail: '',
+			},
+			{
+				name: '',	url: '#', detail: '',
 			},
 		],
 
 		CardList_PrintLabels: [
 			{
-				name: '模块一',	url: "#", percent: 65,
+				name: '标签',	url: '#', detail: '',
 			},
 			{
-				name: '模块一',	url: "#", percent: 65,
+				name: '',	url: '#', detail: '',
 			},
 			{
-				name: '',	url: "#", percent: 65,
+				name: '',	url: '#', detail: '',
 			},
 			{
-				name: '',	url: "#", percent: 65,
+				name: '',	url: '#', detail: '',
 			},
 		],
 
 		CardList_Settings: [
 			{
-				name: '模块一',	url: "#", percent: 65,
+				name: '系统配置',	url: '#', detail: '',
 			},
 			{
-				name: '模块一',	url: "#", percent: 65,
+				name: '用户',	url: '#', detail: '',
 			},
 			{
-				name: '',	url: "#", percent: 65,
+				name: '',	url: '#', detail: '',
 			},
 			{
-				name: '',	url: "#", percent: 65,
+				name: '',	url: '#', detail: '',
 			},
 		],
 
