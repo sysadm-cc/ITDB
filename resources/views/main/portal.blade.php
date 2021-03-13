@@ -62,7 +62,7 @@ Main(Portal) -
 			<Card>
 				<p slot="title">
 					<Tooltip placement="top-start" max-width="220" content="Manage your software" theme="light">
-						<Icon type="ios-paper"></Icon> 软件 Software
+						<Icon type="ios-archive"></Icon> 软件 Software
 					</Tooltip>
 					@hasanyrole('role_smt_config|role_super_admin')
 					<span style="float:right">
@@ -92,7 +92,7 @@ Main(Portal) -
 			<Card>
 				<p slot="title">
 					<Tooltip placement="top-start" max-width="220" content="Manage your Invoices" theme="light">
-						发票 Invoices
+					<Icon type="ios-paper"></Icon> 发票 Invoices
 					</Tooltip>
 				</p>
 				<p v-for="item in CardList_Invoices">
@@ -118,7 +118,7 @@ Main(Portal) -
 			<Card>
 				<p slot="title">
 					<Tooltip placement="top-start" max-width="220" content="View Reports" theme="light">
-					<Icon type="ios-stats"></Icon> 报表 Reports
+					<Icon type="ios-pie"></Icon> 报表 Reports
 					</Tooltip>
 				</p>
 				<p v-for="item in CardList_Reports">
@@ -149,7 +149,7 @@ Main(Portal) -
 			<Card>
 				<p slot="title">
 					<Tooltip placement="top-start" max-width="220" content="Manage your contracts (Support, Licenses, Leases, etc)" theme="light">
-						合同 Contracts
+					<Icon type="ios-document"></Icon> 合同 Contracts
 					</Tooltip>
 					@hasanyrole('role_smt_config|role_super_admin')
 					<span style="float:right">
@@ -179,7 +179,7 @@ Main(Portal) -
 			<Card>
 				<p slot="title">
 					<Tooltip placement="top-start" max-width="220" content="Manage Agents (H/W & S/W Manufacturers & Vendors, Buyers, Contractors)" theme="light">
-						代理商 Agents
+					<Icon type="ios-person"></Icon> 代理商 Agents
 					</Tooltip>
 					@hasanyrole('role_smt_config|role_super_admin')
 					<span style="float:right">
@@ -209,7 +209,7 @@ Main(Portal) -
 			<Card>
 				<p slot="title">
 					<Tooltip placement="top-start" max-width="220" content="View items by type, by user, by agent" theme="light">
-						树形浏览 Tree Explorer
+					<Icon type="ios-browsers"></Icon> 树形浏览 Tree Explorer
 					</Tooltip>
 				</p>
 				<p v-for="item in CardList_TreeExplorer">
@@ -265,7 +265,7 @@ Main(Portal) -
 			<Card>
 				<p slot="title">
 					<Tooltip placement="top-start" max-width="220" content="Add/View Racks" theme="light">
-						机架 Racks
+					<Icon type="ios-cube"></Icon> 机架 Racks
 					</Tooltip>
 					@hasanyrole('role_smt_config|role_super_admin')
 					<span style="float:right">
@@ -295,7 +295,7 @@ Main(Portal) -
 			<Card>
 				<p slot="title">
 					<Tooltip placement="top-start" max-width="220" content="Manage item locations" theme="light">
-						位置场所 Locations
+					<Icon type="ios-pin"></Icon> 位置场所 Locations
 					</Tooltip>
 					@hasanyrole('role_smt_config|role_super_admin')
 					<span style="float:right">
