@@ -11,6 +11,19 @@
 |
 */
 
+// Item路由
+// Route::group(['prefix'=>'renshi', 'namespace'=>'Admin', 'middleware'=>['jwtauth','permission:permission_admin_permission|permission_super_admin']], function() {
+Route::group(['prefix'=>'item', 'namespace'=>'Item', 'middleware'=>['jwtauth']], function() {
+
+	// 111111111111111
+	// 显示applicant页面
+	Route::get('itemStatustypes', 'ItemController@itemStatustypes')->name('item.statustypes');
+
+	// jiaban gets列表
+	Route::get('jiabanGetsApplicant', 'ItemController@jiabanGetsApplicant')->name('item.jiaban.jiabangetsapplicant');
+
+});
+
 
 // main模块
 Route::group(['prefix'=>'', 'namespace'=>'Main', 'middleware'=>['jwtauth']], function() {

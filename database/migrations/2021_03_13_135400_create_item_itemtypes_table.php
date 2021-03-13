@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateStatustypesTable extends Migration
+class CreateItemItemtypesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,12 @@ class CreateStatustypesTable extends Migration
      */
     public function up()
     {
-        Schema::create('statustypes', function (Blueprint $table) {
+        Schema::create('item_itemtypes', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('statusdesc')->comment('状态描述');
+            $table->text('typedesc')->comment('类型描述');
+            $table->boolean('hassoftware')->default(false)->comment('是否可安装软件');
             $table->timestamps();
+            $table->softDeletes();
             $table->engine = 'InnoDB';
         });
     }
@@ -28,6 +30,6 @@ class CreateStatustypesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('statustypes');
+        Schema::dropIfExists('item_itemtypes');
     }
 }

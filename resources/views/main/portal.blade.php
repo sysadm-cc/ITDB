@@ -44,7 +44,7 @@ Main(Portal) -
 					<span v-if="item.name">
 						<a :href="item.url" target="_blank"><Icon type="ios-link"></Icon>&nbsp;&nbsp;@{{ item.name }}</a>
 						<span style="float:right">
-							<span style="color: rgb(158, 167, 180);font-size:12px;">
+							<span style="color: rgb(158, 167, 180);font-size:10px;">
 								@{{ item.detail }}
 							</span>
 						</span>
@@ -76,7 +76,7 @@ Main(Portal) -
 					<span v-if="item.name">
 						<a :href="item.url" target="_blank"><Icon type="ios-link"></Icon>&nbsp;&nbsp;@{{ item.name }}</a>
 						<span style="float:right">
-							<span style="color: rgb(158, 167, 180);font-size:12px;">
+							<span style="color: rgb(158, 167, 180);font-size:10px;">
 								@{{ item.detail }}
 							</span>
 						</span>
@@ -420,7 +420,7 @@ var vm_app = new Vue({
 				name: '项目类型',	url: '#', detail: '查看/修改项目类型',
 			},
 			{
-				name: '状态类型',	url: '#', detail: '查看/修改状态类型',
+				name: '状态类型',	url: "{{ route('item.statustypes') }}", detail: '查看/修改状态类型',
 			},
 		],
 
