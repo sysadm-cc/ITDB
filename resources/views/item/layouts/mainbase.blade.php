@@ -266,8 +266,8 @@ if (isMobile) {
 								</template>
 								<Menu-item name="1-1"><Icon type="ios-list-box-outline" size="18"></Icon> 查询</Menu-item>
 								<Menu-item name="1-2"><Icon type="ios-create-outline" size="20"></Icon> 添加</Menu-item>
-								<Menu-item name="1-3"><Icon type="ios-folder-outline" size="18"></Icon> 项目类型</Menu-item>
-								<Menu-item name="1-4"><Icon type="ios-analytics-outline" size="18"></Icon> 状态类型</Menu-item>
+								<Menu-item name="1-3"><Icon type="ios-folder-outline" size="18"></Icon> 项目分类</Menu-item>
+								<Menu-item name="1-4"><Icon type="ios-analytics-outline" size="18"></Icon> 状态分类</Menu-item>
 							</Submenu>
 
 							<Submenu name="2">
@@ -280,7 +280,55 @@ if (isMobile) {
 
 							<Submenu name="3">
 								<template slot="title">
-										<Icon type="ios-analytics-outline" size="20"></Icon> 归档分析
+										<Icon type="ios-analytics-outline" size="20"></Icon> 发票 <span style="color:rgb(158, 167, 180);font-size:10px;">Invoices</span>
+								</template>
+								<Menu-item name="3-1"><Icon type="ios-folder-outline" size="18"></Icon> 归档</Menu-item>
+								<Menu-item name="3-2"><Icon type="ios-analytics-outline" size="18"></Icon> 统计</Menu-item>
+							</Submenu>
+
+							<Submenu name="4">
+								<template slot="title">
+										<Icon type="ios-analytics-outline" size="20"></Icon> 合同 <span style="color:rgb(158, 167, 180);font-size:10px;">Contracts</span>
+								</template>
+								<Menu-item name="3-1"><Icon type="ios-folder-outline" size="18"></Icon> 归档</Menu-item>
+								<Menu-item name="3-2"><Icon type="ios-analytics-outline" size="18"></Icon> 统计</Menu-item>
+							</Submenu>
+
+							<Submenu name="5">
+								<template slot="title">
+										<Icon type="ios-analytics-outline" size="20"></Icon> 代理商 <span style="color:rgb(158, 167, 180);font-size:10px;">Agents</span>
+								</template>
+								<Menu-item name="3-1"><Icon type="ios-folder-outline" size="18"></Icon> 归档</Menu-item>
+								<Menu-item name="3-2"><Icon type="ios-analytics-outline" size="18"></Icon> 统计</Menu-item>
+							</Submenu>
+
+							<Submenu name="6">
+								<template slot="title">
+										<Icon type="ios-analytics-outline" size="20"></Icon> 文件 <span style="color:rgb(158, 167, 180);font-size:10px;">Files</span>
+								</template>
+								<Menu-item name="3-1"><Icon type="ios-folder-outline" size="18"></Icon> 归档</Menu-item>
+								<Menu-item name="3-2"><Icon type="ios-analytics-outline" size="18"></Icon> 统计</Menu-item>
+							</Submenu>
+
+							<Submenu name="7">
+								<template slot="title">
+										<Icon type="ios-analytics-outline" size="20"></Icon> 机架 <span style="color:rgb(158, 167, 180);font-size:10px;">Racks</span>
+								</template>
+								<Menu-item name="3-1"><Icon type="ios-folder-outline" size="18"></Icon> 归档</Menu-item>
+								<Menu-item name="3-2"><Icon type="ios-analytics-outline" size="18"></Icon> 统计</Menu-item>
+							</Submenu>
+
+							<Submenu name="8">
+								<template slot="title">
+										<Icon type="ios-analytics-outline" size="20"></Icon> 场所 <span style="color:rgb(158, 167, 180);font-size:10px;">Locations</span>
+								</template>
+								<Menu-item name="3-1"><Icon type="ios-folder-outline" size="18"></Icon> 归档</Menu-item>
+								<Menu-item name="3-2"><Icon type="ios-analytics-outline" size="18"></Icon> 统计</Menu-item>
+							</Submenu>
+
+							<Submenu name="9">
+								<template slot="title">
+										<Icon type="ios-analytics-outline" size="20"></Icon> 用户 <span style="color:rgb(158, 167, 180);font-size:10px;">Users</span>
 								</template>
 								<Menu-item name="3-1"><Icon type="ios-folder-outline" size="18"></Icon> 归档</Menu-item>
 								<Menu-item name="3-2"><Icon type="ios-analytics-outline" size="18"></Icon> 统计</Menu-item>

@@ -1,7 +1,7 @@
 @extends('item.layouts.mainbase')
 
 @section('my_title')
-状态类型 - 
+状态分类 - 
 @parent
 @endsection
 
@@ -16,7 +16,21 @@
 
 @section('my_body')
 @parent
-<Divider orientation="left">状态类型</Divider>
+<Divider orientation="left">状态分类</Divider>
+
+<i-row :gutter="16">
+	<i-col span="24">
+
+		<i-table height="300" size="small" border :columns="tablecolumns" :data="tabledata" @on-selection-change="selection => onselectchange(selection)"></i-table>
+		<br><Page :current="page_current" :total="page_total" :page-size="page_size" @on-change="currentpage => oncurrentpagechange(currentpage)" @on-page-size-change="pagesize => onpagesizechange(pagesize)" :page-size-opts="[5, 10, 20, 50]" show-total show-elevator show-sizer></Page>
+
+		</i-col>
+	</i-row>
+
+</Tab-pane>
+
+
+
 
 
 
@@ -54,7 +68,7 @@ var vm_app = new Vue({
 		current_nav: '',
 		current_subnav: '',
 		
-		sideractivename: '1-1',
+		sideractivename: '1-4',
 		sideropennames: ['1'],
 		
 		//分页
@@ -120,33 +134,23 @@ var vm_app = new Vue({
 				}
 			},
 			{
-				title: 'UUID',
-				key: 'uuid',
+				title: 'ID',
+				key: 'id',
 				sortable: true,
 				width: 110,
-				render: (h, params) => {
-					return h('div', {}, [
-						h('span',{
-							// style:{
-							// 	color: '#ff9900'
-							// }
-						}, params.row.uuid.substr(0, 8) + ' ...')
-					])
-				}
+				// render: (h, params) => {
+				// 	return h('div', {}, [
+				// 		h('span',{
+				// 			// style:{
+				// 			// 	color: '#ff9900'
+				// 			// }
+				// 		}, params.row.id.substr(0, 8) + ' ...')
+				// 	])
+				// }
 			},
-			// {
-			// 	title: 'agent',
-			// 	key: 'agent',
-			// 	width: 160
-			// },
-			// {
-			// 	title: 'department_of_agent',
-			// 	key: 'department_of_agent',
-			// 	width: 160
-			// },
 			{
-				title: '当前审核人',
-				key: 'auditor',
+				title: '状态描述',
+				key: 'statusdesc',
 				width: 160,
 				render: (h, params) => {
 					return h('div', {}, [
@@ -161,126 +165,12 @@ var vm_app = new Vue({
 							// style:{
 							// 	color: '#ff9900'
 							// }
-						}, ' '+params.row.auditor)
+						}, ' '+params.row.statusdesc)
 					])
 				}
 			},
 			{
-				title: '当前审核人部门',
-				key: 'department_of_auditor',
-				width: 160,
-				render: (h, params) => {
-					return h('div', {}, [
-						h('Icon',{
-							props: {
-								type: 'ios-people',
-								// size: 14,
-								}
-							}
-						),
-						h('span',{
-							// style:{
-							// 	color: '#ff9900'
-							// }
-						}, ' '+params.row.department_of_auditor)
-					])
-				}
-			},
-			{
-				title: '进度',
-				key: 'progress',
-				width: 140,
-				render: (h, params) => {
-					// return h('div', {}, params.row.progress + '%')
-					if (params.row.progress == 0) {
-						return h('div', {}, [
-							h('Progress',{
-								props: {
-									percent: 99,
-									status: 'wrong',
-									}
-								}
-							)
-						])
-					} else {
-						return h('div', {}, [
-							h('Progress',{
-								props: {
-									percent: params.row.progress,
-									status: 'active',
-									}
-								}
-							)
-						])
-					}
-				}
-			},
-			{
-				title: '状态',
-				key: 'status',
-				width: 90,
-				render: (h, params) => {
-					if (params.row.archived == 1) {
-						return h('div', {}, [
-							h('Icon',{
-								props: {
-									type: 'ios-archive-outline',
-									// size: 14,
-									}
-								}
-							),
-							h('span',' 已归档')
-						])
-					} else if (params.row.status == 99) {
-						return h('div', {}, [
-							h('Icon',{
-								props: {
-									type: 'ios-checkmark-circle-outline',
-									// size: 14,
-									}
-								}
-							),
-							h('span',{
-								style:{
-									color: '#19be6b'
-								}
-							},' 已结案')
-						])
-					} else if (params.row.status == 0) {
-						return h('div', {}, [
-							h('Icon',{
-								props: {
-									type: 'ios-close-circle-outline',
-									// size: 14,
-									}
-								}
-							),
-							h('span',{
-								style:{
-									color: '#ed4014'
-								}
-							},' 已否决')
-						])
-					} else {
-						return h('div', {}, [
-							h('Icon',{
-								props: {
-									type: 'ios-cafe-outline',
-									// size: 14,
-									}
-								}
-							),
-							h('span',{
-								style:{
-									color: '#ff9900'
-								}
-							},' 待处理')
-						])
-					}
-				},
-			},
-			{
-				title: '提交时间',
+				title: '创建时间',
 				key: 'created_at',
 				sortable: true,
 				width: 160
@@ -428,7 +318,7 @@ var vm_app = new Vue({
 		
     },
 	methods: {
-		menuselect: function (name) {
+		menuselect (name) {
 			navmenuselect(name);
 		},
 		// 1.加载进度条
@@ -467,7 +357,7 @@ var vm_app = new Vue({
 			});
 		},
 
-		alert_logout: function () {
+		alert_logout () {
 			this.error(false, '会话超时', '会话超时，请重新登录！');
 			window.setTimeout(function(){
 				window.location.href = "{{ route('portal') }}";
@@ -476,7 +366,7 @@ var vm_app = new Vue({
 		},
 		
 		// 把laravel返回的结果转换成select能接受的格式
-		json2selectvalue: function (json) {
+		json2selectvalue (json) {
 			var arr = [];
 			for (var key in json) {
 				// alert(key);
@@ -488,10 +378,58 @@ var vm_app = new Vue({
 			// return arr.reverse();
 		},
 
-		
+		statustypesgets (page, last_page){
+			var _this = this;
+			
+			if (page > last_page) {
+				page = last_page;
+			} else if (page < 1) {
+				page = 1;
+			}
+			
+
+			_this.loadingbarstart();
+			var url = "{{ route('item.statustypesgets') }}";
+			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
+			axios.get(url,{
+				params: {
+					perPage: _this.page_size,
+					page: page,
+				}
+			})
+			.then(function (response) {
+				// console.log(response.data);
+				// return false;
+
+				if (response.data['jwt'] == 'logout') {
+					_this.alert_logout();
+					return false;
+				}
+
+				if (response.data) {
+					_this.delete_disabled = true;
+					_this.tableselect = [];
+					
+					_this.page_current = response.data.current_page;
+					_this.page_total = response.data.total;
+					_this.page_last = response.data.last_page;
+					_this.tabledata = response.data.data;
+					
+				}
+				
+				_this.loadingbarfinish();
+			})
+			.catch(function (error) {
+				_this.loadingbarerror();
+				_this.error(false, 'Error', error);
+			})
+		},
 	
 		
-
+		// 切换当前页
+		oncurrentpagechange: function (currentpage) {
+			this.statustypesgets(currentpage, this.page_last);
+		},
 
 
 
@@ -507,11 +445,12 @@ var vm_app = new Vue({
 
 	},
 	mounted: function(){
-		// var _this = this;
-		// _this.current_nav = '加班管理';
-		// _this.current_subnav = '申请';
+		var _this = this;
+		_this.current_nav = '硬件';
+		_this.current_subnav = '状态分类';
+
 		// // 显示所有
-		// _this.jiabangetsapplicant(1, 1); // page: 1, last_page: 1
+		_this.statustypesgets(1, 1); // page: 1, last_page: 1
 		// _this.loadapplicantgroup();
 
 		// GetCurrentDatetime('getcurrentdatetime');

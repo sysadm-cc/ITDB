@@ -16,11 +16,11 @@
 Route::group(['prefix'=>'item', 'namespace'=>'Item', 'middleware'=>['jwtauth']], function() {
 
 	// 111111111111111
-	// 显示applicant页面
+	// 显示 Statustypes 页面
 	Route::get('itemStatustypes', 'ItemController@itemStatustypes')->name('item.statustypes');
 
 	// jiaban gets列表
-	Route::get('jiabanGetsApplicant', 'ItemController@jiabanGetsApplicant')->name('item.jiaban.jiabangetsapplicant');
+	Route::get('itemStatustypesGets', 'ItemController@itemStatustypesGets')->name('item.statustypesgets');
 
 });
 
