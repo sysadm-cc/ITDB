@@ -23,26 +23,8 @@ class UsersTableSeeder extends Seeder
 		User::insert(array (
             0 => 
             array (
-                // 'id' => 1,
-                'uid' => '0001',
+                'id' => 1,
                 'name' => 'admin',
-                'department' => 'admin',
-                'auditing' => json_encode(
-                    array(
-                        array(
-                            "id" => "1",
-                            "uid" => "0001",
-                            "name" => "admin",
-                            "department" => "admin"
-                        ),
-                        array(
-                            "id" => "2",
-                            "uid" => "0002",
-                            "name" => "root",
-                            "department" => "root"
-                        )
-                    ), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
-                ),
                 'ldapname' => 'admin',
                 'email' => 'admin@aota.local',
                 'displayname' => 'admin',
@@ -57,20 +39,8 @@ class UsersTableSeeder extends Seeder
             ),
             1 => 
             array (
-                // 'id' => 2,
-                'uid' => '0002',
+                'id' => 2,
                 'name' => 'root',
-                'department' => 'root',
-                'auditing' => json_encode(
-                    array(
-                        array(
-                            "id" => "1",
-                            "uid" => "0001",
-                            "name" => "admin",
-                            "department" => "admin"
-                        ),
-                    ), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
-                ),
                 'ldapname' => 'root',
                 'email' => 'root@aota.local',
                 'displayname' => 'root',
@@ -85,20 +55,8 @@ class UsersTableSeeder extends Seeder
             ),
             2 => 
             array (
-                // 'id' => 3,
-                'uid' => '0003',
+                'id' => 3,
                 'name' => 'user1',
-                'department' => 'user',
-                'auditing' => json_encode(
-                    array(
-                        array(
-                            "id" => "1",
-                            "uid" => "0001",
-                            "name" => "admin",
-                            "department" => "admin"
-                        ),
-                    ), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
-                ),
                 'ldapname' => 'user1',
                 'email' => 'user1@aota.local',
                 'displayname' => 'user1',
@@ -113,20 +71,8 @@ class UsersTableSeeder extends Seeder
             ),
             3 => 
             array (
-                // 'id' => 4,
-                'uid' => '0004',
+                'id' => 4,
                 'name' => 'user2',
-                'department' => 'user',
-                'auditing' => json_encode(
-                    array(
-                        array(
-                            "id" => "1",
-                            "uid" => "0001",
-                            "name" => "admin",
-                            "department" => "admin"
-                        ),
-                    ), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
-                ),
                 'ldapname' => 'user2',
                 'email' => 'user2@aota.local',
                 'displayname' => 'user2',
@@ -141,20 +87,8 @@ class UsersTableSeeder extends Seeder
             ),
             4 => 
             array (
-                // 'id' => 5,
-                'uid' => '0005',
+                'id' => 5,
                 'name' => 'user3',
-                'department' => 'user',
-                'auditing' => json_encode(
-                    array(
-                        array(
-                            "id" => "1",
-                            "uid" => "0001",
-                            "name" => "admin",
-                            "department" => "admin"
-                        ),
-                    ), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
-                ),
                 'ldapname' => 'user3',
                 'email' => 'user3@aota.local',
                 'displayname' => 'user3',
@@ -169,20 +103,8 @@ class UsersTableSeeder extends Seeder
             ),
             5 => 
             array (
-                // 'id' => 6,
-                'uid' => '0006',
+                'id' => 6,
                 'name' => 'user4',
-                'department' => 'user',
-                'auditing' => json_encode(
-                    array(
-                        array(
-                            "id" => "1",
-                            "uid" => "0001",
-                            "name" => "admin",
-                            "department" => "admin"
-                        ),
-                    ), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
-                ),
                 'ldapname' => 'user4',
                 'email' => 'user4@aota.local',
                 'displayname' => 'user4',
@@ -197,20 +119,8 @@ class UsersTableSeeder extends Seeder
             ),
             6 => 
             array (
-                // 'id' => 7,
-                'uid' => '0007',
+                'id' => 7,
                 'name' => 'user5',
-                'department' => 'user',
-                'auditing' => json_encode(
-                    array(
-                        array(
-                            "id" => "1",
-                            "uid" => "0001",
-                            "name" => "admin",
-                            "department" => "admin"
-                        ),
-                    ), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
-                ),
                 'ldapname' => 'user5',
                 'email' => 'user5@aota.local',
                 'displayname' => 'user5',
@@ -225,20 +135,8 @@ class UsersTableSeeder extends Seeder
             ),
             7 => 
             array (
-                // 'id' => 8,
-                'uid' => '0008',
+                'id' => 8,
                 'name' => 'user6',
-                'department' => 'user',
-                'auditing' => json_encode(
-                    array(
-                        array(
-                            "id" => "1",
-                            "uid" => "0001",
-                            "name" => "admin",
-                            "department" => "admin"
-                        ),
-                    ), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
-                ),
                 'ldapname' => 'user6',
                 'email' => 'user6@aota.local',
                 'displayname' => 'user6',
@@ -253,20 +151,8 @@ class UsersTableSeeder extends Seeder
             ),
             8 => 
             array (
-                // 'id' => 9,
-                'uid' => '0009',
+                'id' => 9,
                 'name' => 'user7',
-                'department' => 'user',
-                'auditing' => json_encode(
-                    array(
-                        array(
-                            "id" => "1",
-                            "uid" => "0001",
-                            "name" => "admin",
-                            "department" => "admin"
-                        ),
-                    ), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
-                ),
                 'ldapname' => 'user7',
                 'email' => 'user7@aota.local',
                 'displayname' => 'user7',
@@ -281,79 +167,11 @@ class UsersTableSeeder extends Seeder
             ),
             9 => 
             array (
-                // 'id' => 10,
-                'uid' => '0010',
+                'id' => 10,
                 'name' => 'user8',
-                'department' => 'user',
-                'auditing' => json_encode(
-                    array(
-                        array(
-                            "id" => "1",
-                            "uid" => "0001",
-                            "name" => "admin",
-                            "department" => "admin"
-                        ),
-                    ), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
-                ),
                 'ldapname' => 'user8',
                 'email' => 'user8@aota.local',
                 'displayname' => 'user8',
-                'password' => '$2y$10$ihmDQIgX4hK8CPfH3PtImeeVW8mmAeP42I4Jbx0GcLtXtLiKxLaRi',
-                'login_time' => $logintime,
-                'login_ip' => '255.255.255.255',
-                'login_counts' => 0,
-                'remember_token' => '',
-                'created_at' => $nowtime,
-                'updated_at' => $nowtime,
-                'deleted_at' => NULL,
-            ),
-            10 => 
-            array (
-                // 'id' => 11,
-                'uid' => '071215958',
-                'name' => '071215958',
-                'department' => 'abc',
-                'auditing' => json_encode(
-                    array(
-                        array(
-                            "id" => "1",
-                            "uid" => "0001",
-                            "name" => "admin",
-                            "department" => "admin"
-                        ),
-                    ), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
-                ),
-                'ldapname' => 'zhang san',
-                'email' => 'user8@aota.local',
-                'displayname' => 'zhang san',
-                'password' => '$2y$10$ihmDQIgX4hK8CPfH3PtImeeVW8mmAeP42I4Jbx0GcLtXtLiKxLaRi',
-                'login_time' => $logintime,
-                'login_ip' => '255.255.255.255',
-                'login_counts' => 0,
-                'remember_token' => '',
-                'created_at' => $nowtime,
-                'updated_at' => $nowtime,
-                'deleted_at' => NULL,
-            ),
-            11 => 
-            array (
-                // 'id' => 12,
-                'uid' => '071015516',
-                'name' => '071015516',
-                'department' => 'gggg',
-                'auditing' => json_encode(
-                    array(
-                        array(
-                            "id" => "1",
-                            "uid" => "0001",
-                            "name" => "admin",
-                            "department" => "admin"
-                        ),
-                    ), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
-                ),
-                'ldapname' => 'li si',
-                'email' => 'user8@aota.local',
-                'displayname' => 'li si',
                 'password' => '$2y$10$ihmDQIgX4hK8CPfH3PtImeeVW8mmAeP42I4Jbx0GcLtXtLiKxLaRi',
                 'login_time' => $logintime,
                 'login_ip' => '255.255.255.255',
