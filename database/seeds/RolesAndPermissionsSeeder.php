@@ -50,7 +50,7 @@ class RolesAndPermissionsSeeder extends Seeder
 		$user = User::where('id', 1)->first();
 		$user->assignRole('role_super_admin');
 		$user = User::where('id', 2)->first();
-		$user->assignRole('role_super_admin');
+		$user->assignRole('role_admin_user');
 
     }
 }
