@@ -28,7 +28,7 @@ class UsersTableSeeder extends Seeder
                 'ldapname' => 'admin',
                 'email' => 'admin@sysadm.local',
                 'displayname' => 'admin',
-                'department' => 'sysadm.local',
+                'department' => 'sysadm',
                 'password' => '$2y$10$LZyZUTTyHugBeHGiSCumi.KKb4doF5eQYoKqIBYR03J84LLcEVVZW', // 默认密码123
                 'login_time' => $logintime,
                 'login_ip' => '255.255.255.255',
@@ -45,7 +45,7 @@ class UsersTableSeeder extends Seeder
                 'ldapname' => 'user',
                 'email' => 'user@sysadm.local',
                 'displayname' => 'user',
-                'department' => 'sysadm.local',
+                'department' => 'sysadm',
                 'password' => '$2y$10$ihmDQIgX4hK8CPfH3PtImeeVW8mmAeP42I4Jbx0GcLtXtLiKxLaRi',
                 'login_time' => $logintime,
                 'login_ip' => '255.255.255.255',

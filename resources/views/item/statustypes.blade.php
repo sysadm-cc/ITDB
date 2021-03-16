@@ -180,7 +180,7 @@ var vm_app = new Vue({
 				key: 'action',
 				align: 'center',
 				@hasanyrole('role_super_admin')
-					width: 250,
+					width: 280,
 				@else
 					width: 130,
 				@endhasanyrole
