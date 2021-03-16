@@ -156,8 +156,9 @@ var vm_app = new Vue({
 					return h('div', {}, [
 						h('Icon',{
 							props: {
-								type: 'ios-person',
-								// size: 14,
+								type: 'ios-bookmark',
+								size: 14,
+								color: 'blue',
 								}
 							}
 						),
