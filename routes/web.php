@@ -22,8 +22,11 @@ Route::group(['prefix'=>'item', 'namespace'=>'Item', 'middleware'=>['jwtauth']],
 	// Statustypes gets列表
 	Route::get('itemStatustypesGets', 'ItemController@itemStatustypesGets')->name('item.statustypesgets');
 
-	// Statustypes Edit
-	Route::get('itemStatustypesEdit', 'ItemController@itemStatustypesEdit')->name('item.statustypesedit');
+	// Statustypes Update
+	Route::post('itemStatustypesUpdate', 'ItemController@itemStatustypesUpdate')->name('item.statustypesupdate');
+
+	// Statustypes Delete
+	Route::post('itemStatustypesDelete', 'ItemController@itemStatustypesDelete')->name('item.statustypesdelete');
 
 });
 

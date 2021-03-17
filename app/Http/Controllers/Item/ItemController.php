@@ -89,46 +89,64 @@ class ItemController extends Controller
 
 		Cache::put($fullUrl, $result, now()->addSeconds(10));
 		}
-		// dd($result);
-		return $result;
+
+	return $result;
 	}
 
 	
 	/**
-	 * 编辑 statustypes
+	 * 更新 statustypes
 	 *
 	 * @param  int  $id
 	 * @return \Illuminate\Http\Response
 	 */
-	public function itemStatustypesEdit(Request $request)
+	public function itemStatustypesUpdate(Request $request)
 	{
-		if (! $request->ajax()) return null;
+	if (! $request->isMethod('post') || ! $request->ajax()) return null;
 
-		$id = $request->input('id');
-		$statusdesc = $request->input('statusdesc');
+	$id = $request->input('id');
+	$statusdesc = $request->input('statusdesc');
 
-		// 写入数据库
-		try	{
-			DB::beginTransaction();
-			
-			$result = Item_statustypes::where('id', $id)
-			->update([
-				'statusdesc' => $statusdesc,
-			]);
+	// 写入数据库
+	try	{
+		DB::beginTransaction();
+		
+		$result = Item_statustypes::where('id', $id)
+		->update([
+			'statusdesc' => $statusdesc,
+		]);
 
-			$result = 1;
-		}
-		catch (\Exception $e) {
-			// echo 'Message: ' .$e->getMessage();
-			DB::rollBack();
-			// dd('Message: ' .$e->getMessage());
-			return 0;
-		}
-
-		DB::commit();
-		Cache::flush();
-		return $result;
+		$result = 1;
 	}
+	catch (\Exception $e) {
+		// echo 'Message: ' .$e->getMessage();
+		DB::rollBack();
+		// dd('Message: ' .$e->getMessage());
+		return 0;
+	}
+
+	DB::commit();
+	Cache::flush();
+	return $result;
+	}
+
+
+	/**
+	 * 删除 statustypes
+	 *
+	 * @param  int  $id
+	 * @return \Illuminate\Http\Response
+	 */
+	public function itemStatustypesDelete(Request $request)
+	{
+	if (! $request->isMethod('post') || ! $request->ajax())  return false;
+
+	$id = [$request->input('id')];
+	$result = Item_statustypes::whereIn('id', $id)->delete();
+	Cache::flush();
+	return $result;
+	}
+
 
 
 	

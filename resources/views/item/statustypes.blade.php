@@ -175,13 +175,23 @@ var vm_app = new Vue({
 								}
 							),
 						])
-					} else if  (params.row.id == 2) {
+					} else if (params.row.id == 2) {
 						return h('div', {}, [
 							h('Icon',{
 								props: {
 									type: 'ios-bookmark',
 									size: 14,
 									color: 'blue',
+									}
+								}
+							),
+						])
+					} else {
+						return h('div', {}, [
+							h('Icon',{
+								props: {
+									type: 'ios-bookmark',
+									size: 14,
 									}
 								}
 							),
@@ -209,7 +219,7 @@ var vm_app = new Vue({
 									// alert(params.row.id);
 									// alert(event.target.value);
 									if (params.row.statusdesc != event.target.value) {
-										vm_app.statustypes_edit(params.row.id, event.target.value)
+										vm_app.statustypes_update(params.row.id, event.target.value)
 									}
 								}
 							},
@@ -229,81 +239,37 @@ var vm_app = new Vue({
 				sortable: true,
 				width: 160
 			},
+			@hasanyrole('role_super_admin')
 			{
 				title: '操作',
 				key: 'action',
 				align: 'center',
-				@hasanyrole('role_super_admin')
-					width: 280,
-				@else
-					width: 130,
-				@endhasanyrole
+				width: 100,
 				render: (h, params) => {
-					return h('div', [
-						h('Button', {
-							props: {
-								type: 'primary',
-								size: 'small'
-							},
-							style: {
-								marginRight: '5px'
-							},
-							on: {
-								click: () => {
-									vm_app.statustypes_edit(params.row)
+					if (params.row.id > 1) {
+						return h('div', [
+							h('Button', {
+								props: {
+									type: 'error',
+									size: 'small'
+								},
+								style: {
+									marginRight: '5px'
+								},
+								on: {
+									click: () => {
+										vm_app.statustypes_delete(params.row)
+									}
 								}
-							}
-						}, '保存'),
-						h('Button', {
-							props: {
-								type: 'default',
-								size: 'small'
-							},
-							style: {
-								marginRight: '5px'
-							},
-							on: {
-								click: () => {
-									vm_app.jiaban_archived(params.row)
-								}
-							}
-						}, '归档'),
-						@hasanyrole('role_super_admin')
-						h('Button', {
-							props: {
-								type: 'warning',
-								size: 'small'
-							},
-							style: {
-								marginRight: '5px'
-							},
-							on: {
-								click: () => {
-									vm_app.onrestore_applicant(params.row)
-								}
-							}
-						}, '恢复'),
-						h('Button', {
-							props: {
-								type: 'error',
-								size: 'small'
-							},
-							style: {
-								marginRight: '5px'
-							},
-							on: {
-								click: () => {
-									vm_app.ondelete_applicant(params.row)
-								}
-							}
-						}, '彻底删除'),
-						@endhasanyrole
+							}, '删除'),
+							
 
-					]);
-					
+						]);
+					}
 				},
-				fixed: 'right'
+				// fixed: 'right'
 			}
+			@endhasanyrole
 		],
 		tabledata: [],
 		tableselect: [],
@@ -487,8 +453,8 @@ var vm_app = new Vue({
 		},
 
 
-		// 编辑
-		statustypes_edit (id, statusdesc) {
+		// 更新
+		statustypes_update (id, statusdesc) {
 			var _this = this;
 			
 			var id = id;
@@ -498,13 +464,11 @@ var vm_app = new Vue({
 			// _this.jiaban_edit_created_at = row.created_at;
 			// _this.jiaban_edit_updated_at = row.updated_at;
 
-			var url = "{{ route('item.statustypesedit') }}";
-			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
-			axios.get(url,{
-				params: {
-					id: id,
-					statusdesc: statusdesc
-				}
+			var url = "{{ route('item.statustypesupdate') }}";
+			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
+			axios.post(url,{
+				id: id,
+				statusdesc: statusdesc
 			})
 			.then(function (response) {
                 // alert(index);
@@ -517,6 +481,7 @@ var vm_app = new Vue({
 				}
 				
 				if (response.data) {
+					_this.statustypesgets(_this.page_current, _this.page_last);
                     // _this.$Message.success('保存成功！');
 					_this.success(false, '成功', '保存成功！');
                 } else {
@@ -536,7 +501,33 @@ var vm_app = new Vue({
 		},
 
 
-
+		// 删除
+		statustypes_delete (row) {
+			var _this = this;
+			var id = row.id;
+			if (id == undefined) return false;
+			var url = "{{ route('item.statustypesdelete') }}";
+			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
+			axios.post(url, {
+				id: id
+			})
+			.then(function (response) {
+				if (response.data['jwt'] == 'logout') {
+					_this.alert_logout();
+					return false;
+				}
+				
+				if (response.data) {
+					_this.statustypesgets(_this.page_current, _this.page_last);
+					_this.success(false, '成功', '删除成功！');
+				} else {
+					_this.error(false, '失败', '删除失败！');
+				}
+			})
+			.catch(function (error) {
+				_this.error(false, '错误', '删除失败！');
+			})
+		},
 
 
 
