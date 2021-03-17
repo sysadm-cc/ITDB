@@ -19,8 +19,11 @@ Route::group(['prefix'=>'item', 'namespace'=>'Item', 'middleware'=>['jwtauth']],
 	// 显示 Statustypes 页面
 	Route::get('itemStatustypes', 'ItemController@itemStatustypes')->name('item.statustypes');
 
-	// jiaban gets列表
+	// Statustypes gets列表
 	Route::get('itemStatustypesGets', 'ItemController@itemStatustypesGets')->name('item.statustypesgets');
+
+	// Statustypes Edit
+	Route::get('itemStatustypesEdit', 'ItemController@itemStatustypesEdit')->name('item.statustypesedit');
 
 });
 

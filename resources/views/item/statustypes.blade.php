@@ -19,6 +19,22 @@
 <Divider orientation="left">状态分类</Divider>
 
 <i-row :gutter="16">
+	<i-col span="4">
+
+	<i-input>
+        <i-button slot="append" icon="md-checkmark"></i-button>
+    </i-input>
+
+	<i-col span="20">
+	&nbsp;
+	</i-col>
+
+	</i-col>
+</i-row>
+
+&nbsp;
+
+<i-row :gutter="16">
 	<i-col span="24">
 
 		<i-table height="300" size="small" border :columns="tablecolumns" :data="tabledata" @on-selection-change="selection => onselectchange(selection)"></i-table>
@@ -77,6 +93,15 @@ var vm_app = new Vue({
 		page_size: {{ $user['configs']['PERPAGE_RECORDS_FOR_APPLICANT'] ?? 5 }},
 		page_last: 1,
 
+
+
+
+
+
+
+
+
+
 		// 创建
 		jiaban_add_reason: '',
 		jiaban_add_remark: '',
@@ -134,45 +159,73 @@ var vm_app = new Vue({
 				}
 			},
 			{
-				title: 'ID',
+				title: '图标',
 				key: 'id',
-				sortable: true,
-				width: 110,
-				// render: (h, params) => {
-				// 	return h('div', {}, [
-				// 		h('span',{
-				// 			// style:{
-				// 			// 	color: '#ff9900'
-				// 			// }
-				// 		}, params.row.id.substr(0, 8) + ' ...')
-				// 	])
-				// }
+				// sortable: true,
+				width: 70,
+				render: (h, params) => {
+					if (params.row.id == 1) {
+						return h('div', {}, [
+							h('Icon',{
+								props: {
+									type: 'ios-bookmark',
+									size: 14,
+									color: 'green',
+									}
+								}
+							),
+						])
+					} else if  (params.row.id == 2) {
+						return h('div', {}, [
+							h('Icon',{
+								props: {
+									type: 'ios-bookmark',
+									size: 14,
+									color: 'blue',
+									}
+								}
+							),
+						])
+					}	
+				}
 			},
 			{
 				title: '状态描述',
 				key: 'statusdesc',
-				width: 160,
+				width: 180,
 				render: (h, params) => {
+					
 					return h('div', {}, [
-						h('Icon',{
-							props: {
-								type: 'ios-bookmark',
-								size: 14,
-								color: 'blue',
-								}
-							}
-						),
-						h('span',{
+						h('i-input',{
 							// style:{
 							// 	color: '#ff9900'
-							// }
-						}, ' '+params.row.statusdesc)
+							// },
+							props: {
+								value: params.row.statusdesc,
+								size: 'small',
+							},
+							'on': {
+								'on-blur':() => {
+									// alert(params.row.id);
+									// alert(event.target.value);
+									if (params.row.statusdesc != event.target.value) {
+										vm_app.statustypes_edit(params.row.id, event.target.value)
+									}
+								}
+							},
+						})
 					])
 				}
 			},
 			{
 				title: '创建时间',
 				key: 'created_at',
+				sortable: true,
+				width: 160
+			},
+			{
+				title: '更新时间',
+				key: 'updated_at',
 				sortable: true,
 				width: 160
 			},
@@ -197,10 +250,10 @@ var vm_app = new Vue({
 							},
 							on: {
 								click: () => {
-									vm_app.jiaban_edit(params.row)
+									vm_app.statustypes_edit(params.row)
 								}
 							}
-						}, '查看'),
+						}, '保存'),
 						h('Button', {
 							props: {
 								type: 'default',
@@ -379,6 +432,7 @@ var vm_app = new Vue({
 			// return arr.reverse();
 		},
 
+		//
 		statustypesgets (page, last_page){
 			var _this = this;
 			
@@ -428,11 +482,58 @@ var vm_app = new Vue({
 	
 		
 		// 切换当前页
-		oncurrentpagechange: function (currentpage) {
+		oncurrentpagechange (currentpage) {
 			this.statustypesgets(currentpage, this.page_last);
 		},
 
 
+		// 编辑
+		statustypes_edit (id, statusdesc) {
+			var _this = this;
+			
+			var id = id;
+			var statusdesc = statusdesc;
+			// _this.statustypes_edit_id = id;
+			// _this.statustypes_edit_statusdesc = row.statustypes_edit_statusdesc;
+			// _this.jiaban_edit_created_at = row.created_at;
+			// _this.jiaban_edit_updated_at = row.updated_at;
+
+			var url = "{{ route('item.statustypesedit') }}";
+			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
+			axios.get(url,{
+				params: {
+					id: id,
+					statusdesc: statusdesc
+				}
+			})
+			.then(function (response) {
+                // alert(index);
+				// console.log(response.data);
+				// return false;
+
+				if (response.data['jwt'] == 'logout') {
+					_this.alert_logout();
+					return false;
+				}
+				
+				if (response.data) {
+                    // _this.$Message.success('保存成功！');
+					_this.success(false, '成功', '保存成功！');
+                } else {
+					// _this.$Message.warning('保存失败！');
+					_this.warning(false, '失败', '保存失败！');
+				}
+			})
+			.catch(function (error) {
+				_this.error(false, 'Error', error);
+			})
+
+			setTimeout(() => {
+				_this.modal_jiaban_edit = true;
+			}, 500);
+
+			
+		},
 
 
 

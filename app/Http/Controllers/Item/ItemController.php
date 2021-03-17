@@ -21,7 +21,7 @@ use Ramsey\Uuid\Uuid;
 class ItemController extends Controller
 {
 	/**
-	 * 列出 statustypes 页面
+	 * 显示页面 statustypes
 	 *
 	 * @param  int  $id
 	 * @return \Illuminate\Http\Response
@@ -54,7 +54,7 @@ class ItemController extends Controller
 
 
 	/**
-	 * item statustypes 列表
+	 * 读取记录 statustypes
 	 *
 	 * @param  int  $id
 	 * @return \Illuminate\Http\Response
@@ -94,7 +94,41 @@ class ItemController extends Controller
 	}
 
 	
+	/**
+	 * 编辑 statustypes
+	 *
+	 * @param  int  $id
+	 * @return \Illuminate\Http\Response
+	 */
+	public function itemStatustypesEdit(Request $request)
+	{
+		if (! $request->ajax()) return null;
 
+		$id = $request->input('id');
+		$statusdesc = $request->input('statusdesc');
+
+		// 写入数据库
+		try	{
+			DB::beginTransaction();
+			
+			$result = Item_statustypes::where('id', $id)
+			->update([
+				'statusdesc' => $statusdesc,
+			]);
+
+			$result = 1;
+		}
+		catch (\Exception $e) {
+			// echo 'Message: ' .$e->getMessage();
+			DB::rollBack();
+			// dd('Message: ' .$e->getMessage());
+			return 0;
+		}
+
+		DB::commit();
+		Cache::flush();
+		return $result;
+	}
 
 
 	
