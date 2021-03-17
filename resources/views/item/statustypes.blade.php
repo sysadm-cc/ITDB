@@ -37,7 +37,7 @@
 <i-row :gutter="16">
 	<i-col span="24">
 
-		<i-table height="300" size="small" border :columns="tablecolumns" :data="tabledata" @on-selection-change="selection => onselectchange(selection)"></i-table>
+		<i-table height="300" size="small" border :columns="tablecolumns" :data="tabledata"></i-table>
 		<br><Page :current="page_current" :total="page_total" :page-size="page_size" @on-change="currentpage => oncurrentpagechange(currentpage)" @on-page-size-change="pagesize => onpagesizechange(pagesize)" :page-size-opts="[5, 10, 20, 50]" show-total show-elevator show-sizer></Page>
 
 		</i-col>
@@ -171,7 +171,7 @@ var vm_app = new Vue({
 								props: {
 									type: 'md-bookmark',
 									size: 14,
-									color: 'green',
+									color: 'blue',
 									}
 								}
 							),
@@ -182,7 +182,51 @@ var vm_app = new Vue({
 								props: {
 									type: 'md-bookmark',
 									size: 14,
-									color: 'blue',
+									color: 'green',
+									}
+								}
+							),
+						])
+					} else if (params.row.id == 3) {
+						return h('div', {}, [
+							h('Icon',{
+								props: {
+									type: 'md-bookmark',
+									size: 14,
+									color: 'red',
+									}
+								}
+							),
+						])
+					} else if (params.row.id == 4) {
+						return h('div', {}, [
+							h('Icon',{
+								props: {
+									type: 'md-bookmark',
+									size: 14,
+									color: 'gray',
+									}
+								}
+							),
+						])
+					} else if (params.row.id == 5) {
+						return h('div', {}, [
+							h('Icon',{
+								props: {
+									type: 'md-bookmark',
+									size: 14,
+									color: 'yellow',
+									}
+								}
+							),
+						])
+					} else if (params.row.id == 6) {
+						return h('div', {}, [
+							h('Icon',{
+								props: {
+									type: 'md-bookmark',
+									size: 14,
+									color: 'black',
 									}
 								}
 							),
