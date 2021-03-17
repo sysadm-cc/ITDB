@@ -28,6 +28,9 @@ Route::group(['prefix'=>'item', 'namespace'=>'Item', 'middleware'=>['jwtauth']],
 	// Statustypes Delete
 	Route::post('itemStatustypesDelete', 'ItemController@itemStatustypesDelete')->name('item.statustypesdelete');
 
+	// Statustypes Create
+	Route::post('itemStatustypesCreate', 'ItemController@itemStatustypesCreate')->name('item.statustypescreate');
+
 });
 
 

@@ -21,8 +21,8 @@
 <i-row :gutter="16">
 	<i-col span="4">
 
-	<i-input>
-        <i-button slot="append" icon="md-checkmark"></i-button>
+	<i-input v-model="statustypes_add_statusdesc" size="large">
+        <i-button slot="append" icon="md-add" @click="statustypes_add()"></i-button>
     </i-input>
 
 	<i-col span="20">
@@ -90,10 +90,11 @@ var vm_app = new Vue({
 		//分页
 		page_current: 1,
 		page_total: 0, // 记录总数，非总页数
-		page_size: {{ $user['configs']['PERPAGE_RECORDS_FOR_APPLICANT'] ?? 5 }},
+		page_size: {{ $user['configs']['PERPAGE_RECORDS_FOR_APPLICANT'] ?? 10 }},
 		page_last: 1,
 
-
+		//新增
+		statustypes_add_statusdesc: '',
 
 
 
@@ -168,7 +169,7 @@ var vm_app = new Vue({
 						return h('div', {}, [
 							h('Icon',{
 								props: {
-									type: 'ios-bookmark',
+									type: 'md-bookmark',
 									size: 14,
 									color: 'green',
 									}
@@ -179,7 +180,7 @@ var vm_app = new Vue({
 						return h('div', {}, [
 							h('Icon',{
 								props: {
-									type: 'ios-bookmark',
+									type: 'md-bookmark',
 									size: 14,
 									color: 'blue',
 									}
@@ -190,7 +191,7 @@ var vm_app = new Vue({
 						return h('div', {}, [
 							h('Icon',{
 								props: {
-									type: 'ios-bookmark',
+									type: 'md-bookmark',
 									size: 14,
 									}
 								}
@@ -246,7 +247,7 @@ var vm_app = new Vue({
 				align: 'center',
 				width: 100,
 				render: (h, params) => {
-					if (params.row.id > 1) {
+					if (params.row.id > 6) {
 						return h('div', [
 							h('Button', {
 								props: {
@@ -530,6 +531,45 @@ var vm_app = new Vue({
 		},
 
 
+		//新增
+		statustypes_add () {
+			var _this = this;
+
+			var statusdesc = _this.statustypes_add_statusdesc;
+
+			if (statusdesc == '' || statusdesc == undefined) {
+				// _this.error(false, '失败', '用户ID为空或不正确！');
+				return false;
+			}
+
+			var url = "{{ route('item.statustypescreate') }}";
+			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
+			axios.post(url, {
+				statusdesc: statusdesc,
+			})
+			.then(function (response) {
+				// console.log(response.data);
+				// return false;
+
+				if (response.data['jwt'] == 'logout') {
+					_this.alert_logout();
+					return false;
+				}
+				
+ 				if (response.data) {
+					_this.statustypes_add_statusdesc = '';
+					_this.statustypesgets(_this.page_current, _this.page_last);
+					_this.success(false, '成功', '新建成功！');
+				} else {
+					_this.error(false, '失败', '新建失败！');
+				}
+			})
+			.catch(function (error) {
+				_this.error(false, '错误', '新建失败！');
+			})
+
+
+		},
 
 		
 

@@ -148,6 +148,32 @@ class ItemController extends Controller
 	}
 
 
+    /**
+     * 新建 statustypes
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function itemStatustypesCreate(Request $request)
+    {
+		if (! $request->isMethod('post') || ! $request->ajax()) return false;
+
+		// $nowtime = date("Y-m-d H:i:s",time());
+		$statusdesc = $request->input('statusdesc');
+		
+		try	{
+			$result = Item_statustypes::create([
+				'statusdesc' => $statusdesc,
+			]);
+		}
+		catch (\Exception $e) {
+			// echo 'Message: ' .$e->getMessage();
+			$result = 0;
+		}
+
+		return $result;
+    }
+
 
 	
 }
