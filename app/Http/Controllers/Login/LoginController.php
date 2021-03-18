@@ -51,7 +51,7 @@ class LoginController extends Controller
 		$nowtime = date("Y-m-d H:i:s",time());
 		$ip = $request->getClientIp();
 		$singletoken = md5($ip . $name . $nowtime);
-		$minutes = $rememberme ? config('jwt.ttl', 60 * 24 * 365) : config('jwt.jwt_cookies_ttl', 60 * 24);
+		$minutes = $rememberme ? config('jwt.ttl', 60*24*365) : config('jwt.jwt_cookies_ttl', 60*24);
 
 		// 2.adldap判断AD认证
 		$adldap = false;
@@ -147,7 +147,7 @@ class LoginController extends Controller
 					]);
 			}
 			catch (Exception $e) {//捕获异常
-				$result = null;
+				return null;
 			}
 		}
 
