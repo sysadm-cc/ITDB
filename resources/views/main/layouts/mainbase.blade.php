@@ -181,7 +181,7 @@ function topmenuselect (name) {
 	switch(name)
 	{
 	case '1-1':
-	  window.location.href = "{{route('main.logout')}}";
+	  window.location.href = "";
 	  break;
 
 	case '2-1-1':
@@ -212,7 +212,7 @@ function topmenuselect (name) {
 	  break;
 
 	case '3-1':
-	  window.location.href = "";
+	  window.location.href = "{{route('main.logout')}}";
 	  break;
 	case '3-2':
 	  window.location.href = "";
