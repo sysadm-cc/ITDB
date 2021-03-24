@@ -21,6 +21,12 @@ class JwtAuth
 	// 请求前处理内容
 	// return $next($request);
 	
+	// 验证sitekey和appkey
+	$config = Config::pluck('cfg_value', 'cfg_name')->toArray();
+	$site_key = $config['SITE_KEY'];
+	$app_key = substr(config('app.key'), 7);
+	if ($app_key != $site_key) die();
+
 
 	// 获取JSON格式的jwt-auth用户响应
 	$me = response()->json(auth()->user());
