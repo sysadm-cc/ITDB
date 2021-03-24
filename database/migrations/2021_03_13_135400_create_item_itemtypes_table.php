@@ -15,7 +15,7 @@ class CreateItemItemtypesTable extends Migration
     {
         Schema::create('item_itemtypes', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->text('typedesc')->comment('类型描述');
+            $table->string('typedesc')->comment('类型描述');
             $table->boolean('hassoftware')->default(false)->comment('是否可安装软件');
             $table->timestamps();
             $table->softDeletes();

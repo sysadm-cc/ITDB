@@ -5,14 +5,14 @@ namespace App\Models\Item;
 use Illuminate\Database\Eloquent\Model;
 // use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Item_statustypes extends Model
+class Item_itemtypes extends Model
 {
     // use SoftDeletes;
 
     // protected $dates = ['deleted_at'];
 
 	protected $fillable = [
-        'id', 'statusdesc',
+        'id', 'typedesc', 'hassoftware',
     ];
 
     /**
