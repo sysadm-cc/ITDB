@@ -18,7 +18,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Cache;
 use Ramsey\Uuid\Uuid;
 
-class ItemController extends Controller
+class ItemStatustypesController extends Controller
 {
 	/**
 	 * 显示页面 statustypes

@@ -11,25 +11,45 @@
 |
 */
 
-// Item路由
+// Item itemstypes 路由
 // Route::group(['prefix'=>'renshi', 'namespace'=>'Admin', 'middleware'=>['jwtauth','permission:permission_admin_permission|permission_super_admin']], function() {
 Route::group(['prefix'=>'item', 'namespace'=>'Item', 'middleware'=>['jwtauth']], function() {
 
-	// 111111111111111
+	// 显示 Itemstypes 页面
+	Route::get('itemItemstypes', 'ItemItemstypesController@itemStatustypes')->name('item.itemstypes');
+
+	// Itemstypes gets列表
+	Route::get('itemItemstypesGets', 'ItemItemstypesController@itemStatustypesGets')->name('item.itemstypesgets');
+
+	// Itemstypes Update
+	Route::post('itemItemstypesUpdate', 'ItemItemstypesController@itemStatustypesUpdate')->name('item.itemstypesupdate');
+
+	// Itemstypes Delete
+	Route::post('itemItemstypesDelete', 'ItemItemstypesController@itemStatustypesDelete')->name('item.itemstypesdelete');
+
+	// Itemstypes Create
+	Route::post('itemItemstypesCreate', 'ItemItemstypesController@itemStatustypesCreate')->name('item.itemstypescreate');
+
+});
+
+// Item statustypes 路由
+// Route::group(['prefix'=>'renshi', 'namespace'=>'Admin', 'middleware'=>['jwtauth','permission:permission_admin_permission|permission_super_admin']], function() {
+Route::group(['prefix'=>'item', 'namespace'=>'Item', 'middleware'=>['jwtauth']], function() {
+
 	// 显示 Statustypes 页面
-	Route::get('itemStatustypes', 'ItemController@itemStatustypes')->name('item.statustypes');
+	Route::get('itemStatustypes', 'ItemStatustypesController@itemStatustypes')->name('item.statustypes');
 
 	// Statustypes gets列表
-	Route::get('itemStatustypesGets', 'ItemController@itemStatustypesGets')->name('item.statustypesgets');
+	Route::get('itemStatustypesGets', 'ItemStatustypesController@itemStatustypesGets')->name('item.statustypesgets');
 
 	// Statustypes Update
-	Route::post('itemStatustypesUpdate', 'ItemController@itemStatustypesUpdate')->name('item.statustypesupdate');
+	Route::post('itemStatustypesUpdate', 'ItemStatustypesController@itemStatustypesUpdate')->name('item.statustypesupdate');
 
 	// Statustypes Delete
-	Route::post('itemStatustypesDelete', 'ItemController@itemStatustypesDelete')->name('item.statustypesdelete');
+	Route::post('itemStatustypesDelete', 'ItemStatustypesController@itemStatustypesDelete')->name('item.statustypesdelete');
 
 	// Statustypes Create
-	Route::post('itemStatustypesCreate', 'ItemController@itemStatustypesCreate')->name('item.statustypescreate');
+	Route::post('itemStatustypesCreate', 'ItemStatustypesController@itemStatustypesCreate')->name('item.statustypescreate');
 
 });
 
