@@ -117,6 +117,7 @@ class ItemStatustypesController extends Controller
 		]);
 
 		$result = 1;
+		Cache::flush();
 	}
 	catch (\Exception $e) {
 		// echo 'Message: ' .$e->getMessage();
@@ -126,7 +127,7 @@ class ItemStatustypesController extends Controller
 	}
 
 	DB::commit();
-	Cache::flush();
+	// Cache::flush();
 	return $result;
 	}
 
@@ -165,6 +166,7 @@ class ItemStatustypesController extends Controller
 			$result = Item_statustypes::create([
 				'statusdesc' => $statusdesc,
 			]);
+			Cache::flush();
 		}
 		catch (\Exception $e) {
 			// echo 'Message: ' .$e->getMessage();

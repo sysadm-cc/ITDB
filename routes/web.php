@@ -16,19 +16,19 @@
 Route::group(['prefix'=>'item', 'namespace'=>'Item', 'middleware'=>['jwtauth']], function() {
 
 	// 显示 Itemstypes 页面
-	Route::get('itemItemstypes', 'ItemItemstypesController@itemStatustypes')->name('item.itemstypes');
+	Route::get('itemItemtypes', 'ItemItemtypesController@itemItemtypes')->name('item.itemtypes');
 
 	// Itemstypes gets列表
-	Route::get('itemItemstypesGets', 'ItemItemstypesController@itemStatustypesGets')->name('item.itemstypesgets');
+	Route::get('itemItemtypesGets', 'ItemItemtypesController@itemItemtypesGets')->name('item.itemtypesgets');
 
 	// Itemstypes Update
-	Route::post('itemItemstypesUpdate', 'ItemItemstypesController@itemStatustypesUpdate')->name('item.itemstypesupdate');
+	Route::post('itemItemtypesUpdate', 'ItemItemtypesController@itemItemtypesUpdate')->name('item.itemtypesupdate');
 
 	// Itemstypes Delete
-	Route::post('itemItemstypesDelete', 'ItemItemstypesController@itemStatustypesDelete')->name('item.itemstypesdelete');
+	Route::post('itemItemtypesDelete', 'ItemItemtypesController@itemItemtypesDelete')->name('item.itemtypesdelete');
 
 	// Itemstypes Create
-	Route::post('itemItemstypesCreate', 'ItemItemstypesController@itemStatustypesCreate')->name('item.itemstypescreate');
+	Route::post('itemItemtypesCreate', 'ItemItemtypesController@itemItemtypesCreate')->name('item.itemtypescreate');
 
 });
 

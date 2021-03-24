@@ -417,7 +417,7 @@ var vm_app = new Vue({
 				name: '添加',	url: '#', detail: '添加硬件信息',
 			},
 			{
-				name: '项目类型',	url: '#', detail: '查看/修改项目类型',
+				name: '项目类型',	url: "{{ route('item.itemtypes') }}", detail: '查看/修改项目类型',
 			},
 			{
 				name: '状态类型',	url: "{{ route('item.statustypes') }}", detail: '查看/修改状态类型',

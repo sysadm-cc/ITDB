@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 
 use App\Models\Admin\Config;
 use App\Models\Admin\User;
-use App\Models\Item\Item_statustypes;
+use App\Models\Item\Item_itemtypes;
 
 use DB;
 use Mail;
@@ -18,15 +18,15 @@ use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Cache;
 use Ramsey\Uuid\Uuid;
 
-class ItemStatustypesController extends Controller
+class ItemItemtypesController extends Controller
 {
 	/**
-	 * 显示页面 statustypes
+	 * 显示页面 itemtypes
 	 *
 	 * @param  int  $id
 	 * @return \Illuminate\Http\Response
 	 */
-	public function itemStatustypes()
+	public function itemItemtypes()
 	{
 	// 获取JSON格式的jwt-auth用户响应
 	$me = response()->json(auth()->user());
@@ -38,8 +38,8 @@ class ItemStatustypesController extends Controller
 	// 获取系统配置
 	$config = Config::pluck('cfg_value', 'cfg_name')->toArray();
 
-	// 获取 statustypes 信息
-	// $info_todo = Item_statustypes::select('id', 'statusdesc', 'created_at', 'updated_at', 'deleted_at')
+	// 获取 itemtypes 信息
+	// $info_todo = Item_itemtypes::select('id', 'statusdesc', 'created_at', 'updated_at', 'deleted_at')
 	// 	// ->where('uid_of_auditor', $user['uid'])
 	// 	// ->whereBetween('status', [1, 98])
 	// 	// ->where('archived', false)
@@ -49,17 +49,17 @@ class ItemStatustypesController extends Controller
 	$info_todo = [];
 
 	$share = compact('config', 'user', 'info_todo');
-	return view('item.statustypes', $share);
+	return view('item.itemtypes', $share);
 	}
 
 
 	/**
-	 * 读取记录 statustypes
+	 * 读取记录 itemtypes
 	 *
 	 * @param  int  $id
 	 * @return \Illuminate\Http\Response
 	 */
-	public function itemStatustypesGets(Request $request)
+	public function itemItemtypesGets(Request $request)
 	{
 	if (! $request->ajax()) return null;
 
@@ -82,7 +82,7 @@ class ItemStatustypesController extends Controller
 	if (Cache::has($fullUrl)) {
 		$result = Cache::get($fullUrl);    //直接读取cache
 	} else {                                   //如果cache里面没有
-		$result = Item_statustypes::select('id', 'statusdesc', 'created_at', 'updated_at', 'deleted_at')
+		$result = Item_itemtypes::select('id', 'typedesc', 'hassoftware', 'created_at', 'updated_at', 'deleted_at')
 			->limit(1000)
 			->orderBy('created_at', 'asc')
 			->paginate($perPage, ['*'], 'page', $page);
@@ -95,28 +95,29 @@ class ItemStatustypesController extends Controller
 
 	
 	/**
-	 * 更新 statustypes
+	 * 更新 itemtypes
 	 *
 	 * @param  int  $id
 	 * @return \Illuminate\Http\Response
 	 */
-	public function itemStatustypesUpdate(Request $request)
+	public function itemItemtypesUpdate(Request $request)
 	{
 	if (! $request->isMethod('post') || ! $request->ajax()) return null;
 
 	$id = $request->input('id');
-	$statusdesc = $request->input('statusdesc');
+	$typedesc = $request->input('typedesc');
 
 	// 写入数据库
 	try	{
 		DB::beginTransaction();
 		
-		$result = Item_statustypes::where('id', $id)
+		$result = Item_itemtypes::where('id', $id)
 		->update([
-			'statusdesc' => $statusdesc,
+			'typedesc' => $typedesc,
 		]);
 
 		$result = 1;
+		Cache::flush();
 	}
 	catch (\Exception $e) {
 		// echo 'Message: ' .$e->getMessage();
@@ -126,45 +127,46 @@ class ItemStatustypesController extends Controller
 	}
 
 	DB::commit();
-	Cache::flush();
+	// Cache::flush();
 	return $result;
 	}
 
 
 	/**
-	 * 删除 statustypes
+	 * 删除 itemtypes
 	 *
 	 * @param  int  $id
 	 * @return \Illuminate\Http\Response
 	 */
-	public function itemStatustypesDelete(Request $request)
+	public function itemItemtypesDelete(Request $request)
 	{
 	if (! $request->isMethod('post') || ! $request->ajax())  return false;
 
 	$id = [$request->input('id')];
-	$result = Item_statustypes::whereIn('id', $id)->delete();
+	$result = Item_itemtypes::whereIn('id', $id)->delete();
 	Cache::flush();
 	return $result;
 	}
 
 
     /**
-     * 新建 statustypes
+     * 新建 itemtypes
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function itemStatustypesCreate(Request $request)
+    public function itemItemtypesCreate(Request $request)
     {
 		if (! $request->isMethod('post') || ! $request->ajax()) return false;
 
 		// $nowtime = date("Y-m-d H:i:s",time());
-		$statusdesc = $request->input('statusdesc');
+		$typedesc = $request->input('typedesc');
 		
 		try	{
-			$result = Item_statustypes::create([
-				'statusdesc' => $statusdesc,
+			$result = Item_itemtypes::create([
+				'typedesc' => $typedesc,
 			]);
+			Cache::flush();
 		}
 		catch (\Exception $e) {
 			// echo 'Message: ' .$e->getMessage();

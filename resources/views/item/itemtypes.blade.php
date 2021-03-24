@@ -21,8 +21,8 @@
 <i-row :gutter="16">
 	<i-col span="4">
 
-	<i-input v-model="statustypes_add_statusdesc" size="large">
-        <i-button slot="append" icon="md-add" @click="statustypes_add()"></i-button>
+	<i-input v-model="titemtypes_add_typedesc" size="large">
+        <i-button slot="append" icon="md-add" @click="itemtypes_add()"></i-button>
     </i-input>
 
 	<i-col span="20">
@@ -94,7 +94,7 @@ var vm_app = new Vue({
 		page_last: 1,
 
 		//新增
-		statustypes_add_statusdesc: '',
+		titemtypes_add_typedesc: '',
 
 
 
@@ -245,8 +245,8 @@ var vm_app = new Vue({
 				}
 			},
 			{
-				title: '状态描述',
-				key: 'statusdesc',
+				title: '项目描述',
+				key: 'typedesc',
 				width: 180,
 				render: (h, params) => {
 					
@@ -256,20 +256,33 @@ var vm_app = new Vue({
 							// 	color: '#ff9900'
 							// },
 							props: {
-								value: params.row.statusdesc,
+								value: params.row.typedesc,
 								size: 'small',
 							},
 							'on': {
 								'on-blur':() => {
 									// alert(params.row.id);
 									// alert(event.target.value);
-									if (params.row.statusdesc != event.target.value) {
-										vm_app.statustypes_update(params.row.id, event.target.value)
+									if (params.row.typedesc != event.target.value) {
+										vm_app.itemtypes_update(params.row.id, event.target.value)
 									}
 								}
 							},
 						})
 					])
+				}
+			},
+			{
+				title: '可安装软件',
+				key: 'hassoftware',
+				align: 'center',
+				width: 100,
+				render: (h, params) => {
+					if (params.row.hassoftware == true) {
+						return h('div', {}, '是')
+					} else {
+						return h('div', {}, '否')
+					}
 				}
 			},
 			{
@@ -291,7 +304,7 @@ var vm_app = new Vue({
 				align: 'center',
 				width: 100,
 				render: (h, params) => {
-					if (params.row.id > 6) {
+					// if (params.row.id > 6) {
 						return h('div', [
 							h('Button', {
 								props: {
@@ -303,14 +316,14 @@ var vm_app = new Vue({
 								},
 								on: {
 									click: () => {
-										vm_app.statustypes_delete(params.row)
+										vm_app.itemtypes_delete(params.row)
 									}
 								}
 							}, '删除'),
 							
 
 						]);
-					}
+					// }
 				},
 				// fixed: 'right'
 			}
@@ -444,7 +457,7 @@ var vm_app = new Vue({
 		},
 
 		//
-		statustypesgets (page, last_page){
+		itemtypesgets (page, last_page){
 			var _this = this;
 			
 			if (page > last_page) {
@@ -455,7 +468,7 @@ var vm_app = new Vue({
 			
 
 			_this.loadingbarstart();
-			var url = "{{ route('item.statustypesgets') }}";
+			var url = "{{ route('item.itemtypesgets') }}";
 			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
 			axios.get(url,{
 				params: {
@@ -494,26 +507,26 @@ var vm_app = new Vue({
 		
 		// 切换当前页
 		oncurrentpagechange (currentpage) {
-			this.statustypesgets(currentpage, this.page_last);
+			this.itemtypesgets(currentpage, this.page_last);
 		},
 
 
 		// 更新
-		statustypes_update (id, statusdesc) {
+		itemtypes_update (id, typedesc) {
 			var _this = this;
 			
 			var id = id;
-			var statusdesc = statusdesc;
-			// _this.statustypes_edit_id = id;
-			// _this.statustypes_edit_statusdesc = row.statustypes_edit_statusdesc;
+			var typedesc = typedesc;
+			// _this.itemtypes_edit_id = id;
+			// _this.itemtypes_edit_statusdesc = row.itemtypes_edit_statusdesc;
 			// _this.jiaban_edit_created_at = row.created_at;
 			// _this.jiaban_edit_updated_at = row.updated_at;
 
-			var url = "{{ route('item.statustypesupdate') }}";
+			var url = "{{ route('item.itemtypesupdate') }}";
 			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
 			axios.post(url,{
 				id: id,
-				statusdesc: statusdesc
+				typedesc: typedesc
 			})
 			.then(function (response) {
                 // alert(index);
@@ -526,7 +539,7 @@ var vm_app = new Vue({
 				}
 				
 				if (response.data) {
-					_this.statustypesgets(_this.page_current, _this.page_last);
+					_this.itemtypesgets(_this.page_current, _this.page_last);
                     // _this.$Message.success('保存成功！');
 					_this.success(false, '成功', '保存成功！');
                 } else {
@@ -547,11 +560,11 @@ var vm_app = new Vue({
 
 
 		// 删除
-		statustypes_delete (row) {
+		itemtypes_delete (row) {
 			var _this = this;
 			var id = row.id;
 			if (id == undefined) return false;
-			var url = "{{ route('item.statustypesdelete') }}";
+			var url = "{{ route('item.itemtypesdelete') }}";
 			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
 			axios.post(url, {
 				id: id
@@ -563,7 +576,7 @@ var vm_app = new Vue({
 				}
 				
 				if (response.data) {
-					_this.statustypesgets(_this.page_current, _this.page_last);
+					_this.itemtypesgets(_this.page_current, _this.page_last);
 					_this.success(false, '成功', '删除成功！');
 				} else {
 					_this.error(false, '失败', '删除失败！');
@@ -576,20 +589,20 @@ var vm_app = new Vue({
 
 
 		//新增
-		statustypes_add () {
+		itemtypes_add () {
 			var _this = this;
 
-			var statusdesc = _this.statustypes_add_statusdesc;
+			var typedesc = _this.titemtypes_add_typedesc;
 
-			if (statusdesc == '' || statusdesc == undefined) {
+			if (typedesc == '' || typedesc == undefined) {
 				// _this.error(false, '失败', '用户ID为空或不正确！');
 				return false;
 			}
 
-			var url = "{{ route('item.statustypescreate') }}";
+			var url = "{{ route('item.itemtypescreate') }}";
 			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
 			axios.post(url, {
-				statusdesc: statusdesc,
+				typedesc: typedesc,
 			})
 			.then(function (response) {
 				// console.log(response.data);
@@ -601,8 +614,8 @@ var vm_app = new Vue({
 				}
 				
  				if (response.data) {
-					_this.statustypes_add_statusdesc = '';
-					_this.statustypesgets(_this.page_current, _this.page_last);
+					_this.titemtypes_add_typedesc = '';
+					_this.itemtypesgets(_this.page_current, _this.page_last);
 					_this.success(false, '成功', '新建成功！');
 				} else {
 					_this.error(false, '失败', '新建失败！');
@@ -627,7 +640,7 @@ var vm_app = new Vue({
 		_this.current_subnav = '项目分类';
 
 		// // 显示所有
-		_this.statustypesgets(1, 1); // page: 1, last_page: 1
+		_this.itemtypesgets(1, 1); // page: 1, last_page: 1
 		// _this.loadapplicantgroup();
 
 		// GetCurrentDatetime('getcurrentdatetime');
