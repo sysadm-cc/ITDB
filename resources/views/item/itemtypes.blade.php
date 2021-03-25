@@ -32,7 +32,7 @@
 
 	<i-col span="6">
 		&nbsp;
-		<i-switch>
+		<i-switch v-model="titemtypes_add_hassoftware">
 			<span slot="open">是</span>
 			<span slot="close">否</span>
 		</i-switch>
@@ -108,6 +108,7 @@ var vm_app = new Vue({
 
 		//新增
 		titemtypes_add_typedesc: '',
+		titemtypes_add_hassoftware: false,
 
 
 
@@ -631,8 +632,10 @@ var vm_app = new Vue({
 			var _this = this;
 
 			var typedesc = _this.titemtypes_add_typedesc;
+			var hassoftware = _this.titemtypes_add_hassoftware;
 
 			if (typedesc == '' || typedesc == undefined) {
+					// console.log(hassoftware);
 				// _this.error(false, '失败', '用户ID为空或不正确！');
 				return false;
 			}
@@ -641,6 +644,7 @@ var vm_app = new Vue({
 			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
 			axios.post(url, {
 				typedesc: typedesc,
+				hassoftware: hassoftware,
 			})
 			.then(function (response) {
 				// console.log(response.data);

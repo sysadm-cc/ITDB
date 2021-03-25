@@ -199,10 +199,12 @@ class ItemItemtypesController extends Controller
 
 		// $nowtime = date("Y-m-d H:i:s",time());
 		$typedesc = $request->input('typedesc');
+		$hassoftware = $request->input('hassoftware');
 		
 		try	{
 			$result = Item_itemtypes::create([
 				'typedesc' => $typedesc,
+				'hassoftware' => $hassoftware,
 			]);
 			Cache::flush();
 		}
