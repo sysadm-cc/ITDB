@@ -95,12 +95,12 @@ class ItemItemtypesController extends Controller
 
 	
 	/**
-	 * 更新 itemtypes
+	 * 更新 itemtypes typedesc
 	 *
 	 * @param  int  $id
 	 * @return \Illuminate\Http\Response
 	 */
-	public function itemItemtypesUpdate(Request $request)
+	public function itemItemtypesUpdateTypedesc(Request $request)
 	{
 	if (! $request->isMethod('post') || ! $request->ajax()) return null;
 
@@ -114,6 +114,44 @@ class ItemItemtypesController extends Controller
 		$result = Item_itemtypes::where('id', $id)
 		->update([
 			'typedesc' => $typedesc,
+		]);
+
+		$result = 1;
+		Cache::flush();
+	}
+	catch (\Exception $e) {
+		// echo 'Message: ' .$e->getMessage();
+		DB::rollBack();
+		// dd('Message: ' .$e->getMessage());
+		return 0;
+	}
+
+	DB::commit();
+	// Cache::flush();
+	return $result;
+	}
+	
+
+	/**
+	 * 更新 itemtypes hassoftware
+	 *
+	 * @param  int  $id
+	 * @return \Illuminate\Http\Response
+	 */
+	public function itemItemtypesUpdateHassoftware(Request $request)
+	{
+	if (! $request->isMethod('post') || ! $request->ajax()) return null;
+
+	$id = $request->input('id');
+	$hassoftware = $request->input('hassoftware');
+
+	// 写入数据库
+	try	{
+		DB::beginTransaction();
+		
+		$result = Item_itemtypes::where('id', $id)
+		->update([
+			'hassoftware' => $hassoftware,
 		]);
 
 		$result = 1;

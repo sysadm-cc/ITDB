@@ -19,17 +19,17 @@
 <Divider orientation="left">状态分类</Divider>
 
 <i-row :gutter="16">
-	<i-col span="4">
 
-	<i-input v-model="statustypes_add_statusdesc" size="large">
-        <i-button slot="append" icon="md-add" @click="statustypes_add()"></i-button>
-    </i-input>
+	<i-col span="4">
+		<i-input v-model="statustypes_add_statusdesc">
+			<i-button slot="append" icon="md-add" @click="statustypes_add()"></i-button>
+		</i-input>
+	</i-col>
 
 	<i-col span="20">
 	&nbsp;
 	</i-col>
 
-	</i-col>
 </i-row>
 
 &nbsp;

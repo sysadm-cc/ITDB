@@ -19,17 +19,30 @@
 <Divider orientation="left">项目分类</Divider>
 
 <i-row :gutter="16">
+
 	<i-col span="4">
+		<i-input v-model="titemtypes_add_typedesc" >
+			<i-button slot="append" icon="md-add" @click="itemtypes_add()"></i-button>
+		</i-input>
+	</i-col>
 
-	<i-input v-model="titemtypes_add_typedesc" size="large">
-        <i-button slot="append" icon="md-add" @click="itemtypes_add()"></i-button>
-    </i-input>
-
-	<i-col span="20">
+	<i-col span="1">
 	&nbsp;
 	</i-col>
 
+	<i-col span="6">
+		&nbsp;
+		<i-switch>
+			<span slot="open">是</span>
+			<span slot="close">否</span>
+		</i-switch>
+		是否可以安装软件？
 	</i-col>
+
+	<i-col span="13">
+	&nbsp;
+	</i-col>
+
 </i-row>
 
 &nbsp;
@@ -264,7 +277,7 @@ var vm_app = new Vue({
 									// alert(params.row.id);
 									// alert(event.target.value);
 									if (params.row.typedesc != event.target.value) {
-										vm_app.itemtypes_update(params.row.id, event.target.value)
+										vm_app.itemtypes_update_typedesc(params.row.id, event.target.value)
 									}
 								}
 							},
@@ -277,12 +290,37 @@ var vm_app = new Vue({
 				key: 'hassoftware',
 				align: 'center',
 				width: 100,
+				// render: (h, params) => {
+				// 	if (params.row.hassoftware == true) {
+				// 		return h('div', {}, '是')
+				// 	} else {
+				// 		return h('div', {}, '否')
+				// 	}
+				// }
 				render: (h, params) => {
-					if (params.row.hassoftware == true) {
-						return h('div', {}, '是')
-					} else {
-						return h('div', {}, '否')
-					}
+
+					return h('div', [
+						// params.row.deleted_at.toLocaleString()
+						// params.row.deleted_at ? '禁用' : '启用'
+						
+						h('i-switch', {
+							props: {
+								type: 'primary',
+								size: 'small',
+								value: params.row.hassoftware ? true : false
+							},
+							style: {
+								marginRight: '5px'
+							},
+							on: {
+								'on-change': (value) => {//触发事件是on-change,用双引号括起来，
+									//参数value是回调值，并没有使用到
+									vm_app.itemtypes_update_hassoftware(params.row.id, value) //params.index是拿到table的行序列，可以取到对应的表格值
+								}
+							}
+						}, 'Edit')
+						
+					]);
 				}
 			},
 			{
@@ -304,7 +342,7 @@ var vm_app = new Vue({
 				align: 'center',
 				width: 100,
 				render: (h, params) => {
-					// if (params.row.id > 6) {
+					if (params.row.id > 3) {
 						return h('div', [
 							h('Button', {
 								props: {
@@ -323,7 +361,7 @@ var vm_app = new Vue({
 							
 
 						]);
-					// }
+					}
 				},
 				// fixed: 'right'
 			}
@@ -511,8 +549,8 @@ var vm_app = new Vue({
 		},
 
 
-		// 更新
-		itemtypes_update (id, typedesc) {
+		// 更新 typedesc
+		itemtypes_update_typedesc (id, typedesc) {
 			var _this = this;
 			
 			var id = id;
@@ -522,7 +560,7 @@ var vm_app = new Vue({
 			// _this.jiaban_edit_created_at = row.created_at;
 			// _this.jiaban_edit_updated_at = row.updated_at;
 
-			var url = "{{ route('item.itemtypesupdate') }}";
+			var url = "{{ route('item.itemtypesupdate_typedesc') }}";
 			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
 			axios.post(url,{
 				id: id,
@@ -629,7 +667,49 @@ var vm_app = new Vue({
 		},
 
 		
+		// 更新 hassoftware
+		itemtypes_update_hassoftware (id, hassoftware) {
+			var _this = this;
+			
+			var id = id;
+			var hassoftware = hassoftware;
+// console.log(hassoftware);return false;
 
+			var url = "{{ route('item.itemtypesupdate_hassoftware') }}";
+			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
+			axios.post(url,{
+				id: id,
+				hassoftware: hassoftware
+			})
+			.then(function (response) {
+                // alert(index);
+				// console.log(response.data);
+				// return false;
+
+				if (response.data['jwt'] == 'logout') {
+					_this.alert_logout();
+					return false;
+				}
+				
+				if (response.data) {
+					_this.itemtypesgets(_this.page_current, _this.page_last);
+                    // _this.$Message.success('保存成功！');
+					_this.success(false, '成功', '保存成功！');
+                } else {
+					// _this.$Message.warning('保存失败！');
+					_this.warning(false, '失败', '保存失败！');
+				}
+			})
+			.catch(function (error) {
+				_this.error(false, 'Error', error);
+			})
+
+			setTimeout(() => {
+				_this.modal_jiaban_edit = true;
+			}, 500);
+
+			
+		},
 		
 
 
