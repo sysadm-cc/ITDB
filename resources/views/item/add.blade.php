@@ -87,43 +87,43 @@
 				<Divider size="default" orientation="left">使用</Divider>
 				<i-form :label-width="100">
 					<Form-Item label="* 状态" style="margin-bottom:0px">
-						<i-select v-model.lazy="jiaban_add_applicantgroup" size="small" placeholder="选择">
-							<i-option v-for="item in applicantgroup_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+						<i-select v-model.lazy="add_status_select" size="small" placeholder="选择">
+							<i-option v-for="item in add_status_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
 						</i-select>
 					</Form-Item>
 					<Form-Item label="* 使用者" style="margin-bottom:0px">
-						<i-select v-model.lazy="jiaban_add_applicantgroup" size="small" placeholder="选择">
-							<i-option v-for="item in applicantgroup_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+						<i-select v-model.lazy="add_user_select" size="small" placeholder="选择">
+							<i-option v-for="item in add_user_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
 						</i-select>
 					</Form-Item>
 					<Form-Item label="位置场所" style="margin-bottom:0px">
-						<i-select v-model.lazy="jiaban_add_applicantgroup" size="small" placeholder="选择">
-							<i-option v-for="item in applicantgroup_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+						<i-select v-model.lazy="add_location_select" size="small" placeholder="选择">
+							<i-option v-for="item in add_location_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
 						</i-select>
 					</Form-Item>
 					<Form-Item label="区域/房间" style="margin-bottom:0px">
-						<i-select v-model.lazy="jiaban_add_applicantgroup" size="small" placeholder="选择">
-							<i-option v-for="item in applicantgroup_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+						<i-select v-model.lazy="add_area_select" size="small" placeholder="选择">
+							<i-option v-for="item in add_area_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
 						</i-select>
 					</Form-Item>
 					<Form-Item label="机架" style="margin-bottom:0px">
-						<i-select v-model.lazy="jiaban_add_applicantgroup" size="small" placeholder="选择">
-							<i-option v-for="item in applicantgroup_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+						<i-select v-model.lazy="add_rack_select" size="small" placeholder="选择">
+							<i-option v-for="item in add_rack_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
 						</i-select>
 					</Form-Item>
 					<Form-Item label="机架中位置" style="margin-bottom:0px">
-						<i-select v-model.lazy="jiaban_add_applicantgroup" size="small" placeholder="">
-							<i-option v-for="item in applicantgroup_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+						<i-select v-model.lazy="add_rackposition_select1" size="small" placeholder="">
+							<i-option v-for="item in add_rackposition_options1" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
 						</i-select>
-						<i-select v-model.lazy="jiaban_add_applicantgroup" size="small" placeholder="FMB - 前中后">
-							<i-option v-for="item in applicantgroup_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+						<i-select v-model.lazy="add_rackposition_select2" size="small" placeholder="FMB - 前中后">
+							<i-option v-for="item in add_rackposition_options2" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
 						</i-select>
 					</Form-Item>
 					<Form-Item label="功能" style="margin-bottom:0px">
-						<i-input v-model.lazy="jiaban_add_applicantgroup" size="small"></i-input>
+						<i-input v-model.lazy="add_function" size="small"></i-input>
 					</Form-Item>
 					<Form-Item label="维护说明" style="margin-bottom:0px">
-						<i-input v-model.lazy="jiaban_add_applicantgroup" size="small" type="textarea"></i-input>
+						<i-input v-model.lazy="add_maintenanceinstructions" size="small" type="textarea"></i-input>
 					</Form-Item>
 
 				</i-form>
@@ -138,13 +138,13 @@
 				<Divider orientation="left">保修</Divider>
 				<i-form :label-width="100">
 					<Form-Item label="购买日期" style="margin-bottom:0px">
-						<Date-Picker type="date" placeholder="选择日期" size="small"></Date-Picker>
+						<Date-Picker v-model.lazy="add_dateofpurchase" type="date" placeholder="选择日期" size="small"></Date-Picker>
 					</Form-Item>
 					<Form-Item label="保修月份" style="margin-bottom:0px">
-						<i-input v-model.lazy="jiaban_add_applicantgroup" size="small"></i-input>
+						<i-input v-model.lazy="add_warrantymonths" size="small"></i-input>
 					</Form-Item>
 					<Form-Item label="保修信息" style="margin-bottom:0px">
-						<i-input v-model.lazy="jiaban_add_applicantgroup" size="small"></i-input>
+						<i-input v-model.lazy="add_warrantyinfo" size="small"></i-input>
 					</Form-Item>
 
 				</i-form>
@@ -154,22 +154,22 @@
 				<Divider orientation="left">配件</Divider>
 				<i-form :label-width="100">
 					<Form-Item label="硬盘" style="margin-bottom:0px">
-						<i-input v-model.lazy="jiaban_add_applicantgroup" size="small"></i-input>
+						<i-input v-model.lazy="add_harddisk" size="small"></i-input>
 					</Form-Item>
 					<Form-Item label="内存" style="margin-bottom:0px">
-						<i-input v-model.lazy="jiaban_add_applicantgroup" size="small"></i-input>
+						<i-input v-model.lazy="add_ram" size="small"></i-input>
 					</Form-Item>
 					<Form-Item label="CPU型号" style="margin-bottom:0px">
-						<i-input v-model.lazy="jiaban_add_applicantgroup" size="small"></i-input>
+						<i-input v-model.lazy="add_cpumodel" size="small"></i-input>
 					</Form-Item>
 					<Form-Item label="CPU数量" style="margin-bottom:0px">
-						<i-select v-model.lazy="jiaban_add_applicantgroup" size="small" placeholder="FMB - 前中后">
-							<i-option v-for="item in applicantgroup_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+						<i-select v-model.lazy="add_cpus_select" size="small" placeholder="">
+							<i-option v-for="item in add_cpus_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
 						</i-select>
 					</Form-Item>
 					<Form-Item label="CPU内核数" style="margin-bottom:0px">
-						<i-select v-model.lazy="jiaban_add_applicantgroup" size="small" placeholder="FMB - 前中后">
-							<i-option v-for="item in applicantgroup_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+						<i-select v-model.lazy="add_cpucores_select" size="small" placeholder="">
+							<i-option v-for="item in add_cpucores_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
 						</i-select>
 					</Form-Item>
 
@@ -187,34 +187,34 @@
 
 				<i-form :label-width="100">
 					<Form-Item label="域名" style="margin-bottom:0px">
-						<i-input v-model.lazy="jiaban_add_applicantgroup" size="small"></i-input>
+						<i-input v-model.lazy="add_dns" size="small"></i-input>
 					</Form-Item>
 					<Form-Item label="MAC地址" style="margin-bottom:0px">
-						<i-input v-model.lazy="jiaban_add_applicantgroup" size="small"></i-input>
+						<i-input v-model.lazy="add_mac" size="small"></i-input>
 					</Form-Item>
 					<Form-Item label="IPV4" style="margin-bottom:0px">
-						<i-input v-model.lazy="jiaban_add_applicantgroup" size="small"></i-input>
+						<i-input v-model.lazy="add_ipv4" size="small"></i-input>
 					</Form-Item>
 					<Form-Item label="IPV6" style="margin-bottom:0px">
-						<i-input v-model.lazy="jiaban_add_applicantgroup" size="small"></i-input>
+						<i-input v-model.lazy="add_ipv6" size="small"></i-input>
 					</Form-Item>
 					<Form-Item label="远程管理IP" style="margin-bottom:0px">
-						<i-input v-model.lazy="jiaban_add_applicantgroup" size="small"></i-input>
+						<i-input v-model.lazy="add_remoteadminip" size="small"></i-input>
 					</Form-Item>
 					<Form-Item label="面板端口" style="margin-bottom:0px">
-						<i-input v-model.lazy="jiaban_add_applicantgroup" size="small"></i-input>
+						<i-input v-model.lazy="add_panelport" size="small"></i-input>
 					</Form-Item>
 					<Form-Item label="交换机" style="margin-bottom:0px">
-						<i-select v-model.lazy="jiaban_add_applicantgroup" size="small" placeholder="FMB - 前中后">
-							<i-option v-for="item in applicantgroup_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+						<i-select v-model.lazy="add_switch_select" size="small" placeholder="">
+							<i-option v-for="item in add_switch_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
 						</i-select>
 					</Form-Item>
 					<Form-Item label="交换机端口" style="margin-bottom:0px">
-						<i-input v-model.lazy="jiaban_add_applicantgroup" size="small"></i-input>
+						<i-input v-model.lazy="add_switchport" size="small"></i-input>
 					</Form-Item>
 					<Form-Item label="网络端口数" style="margin-bottom:0px">
-						<i-select v-model.lazy="jiaban_add_applicantgroup" size="small" placeholder="FMB - 前中后">
-							<i-option v-for="item in applicantgroup_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+						<i-select v-model.lazy="add_networkports_select" size="small" placeholder="">
+							<i-option v-for="item in add_networkports_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
 						</i-select>
 					</Form-Item>
 
@@ -226,10 +226,10 @@
 
 				<i-form :label-width="100">
 					<Form-Item label="供货商/区域" style="margin-bottom:0px">
-						<i-input v-model.lazy="jiaban_add_applicantgroup" size="small"></i-input>
+						<i-input v-model.lazy="add_shop" size="small"></i-input>
 					</Form-Item>
 					<Form-Item label="购买价格" style="margin-bottom:0px">
-						<i-input v-model.lazy="jiaban_add_applicantgroup" size="small"></i-input>
+						<i-input v-model.lazy="add_purchaceprice" size="small"></i-input>
 					</Form-Item>
 
 				</i-form>
@@ -310,7 +310,7 @@ var vm_app = new Vue({
 		// 添加禁用
 		add_add_disabled: false,
 
-		// 参数变量
+		// 参数变量 - 属性
 		add_itemtype_select: '',
 		add_itemtype_options: [
 			{label: 'fax', value: 1},
@@ -336,8 +336,98 @@ var vm_app = new Vue({
 		add_comments: '',
 		add_label: '',
 
+		// 参数变量 - 使用
+		add_status_select: '',
+		add_status_options: [
+			{label: '使用中', value: 1},
+			{label: 2, value: 2},
+			{label: 3, value: 3},
+		],
+		add_user_select: '',
+		add_user_options: [
+			{label: 'admin', value: 1},
+			{label: 'user', value: 2},
+			{label: 3, value: 3},
+		],
+		add_location_select: '',
+		add_location_options: [
+			{label: '主楼，三楼', value: 1},
+			{label: 'user', value: 2},
+			{label: 3, value: 3},
+		],
+		add_area_select: '',
+		add_area_options: [
+			{label: '6号房间', value: 1},
+			{label: 'user', value: 2},
+			{label: 3, value: 3},
+		],
+		add_rack_select: '',
+		add_rack_options: [
+			{label: '一号机柜', value: 1},
+			{label: 'user', value: 2},
+			{label: 3, value: 3},
+		],
+		add_rackposition_select1: '',
+		add_rackposition_options1: [
+			{label: '1', value: 1},
+			{label: '2', value: 2},
+			{label: 3, value: 3},
+		],
+		add_rackposition_select2: '',
+		add_rackposition_options2: [
+			{label: 'FM-', value: 1},
+			{label: 'F-', value: 2},
+			{label: '-M-', value: 3},
+		],
+		add_function: '',
+		add_maintenanceinstructions: '',
 
+		// 参数变量 - 保修
+		add_dateofpurchase: '',
+		add_warrantymonths: '',
+		add_warrantyinfo: '',
 
+		// 参数变量 - 配件
+		add_harddisk: '',
+		add_ram: '',
+		add_cpumodel: '',
+		add_cpus_select: '',
+		add_cpus_options: [
+			{label: 1, value: 1},
+			{label: 2, value: 2},
+			{label: 3, value: 3},
+		],
+		add_cpucores_select: '',
+		add_cpucores_options: [
+			{label: 1, value: 1},
+			{label: 2, value: 2},
+			{label: 3, value: 3},
+		],
+
+		// 参数变量 - 网络
+		add_dns: '',
+		add_mac: '',
+		add_ipv4: '',
+		add_ipv6: '',
+		add_remoteadminip: '',
+		add_panelport: '',
+		add_switch_select: '',
+		add_switch_options: [
+			{label: 1, value: 1},
+			{label: 2, value: 2},
+			{label: 3, value: 3},
+		],
+		add_switchport: '',
+		add_networkports_select: '',
+		add_networkports_options: [
+			{label: 1, value: 1},
+			{label: 2, value: 2},
+			{label: 3, value: 3},
+		],
+
+		// 参数变量 - 记账
+		add_shop: '',
+		add_purchaceprice: '',
 
 
 
