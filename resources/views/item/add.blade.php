@@ -1,7 +1,7 @@
 @extends('item.layouts.mainbase')
 
 @section('my_title')
-项目添加 - 
+物品添加 - 
 @parent
 @endsection
 
@@ -16,154 +16,246 @@
 
 @section('my_body')
 @parent
-<!-- <Divider orientation="left">项目添加</Divider> -->
+<!-- <Divider orientation="left">物品添加</Divider> -->
 &nbsp;<br>
 
-<i-row :gutter="16">
+<Tabs type="card" v-model="currenttabs">
+	<Tab-pane label="物品数据">
 
-	<i-col span="5">
-		<Divider size="small" orientation="left">属性</Divider>
-		
-		<i-form :label-width="100">
-			<Form-Item label="* 项目类型" style="margin-bottom:0px">
-				<i-select v-model.lazy="jiaban_add_applicantgroup" size="small" placeholder="选择">
-					<i-option v-for="item in applicantgroup_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
-				</i-select>
-			</Form-Item>
-			<Form-Item label="* 是否部件" style="margin-bottom:0px">
-				<i-switch v-model.lazy="titemtypes_add_hassoftware">
-					<span slot="open">是</span>
-					<span slot="close">否</span>
-				</i-switch>
-			</Form-Item>
-			<Form-Item label="* 是否机架式" style="margin-bottom:0px">
-				<i-switch v-model.lazy="titemtypes_add_hassoftware">
-					<span slot="open">是</span>
-					<span slot="close">否</span>
-				</i-switch>
-			</Form-Item>
-			<Form-Item label="* 制造商" style="margin-bottom:0px">
-				<i-select v-model.lazy="jiaban_add_applicantgroup" size="small" placeholder="选择">
-					<i-option v-for="item in applicantgroup_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
-				</i-select>
-			</Form-Item>
-			<Form-Item label="* 型号" style="margin-bottom:0px">
-				<i-input v-model.lazy="jiaban_add_applicantgroup" size="small"></i-input>
-			</Form-Item>
-			<Form-Item label="尺寸(U)" style="margin-bottom:0px">
-				<i-select v-model.lazy="jiaban_add_applicantgroup" size="small" placeholder="选择">
-					<i-option v-for="item in applicantgroup_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
-				</i-select>
-			</Form-Item>
-			<Form-Item label="Service Tag" style="margin-bottom:0px">
-				<i-input v-model.lazy="jiaban_add_applicantgroup" size="small" placeholder="服务编号"></i-input>
-			</Form-Item>
-			<Form-Item label="S/N 1" style="margin-bottom:0px">
-				<i-input v-model.lazy="jiaban_add_applicantgroup" size="small" placeholder="序列号一"></i-input>
-			</Form-Item>
-			<Form-Item label="S/N 2" style="margin-bottom:0px">
-				<i-input v-model.lazy="jiaban_add_applicantgroup" size="small" placeholder="序列号二"></i-input>
-			</Form-Item>
-			<Form-Item label="备注" style="margin-bottom:0px">
-				<i-input v-model.lazy="jiaban_add_applicantgroup" size="small" type="textarea"></i-input>
-			</Form-Item>
-			<Form-Item label="标签" style="margin-bottom:0px">
-				<i-input v-model.lazy="jiaban_add_applicantgroup" size="small"></i-input>
-			</Form-Item>
+		<i-row :gutter="16">
 
-		</i-form>
+			<i-col span="5">
+				<Divider size="default" orientation="left">属性</Divider>
+				
+				<i-form :label-width="100">
+					<Form-Item label="* 项目类型" style="margin-bottom:0px">
+						<i-select v-model.lazy="add_itemtype_select" size="small" placeholder="选择">
+							<i-option v-for="item in add_itemtype_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+						</i-select>
+					</Form-Item>
+					<Form-Item label="* 是否部件" style="margin-bottom:0px">
+						<i-switch v-model.lazy="add_ispart">
+							<span slot="open">是</span>
+							<span slot="close">否</span>
+						</i-switch>
+					</Form-Item>
+					<Form-Item label="* 是否机架式" style="margin-bottom:0px">
+						<i-switch v-model.lazy="add_rackmountable">
+							<span slot="open">是</span>
+							<span slot="close">否</span>
+						</i-switch>
+					</Form-Item>
+					<Form-Item label="* 制造商" style="margin-bottom:0px">
+						<i-select v-model.lazy="add_manufact_select" size="small" placeholder="选择制造商">
+							<i-option v-for="item in add_manufact_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+						</i-select>
+					</Form-Item>
+					<Form-Item label="* 型号" style="margin-bottom:0px">
+						<i-input v-model.lazy="add_model" size="small"></i-input>
+					</Form-Item>
+					<Form-Item label="尺寸(U)" style="margin-bottom:0px">
+						<i-select v-model.lazy="add_size_select" size="small" placeholder="选择">
+							<i-option v-for="item in add_size_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+						</i-select>
+					</Form-Item>
+					<Form-Item label="S/N 1" style="margin-bottom:0px">
+						<i-input v-model.lazy="add_sn1" size="small" placeholder="序列号一"></i-input>
+					</Form-Item>
+					<Form-Item label="S/N 2" style="margin-bottom:0px">
+						<i-input v-model.lazy="add_sn2" size="small" placeholder="序列号二"></i-input>
+					</Form-Item>
+					<Form-Item label="Service Tag" style="margin-bottom:0px">
+						<i-input v-model.lazy="add_servicetag" size="small" placeholder="服务编号"></i-input>
+					</Form-Item>
+					<Form-Item label="备注" style="margin-bottom:0px">
+						<i-input v-model.lazy="add_comments" size="small" type="textarea"></i-input>
+					</Form-Item>
+					<Form-Item label="标签" style="margin-bottom:0px">
+						<i-input v-model.lazy="add_label" size="small"></i-input>
+					</Form-Item>
 
-
-	</i-col>
-
-	<i-col span="1">
-	&nbsp;
-	</i-col>
-
-	<i-col span="5">
-		<Divider size="small" orientation="left">使用</Divider>
-		
-	</i-col>
-
-	<i-col span="1">
-	&nbsp;
-	</i-col>
-
-	<i-col span="5">
-		<Divider size="small" orientation="left">保修</Divider>
-		
-	</i-col>
-
-	<i-col span="1">
-	&nbsp;
-	</i-col>
-
-	<i-col span="5">
-		<Divider size="small" orientation="left">网络</Divider>
-		
-	</i-col>
-
-	<i-col span="1">
-	&nbsp;<br>
-	&nbsp;<br>
-	&nbsp;<br>
-	&nbsp;<br>
-	&nbsp;<br>
-	&nbsp;<br>
-	&nbsp;<br>
-	&nbsp;<br>
-	&nbsp;<br>
-	&nbsp;<br>
-	</i-col>
-
-</i-row>
+				</i-form>
 
 
+			</i-col>
 
-&nbsp;<br><br><br>
-<Divider orientation="left">项目添加</Divider>
+			<i-col span="1">
+			&nbsp;
+			</i-col>
 
-<i-row :gutter="16">
+			<i-col span="5">
+				<Divider size="default" orientation="left">使用</Divider>
+				<i-form :label-width="100">
+					<Form-Item label="* 状态" style="margin-bottom:0px">
+						<i-select v-model.lazy="jiaban_add_applicantgroup" size="small" placeholder="选择">
+							<i-option v-for="item in applicantgroup_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+						</i-select>
+					</Form-Item>
+					<Form-Item label="* 使用者" style="margin-bottom:0px">
+						<i-select v-model.lazy="jiaban_add_applicantgroup" size="small" placeholder="选择">
+							<i-option v-for="item in applicantgroup_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+						</i-select>
+					</Form-Item>
+					<Form-Item label="位置场所" style="margin-bottom:0px">
+						<i-select v-model.lazy="jiaban_add_applicantgroup" size="small" placeholder="选择">
+							<i-option v-for="item in applicantgroup_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+						</i-select>
+					</Form-Item>
+					<Form-Item label="区域/房间" style="margin-bottom:0px">
+						<i-select v-model.lazy="jiaban_add_applicantgroup" size="small" placeholder="选择">
+							<i-option v-for="item in applicantgroup_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+						</i-select>
+					</Form-Item>
+					<Form-Item label="机架" style="margin-bottom:0px">
+						<i-select v-model.lazy="jiaban_add_applicantgroup" size="small" placeholder="选择">
+							<i-option v-for="item in applicantgroup_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+						</i-select>
+					</Form-Item>
+					<Form-Item label="机架中位置" style="margin-bottom:0px">
+						<i-select v-model.lazy="jiaban_add_applicantgroup" size="small" placeholder="">
+							<i-option v-for="item in applicantgroup_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+						</i-select>
+						<i-select v-model.lazy="jiaban_add_applicantgroup" size="small" placeholder="FMB - 前中后">
+							<i-option v-for="item in applicantgroup_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+						</i-select>
+					</Form-Item>
+					<Form-Item label="功能" style="margin-bottom:0px">
+						<i-input v-model.lazy="jiaban_add_applicantgroup" size="small"></i-input>
+					</Form-Item>
+					<Form-Item label="维护说明" style="margin-bottom:0px">
+						<i-input v-model.lazy="jiaban_add_applicantgroup" size="small" type="textarea"></i-input>
+					</Form-Item>
 
-	<i-col span="4">
-		<i-input v-model="titemtypes_add_typedesc" >
-			<i-button slot="append" icon="md-add" @click="itemtypes_add()"></i-button>
-		</i-input>
-	</i-col>
+				</i-form>
+				
+			</i-col>
 
-	<i-col span="1">
-	&nbsp;
-	</i-col>
+			<i-col span="1">
+			&nbsp;
+			</i-col>
 
-	<i-col span="6">
-		&nbsp;
-		<i-switch v-model="titemtypes_add_hassoftware">
-			<span slot="open">是</span>
-			<span slot="close">否</span>
-		</i-switch>
-		是否可以安装软件？
-	</i-col>
+			<i-col span="5">
+				<Divider orientation="left">保修</Divider>
+				<i-form :label-width="100">
+					<Form-Item label="购买日期" style="margin-bottom:0px">
+						<Date-Picker type="date" placeholder="选择日期" size="small"></Date-Picker>
+					</Form-Item>
+					<Form-Item label="保修月份" style="margin-bottom:0px">
+						<i-input v-model.lazy="jiaban_add_applicantgroup" size="small"></i-input>
+					</Form-Item>
+					<Form-Item label="保修信息" style="margin-bottom:0px">
+						<i-input v-model.lazy="jiaban_add_applicantgroup" size="small"></i-input>
+					</Form-Item>
 
-	<i-col span="13">
-	&nbsp;
-	</i-col>
+				</i-form>
 
-</i-row>
+				<br>
+				
+				<Divider orientation="left">配件</Divider>
+				<i-form :label-width="100">
+					<Form-Item label="硬盘" style="margin-bottom:0px">
+						<i-input v-model.lazy="jiaban_add_applicantgroup" size="small"></i-input>
+					</Form-Item>
+					<Form-Item label="内存" style="margin-bottom:0px">
+						<i-input v-model.lazy="jiaban_add_applicantgroup" size="small"></i-input>
+					</Form-Item>
+					<Form-Item label="CPU型号" style="margin-bottom:0px">
+						<i-input v-model.lazy="jiaban_add_applicantgroup" size="small"></i-input>
+					</Form-Item>
+					<Form-Item label="CPU数量" style="margin-bottom:0px">
+						<i-select v-model.lazy="jiaban_add_applicantgroup" size="small" placeholder="FMB - 前中后">
+							<i-option v-for="item in applicantgroup_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+						</i-select>
+					</Form-Item>
+					<Form-Item label="CPU内核数" style="margin-bottom:0px">
+						<i-select v-model.lazy="jiaban_add_applicantgroup" size="small" placeholder="FMB - 前中后">
+							<i-option v-for="item in applicantgroup_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+						</i-select>
+					</Form-Item>
 
-&nbsp;
+				</i-form>
+				
+				
+			</i-col>
 
-<i-row :gutter="16">
-	<i-col span="24">
+			<i-col span="1">
+			&nbsp;
+			</i-col>
 
-		<i-table height="300" size="small" border :columns="tablecolumns" :data="tabledata"></i-table>
-		<br><Page :current="page_current" :total="page_total" :page-size="page_size" @on-change="currentpage => oncurrentpagechange(currentpage)" @on-page-size-change="pagesize => onpagesizechange(pagesize)" :page-size-opts="[5, 10, 20, 50]" show-total show-elevator show-sizer></Page>
+			<i-col span="5">
+				<Divider size="default" orientation="left">网络</Divider>
 
-		</i-col>
-	</i-row>
+				<i-form :label-width="100">
+					<Form-Item label="域名" style="margin-bottom:0px">
+						<i-input v-model.lazy="jiaban_add_applicantgroup" size="small"></i-input>
+					</Form-Item>
+					<Form-Item label="MAC地址" style="margin-bottom:0px">
+						<i-input v-model.lazy="jiaban_add_applicantgroup" size="small"></i-input>
+					</Form-Item>
+					<Form-Item label="IPV4" style="margin-bottom:0px">
+						<i-input v-model.lazy="jiaban_add_applicantgroup" size="small"></i-input>
+					</Form-Item>
+					<Form-Item label="IPV6" style="margin-bottom:0px">
+						<i-input v-model.lazy="jiaban_add_applicantgroup" size="small"></i-input>
+					</Form-Item>
+					<Form-Item label="远程管理IP" style="margin-bottom:0px">
+						<i-input v-model.lazy="jiaban_add_applicantgroup" size="small"></i-input>
+					</Form-Item>
+					<Form-Item label="面板端口" style="margin-bottom:0px">
+						<i-input v-model.lazy="jiaban_add_applicantgroup" size="small"></i-input>
+					</Form-Item>
+					<Form-Item label="交换机" style="margin-bottom:0px">
+						<i-select v-model.lazy="jiaban_add_applicantgroup" size="small" placeholder="FMB - 前中后">
+							<i-option v-for="item in applicantgroup_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+						</i-select>
+					</Form-Item>
+					<Form-Item label="交换机端口" style="margin-bottom:0px">
+						<i-input v-model.lazy="jiaban_add_applicantgroup" size="small"></i-input>
+					</Form-Item>
+					<Form-Item label="网络端口数" style="margin-bottom:0px">
+						<i-select v-model.lazy="jiaban_add_applicantgroup" size="small" placeholder="FMB - 前中后">
+							<i-option v-for="item in applicantgroup_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+						</i-select>
+					</Form-Item>
 
-</Tab-pane>
+				</i-form>
+
+				<br>
+
+				<Divider size="default" orientation="left">记账</Divider>
+
+				<i-form :label-width="100">
+					<Form-Item label="供货商/区域" style="margin-bottom:0px">
+						<i-input v-model.lazy="jiaban_add_applicantgroup" size="small"></i-input>
+					</Form-Item>
+					<Form-Item label="购买价格" style="margin-bottom:0px">
+						<i-input v-model.lazy="jiaban_add_applicantgroup" size="small"></i-input>
+					</Form-Item>
+
+				</i-form>
+				
+			</i-col>
+
+			<i-col span="1">
+			&nbsp;
+			</i-col>
+
+		</i-row>
+
+	</Tab-pane>
+
+	<Tab-pane label="aaa">
+		aaa
+	</Tab-pane>
+
+</Tabs>
 
 
+<Divider dashed></Divider>
+
+<i-button @click="add_add()" :disabled="add_add_disabled" size="large" type="primary">添加</i-button>
+
+<br>
 
 
 
@@ -211,9 +303,39 @@ var vm_app = new Vue({
 		page_size: {{ $user['configs']['PERPAGE_RECORDS_FOR_APPLICANT'] ?? 10 }},
 		page_last: 1,
 
-		//新增
-		titemtypes_add_typedesc: '',
-		titemtypes_add_hassoftware: false,
+		// tabs索引
+		currenttabs: 0,
+		currenttabssub: 0,
+
+		// 添加禁用
+		add_add_disabled: false,
+
+		// 参数变量
+		add_itemtype_select: '',
+		add_itemtype_options: [
+			{label: 'fax', value: 1},
+			{label: 'pc', value: 2}
+		],
+		add_ispart: false,
+		add_rackmountable: false,
+		add_manufact_select: '',
+		add_manufact_options: [
+			{label: 'lenovo', value: 1},
+			{label: 'dell', value: 2},
+		],
+		add_model: '',
+		add_size_select: '',
+		add_size_options: [
+			{label: 1, value: 1},
+			{label: 2, value: 2},
+			{label: 3, value: 3},
+		],
+		add_sn1: '',
+		add_sn2: '',
+		add_servicetag: '',
+		add_comments: '',
+		add_label: '',
+
 
 
 
@@ -523,9 +645,6 @@ var vm_app = new Vue({
 		// 删除
 		delete_disabled: true,
 
-		// tabs索引
-		currenttabs: 0,
-		currenttabssub: 0,
 		
 		// 查询过滤器
 		queryfilter_auditor: '',
@@ -600,6 +719,8 @@ var vm_app = new Vue({
 			// return arr.reverse();
 		},
 
+
+
 		//
 		itemtypesgets (page, last_page){
 			var _this = this;
@@ -655,81 +776,7 @@ var vm_app = new Vue({
 		},
 
 
-		// 更新 typedesc
-		itemtypes_update_typedesc (id, typedesc) {
-			var _this = this;
-			
-			var id = id;
-			var typedesc = typedesc;
-			// _this.itemtypes_edit_id = id;
-			// _this.itemtypes_edit_statusdesc = row.itemtypes_edit_statusdesc;
-			// _this.jiaban_edit_created_at = row.created_at;
-			// _this.jiaban_edit_updated_at = row.updated_at;
 
-			var url = "{{ route('item.itemtypesupdate_typedesc') }}";
-			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
-			axios.post(url,{
-				id: id,
-				typedesc: typedesc
-			})
-			.then(function (response) {
-                // alert(index);
-				// console.log(response.data);
-				// return false;
-
-				if (response.data['jwt'] == 'logout') {
-					_this.alert_logout();
-					return false;
-				}
-				
-				if (response.data) {
-					_this.itemtypesgets(_this.page_current, _this.page_last);
-                    // _this.$Message.success('保存成功！');
-					_this.success(false, '成功', '保存成功！');
-                } else {
-					// _this.$Message.warning('保存失败！');
-					_this.warning(false, '失败', '保存失败！');
-				}
-			})
-			.catch(function (error) {
-				_this.error(false, 'Error', error);
-			})
-
-			setTimeout(() => {
-				_this.modal_jiaban_edit = true;
-			}, 500);
-
-			
-		},
-
-
-		// 删除
-		itemtypes_delete (row) {
-			var _this = this;
-			var id = row.id;
-			if (id == undefined) return false;
-			var url = "{{ route('item.itemtypesdelete') }}";
-			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
-			axios.post(url, {
-				id: id
-			})
-			.then(function (response) {
-				if (response.data['jwt'] == 'logout') {
-					_this.alert_logout();
-					return false;
-				}
-				
-				if (response.data) {
-					_this.itemtypesgets(_this.page_current, _this.page_last);
-					_this.success(false, '成功', '删除成功！');
-				} else {
-					_this.error(false, '失败', '删除失败！');
-				}
-			})
-			.catch(function (error) {
-				_this.error(false, '错误', '删除失败！');
-			})
-		},
 
 
 		//新增
@@ -737,7 +784,7 @@ var vm_app = new Vue({
 			var _this = this;
 
 			var typedesc = _this.titemtypes_add_typedesc;
-			var hassoftware = _this.titemtypes_add_hassoftware;
+			// var hassoftware = _this.titemtypes_add_hassoftware;
 
 			if (typedesc == '' || typedesc == undefined) {
 					// console.log(hassoftware);
@@ -776,49 +823,7 @@ var vm_app = new Vue({
 		},
 
 		
-		// 更新 hassoftware
-		itemtypes_update_hassoftware (id, hassoftware) {
-			var _this = this;
-			
-			var id = id;
-			var hassoftware = hassoftware;
-// console.log(hassoftware);return false;
 
-			var url = "{{ route('item.itemtypesupdate_hassoftware') }}";
-			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
-			axios.post(url,{
-				id: id,
-				hassoftware: hassoftware
-			})
-			.then(function (response) {
-                // alert(index);
-				// console.log(response.data);
-				// return false;
-
-				if (response.data['jwt'] == 'logout') {
-					_this.alert_logout();
-					return false;
-				}
-				
-				if (response.data) {
-					_this.itemtypesgets(_this.page_current, _this.page_last);
-                    // _this.$Message.success('保存成功！');
-					_this.success(false, '成功', '保存成功！');
-                } else {
-					// _this.$Message.warning('保存失败！');
-					_this.warning(false, '失败', '保存失败！');
-				}
-			})
-			.catch(function (error) {
-				_this.error(false, 'Error', error);
-			})
-
-			setTimeout(() => {
-				_this.modal_jiaban_edit = true;
-			}, 500);
-
-			
-		},
 		
 
 
@@ -826,10 +831,10 @@ var vm_app = new Vue({
 	mounted: function(){
 		var _this = this;
 		_this.current_nav = '硬件';
-		_this.current_subnav = '项目添加';
+		_this.current_subnav = '物品添加';
 
 		// // 显示所有
-		_this.itemtypesgets(1, 1); // page: 1, last_page: 1
+		// _this.itemtypesgets(1, 1); // page: 1, last_page: 1
 		// _this.loadapplicantgroup();
 
 		// GetCurrentDatetime('getcurrentdatetime');
