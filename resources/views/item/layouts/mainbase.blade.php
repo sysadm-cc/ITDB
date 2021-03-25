@@ -388,10 +388,10 @@ function navmenuselect (name) {
 	  window.location.href = "{{route('portal')}}";
 	  break;
 	case '1-3':
-	  window.location.href = "";
+	  window.location.href = "{{ route('item.itemtypes') }}";
 	  break;
 	case '1-4':
-	  window.location.href = "";
+	  window.location.href = "{{ route('item.statustypes') }}";
 	  break;
 
 	case '2-1':
