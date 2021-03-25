@@ -11,6 +11,30 @@
 |
 */
 
+// Item add 路由
+// Route::group(['prefix'=>'renshi', 'namespace'=>'Admin', 'middleware'=>['jwtauth','permission:permission_admin_permission|permission_super_admin']], function() {
+Route::group(['prefix'=>'item', 'namespace'=>'Item', 'middleware'=>['jwtauth']], function() {
+
+	// 显示 Add 页面
+	Route::get('itemAdd', 'ItemAddController@itemAdd')->name('item.add');
+
+	// Itemstypes gets列表
+	// Route::get('itemItemtypesGets', 'ItemItemtypesController@itemItemtypesGets')->name('item.itemtypesgets');
+
+	// Itemstypes Update typedesc
+	// Route::post('itemItemtypesUpdateTypedesc', 'ItemItemtypesController@itemItemtypesUpdateTypedesc')->name('item.itemtypesupdate_typedesc');
+
+	// Itemstypes Update
+	// Route::post('itemItemtypesUpdateHassoftware', 'ItemItemtypesController@itemItemtypesUpdateHassoftware')->name('item.itemtypesupdate_hassoftware');
+
+	// Itemstypes Delete
+	// Route::post('itemItemtypesDelete', 'ItemItemtypesController@itemItemtypesDelete')->name('item.itemtypesdelete');
+
+	// Itemstypes Create
+	// Route::post('itemItemtypesCreate', 'ItemItemtypesController@itemItemtypesCreate')->name('item.itemtypescreate');
+
+});
+
 // Item itemstypes 路由
 // Route::group(['prefix'=>'renshi', 'namespace'=>'Admin', 'middleware'=>['jwtauth','permission:permission_admin_permission|permission_super_admin']], function() {
 Route::group(['prefix'=>'item', 'namespace'=>'Item', 'middleware'=>['jwtauth']], function() {
