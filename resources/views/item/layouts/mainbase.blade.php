@@ -385,7 +385,7 @@ function navmenuselect (name) {
 	  window.location.href = "{{route('portal')}}";
 	  break;
 	case '1-2':
-	  window.location.href = "{{route('portal')}}";
+	  window.location.href = "{{ route('item.add') }}";
 	  break;
 	case '1-3':
 	  window.location.href = "{{ route('item.itemtypes') }}";

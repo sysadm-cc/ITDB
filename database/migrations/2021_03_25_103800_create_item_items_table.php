@@ -29,7 +29,7 @@ class CreateItemItemsTable extends Migration
             $table->string('dnsname')->nullable()->comment('域名');
             $table->string('maintenanceinfo')->nullable()->comment('维护信息');
             $table->string('comments')->nullable()->comment('备注');
-            $table->integer('ispart')->nullable()->unsigned()->comment('是否是部件');
+            $table->boolean('ispart')->default(false)->comment('是否是部件');
             $table->string('hd')->nullable()->comment('硬盘');
             $table->string('cpu')->nullable()->comment('CPU');
             $table->string('ram')->nullable()->comment('内存');
@@ -38,7 +38,7 @@ class CreateItemItemsTable extends Migration
             $table->string('ipv4')->nullable()->comment('ipv4');
             $table->string('ipv6')->nullable()->comment('ipv6');
             $table->integer('usize')->nullable()->unsigned()->comment('高度（单位U）');
-            $table->integer('rackmountable')->nullable()->unsigned()->comment('是否机架式');
+            $table->boolean('rackmountable')->default(false)->comment('是否机架式');
             $table->string('macs')->nullable()->comment('MAC地址');
             $table->string('remadmip')->nullable()->comment('远程管理IP');
             $table->string('panelport')->nullable()->comment('面板端口');

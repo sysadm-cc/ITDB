@@ -1,7 +1,7 @@
 @extends('item.layouts.mainbase')
 
 @section('my_title')
-状态分类 - 
+项目添加 - 
 @parent
 @endsection
 
@@ -16,17 +16,135 @@
 
 @section('my_body')
 @parent
-<Divider orientation="left">状态分类</Divider>
+<!-- <Divider orientation="left">项目添加</Divider> -->
+&nbsp;<br>
+
+<i-row :gutter="16">
+
+	<i-col span="5">
+		<Divider size="small" orientation="left">属性</Divider>
+		
+		<i-form :label-width="100">
+			<Form-Item label="* 项目类型" style="margin-bottom:0px">
+				<i-select v-model.lazy="jiaban_add_applicantgroup" size="small" placeholder="选择">
+					<i-option v-for="item in applicantgroup_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+				</i-select>
+			</Form-Item>
+			<Form-Item label="* 是否部件" style="margin-bottom:0px">
+				<i-switch v-model.lazy="titemtypes_add_hassoftware">
+					<span slot="open">是</span>
+					<span slot="close">否</span>
+				</i-switch>
+			</Form-Item>
+			<Form-Item label="* 是否机架式" style="margin-bottom:0px">
+				<i-switch v-model.lazy="titemtypes_add_hassoftware">
+					<span slot="open">是</span>
+					<span slot="close">否</span>
+				</i-switch>
+			</Form-Item>
+			<Form-Item label="* 制造商" style="margin-bottom:0px">
+				<i-select v-model.lazy="jiaban_add_applicantgroup" size="small" placeholder="选择">
+					<i-option v-for="item in applicantgroup_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+				</i-select>
+			</Form-Item>
+			<Form-Item label="* 型号" style="margin-bottom:0px">
+				<i-input v-model.lazy="jiaban_add_applicantgroup" size="small"></i-input>
+			</Form-Item>
+			<Form-Item label="尺寸(U)" style="margin-bottom:0px">
+				<i-select v-model.lazy="jiaban_add_applicantgroup" size="small" placeholder="选择">
+					<i-option v-for="item in applicantgroup_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+				</i-select>
+			</Form-Item>
+			<Form-Item label="Service Tag" style="margin-bottom:0px">
+				<i-input v-model.lazy="jiaban_add_applicantgroup" size="small" placeholder="服务编号"></i-input>
+			</Form-Item>
+			<Form-Item label="S/N 1" style="margin-bottom:0px">
+				<i-input v-model.lazy="jiaban_add_applicantgroup" size="small" placeholder="序列号一"></i-input>
+			</Form-Item>
+			<Form-Item label="S/N 2" style="margin-bottom:0px">
+				<i-input v-model.lazy="jiaban_add_applicantgroup" size="small" placeholder="序列号二"></i-input>
+			</Form-Item>
+			<Form-Item label="备注" style="margin-bottom:0px">
+				<i-input v-model.lazy="jiaban_add_applicantgroup" size="small" type="textarea"></i-input>
+			</Form-Item>
+			<Form-Item label="标签" style="margin-bottom:0px">
+				<i-input v-model.lazy="jiaban_add_applicantgroup" size="small"></i-input>
+			</Form-Item>
+
+		</i-form>
+
+
+	</i-col>
+
+	<i-col span="1">
+	&nbsp;
+	</i-col>
+
+	<i-col span="5">
+		<Divider size="small" orientation="left">使用</Divider>
+		
+	</i-col>
+
+	<i-col span="1">
+	&nbsp;
+	</i-col>
+
+	<i-col span="5">
+		<Divider size="small" orientation="left">保修</Divider>
+		
+	</i-col>
+
+	<i-col span="1">
+	&nbsp;
+	</i-col>
+
+	<i-col span="5">
+		<Divider size="small" orientation="left">网络</Divider>
+		
+	</i-col>
+
+	<i-col span="1">
+	&nbsp;<br>
+	&nbsp;<br>
+	&nbsp;<br>
+	&nbsp;<br>
+	&nbsp;<br>
+	&nbsp;<br>
+	&nbsp;<br>
+	&nbsp;<br>
+	&nbsp;<br>
+	&nbsp;<br>
+	</i-col>
+
+</i-row>
+
+
+
+&nbsp;<br><br><br>
+<Divider orientation="left">项目添加</Divider>
 
 <i-row :gutter="16">
 
 	<i-col span="4">
-		<i-input v-model.lazy="statustypes_add_statusdesc">
-			<i-button slot="append" icon="md-add" @click="statustypes_add()"></i-button>
+		<i-input v-model="titemtypes_add_typedesc" >
+			<i-button slot="append" icon="md-add" @click="itemtypes_add()"></i-button>
 		</i-input>
 	</i-col>
 
-	<i-col span="20">
+	<i-col span="1">
+	&nbsp;
+	</i-col>
+
+	<i-col span="6">
+		&nbsp;
+		<i-switch v-model="titemtypes_add_hassoftware">
+			<span slot="open">是</span>
+			<span slot="close">否</span>
+		</i-switch>
+		是否可以安装软件？
+	</i-col>
+
+	<i-col span="13">
 	&nbsp;
 	</i-col>
 
@@ -84,7 +202,7 @@ var vm_app = new Vue({
 		current_nav: '',
 		current_subnav: '',
 		
-		sideractivename: '1-4',
+		sideractivename: '1-2',
 		sideropennames: ['1'],
 		
 		//分页
@@ -94,7 +212,8 @@ var vm_app = new Vue({
 		page_last: 1,
 
 		//新增
-		statustypes_add_statusdesc: '',
+		titemtypes_add_typedesc: '',
+		titemtypes_add_hassoftware: false,
 
 
 
@@ -245,8 +364,8 @@ var vm_app = new Vue({
 				}
 			},
 			{
-				title: '状态描述',
-				key: 'statusdesc',
+				title: '项目描述',
+				key: 'typedesc',
 				width: 180,
 				render: (h, params) => {
 					
@@ -256,20 +375,58 @@ var vm_app = new Vue({
 							// 	color: '#ff9900'
 							// },
 							props: {
-								value: params.row.statusdesc,
+								value: params.row.typedesc,
 								size: 'small',
 							},
 							'on': {
 								'on-blur':() => {
 									// alert(params.row.id);
 									// alert(event.target.value);
-									if (params.row.statusdesc != event.target.value) {
-										vm_app.statustypes_update(params.row.id, event.target.value)
+									if (params.row.typedesc != event.target.value) {
+										vm_app.itemtypes_update_typedesc(params.row.id, event.target.value)
 									}
 								}
 							},
 						})
 					])
+				}
+			},
+			{
+				title: '可安装软件',
+				key: 'hassoftware',
+				align: 'center',
+				width: 100,
+				// render: (h, params) => {
+				// 	if (params.row.hassoftware == true) {
+				// 		return h('div', {}, '是')
+				// 	} else {
+				// 		return h('div', {}, '否')
+				// 	}
+				// }
+				render: (h, params) => {
+
+					return h('div', [
+						// params.row.deleted_at.toLocaleString()
+						// params.row.deleted_at ? '禁用' : '启用'
+						
+						h('i-switch', {
+							props: {
+								type: 'primary',
+								size: 'small',
+								value: params.row.hassoftware ? true : false
+							},
+							style: {
+								marginRight: '5px'
+							},
+							on: {
+								'on-change': (value) => {//触发事件是on-change,用双引号括起来，
+									//参数value是回调值，并没有使用到
+									vm_app.itemtypes_update_hassoftware(params.row.id, value) //params.index是拿到table的行序列，可以取到对应的表格值
+								}
+							}
+						}, 'Edit')
+						
+					]);
 				}
 			},
 			{
@@ -291,7 +448,7 @@ var vm_app = new Vue({
 				align: 'center',
 				width: 100,
 				render: (h, params) => {
-					if (params.row.id > 6) {
+					if (params.row.id > 3) {
 						return h('div', [
 							h('Button', {
 								props: {
@@ -303,7 +460,7 @@ var vm_app = new Vue({
 								},
 								on: {
 									click: () => {
-										vm_app.statustypes_delete(params.row)
+										vm_app.itemtypes_delete(params.row)
 									}
 								}
 							}, '删除'),
@@ -444,7 +601,7 @@ var vm_app = new Vue({
 		},
 
 		//
-		statustypesgets (page, last_page){
+		itemtypesgets (page, last_page){
 			var _this = this;
 			
 			if (page > last_page) {
@@ -455,7 +612,7 @@ var vm_app = new Vue({
 			
 
 			_this.loadingbarstart();
-			var url = "{{ route('item.statustypesgets') }}";
+			var url = "{{ route('item.itemtypesgets') }}";
 			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
 			axios.get(url,{
 				params: {
@@ -494,26 +651,26 @@ var vm_app = new Vue({
 		
 		// 切换当前页
 		oncurrentpagechange (currentpage) {
-			this.statustypesgets(currentpage, this.page_last);
+			this.itemtypesgets(currentpage, this.page_last);
 		},
 
 
-		// 更新
-		statustypes_update (id, statusdesc) {
+		// 更新 typedesc
+		itemtypes_update_typedesc (id, typedesc) {
 			var _this = this;
 			
 			var id = id;
-			var statusdesc = statusdesc;
-			// _this.statustypes_edit_id = id;
-			// _this.statustypes_edit_statusdesc = row.statustypes_edit_statusdesc;
+			var typedesc = typedesc;
+			// _this.itemtypes_edit_id = id;
+			// _this.itemtypes_edit_statusdesc = row.itemtypes_edit_statusdesc;
 			// _this.jiaban_edit_created_at = row.created_at;
 			// _this.jiaban_edit_updated_at = row.updated_at;
 
-			var url = "{{ route('item.statustypesupdate') }}";
+			var url = "{{ route('item.itemtypesupdate_typedesc') }}";
 			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
 			axios.post(url,{
 				id: id,
-				statusdesc: statusdesc
+				typedesc: typedesc
 			})
 			.then(function (response) {
                 // alert(index);
@@ -526,7 +683,7 @@ var vm_app = new Vue({
 				}
 				
 				if (response.data) {
-					_this.statustypesgets(_this.page_current, _this.page_last);
+					_this.itemtypesgets(_this.page_current, _this.page_last);
                     // _this.$Message.success('保存成功！');
 					_this.success(false, '成功', '保存成功！');
                 } else {
@@ -547,11 +704,11 @@ var vm_app = new Vue({
 
 
 		// 删除
-		statustypes_delete (row) {
+		itemtypes_delete (row) {
 			var _this = this;
 			var id = row.id;
 			if (id == undefined) return false;
-			var url = "{{ route('item.statustypesdelete') }}";
+			var url = "{{ route('item.itemtypesdelete') }}";
 			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
 			axios.post(url, {
 				id: id
@@ -563,7 +720,7 @@ var vm_app = new Vue({
 				}
 				
 				if (response.data) {
-					_this.statustypesgets(_this.page_current, _this.page_last);
+					_this.itemtypesgets(_this.page_current, _this.page_last);
 					_this.success(false, '成功', '删除成功！');
 				} else {
 					_this.error(false, '失败', '删除失败！');
@@ -576,20 +733,23 @@ var vm_app = new Vue({
 
 
 		//新增
-		statustypes_add () {
+		itemtypes_add () {
 			var _this = this;
 
-			var statusdesc = _this.statustypes_add_statusdesc;
+			var typedesc = _this.titemtypes_add_typedesc;
+			var hassoftware = _this.titemtypes_add_hassoftware;
 
-			if (statusdesc == '' || statusdesc == undefined) {
+			if (typedesc == '' || typedesc == undefined) {
+					// console.log(hassoftware);
 				// _this.error(false, '失败', '用户ID为空或不正确！');
 				return false;
 			}
 
-			var url = "{{ route('item.statustypescreate') }}";
+			var url = "{{ route('item.itemtypescreate') }}";
 			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
 			axios.post(url, {
-				statusdesc: statusdesc,
+				typedesc: typedesc,
+				hassoftware: hassoftware,
 			})
 			.then(function (response) {
 				// console.log(response.data);
@@ -601,8 +761,8 @@ var vm_app = new Vue({
 				}
 				
  				if (response.data) {
-					_this.statustypes_add_statusdesc = '';
-					_this.statustypesgets(_this.page_current, _this.page_last);
+					_this.titemtypes_add_typedesc = '';
+					_this.itemtypesgets(_this.page_current, _this.page_last);
 					_this.success(false, '成功', '新建成功！');
 				} else {
 					_this.error(false, '失败', '新建失败！');
@@ -616,7 +776,49 @@ var vm_app = new Vue({
 		},
 
 		
+		// 更新 hassoftware
+		itemtypes_update_hassoftware (id, hassoftware) {
+			var _this = this;
+			
+			var id = id;
+			var hassoftware = hassoftware;
+// console.log(hassoftware);return false;
 
+			var url = "{{ route('item.itemtypesupdate_hassoftware') }}";
+			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
+			axios.post(url,{
+				id: id,
+				hassoftware: hassoftware
+			})
+			.then(function (response) {
+                // alert(index);
+				// console.log(response.data);
+				// return false;
+
+				if (response.data['jwt'] == 'logout') {
+					_this.alert_logout();
+					return false;
+				}
+				
+				if (response.data) {
+					_this.itemtypesgets(_this.page_current, _this.page_last);
+                    // _this.$Message.success('保存成功！');
+					_this.success(false, '成功', '保存成功！');
+                } else {
+					// _this.$Message.warning('保存失败！');
+					_this.warning(false, '失败', '保存失败！');
+				}
+			})
+			.catch(function (error) {
+				_this.error(false, 'Error', error);
+			})
+
+			setTimeout(() => {
+				_this.modal_jiaban_edit = true;
+			}, 500);
+
+			
+		},
 		
 
 
@@ -624,10 +826,10 @@ var vm_app = new Vue({
 	mounted: function(){
 		var _this = this;
 		_this.current_nav = '硬件';
-		_this.current_subnav = '状态分类';
+		_this.current_subnav = '项目添加';
 
 		// // 显示所有
-		_this.statustypesgets(1, 1); // page: 1, last_page: 1
+		_this.itemtypesgets(1, 1); // page: 1, last_page: 1
 		// _this.loadapplicantgroup();
 
 		// GetCurrentDatetime('getcurrentdatetime');

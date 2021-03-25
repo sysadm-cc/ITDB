@@ -21,7 +21,7 @@
 <i-row :gutter="16">
 
 	<i-col span="4">
-		<i-input v-model="titemtypes_add_typedesc" >
+		<i-input v-model.lazy="itemtypes_add_typedesc" >
 			<i-button slot="append" icon="md-add" @click="itemtypes_add()"></i-button>
 		</i-input>
 	</i-col>
@@ -32,7 +32,7 @@
 
 	<i-col span="6">
 		&nbsp;
-		<i-switch v-model="titemtypes_add_hassoftware">
+		<i-switch v-model.lazy="itemtypes_add_hassoftware">
 			<span slot="open">是</span>
 			<span slot="close">否</span>
 		</i-switch>
@@ -107,8 +107,8 @@ var vm_app = new Vue({
 		page_last: 1,
 
 		//新增
-		titemtypes_add_typedesc: '',
-		titemtypes_add_hassoftware: false,
+		itemtypes_add_typedesc: '',
+		itemtypes_add_hassoftware: false,
 
 
 
@@ -631,8 +631,8 @@ var vm_app = new Vue({
 		itemtypes_add () {
 			var _this = this;
 
-			var typedesc = _this.titemtypes_add_typedesc;
-			var hassoftware = _this.titemtypes_add_hassoftware;
+			var typedesc = _this.itemtypes_add_typedesc;
+			var hassoftware = _this.itemtypes_add_hassoftware;
 
 			if (typedesc == '' || typedesc == undefined) {
 					// console.log(hassoftware);
@@ -656,7 +656,7 @@ var vm_app = new Vue({
 				}
 				
  				if (response.data) {
-					_this.titemtypes_add_typedesc = '';
+					_this.itemtypes_add_typedesc = '';
 					_this.itemtypesgets(_this.page_current, _this.page_last);
 					_this.success(false, '成功', '新建成功！');
 				} else {
