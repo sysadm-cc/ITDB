@@ -22,7 +22,7 @@
 
 	<i-col span="4">
 		<i-input v-model.lazy="itemtypes_add_typedesc" >
-			<i-button slot="append" icon="md-add" @click="itemtypes_add()"></i-button>
+			<i-button slot="append" icon="md-add" @click="itemtypes_create()"></i-button>
 		</i-input>
 	</i-col>
 
@@ -628,7 +628,7 @@ var vm_app = new Vue({
 
 
 		//新增
-		itemtypes_add () {
+		itemtypes_create () {
 			var _this = this;
 
 			var typedesc = _this.itemtypes_add_typedesc;

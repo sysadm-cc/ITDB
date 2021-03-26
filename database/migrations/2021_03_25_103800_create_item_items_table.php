@@ -19,12 +19,12 @@ class CreateItemItemsTable extends Migration
             $table->string('function')->nullable()->comment('功能');
             $table->integer('manufacturerid')->nullable()->unsigned()->comment('制造商编号');
             $table->string('model')->comment('型号');
-            $table->string('sn')->nullable()->comment('序列号一');
-            $table->string('sn2')->nullable()->comment('序列号二');
-            $table->string('sn3')->nullable()->comment('序列号三');
+            $table->string('servicetag')->nullable()->comment('序列号一');
+            $table->string('sn1')->nullable()->comment('序列号二');
+            $table->string('sn2')->nullable()->comment('序列号三');
             $table->string('origin')->nullable()->comment('origin');
             $table->integer('warrantymonths')->nullable()->unsigned()->comment('保修月份');
-            $table->integer('purchasedate')->nullable()->unsigned()->comment('购买日期');
+            $table->dateTime('purchasedate')->nullable()->comment('购买日期');
             $table->string('purchprice')->nullable()->comment('购买价格');
             $table->string('dnsname')->nullable()->comment('域名');
             $table->string('maintenanceinfo')->nullable()->comment('维护信息');

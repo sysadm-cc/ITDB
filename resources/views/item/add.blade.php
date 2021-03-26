@@ -91,7 +91,7 @@
 							<i-option v-for="item in add_status_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
 						</i-select>
 					</Form-Item>
-					<Form-Item label="* 使用者" style="margin-bottom:0px">
+					<Form-Item label="使用者" style="margin-bottom:0px">
 						<i-select v-model.lazy="add_user_select" size="small" placeholder="选择">
 							<i-option v-for="item in add_user_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
 						</i-select>
@@ -253,7 +253,7 @@
 
 <Divider dashed></Divider>
 
-<i-button @click="add_add()" :disabled="add_add_disabled" size="large" type="primary">添加</i-button>
+<i-button @click="add_create()" :disabled="add_create_disabled" size="large" type="primary">添加</i-button>
 
 <br>
 
@@ -308,7 +308,7 @@ var vm_app = new Vue({
 		currenttabssub: 0,
 
 		// 添加禁用
-		add_add_disabled: false,
+		add_create_disabled: false,
 
 		// 参数变量 - 属性
 		add_itemtype_select: '',
@@ -810,6 +810,166 @@ var vm_app = new Vue({
 		},
 
 
+		//新增
+		add_create () {
+			var _this = this;
+
+			// 参数变量 - 属性
+			var add_itemtype_select = _this.add_itemtype_select;
+			var add_ispart = _this.add_ispart;
+			var add_rackmountable = _this.add_rackmountable;
+			var add_manufact_select = _this.add_manufact_select;
+			var add_model = _this.add_model;
+			var add_size_select = _this.add_size_select;
+			var add_sn1 = _this.add_sn1;
+			var add_sn2 = _this.add_sn2;
+			var add_servicetag = _this.add_servicetag;
+			var add_comments = _this.add_comments;
+			var add_label = _this.add_label;
+
+			// 参数变量 - 使用
+			var add_status_select = _this.add_status_select;
+			var add_user_select = _this.add_user_select;
+			var add_location_select = _this.add_location_select;
+			var add_area_select = _this.add_area_select;
+			var add_rack_select = _this.add_rack_select;
+			var add_rackposition_select1 = _this.add_rackposition_select1;
+			var add_rackposition_select2 = _this.add_rackposition_select2;
+			var add_function = _this.add_function;
+			var add_maintenanceinstructions = _this.add_maintenanceinstructions;
+
+			// 参数变量 - 保修
+			var add_dateofpurchase = _this.add_dateofpurchase;
+			var add_warrantymonths = _this.add_warrantymonths;
+			var add_warrantyinfo = _this.add_warrantyinfo;
+
+			// 参数变量 - 配件
+			var add_harddisk = _this.add_harddisk;
+			var add_ram = _this.add_ram;
+			var add_cpumodel = _this.add_cpumodel;
+			var add_cpus_select = _this.add_cpus_select;
+			var add_cpucores_select = _this.add_cpucores_select;
+
+			// 参数变量 - 网络
+			var add_dns = _this.add_dns;
+			var add_mac = _this.add_mac;
+			var add_ipv4 = _this.add_ipv4;
+			var add_ipv6 = _this.add_ipv6;
+			var add_remoteadminip = _this.add_remoteadminip;
+			var add_panelport = _this.add_panelport;
+			var add_switch_select = _this.add_switch_select;
+			var add_switchport = _this.add_switchport;
+			var add_networkports_select = _this.add_networkports_select;
+
+			// 参数变量 - 记账
+			var add_shop = _this.add_shop;
+			var add_purchaceprice = _this.add_purchaceprice;
+
+			if (add_itemtype_select == '' || add_itemtype_select == undefined
+				|| add_manufact_select == '' || add_manufact_select == undefined
+				|| add_model == '' || add_model == undefined
+				|| add_status_select == '' || add_status_select == undefined) {
+				_this.error(false, '错误', '内容为空或不正确！');
+				return false;
+			}
+// console.log(add_itemtype_select);return false;
+
+			var url = "{{ route('item.addcreate') }}";
+			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
+			axios.post(url, {
+				// 参数变量 - 属性
+				add_itemtype_select: add_itemtype_select,
+				add_ispart: add_ispart,
+				add_rackmountable: add_rackmountable,
+				add_manufact_select: add_manufact_select,
+				add_model: add_model,
+				add_size_select: add_size_select,
+				add_sn1: add_sn1,
+				add_sn2: add_sn2,
+				add_servicetag: add_servicetag,
+				add_comments: add_comments,
+				add_label: add_label,
+
+				// 参数变量 - 使用
+				add_status_select: add_status_select,
+				add_user_select: add_user_select,
+				add_location_select: add_location_select,
+				add_area_select: add_area_select,
+				add_rack_select: add_rack_select,
+				add_rackposition_select1: add_rackposition_select1,
+				add_rackposition_select2: add_rackposition_select2,
+				add_function: add_function,
+				add_maintenanceinstructions: add_maintenanceinstructions,
+
+				// 参数变量 - 保修
+				add_dateofpurchase: add_dateofpurchase,
+				add_warrantymonths: add_warrantymonths,
+				add_warrantyinfo: add_warrantyinfo,
+
+				// 参数变量 - 配件
+				add_harddisk: add_harddisk,
+				add_ram: add_ram,
+				add_cpumodel: add_cpumodel,
+				add_cpus_select: add_cpus_select,
+				add_cpucores_select: add_cpucores_select,
+
+				// 参数变量 - 网络
+				add_dns: add_dns,
+				add_mac: add_mac,
+				add_ipv4: add_ipv4,
+				add_ipv6: add_ipv6,
+				add_remoteadminip: add_remoteadminip,
+				add_panelport: add_panelport,
+				add_switch_select: add_switch_select,
+				add_switchport: add_switchport,
+				add_networkports_select: add_networkports_select,
+
+				// 参数变量 - 记账
+				add_shop: add_shop,
+				add_purchaceprice: add_purchaceprice,
+
+
+
+
+			})
+			.then(function (response) {
+				console.log(response.data);
+				return false;
+
+				if (response.data['jwt'] == 'logout') {
+					_this.alert_logout();
+					return false;
+				}
+				
+ 				if (response.data) {
+					_this.titemtypes_add_typedesc = '';
+					// _this.itemtypesgets(_this.page_current, _this.page_last);
+					_this.success(false, '成功', '新建成功！');
+				} else {
+					_this.error(false, '失败', '新建失败！');
+				}
+			})
+			.catch(function (error) {
+				_this.error(false, '错误', '新建失败！');
+			})
+
+
+		},
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 		//
 		itemtypesgets (page, last_page){
@@ -869,48 +1029,7 @@ var vm_app = new Vue({
 
 
 
-		//新增
-		itemtypes_add () {
-			var _this = this;
 
-			var typedesc = _this.titemtypes_add_typedesc;
-			// var hassoftware = _this.titemtypes_add_hassoftware;
-
-			if (typedesc == '' || typedesc == undefined) {
-					// console.log(hassoftware);
-				// _this.error(false, '失败', '用户ID为空或不正确！');
-				return false;
-			}
-
-			var url = "{{ route('item.itemtypescreate') }}";
-			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
-			axios.post(url, {
-				typedesc: typedesc,
-				hassoftware: hassoftware,
-			})
-			.then(function (response) {
-				// console.log(response.data);
-				// return false;
-
-				if (response.data['jwt'] == 'logout') {
-					_this.alert_logout();
-					return false;
-				}
-				
- 				if (response.data) {
-					_this.titemtypes_add_typedesc = '';
-					_this.itemtypesgets(_this.page_current, _this.page_last);
-					_this.success(false, '成功', '新建成功！');
-				} else {
-					_this.error(false, '失败', '新建失败！');
-				}
-			})
-			.catch(function (error) {
-				_this.error(false, '错误', '新建失败！');
-			})
-
-
-		},
 
 		
 

@@ -12,9 +12,9 @@ class Item_items extends Model
     // protected $dates = ['deleted_at'];
 
 	protected $fillable = [
-        'id', 'itemtypeid', 'function', 'manufacturerid', 'model', 'sn', 'sn2', 'sn3', 'origin', 
+        'id', 'itemtypeid', 'function', 'manufacturerid', 'model', 'servicetag', 'sn1', 'sn2', 'origin', 
         'warrantymonths', 'purchasedate', 'purchprice', 'dnsname', 'maintenanceinfo', 
-        'comments', 'ispart', 'hd]', 'cpu', 'ram', 'locationid', 'userid', 'ipv4', 'ipv6', 
+        'comments', 'ispart', 'hd', 'cpu', 'ram', 'locationid', 'userid', 'ipv4', 'ipv6', 
         'usize', 'rackmountable', 'macs', 'remadmip', 'panelport', 'ports', 'switchport', 
         'switchid', 'rackid', 'rackposition', 'label', 'status', 'cpuno', 'corespercpu', 
         'rackposdepth', 'warrinfo', 'locareaid', 

@@ -21,7 +21,7 @@ use Ramsey\Uuid\Uuid;
 class ItemAddController extends Controller
 {
 	/**
-	 * 显示页面 itemtypes
+	 * 显示页面 add
 	 *
 	 * @param  int  $id
 	 * @return \Illuminate\Http\Response
@@ -53,163 +53,134 @@ class ItemAddController extends Controller
 	}
 
 
-	/**
-	 * 读取记录 itemtypes
-	 *
-	 * @param  int  $id
-	 * @return \Illuminate\Http\Response
-	 */
-	public function itemItemtypesGets(Request $request)
-	{
-	if (! $request->ajax()) return null;
-
-	$url = request()->url();
-	$queryParams = request()->query();
-	
-	$perPage = $queryParams['perPage'] ?? 10000;
-	$page = $queryParams['page'] ?? 1;
-	
-	//对查询参数按照键名排序
-	ksort($queryParams);
-
-	//将查询数组转换为查询字符串
-	$queryString = http_build_query($queryParams);
-
-	$fullUrl = sha1("{$url}?{$queryString}");
-	
-	
-	//首先查寻cache如果找到
-	if (Cache::has($fullUrl)) {
-		$result = Cache::get($fullUrl);    //直接读取cache
-	} else {                                   //如果cache里面没有
-		$result = Item_itemtypes::select('id', 'typedesc', 'hassoftware', 'created_at', 'updated_at', 'deleted_at')
-			->limit(1000)
-			->orderBy('created_at', 'asc')
-			->paginate($perPage, ['*'], 'page', $page);
-
-		Cache::put($fullUrl, $result, now()->addSeconds(10));
-		}
-
-	return $result;
-	}
-
-	
-	/**
-	 * 更新 itemtypes typedesc
-	 *
-	 * @param  int  $id
-	 * @return \Illuminate\Http\Response
-	 */
-	public function itemItemtypesUpdateTypedesc(Request $request)
-	{
-	if (! $request->isMethod('post') || ! $request->ajax()) return null;
-
-	$id = $request->input('id');
-	$typedesc = $request->input('typedesc');
-
-	// 写入数据库
-	try	{
-		DB::beginTransaction();
-		
-		$result = Item_itemtypes::where('id', $id)
-		->update([
-			'typedesc' => $typedesc,
-		]);
-
-		$result = 1;
-		Cache::flush();
-	}
-	catch (\Exception $e) {
-		// echo 'Message: ' .$e->getMessage();
-		DB::rollBack();
-		// dd('Message: ' .$e->getMessage());
-		return 0;
-	}
-
-	DB::commit();
-	// Cache::flush();
-	return $result;
-	}
-	
-
-	/**
-	 * 更新 itemtypes hassoftware
-	 *
-	 * @param  int  $id
-	 * @return \Illuminate\Http\Response
-	 */
-	public function itemItemtypesUpdateHassoftware(Request $request)
-	{
-	if (! $request->isMethod('post') || ! $request->ajax()) return null;
-
-	$id = $request->input('id');
-	$hassoftware = $request->input('hassoftware');
-
-	// 写入数据库
-	try	{
-		DB::beginTransaction();
-		
-		$result = Item_itemtypes::where('id', $id)
-		->update([
-			'hassoftware' => $hassoftware,
-		]);
-
-		$result = 1;
-		Cache::flush();
-	}
-	catch (\Exception $e) {
-		// echo 'Message: ' .$e->getMessage();
-		DB::rollBack();
-		// dd('Message: ' .$e->getMessage());
-		return 0;
-	}
-
-	DB::commit();
-	// Cache::flush();
-	return $result;
-	}
-
-
-	/**
-	 * 删除 itemtypes
-	 *
-	 * @param  int  $id
-	 * @return \Illuminate\Http\Response
-	 */
-	public function itemItemtypesDelete(Request $request)
-	{
-	if (! $request->isMethod('post') || ! $request->ajax())  return false;
-
-	$id = [$request->input('id')];
-	$result = Item_itemtypes::whereIn('id', $id)->delete();
-	Cache::flush();
-	return $result;
-	}
-
-
     /**
-     * 新建 itemtypes
+     * 新建 add
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function itemItemtypesCreate(Request $request)
+    public function itemAddCreate(Request $request)
     {
 		if (! $request->isMethod('post') || ! $request->ajax()) return false;
 
 		// $nowtime = date("Y-m-d H:i:s",time());
-		$typedesc = $request->input('typedesc');
-		$hassoftware = $request->input('hassoftware');
+
+		// 参数变量 - 属性
+		$add_itemtype_select = $request->input('add_itemtype_select');
+		$add_ispart = $request->input('add_ispart');
+		$add_rackmountable = $request->input('add_rackmountable');
+		$add_manufact_select = $request->input('add_manufact_select');
+		$add_model = $request->input('add_model');
+		$add_size_select = $request->input('add_size_select');
+		$add_sn1 = $request->input('add_sn1');
+		$add_sn2 = $request->input('add_sn2');
+		$add_servicetag = $request->input('add_servicetag');
+		$add_comments = $request->input('add_comments');
+		$add_label = $request->input('add_label');
+
+		// 参数变量 - 使用
+		$add_status_select = $request->input('add_status_select');
+		$add_user_select = $request->input('add_user_select');
+		$add_location_select = $request->input('add_location_select');
+		$add_area_select = $request->input('add_area_select');
+		$add_rack_select = $request->input('add_rack_select');
+		$add_rackposition_select1 = $request->input('add_rackposition_select1');
+		$add_rackposition_select2 = $request->input('add_rackposition_select2');
+		$add_function = $request->input('add_function');
+		$add_maintenanceinstructions = $request->input('add_maintenanceinstructions');
+
+		// 参数变量 - 保修
+		$add_dateofpurchase = $request->input('add_dateofpurchase');
+		$add_warrantymonths = $request->input('add_warrantymonths');
+		$add_warrantyinfo = $request->input('add_warrantyinfo');
+
+		// 参数变量 - 配件
+		$add_harddisk = $request->input('add_harddisk');
+		$add_ram = $request->input('add_ram');
+		$add_cpumodel = $request->input('add_cpumodel');
+		$add_cpus_select = $request->input('add_cpus_select');
+		$add_cpucores_select = $request->input('add_cpucores_select');
+
+		// 参数变量 - 网络
+		$add_dns = $request->input('add_dns');
+		$add_mac = $request->input('add_mac');
+		$add_ipv4 = $request->input('add_ipv4');
+		$add_ipv6 = $request->input('add_ipv6');
+		$add_remoteadminip = $request->input('add_remoteadminip');
+		$add_panelport = $request->input('add_panelport');
+		$add_switch_select = $request->input('add_switch_select');
+		$add_switchport = $request->input('add_switchport');
+		$add_networkports_select = $request->input('add_networkports_select');
+
+		// 参数变量 - 记账
+		$add_shop = $request->input('add_shop');
+		$add_purchaceprice = $request->input('add_purchaceprice');
+
+
+
+// dd($add_harddisk);
+
+
 		
 		try	{
-			$result = Item_itemtypes::create([
-				'typedesc' => $typedesc,
-				'hassoftware' => $hassoftware,
+			$result = Item_items::create([
+
+				// 参数变量 - 属性
+				'itemtypeid' => $add_itemtype_select,
+				'ispart' => $add_ispart,
+				'rackmountable' => $add_rackmountable,
+				'manufacturerid' => $add_manufact_select,
+				'model' => $add_model,
+				'usize' => $add_size_select,
+				'sn1' => $add_sn1,
+				'sn2' => $add_sn2,
+				'servicetag' => $add_servicetag,
+				'comments' => $add_comments,
+				'label' => $add_label,
+                
+				// 参数变量 - 使用
+				'status' => $add_status_select,
+				'userid' => $add_user_select,
+				'locationid' => $add_location_select,
+				'locareaid' => $add_area_select,
+				'rackid' => $add_rack_select,
+				// 'rackposition_select1' => $add_rackposition_select1,
+				// 'rackposition_select2' => $add_rackposition_select2,
+				'function' => $add_function,
+				'maintenanceinfo' => $add_maintenanceinstructions,
+                
+				// 参数变量 - 保修
+				// 'purchasedate' => $add_dateofpurchase,
+				'warrantymonths' => $add_warrantymonths,
+				'warrinfo' => $add_warrantyinfo,
+                
+				// 参数变量 - 配件
+				'hd' => $add_harddisk,
+				'ram' => $add_ram,
+				'cpu' => $add_cpumodel,
+				'cpuno' => $add_cpus_select,
+				'corespercpu' => $add_cpucores_select,
+                
+				// 参数变量 - 网络
+				'dnsname' => $add_dns,
+				'macs' => $add_mac,
+				'ipv4' => $add_ipv4,
+				'ipv6' => $add_ipv6,
+				'remadmip' => $add_remoteadminip,
+				'panelport' => $add_panelport,
+				'switchid' => $add_switch_select,
+				'switchport' => $add_switchport,
+				'ports' => $add_networkports_select,
+                
+				// 参数变量 - 记账
+				'origin' => $add_shop,
+				'purchprice' => $add_purchaceprice,				
 			]);
 			Cache::flush();
 		}
 		catch (\Exception $e) {
 			// echo 'Message: ' .$e->getMessage();
+			return 'Message: ' .$e->getMessage();
 			$result = 0;
 		}
 

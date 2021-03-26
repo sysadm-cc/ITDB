@@ -31,7 +31,7 @@ Route::group(['prefix'=>'item', 'namespace'=>'Item', 'middleware'=>['jwtauth']],
 	// Route::post('itemItemtypesDelete', 'ItemItemtypesController@itemItemtypesDelete')->name('item.itemtypesdelete');
 
 	// Itemstypes Create
-	// Route::post('itemItemtypesCreate', 'ItemItemtypesController@itemItemtypesCreate')->name('item.itemtypescreate');
+	Route::post('itemAddCreate', 'ItemAddController@itemAddCreate')->name('item.addcreate');
 
 });
 
