@@ -71,7 +71,7 @@ class ItemAddController extends Controller
 		$add_rackmountable = $request->input('add_rackmountable');
 		$add_manufact_select = $request->input('add_manufact_select');
 		$add_model = $request->input('add_model');
-		$add_size_select = $request->input('add_size_select');
+		$add_usize_select = $request->input('add_usize_select');
 		$add_sn1 = $request->input('add_sn1');
 		$add_sn2 = $request->input('add_sn2');
 		$add_servicetag = $request->input('add_servicetag');
@@ -131,7 +131,7 @@ class ItemAddController extends Controller
 				'rackmountable' => $add_rackmountable,
 				'manufacturerid' => $add_manufact_select,
 				'model' => $add_model,
-				'usize' => $add_size_select,
+				'usize' => $add_usize_select,
 				'sn1' => $add_sn1,
 				'sn2' => $add_sn2,
 				'servicetag' => $add_servicetag,

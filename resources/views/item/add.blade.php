@@ -54,8 +54,8 @@
 						<i-input v-model.lazy="add_model" size="small"></i-input>
 					</Form-Item>
 					<Form-Item label="尺寸(U)" style="margin-bottom:0px">
-						<i-select v-model.lazy="add_size_select" size="small" placeholder="选择">
-							<i-option v-for="item in add_size_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+						<i-select v-model.lazy="add_usize_select" size="small" placeholder="选择">
+							<i-option v-for="item in add_usize_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
 						</i-select>
 					</Form-Item>
 					<Form-Item label="S/N 1" style="margin-bottom:0px">
@@ -315,8 +315,8 @@ var vm_app = new Vue({
 		// 参数变量 - 属性
 		add_itemtype_select: '',
 		add_itemtype_options: [
-			{label: 'fax', value: 1},
-			{label: 'pc', value: 2}
+			// {label: 'fax', value: 1},
+			// {label: 'pc', value: 2}
 		],
 		add_ispart: false,
 		add_rackmountable: false,
@@ -326,11 +326,11 @@ var vm_app = new Vue({
 			{label: 'dell', value: 2},
 		],
 		add_model: '',
-		add_size_select: '',
-		add_size_options: [
-			{label: 1, value: 1},
-			{label: 2, value: 2},
-			{label: 3, value: 3},
+		add_usize_select: '',
+		add_usize_options: [
+			// {label: 1, value: 1},
+			// {label: 2, value: 2},
+			// {label: 3, value: 3},
 		],
 		add_sn1: '',
 		add_sn2: '',
@@ -371,15 +371,18 @@ var vm_app = new Vue({
 		],
 		add_rackposition_select1: '',
 		add_rackposition_options1: [
-			{label: '1', value: 1},
-			{label: '2', value: 2},
-			{label: 3, value: 3},
+			// {label: 1, value: 1},
+			// {label: 2, value: 2},
+			// {label: 3, value: 3},
 		],
 		add_rackposition_select2: '',
 		add_rackposition_options2: [
-			{label: 'FM-', value: 1},
-			{label: 'F-', value: 2},
-			{label: '-M-', value: 3},
+			{label: 'FM-', value: 'FM-'},
+			{label: '-MB', value: '-MB'},
+			{label: 'F-', value: 'F-'},
+			{label: '-M-', value: '-M-'},
+			{label: '--B', value: '--B'},
+			{label: 'FMB', value: 'FMB'},
 		],
 		add_function: '',
 		add_maintenanceinstructions: '',
@@ -822,7 +825,7 @@ var vm_app = new Vue({
 			var add_rackmountable = _this.add_rackmountable;
 			var add_manufact_select = _this.add_manufact_select;
 			var add_model = _this.add_model;
-			var add_size_select = _this.add_size_select;
+			var add_usize_select = _this.add_usize_select;
 			var add_sn1 = _this.add_sn1;
 			var add_sn2 = _this.add_sn2;
 			var add_servicetag = _this.add_servicetag;
@@ -885,7 +888,7 @@ var vm_app = new Vue({
 				add_rackmountable: add_rackmountable,
 				add_manufact_select: add_manufact_select,
 				add_model: add_model,
-				add_size_select: add_size_select,
+				add_usize_select: add_usize_select,
 				add_sn1: add_sn1,
 				add_sn2: add_sn2,
 				add_servicetag: add_servicetag,
@@ -959,73 +962,32 @@ var vm_app = new Vue({
 		},
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-		//
-		itemtypesgets (page, last_page){
+		// ajax 获取物品类型列表
+		itemtypesgets () {
 			var _this = this;
-			
-			if (page > last_page) {
-				page = last_page;
-			} else if (page < 1) {
-				page = 1;
-			}
-			
-
-			_this.loadingbarstart();
 			var url = "{{ route('item.itemtypesgets') }}";
 			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
-			axios.get(url,{
-				params: {
-					perPage: _this.page_size,
-					page: page,
-				}
-			})
+			axios.get(url)
 			.then(function (response) {
-				// console.log(response.data);
-				// return false;
-
 				if (response.data['jwt'] == 'logout') {
 					_this.alert_logout();
 					return false;
 				}
-
 				if (response.data) {
-					_this.delete_disabled = true;
-					_this.tableselect = [];
-					
-					_this.page_current = response.data.current_page;
-					_this.page_total = response.data.total;
-					_this.page_last = response.data.last_page;
-					_this.tabledata = response.data.data;
-					
+					response.data.data.map(function (v, i) {
+						_this.add_itemtype_options.push({label: v.typedesc, value: v.id});
+					});
 				}
-				
-				_this.loadingbarfinish();
 			})
 			.catch(function (error) {
-				_this.loadingbarerror();
-				_this.error(false, 'Error', error);
 			})
 		},
 	
 		
-		// 切换当前页
-		oncurrentpagechange (currentpage) {
-			this.itemtypesgets(currentpage, this.page_last);
-		},
+
+
+
+
 
 
 
@@ -1039,8 +1001,12 @@ var vm_app = new Vue({
 
 
 	},
+	beforeCreated: function(){
+		
+	},
 	mounted: function(){
 		var _this = this;
+		_this.loadingbarstart();
 		_this.current_nav = '硬件';
 		_this.current_subnav = '物品添加';
 
@@ -1049,6 +1015,30 @@ var vm_app = new Vue({
 		// _this.loadapplicantgroup();
 
 		// GetCurrentDatetime('getcurrentdatetime');
+
+		
+
+		for (var i=1;i<=44;i++) {
+			_this.add_usize_options.push({label: i, value: i});
+		}
+
+		for (var i=1;i<=50;i++) {
+			_this.add_rackposition_options1.push({label: i, value: i});
+		}
+
+		// ajax 获取物品类型列表
+		_this.itemtypesgets();
+
+		// ajax 获取制造商列表
+
+
+
+
+
+
+
+		_this.loadingbarfinish();
+
 	}
 });
 </script>
