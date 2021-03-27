@@ -111,10 +111,12 @@
 							<i-option v-for="item in add_rack_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
 						</i-select>
 					</Form-Item>
-					<Form-Item label="机架中位置" style="margin-bottom:0px">
+					<Form-Item label="机架所在层高" style="margin-bottom:0px">
 						<i-select v-model.lazy="add_rackposition_select1" size="small" placeholder="">
 							<i-option v-for="item in add_rackposition_options1" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
 						</i-select>
+					</Form-Item>
+					<Form-Item label="机架所在深度" style="margin-bottom:0px">	
 						<i-select v-model.lazy="add_rackposition_select2" size="small" placeholder="FMB - 前中后">
 							<i-option v-for="item in add_rackposition_options2" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
 						</i-select>
@@ -839,7 +841,7 @@ var vm_app = new Vue({
 			var add_maintenanceinstructions = _this.add_maintenanceinstructions;
 
 			// 参数变量 - 保修
-			var add_dateofpurchase = _this.add_dateofpurchase;
+			var add_dateofpurchase = _this.add_dateofpurchase ? new Date(_this.add_dateofpurchase).Format("yyyy-MM-dd") : '';
 			var add_warrantymonths = _this.add_warrantymonths;
 			var add_warrantyinfo = _this.add_warrantyinfo;
 

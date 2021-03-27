@@ -144,13 +144,13 @@ class ItemAddController extends Controller
 				'locationid' => $add_location_select,
 				'locareaid' => $add_area_select,
 				'rackid' => $add_rack_select,
-				// 'rackposition_select1' => $add_rackposition_select1,
-				// 'rackposition_select2' => $add_rackposition_select2,
+				'rackposition' => $add_rackposition_select1,
+				'rackposdepth' => $add_rackposition_select2,
 				'function' => $add_function,
 				'maintenanceinfo' => $add_maintenanceinstructions,
                 
 				// 参数变量 - 保修
-				// 'purchasedate' => $add_dateofpurchase,
+				'purchasedate' => $add_dateofpurchase,
 				'warrantymonths' => $add_warrantymonths,
 				'warrinfo' => $add_warrantyinfo,
                 
