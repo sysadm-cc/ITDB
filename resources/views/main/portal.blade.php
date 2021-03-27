@@ -411,10 +411,10 @@ var vm_app = new Vue({
 
 		CardList_Hardware: [
 			{
-				name: '查询',	url: '#', detail: '查询硬件信息',
+				name: '查询',	url: "{{ route('item.items') }}", detail: '查询硬件信息',
 			},
 			{
-				name: '添加',	url: '#', detail: '添加硬件信息',
+				name: '添加',	url: "{{ route('item.add') }}", detail: '添加硬件信息',
 			},
 			{
 				name: '项目类型',	url: "{{ route('item.itemtypes') }}", detail: '查看/修改项目类型',

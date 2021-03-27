@@ -382,7 +382,7 @@ function navmenuselect (name) {
 	switch(name)
 	{
 	case '1-1':
-	  window.location.href = "{{route('portal')}}";
+	  window.location.href = "{{route('item.items')}}";
 	  break;
 	case '1-2':
 	  window.location.href = "{{ route('item.add') }}";

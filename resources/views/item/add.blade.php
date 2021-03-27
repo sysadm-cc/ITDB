@@ -815,9 +815,67 @@ var vm_app = new Vue({
 		},
 
 
+		// 清除所有变量
+		add_clear_var () {
+			var _this = this;
+
+			// 参数变量 - 属性
+			_this.add_itemtype_select = '';
+			_this.add_ispart = false;
+			_this.add_rackmountable = false;
+			_this.add_manufact_select = '';
+			_this.add_model = '';
+			_this.add_usize_select = '';
+			_this.add_sn1 = '';
+			_this.add_sn2 = '';
+			_this.add_servicetag = '';
+			_this.add_comments = '';
+			_this.add_label = '';
+
+			// 参数变量 - 使用
+			_this.add_status_select = '';
+			_this.add_user_select = '';
+			_this.add_location_select = '';
+			_this.add_area_select = '';
+			_this.add_rack_select = '';
+			_this.add_rackposition_select1 = '';
+			_this.add_rackposition_select2 = '';
+			_this.add_function = '';
+			_this.add_maintenanceinstructions = '';
+
+			// 参数变量 - 保修
+			_this.add_dateofpurchase = '';
+			_this.add_warrantymonths = '';
+			_this.add_warrantyinfo = '';
+
+			// 参数变量 - 配件
+			_this.add_harddisk = '';
+			_this.add_ram = '';
+			_this.add_cpumodel = '';
+			_this.add_cpus_select = '';
+			_this.add_cpucores_select = '';
+
+			// 参数变量 - 网络
+			_this.add_dns = '';
+			_this.add_mac = '';
+			_this.add_ipv4 = '';
+			_this.add_ipv6 = '';
+			_this.add_remoteadminip = '';
+			_this.add_panelport = '';
+			_this.add_switch_select = '';
+			_this.add_switchport = '';
+			_this.add_networkports_select = '';
+
+			// 参数变量 - 记账
+			_this.add_shop = '';
+			_this.add_purchaceprice ='';	
+		},
+
+
 		//新增
 		add_create () {
 			var _this = this;
+			_this.add_create_disabled = true;
 
 			// 参数变量 - 属性
 			var add_itemtype_select = _this.add_itemtype_select;
@@ -875,6 +933,7 @@ var vm_app = new Vue({
 				|| add_model == '' || add_model == undefined
 				|| add_status_select == '' || add_status_select == undefined) {
 				_this.error(false, '错误', '内容为空或不正确！');
+				_this.add_create_disabled = false;
 				return false;
 			}
 // console.log(add_itemtype_select);return false;
@@ -938,8 +997,8 @@ var vm_app = new Vue({
 
 			})
 			.then(function (response) {
-				console.log(response.data);
-				return false;
+				// console.log(response.data);
+				// return false;
 
 				if (response.data['jwt'] == 'logout') {
 					_this.alert_logout();
@@ -947,17 +1006,20 @@ var vm_app = new Vue({
 				}
 				
  				if (response.data) {
-					_this.titemtypes_add_typedesc = '';
+					_this.add_clear_var();
 					// _this.itemtypesgets(_this.page_current, _this.page_last);
 					_this.success(false, '成功', '新建成功！');
 				} else {
 					_this.error(false, '失败', '新建失败！');
 				}
+				_this.add_create_disabled = false;
 			})
 			.catch(function (error) {
 				_this.error(false, '错误', '新建失败！');
+				_this.add_create_disabled = false;
 			})
 
+			
 
 		},
 
