@@ -21,7 +21,7 @@ use Ramsey\Uuid\Uuid;
 class ItemItemsController extends Controller
 {
 	/**
-	 * 显示页面 add
+	 * 显示页面 items
 	 *
 	 * @param  int  $id
 	 * @return \Illuminate\Http\Response
@@ -52,6 +52,46 @@ class ItemItemsController extends Controller
 	return view('item.items', $share);
 	}
 
+
+	/**
+	 * 读取记录 items
+	 *
+	 * @param  int  $id
+	 * @return \Illuminate\Http\Response
+	 */
+	public function itemItemsGets(Request $request)
+	{
+	if (! $request->ajax()) return null;
+
+	$url = request()->url();
+	$queryParams = request()->query();
+	
+	$perPage = $queryParams['perPage'] ?? 10000;
+	$page = $queryParams['page'] ?? 1;
+	
+	//对查询参数按照键名排序
+	ksort($queryParams);
+
+	//将查询数组转换为查询字符串
+	$queryString = http_build_query($queryParams);
+
+	$fullUrl = sha1("{$url}?{$queryString}");
+	
+	
+	//首先查寻cache如果找到
+	if (Cache::has($fullUrl)) {
+		$result = Cache::get($fullUrl);    //直接读取cache
+	} else {                                   //如果cache里面没有
+		$result = Item_items::select()
+			->limit(1000)
+			->orderBy('created_at', 'asc')
+			->paginate($perPage, ['*'], 'page', $page);
+
+		Cache::put($fullUrl, $result, now()->addSeconds(10));
+		}
+
+	return $result;
+	}
 
 
 

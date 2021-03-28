@@ -18,8 +18,8 @@ Route::group(['prefix'=>'item', 'namespace'=>'Item', 'middleware'=>['jwtauth']],
 	// 显示 Items 页面
 	Route::get('itemItems', 'ItemItemsController@itemItems')->name('item.items');
 
-	// Itemstypes gets列表
-	// Route::get('itemItemtypesGets', 'ItemItemtypesController@itemItemtypesGets')->name('item.itemtypesgets');
+	// Items gets列表
+	Route::get('itemItemsGets', 'ItemItemsController@itemItemsGets')->name('item.itemsgets');
 
 	// Itemstypes Update typedesc
 	// Route::post('itemItemtypesUpdateTypedesc', 'ItemItemtypesController@itemItemtypesUpdateTypedesc')->name('item.itemtypesupdate_typedesc');

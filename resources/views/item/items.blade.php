@@ -150,56 +150,56 @@ var vm_app = new Vue({
 			// 	width: 80
 			// },
 			{
-				title: 'uid',
-				key: 'uid',
-				sortable: true,
+				title: '标签',
+				key: 'label',
+				// sortable: true,
 				width: 100
 			},
 			{
-				title: 'name',
-				key: 'name',
+				title: '物品类型',
+				key: 'typedesc',
 				width: 100
 			},
 			{
-				title: 'department',
-				key: 'department',
-				width: 130
-			},
-			// {
-			// 	title: 'ldapname',
-			// 	key: 'ldapname',
-			// 	width: 130
-			// },
-			// {
-			// 	title: 'email',
-			// 	key: 'email',
-			// 	width: 240
-			// },
-			// {
-			// 	title: 'displayname',
-			// 	key: 'displayname',
-			// 	width: 180
-			// },
-			{
-				title: 'login IP',
-				key: 'login_ip',
-				width: 130
-			},
-			{
-				title: 'counts',
-				key: 'login_counts',
-				align: 'center',
-				sortable: true,
+				title: '制造商',
+				key: 'manufacturer',
 				width: 100
 			},
 			{
-				title: 'login time',
-				key: 'login_time',
+				title: '型号',
+				key: 'model',
+				width: 100
+			},
+			{
+				title: '域名',
+				key: 'dnsname',
+				width: 100
+			},
+			{
+				title: '服务编号',
+				key: 'servicetag',
+				width: 100
+			},
+			{
+				title: '购买日期',
+				key: 'purchasedate',
+				width: 100
+			},
+			{
+				title: '保修时长',
+				key: 'warrantymonths',
+				// align: 'center',
+				// sortable: true,
+				width: 100
+			},
+			{
+				title: '使用者',
+				key: 'user',
 				width: 160
 			},
 			{
-				title: 'status',
-				key: 'deleted_at',
+				title: '状态',
+				key: 'status',
 				align: 'center',
 				width: 80,
 				render: (h, params) => {
@@ -228,21 +228,63 @@ var vm_app = new Vue({
 				}
 			},
 			{
-				title: 'created_at',
+				title: '位置场所',
+				key: 'location',
+				width: 100
+			},
+			{
+				title: '区域/房间',
+				key: 'locarea',
+				width: 100
+			},
+			{
+				title: '机架',
+				key: 'rack',
+				width: 100
+			},
+			{
+				title: '购入价格',
+				key: 'purchprice',
+				width: 100
+			},
+			{
+				title: 'Mac地址',
+				key: 'macs',
+				width: 100
+			},
+			{
+				title: 'IPv4',
+				key: 'ipv4',
+				width: 100
+			},
+			{
+				title: '管理IP',
+				key: 'remadmip',
+				width: 100
+			},
+			{
+				title: '功能',
+				key: 'function',
+				width: 100
+			},
+			{
+				title: '创建时间',
 				key: 'created_at',
+				sortable: true,
 				width: 160
 			},
 			{
-				title: 'Action',
+				title: '操作',
 				key: 'action',
 				align: 'center',
-				width: 140,
+				width: 100,
 				render: (h, params) => {
 					return h('div', [
 						h('Button', {
 							props: {
 								type: 'primary',
-								size: 'small'
+								size: 'small',
+								icon: 'md-arrow-round-down'
 							},
 							style: {
 								marginRight: '5px'
@@ -253,20 +295,6 @@ var vm_app = new Vue({
 								}
 							}
 						}, 'Edit'),
-						h('Button', {
-							props: {
-								type: 'primary',
-								size: 'small'
-							},
-							style: {
-								marginRight: '5px'
-							},
-							on: {
-								click: () => {
-									vm_app.user_clsttl(params.row)
-								}
-							}
-						}, 'ClsTTL')
 					]);
 				},
 				fixed: 'right'
@@ -283,345 +311,8 @@ var vm_app = new Vue({
 
 
 
-		tablecolumns_auditing1: [
-			{
-				type: 'index',
-				align: 'center',
-				width: 60,
-			},
-			{
-				title: 'uid',
-				key: 'uid',
-				width: 100
-			},
-			{
-				title: 'name',
-				key: 'name',
-				width: 100
-			},
-			{
-				title: 'department',
-				key: 'department',
-				width: 130
-			},
-			{
-				title: 'status',
-				key: 'deleted_at',
-				align: 'center',
-				width: 80,
-				render: (h, params) => {
-					return h('div', [
-						// params.row.deleted_at.toLocaleString()
-						// params.row.deleted_at ? '禁用' : '启用'
-						
-						h('i-switch', {
-							props: {
-								type: 'primary',
-								size: 'small',
-								value: ! params.row.deleted_at
-							},
-							style: {
-								marginRight: '5px'
-							},
-							on: {
-								'on-change': (value) => {//触发事件是on-change,用双引号括起来，
-									//参数value是回调值，并没有使用到
-									vm_app.trash_user(params.row.id) //params.index是拿到table的行序列，可以取到对应的表格值
-								}
-							}
-						}, 'Edit')
-						
-					]);
-				}
-			},
-			{
-				title: 'Action',
-				key: 'action',
-				align: 'center',
-				width: 140,
-				render: (h, params) => {
-					return h('div', [
-						h('Button', {
-							props: {
-								type: 'default',
-								size: 'small',
-								icon: 'md-arrow-round-down'
-							},
-							style: {
-								marginRight: '5px'
-							},
-							on: {
-								click: () => {
-									vm_app.auditing_down1(params)
-								}
-							}
-						}),
-						h('Button', {
-							props: {
-								type: 'default',
-								size: 'small',
-								icon: 'md-arrow-round-up'
-							},
-							style: {
-								marginRight: '5px'
-							},
-							on: {
-								click: () => {
-									vm_app.auditing_up1(params)
-								}
-							}
-						}),
-						h('Button', {
-							props: {
-								type: 'default',
-								size: 'small',
-								icon: 'md-close'
-							},
-							style: {
-								marginRight: '5px'
-							},
-							on: {
-								click: () => {
-									vm_app.auditing_remove1(params.row)
-								}
-							}
-						}),
-					]);
-				},
-				// fixed: 'right'
-			}
-		],
-		tabledata_auditing1: [],
-		tableselect_auditing1: [],
 
-
-		tablecolumns_auditing2_applicant: [
-			{
-				type: 'index',
-				align: 'center',
-				width: 60,
-			},
-			{
-				title: 'uid',
-				key: 'uid',
-				width: 100
-			},
-			{
-				title: 'name',
-				key: 'name',
-				width: 100
-			},
-			{
-				title: 'department',
-				key: 'department',
-				width: 130
-			},
-			{
-				title: 'status',
-				key: 'deleted_at',
-				align: 'center',
-				width: 80,
-				render: (h, params) => {
-					return h('div', [
-						// params.row.deleted_at.toLocaleString()
-						// params.row.deleted_at ? '禁用' : '启用'
-						
-						h('i-switch', {
-							props: {
-								type: 'primary',
-								size: 'small',
-								value: ! params.row.deleted_at
-							},
-							style: {
-								marginRight: '5px'
-							},
-							on: {
-								'on-change': (value) => {//触发事件是on-change,用双引号括起来，
-									//参数value是回调值，并没有使用到
-									vm_app.trash_user(params.row.id) //params.index是拿到table的行序列，可以取到对应的表格值
-								}
-							}
-						}, 'Edit')
-						
-					]);
-				}
-			},
-			{
-				title: 'Action',
-				key: 'action',
-				align: 'center',
-				width: 140,
-				render: (h, params) => {
-					return h('div', [
-						h('Button', {
-							props: {
-								type: 'default',
-								size: 'small',
-								icon: 'md-arrow-round-down'
-							},
-							style: {
-								marginRight: '5px'
-							},
-							on: {
-								click: () => {
-									vm_app.auditing_down2(params)
-								}
-							}
-						}),
-						h('Button', {
-							props: {
-								type: 'default',
-								size: 'small',
-								icon: 'md-arrow-round-up'
-							},
-							style: {
-								marginRight: '5px'
-							},
-							on: {
-								click: () => {
-									vm_app.auditing_up2(params)
-								}
-							}
-						}),
-						h('Button', {
-							props: {
-								type: 'default',
-								size: 'small',
-								icon: 'md-close'
-							},
-							style: {
-								marginRight: '5px'
-							},
-							on: {
-								click: () => {
-									vm_app.auditing_remove2(params.row)
-								}
-							}
-						}),
-					]);
-				},
-				// fixed: 'right'
-			}
-		],
-		tabledata_auditing2_applicant: [],
-		tableselect_auditing2_applicant: [],
-
-		tablecolumns_auditing2_confirm: [
-			{
-				type: 'index',
-				align: 'center',
-				width: 60,
-			},
-			{
-				title: 'uid',
-				key: 'uid',
-				width: 100
-			},
-			{
-				title: 'name',
-				key: 'name',
-				width: 100
-			},
-			{
-				title: 'department',
-				key: 'department',
-				width: 130
-			},
-			{
-				title: 'status',
-				key: 'deleted_at',
-				align: 'center',
-				width: 80,
-				render: (h, params) => {
-					return h('div', [
-						// params.row.deleted_at.toLocaleString()
-						// params.row.deleted_at ? '禁用' : '启用'
-						
-						h('i-switch', {
-							props: {
-								type: 'primary',
-								size: 'small',
-								value: ! params.row.deleted_at
-							},
-							style: {
-								marginRight: '5px'
-							},
-							on: {
-								'on-change': (value) => {//触发事件是on-change,用双引号括起来，
-									//参数value是回调值，并没有使用到
-									vm_app.trash_user(params.row.id) //params.index是拿到table的行序列，可以取到对应的表格值
-								}
-							}
-						}, 'Edit')
-						
-					]);
-				}
-			},
-			{
-				title: 'Action',
-				key: 'action',
-				align: 'center',
-				width: 140,
-				render: (h, params) => {
-					return h('div', [
-						h('Button', {
-							props: {
-								type: 'default',
-								size: 'small',
-								icon: 'md-arrow-round-down'
-							},
-							style: {
-								marginRight: '5px'
-							},
-							on: {
-								click: () => {
-									vm_app.auditing_down2_confirm(params)
-								}
-							}
-						}),
-						h('Button', {
-							props: {
-								type: 'default',
-								size: 'small',
-								icon: 'md-arrow-round-up'
-							},
-							style: {
-								marginRight: '5px'
-							},
-							on: {
-								click: () => {
-									vm_app.auditing_up2_confirm(params)
-								}
-							}
-						}),
-						h('Button', {
-							props: {
-								type: 'default',
-								size: 'small',
-								icon: 'md-close'
-							},
-							style: {
-								marginRight: '5px'
-							},
-							on: {
-								click: () => {
-									vm_app.auditing_remove2_confirm(params.row)
-								}
-							}
-						}),
-					]);
-				},
-				// fixed: 'right'
-			}
-		],
-		tabledata_auditing2_confirm: [],
-		tableselect_auditing2_confirm: [],
 		
-		//分页
-		page_current: 1,
-		page_total: 1, // 记录总数，非总页数
-		page_size: {{ $config['PERPAGE_RECORDS_FOR_USER'] }},
-		page_last: 1,		
 		
 		// 创建
 		modal_user_add: false,
@@ -721,7 +412,7 @@ var vm_app = new Vue({
 		
     },
 	methods: {
-		menuselect: function (name) {
+		menuselect (name) {
 			navmenuselect(name);
 		},
 		// 1.加载进度条
@@ -760,7 +451,7 @@ var vm_app = new Vue({
 			});
 		},
 
-		alert_logout: function () {
+		alert_logout () {
 			this.error(false, '会话超时', '会话超时，请重新登录！');
 			window.setTimeout(function(){
 				window.location.href = "{{ route('portal') }}";
@@ -769,7 +460,7 @@ var vm_app = new Vue({
 		},
 		
 		// 把laravel返回的结果转换成select能接受的格式
-		json2selectvalue: function (json) {
+		json2selectvalue (json) {
 			var arr = [];
 			for (var key in json) {
 				// alert(key);
@@ -783,12 +474,62 @@ var vm_app = new Vue({
 
 
 		// 切换当前页
-		oncurrentpagechange: function (currentpage) {
-			this.usergets(currentpage, this.page_last);
+		oncurrentpagechange (currentpage) {
+			this.itemsgets(currentpage, this.page_last);
 		},
 
 		
-		
+		//
+		itemsgets (page, last_page){
+			var _this = this;
+			
+			if (page > last_page) {
+				page = last_page;
+			} else if (page < 1) {
+				page = 1;
+			}
+			
+
+			_this.loadingbarstart();
+			var url = "{{ route('item.itemsgets') }}";
+			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
+			axios.get(url,{
+				params: {
+					perPage: _this.page_size,
+					page: page,
+				}
+			})
+			.then(function (response) {
+				// console.log(response.data);
+				// return false;
+
+				if (response.data['jwt'] == 'logout') {
+					_this.alert_logout();
+					return false;
+				}
+
+				if (response.data) {
+					_this.items_delete_disabled = true;
+					_this.tableselect = [];
+					
+					_this.page_current = response.data.current_page;
+					_this.page_total = response.data.total;
+					_this.page_last = response.data.last_page;
+					_this.tabledata = response.data.data;
+					
+				}
+				
+				_this.loadingbarfinish();
+			})
+			.catch(function (error) {
+				_this.loadingbarerror();
+				_this.error(false, 'Error', error);
+			})
+		},
+
+
+
+
 		
 		
 		
@@ -802,7 +543,7 @@ var vm_app = new Vue({
 		_this.current_nav = '硬件';
 		_this.current_subnav = '物品查询';
 		// 显示所有记录
-		// _this.usergets(1, 1); // page: 1, last_page: 1
+		_this.itemsgets(1, 1); // page: 1, last_page: 1
 		_this.loadingbarfinish();
 	}
 });
