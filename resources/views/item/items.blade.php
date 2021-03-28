@@ -143,6 +143,91 @@ var vm_app = new Vue({
 					return row._index + 1 + vm_app.page_size * (vm_app.page_current - 1)
 				}
 			},
+			{
+				title: '状态',
+				key: 'status',
+				align: 'center',
+				width: 50,
+				render: (h, params) => {
+					if (params.row.id == 1) {
+						return h('div', {}, [
+							h('Icon',{
+								props: {
+									type: 'md-bookmark',
+									size: 14,
+									color: 'blue',
+									}
+								}
+							),
+						])
+					} else if (params.row.id == 2) {
+						return h('div', {}, [
+							h('Icon',{
+								props: {
+									type: 'md-bookmark',
+									size: 14,
+									color: 'green',
+									}
+								}
+							),
+						])
+					} else if (params.row.id == 3) {
+						return h('div', {}, [
+							h('Icon',{
+								props: {
+									type: 'md-bookmark',
+									size: 14,
+									color: 'red',
+									}
+								}
+							),
+						])
+					} else if (params.row.id == 4) {
+						return h('div', {}, [
+							h('Icon',{
+								props: {
+									type: 'md-bookmark',
+									size: 14,
+									color: 'gray',
+									}
+								}
+							),
+						])
+					} else if (params.row.id == 5) {
+						return h('div', {}, [
+							h('Icon',{
+								props: {
+									type: 'md-bookmark',
+									size: 14,
+									color: 'yellow',
+									}
+								}
+							),
+						])
+					} else if (params.row.id == 6) {
+						return h('div', {}, [
+							h('Icon',{
+								props: {
+									type: 'md-bookmark',
+									size: 14,
+									color: 'black',
+									}
+								}
+							),
+						])
+					} else {
+						return h('div', {}, [
+							h('Icon',{
+								props: {
+									type: 'md-bookmark',
+									size: 14,
+									}
+								}
+							),
+						])
+					}	
+				}
+			},
 			// {
 			// 	title: 'id',
 			// 	key: 'id',
@@ -153,22 +238,26 @@ var vm_app = new Vue({
 				title: '标签',
 				key: 'label',
 				// sortable: true,
+				resizable: true,
 				width: 100
 			},
 			{
 				title: '物品类型',
 				key: 'typedesc',
+				resizable: true,
 				width: 100
 			},
 			{
 				title: '制造商',
 				key: 'manufacturer',
+				resizable: true,
 				width: 100
 			},
 			{
 				title: '型号',
 				key: 'model',
-				width: 100
+				resizable: true,
+				width: 160
 			},
 			{
 				title: '域名',
@@ -197,36 +286,7 @@ var vm_app = new Vue({
 				key: 'user',
 				width: 160
 			},
-			{
-				title: '状态',
-				key: 'status',
-				align: 'center',
-				width: 80,
-				render: (h, params) => {
-					return h('div', [
-						// params.row.deleted_at.toLocaleString()
-						// params.row.deleted_at ? '禁用' : '启用'
-						
-						h('i-switch', {
-							props: {
-								type: 'primary',
-								size: 'small',
-								value: ! params.row.deleted_at
-							},
-							style: {
-								marginRight: '5px'
-							},
-							on: {
-								'on-change': (value) => {//触发事件是on-change,用双引号括起来，
-									//参数value是回调值，并没有使用到
-									vm_app.trash_user(params.row.id) //params.index是拿到table的行序列，可以取到对应的表格值
-								}
-							}
-						}, 'Edit')
-						
-					]);
-				}
-			},
+
 			{
 				title: '位置场所',
 				key: 'location',
@@ -528,6 +588,17 @@ var vm_app = new Vue({
 		},
 
 
+		// 表格选择
+		onselectchange (selection) {
+			var _this = this;
+			_this.tableselect = [];
+
+			for (var i in selection) {
+				_this.tableselect.push(selection[i].id);
+			}
+			
+			_this.items_delete_disabled = _this.tableselect[0] == undefined ? true : false;
+		},
 
 
 		
