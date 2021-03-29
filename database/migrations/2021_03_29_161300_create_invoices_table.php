@@ -19,7 +19,7 @@ class CreateInvoicesTable extends Migration
             $table->integer('vendorid')->comment('供应商');
             $table->string('ordernumber')->nullable()->comment('订单编号');
             $table->string('buyer')->nullable()->comment('购买者');
-            $table->datatime('invoicedate')->nullable()->comment('发票日期');
+            $table->datetime('invoicedate')->nullable()->comment('发票日期');
             $table->text('description')->nullable()->comment('详细内容');
 
             $table->timestamps();
