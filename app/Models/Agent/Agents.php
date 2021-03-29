@@ -15,7 +15,7 @@ class Agents extends Model
     //     'id', 'typedesc', 'hassoftware',
     // ];
 
-    protected $guarded = ['*'];
+    protected $guarded = [];
 
     /**
      * 这个属性应该被转换为原生类型.

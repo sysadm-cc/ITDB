@@ -442,7 +442,7 @@ function navmenuselect (name) {
 	  window.location.href = "{{route('agent.agents')}}";
 	  break;
 	case '5-2':
-	  window.location.href = "{{route('agent.create')}}";
+	  window.location.href = "{{route('agent.add')}}";
 	  break;
 	case '5-3':
 	  window.location.href = "";

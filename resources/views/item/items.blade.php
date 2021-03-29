@@ -330,7 +330,6 @@ var vm_app = new Vue({
 			{
 				title: '创建时间',
 				key: 'created_at',
-				sortable: true,
 				width: 160
 			},
 			{

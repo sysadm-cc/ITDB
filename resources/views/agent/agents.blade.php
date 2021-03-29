@@ -75,7 +75,7 @@
 <i-row :gutter="16">
 	<i-col span="24">
 
-		<i-table height="300" size="small" border :columns="tablecolumns" :data="tabledata"></i-table>
+		<i-table height="300" size="small" border :columns="tablecolumns" :data="tabledata" @on-selection-change="selection => onselectchange(selection)"></i-table>
 		<br><Page :current="page_current" :total="page_total" :page-size="page_size" @on-change="currentpage => oncurrentpagechange(currentpage)" @on-page-size-change="pagesize => onpagesizechange(pagesize)" :page-size-opts="[5, 10, 20, 50]" show-total show-elevator show-sizer></Page>
 
 		</i-col>
@@ -149,14 +149,6 @@ var vm_app = new Vue({
 		// itemtypes_add_hassoftware: false,
 
 
-
-
-
-
-
-
-
-
 		tablecolumns: [
 			{
 				type: 'selection',
@@ -176,38 +168,41 @@ var vm_app = new Vue({
 			{
 				title: '名称',
 				key: 'title',
+				resizable: true,
 				width: 160,
 			},
 			{
 				title: '类型',
 				key: 'type',
+				resizable: true,
 				width: 180,
 			},
 			{
 				title: '联系信息',
 				key: 'contactinfo',
+				resizable: true,
 				width: 180,
 			},
 			{
 				title: '联系方式',
 				key: 'contact',
+				resizable: true,
 				width: 180,
 			},
 			{
 				title: 'URLs',
 				key: 'urls',
+				resizable: true,
 				width: 180,
 			},
 			{
 				title: '创建时间',
 				key: 'created_at',
-				sortable: true,
 				width: 160
 			},
 			{
 				title: '更新时间',
 				key: 'updated_at',
-				sortable: true,
 				width: 160
 			},
 			@hasanyrole('role_super_admin')
@@ -218,12 +213,13 @@ var vm_app = new Vue({
 				width: 100,
 				fixed: 'right',
 				render: (h, params) => {
-					if (params.row.id > 3) {
+					// if (params.row.id > 3) {
 						return h('div', [
 							h('Button', {
 								props: {
-									type: 'error',
-									size: 'small'
+									type: 'primary',
+									size: 'small',
+									icon: 'md-arrow-round-down'
 								},
 								style: {
 									marginRight: '5px'
@@ -233,11 +229,11 @@ var vm_app = new Vue({
 										vm_app.itemtypes_delete(params.row)
 									}
 								}
-							}, '删除'),
+							}, '编辑'),
 							
 
 						]);
-					}
+					// }
 				},
 				
 			}
@@ -362,11 +358,23 @@ var vm_app = new Vue({
 			})
 		},
 	
-		
 		// 切换当前页
 		oncurrentpagechange (currentpage) {
 			this.agentsgets(currentpage, this.page_last);
 		},
+
+		// 表格选择
+		onselectchange (selection) {
+			var _this = this;
+			_this.tableselect = [];
+
+			for (var i in selection) {
+				_this.tableselect.push(selection[i].id);
+			}
+			
+			_this.agents_delete_disabled = _this.tableselect[0] == undefined ? true : false;
+		},
+
 
 
 
@@ -547,7 +555,7 @@ var vm_app = new Vue({
 		_this.current_subnav = '查询';
 
 		// // 显示所有
-		// _this.itemtypesgets(1, 1); // page: 1, last_page: 1
+		_this.agentsgets(1, 1); // page: 1, last_page: 1
 		// _this.loadapplicantgroup();
 
 		// GetCurrentDatetime('getcurrentdatetime');

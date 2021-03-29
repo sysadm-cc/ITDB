@@ -32,6 +32,9 @@ Route::group(['prefix'=>'agent', 'namespace'=>'Agent', 'middleware'=>['jwtauth']
 	// Agents Delete
 	// Route::post('itemItemtypesDelete', 'ItemItemtypesController@itemItemtypesDelete')->name('item.itemtypesdelete');
 
+	// 显示 Agents add 页面
+	Route::get('agentAdd', 'AgentsController@agentAdd')->name('agent.add');
+
 	// Agents Create
 	Route::post('agentCreate', 'AgentsController@agentCreate')->name('agent.create');
 

@@ -53,6 +53,39 @@ class AgentsController extends Controller
 	}
 
 
+	/**
+	 * 显示页面 add
+	 *
+	 * @param  int  $id
+	 * @return \Illuminate\Http\Response
+	 */
+	public function agentAdd()
+	{
+	// 获取JSON格式的jwt-auth用户响应
+	$me = response()->json(auth()->user());
+
+	// 获取JSON格式的jwt-auth用户信息（$me->getContent()），就是$me的data部分
+	$user = json_decode($me->getContent(), true);
+	// 用户信息：$user['id']、$user['name'] 等
+
+	// 获取系统配置
+	$config = Config::pluck('cfg_value', 'cfg_name')->toArray();
+
+	// 获取 itemtypes 信息
+	// $info_todo = Item_itemtypes::select('id', 'statusdesc', 'created_at', 'updated_at', 'deleted_at')
+	// 	// ->where('uid_of_auditor', $user['uid'])
+	// 	// ->whereBetween('status', [1, 98])
+	// 	// ->where('archived', false)
+	// 	->limit(100)
+	// 	->orderBy('created_at', 'desc')
+	// 	->get()->toArray();
+	$info_todo = [];
+
+	$share = compact('config', 'user', 'info_todo');
+	return view('agent.add', $share);
+	}
+
+
     /**
      * 新建 agentCreate
      *
@@ -64,18 +97,25 @@ class AgentsController extends Controller
 		if (! $request->isMethod('post') || ! $request->ajax()) return false;
 
 		// $nowtime = date("Y-m-d H:i:s",time());
-		$typedesc = $request->input('typedesc');
-		$hassoftware = $request->input('hassoftware');
+		$title = $request->input('add_title');
+		$type = $request->input('add_type_select');
+		$contactinfo = $request->input('add_contactinfo');
+		$contacts = $request->input('add_contacts');
+		$urls = $request->input('add_urls');
 		
 		try	{
 			$result = Agents::create([
-				'typedesc' => $typedesc,
-				'hassoftware' => $hassoftware,
+				'title' => $title,
+				'type' => $type,
+				'contactinfo' => $contactinfo,
+				'contacts' => $contacts,
+				'urls' => $urls,
 			]);
 			Cache::flush();
 		}
 		catch (\Exception $e) {
 			// echo 'Message: ' .$e->getMessage();
+			dd('Message: ' .$e->getMessage());
 			$result = 0;
 		}
 
@@ -83,19 +123,13 @@ class AgentsController extends Controller
     }
 
 
-
-
-
-
-
-
 	/**
-	 * 读取记录 itemtypes
+	 * 读取记录 agents
 	 *
 	 * @param  int  $id
 	 * @return \Illuminate\Http\Response
 	 */
-	public function itemItemtypesGets(Request $request)
+	public function agentGets(Request $request)
 	{
 	if (! $request->ajax()) return null;
 
@@ -118,7 +152,7 @@ class AgentsController extends Controller
 	if (Cache::has($fullUrl)) {
 		$result = Cache::get($fullUrl);    //直接读取cache
 	} else {                                   //如果cache里面没有
-		$result = Item_itemtypes::select('id', 'typedesc', 'hassoftware', 'created_at', 'updated_at', 'deleted_at')
+		$result = Agents::select()
 			->limit(1000)
 			->orderBy('created_at', 'asc')
 			->paginate($perPage, ['*'], 'page', $page);
@@ -128,6 +162,11 @@ class AgentsController extends Controller
 
 	return $result;
 	}
+
+
+
+
+
 
 	
 	/**
