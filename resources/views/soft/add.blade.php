@@ -1,7 +1,7 @@
-@extends('agent.layouts.mainbase')
+@extends('soft.layouts.mainbase')
 
 @section('my_title')
-供应商添加 - 
+软件添加 - 
 @parent
 @endsection
 
@@ -16,7 +16,7 @@
 
 @section('my_body')
 @parent
-<!-- <Divider orientation="left">供应商添加</Divider> -->
+<!-- <Divider orientation="left">软件添加</Divider> -->
 &nbsp;<br>
 
 
@@ -107,8 +107,8 @@ var vm_app = new Vue({
 		current_nav: '',
 		current_subnav: '',
 		
-		sideractivename: '5-2',
-		sideropennames: ['5'],
+		sideractivename: '2-2',
+		sideropennames: ['2'],
 		
 		//分页
 		page_current: 1,
@@ -539,7 +539,7 @@ var vm_app = new Vue({
 	mounted: function(){
 		var _this = this;
 		_this.loadingbarstart();
-		_this.current_nav = '代理商';
+		_this.current_nav = '软件';
 		_this.current_subnav = '添加';
 
 

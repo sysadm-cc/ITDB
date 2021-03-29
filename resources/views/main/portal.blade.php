@@ -426,10 +426,10 @@ var vm_app = new Vue({
 
 		CardList_Software: [
 			{
-				name: '查询',	url: '#', detail: '查询软件信息',
+				name: '查询',	url: "{{ route('soft.softs') }}", detail: '查询软件信息',
 			},
 			{
-				name: '添加',	url: '#', detail: '添加软件信息',
+				name: '添加',	url: "{{ route('soft.add') }}", detail: '添加软件信息',
 			},
 			{
 				name: '',	url: '#', detail: '',
@@ -441,10 +441,10 @@ var vm_app = new Vue({
 
 		CardList_Invoices: [
 			{
-				name: '查询',	url: '#', detail: '',
+				name: '查询',	url: "", detail: '',
 			},
 			{
-				name: '添加',	url: '#', detail: '',
+				name: '添加',	url: "", detail: '',
 			},
 			{
 				name: '',	url: '#', detail: '',
@@ -487,10 +487,10 @@ var vm_app = new Vue({
 
 		CardList_Agents: [
 			{
-				name: '查询',	url: '{{ route('agent.agents') }}', detail: '',
+				name: '查询',	url: "{{ route('agent.agents') }}", detail: '',
 			},
 			{
-				name: '添加',	url: '{{ route('agent.create') }}', detail: '',
+				name: '添加',	url: "{{ route('agent.create') }}", detail: '',
 			},
 			{
 				name: '',	url: '#', detail: '',

@@ -16,10 +16,10 @@
 Route::group(['prefix'=>'soft', 'namespace'=>'Soft', 'middleware'=>['jwtauth']], function() {
 
 	// 显示 Softs 页面
-	Route::get('softSofts', 'SoftsController@softSofts')->name('agent.softs');
+	Route::get('softSofts', 'SoftsController@softSofts')->name('soft.softs');
 
 	// Agents gets列表
-	Route::get('agentGets', 'AgentsController@agentGets')->name('agent.gets');
+	Route::get('softGets', 'SoftsController@softGets')->name('soft.gets');
 
 	// Agents Update typedesc
 	// Route::post('itemItemtypesUpdateTypedesc', 'ItemItemtypesController@itemItemtypesUpdateTypedesc')->name('item.itemtypesupdate_typedesc');
