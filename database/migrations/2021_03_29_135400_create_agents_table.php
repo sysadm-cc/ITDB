@@ -15,11 +15,11 @@ class CreateItemItemtypesTable extends Migration
     {
         Schema::create('agents', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('type')->comment('代理商类型');
+            $table->integer('type')->nullable()->comment('代理商类型');
             $table->string('title')->comment('代理商名称');
-            $table->string('contactinfo')->comment('联系信息');
-            $table->string('contacts')->comment('联系方式');
-            $table->string('urls')->comment('URL');
+            $table->string('contactinfo')->nullable()->comment('联系信息');
+            $table->string('contacts')->nullable()->comment('联系方式');
+            $table->string('urls')->nullable()->comment('URL');
             $table->timestamps();
             $table->softDeletes();
             $table->engine = 'InnoDB';
