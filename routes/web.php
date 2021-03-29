@@ -11,6 +11,34 @@
 |
 */
 
+// Invoices 路由
+// Route::group(['prefix'=>'renshi', 'namespace'=>'Admin', 'middleware'=>['jwtauth','permission:permission_admin_permission|permission_super_admin']], function() {
+Route::group(['prefix'=>'invoice', 'namespace'=>'Invoices', 'middleware'=>['jwtauth']], function() {
+
+	// 显示 Invoices 页面
+	Route::get('invoiceInvoices', 'InvoicesController@invoiceInvoices')->name('invoice.invoices');
+
+	// Agents gets列表
+	Route::get('invoiceGets', 'InvoicesController@invoiceGets')->name('invoice.gets');
+
+	// Agents Update typedesc
+	// Route::post('itemItemtypesUpdateTypedesc', 'ItemItemtypesController@itemItemtypesUpdateTypedesc')->name('item.itemtypesupdate_typedesc');
+
+	// Agents Update
+	// Route::post('itemItemtypesUpdateHassoftware', 'ItemItemtypesController@itemItemtypesUpdateHassoftware')->name('item.itemtypesupdate_hassoftware');
+
+	// Agents Delete
+	// Route::post('itemItemtypesDelete', 'ItemItemtypesController@itemItemtypesDelete')->name('item.itemtypesdelete');
+
+	// 显示 Invoices add 页面
+	Route::get('invoiceAdd', 'InvoicesController@invoiceAdd')->name('invoice.add');
+
+	// Invoices Create
+	Route::post('invoiceCreate', 'InvoicesController@invoiceCreate')->name('invoice.create');
+
+});
+
+
 // Softs 路由
 // Route::group(['prefix'=>'renshi', 'namespace'=>'Admin', 'middleware'=>['jwtauth','permission:permission_admin_permission|permission_super_admin']], function() {
 Route::group(['prefix'=>'soft', 'namespace'=>'Soft', 'middleware'=>['jwtauth']], function() {
