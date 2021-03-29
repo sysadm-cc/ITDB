@@ -487,10 +487,10 @@ var vm_app = new Vue({
 
 		CardList_Agents: [
 			{
-				name: '查询',	url: '#', detail: '',
+				name: '查询',	url: '{{ route('agent.agents') }}', detail: '',
 			},
 			{
-				name: '添加',	url: '#', detail: '',
+				name: '添加',	url: '{{ route('agent.add') }}', detail: '',
 			},
 			{
 				name: '',	url: '#', detail: '',

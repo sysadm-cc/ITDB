@@ -11,6 +11,34 @@
 |
 */
 
+
+
+// Item Agents 路由
+// Route::group(['prefix'=>'renshi', 'namespace'=>'Admin', 'middleware'=>['jwtauth','permission:permission_admin_permission|permission_super_admin']], function() {
+Route::group(['prefix'=>'agent', 'namespace'=>'Agent', 'middleware'=>['jwtauth']], function() {
+
+	// 显示 Agents 页面
+	Route::get('agentAgents', 'AgentsController@agentAgents')->name('agent.agents');
+
+	// Agents gets列表
+	// Route::get('itemItemtypesGets', 'ItemItemtypesController@itemItemtypesGets')->name('item.itemtypesgets');
+
+	// Agents Update typedesc
+	// Route::post('itemItemtypesUpdateTypedesc', 'ItemItemtypesController@itemItemtypesUpdateTypedesc')->name('item.itemtypesupdate_typedesc');
+
+	// Agents Update
+	// Route::post('itemItemtypesUpdateHassoftware', 'ItemItemtypesController@itemItemtypesUpdateHassoftware')->name('item.itemtypesupdate_hassoftware');
+
+	// Agents Delete
+	// Route::post('itemItemtypesDelete', 'ItemItemtypesController@itemItemtypesDelete')->name('item.itemtypesdelete');
+
+	// Agents Create
+	// Route::post('itemItemtypesCreate', 'ItemItemtypesController@itemItemtypesCreate')->name('item.itemtypescreate');
+
+});
+	
+
+
 // Item items 路由
 // Route::group(['prefix'=>'renshi', 'namespace'=>'Admin', 'middleware'=>['jwtauth','permission:permission_admin_permission|permission_super_admin']], function() {
 Route::group(['prefix'=>'item', 'namespace'=>'Item', 'middleware'=>['jwtauth']], function() {
