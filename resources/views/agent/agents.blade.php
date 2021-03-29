@@ -58,7 +58,7 @@
 			<i-button @click="items_delete()" :disabled="agents_delete_disabled" type="warning" size="small">删除</i-button>&nbsp;<br>&nbsp;
 		</i-col>
 		<i-col span="2">
-			<i-button type="default" size="small" @click="items_create()"><Icon type="ios-color-wand-outline"></Icon> 新建</i-button>
+			<i-button type="default" size="small" @click="agents_add()"><Icon type="ios-color-wand-outline"></Icon> 新建</i-button>
 		</i-col>
 		<i-col span="2">
 			<i-button type="default" size="small" @click="items_export()"><Icon type="ios-download-outline"></Icon> 导出</i-button>
@@ -374,6 +374,12 @@ var vm_app = new Vue({
 			
 			_this.agents_delete_disabled = _this.tableselect[0] == undefined ? true : false;
 		},
+
+		// 跳转至添加页面
+		agents_add () {
+			window.location.href = "{{ route('agent.add') }}";
+		},
+
 
 
 

@@ -114,8 +114,7 @@ class AgentsController extends Controller
 			Cache::flush();
 		}
 		catch (\Exception $e) {
-			// echo 'Message: ' .$e->getMessage();
-			dd('Message: ' .$e->getMessage());
+			// dd('Message: ' .$e->getMessage());
 			$result = 0;
 		}
 

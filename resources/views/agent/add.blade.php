@@ -30,7 +30,8 @@
 					<i-input v-model.lazy="add_title" size="small"></i-input>
 				</Form-Item>
 				<Form-Item label="类型" style="margin-bottom:0px">
-					<i-select v-model.lazy="add_type_select" size="small" placeholder="选择">
+					<!-- <i-select v-model.lazy="add_type_select" multiple size="small" placeholder=""> -->
+					<i-select v-model.lazy="add_type_select" size="small" placeholder="">
 						<i-option v-for="item in add_type_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
 					</i-select>
 				</Form-Item>
@@ -106,8 +107,8 @@ var vm_app = new Vue({
 		current_nav: '',
 		current_subnav: '',
 		
-		sideractivename: '1-2',
-		sideropennames: ['1'],
+		sideractivename: '5-2',
+		sideropennames: ['5'],
 		
 		//分页
 		page_current: 1,
@@ -126,8 +127,11 @@ var vm_app = new Vue({
 		add_title: '',
 		add_type_select: '',
 		add_type_options: [
-			// {label: 'fax', value: 1},
-			// {label: 'pc', value: 2}
+			{label: '售卖方', value: '售卖方'},
+			{label: '软件销售商', value: '软件销售商'},
+			{label: '硬件销售商', value: '硬件销售商'},
+			{label: '买方', value: '买方'},
+			{label: '承包商', value: '承包商'},
 		],
 		add_contactinfo: '',
 		add_contacts: '',
@@ -452,7 +456,6 @@ var vm_app = new Vue({
 			var url = "{{ route('agent.create') }}";
 			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
 			axios.post(url, {
-				// 参数变量 - 属性
 				add_title: add_title,
 				add_type_select: add_type_select,
 				add_contactinfo: add_contactinfo,
@@ -485,6 +488,10 @@ var vm_app = new Vue({
 			
 
 		},
+
+
+
+
 
 
 		// ajax 获取物品类型列表
