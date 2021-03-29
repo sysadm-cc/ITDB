@@ -21,7 +21,7 @@ Route::group(['prefix'=>'agent', 'namespace'=>'Agent', 'middleware'=>['jwtauth']
 	Route::get('agentAgents', 'AgentsController@agentAgents')->name('agent.agents');
 
 	// Agents gets列表
-	// Route::get('itemItemtypesGets', 'ItemItemtypesController@itemItemtypesGets')->name('item.itemtypesgets');
+	Route::get('agentGets', 'AgentsController@agentGets')->name('agent.gets');
 
 	// Agents Update typedesc
 	// Route::post('itemItemtypesUpdateTypedesc', 'ItemItemtypesController@itemItemtypesUpdateTypedesc')->name('item.itemtypesupdate_typedesc');
@@ -33,7 +33,7 @@ Route::group(['prefix'=>'agent', 'namespace'=>'Agent', 'middleware'=>['jwtauth']
 	// Route::post('itemItemtypesDelete', 'ItemItemtypesController@itemItemtypesDelete')->name('item.itemtypesdelete');
 
 	// Agents Create
-	// Route::post('itemItemtypesCreate', 'ItemItemtypesController@itemItemtypesCreate')->name('item.itemtypescreate');
+	Route::post('agentCreate', 'AgentsController@agentCreate')->name('agent.create');
 
 });
 	

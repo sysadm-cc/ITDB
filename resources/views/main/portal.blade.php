@@ -490,7 +490,7 @@ var vm_app = new Vue({
 				name: '查询',	url: '{{ route('agent.agents') }}', detail: '',
 			},
 			{
-				name: '添加',	url: '{{ route('agent.add') }}', detail: '',
+				name: '添加',	url: '{{ route('agent.create') }}', detail: '',
 			},
 			{
 				name: '',	url: '#', detail: '',

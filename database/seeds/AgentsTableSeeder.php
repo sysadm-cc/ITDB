@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-use App\Models\Item\Agents;
+use App\Models\Agent\Agents;
 
 class AgentsTableSeeder extends Seeder
 {

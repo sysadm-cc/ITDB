@@ -53,6 +53,42 @@ class AgentsController extends Controller
 	}
 
 
+    /**
+     * 新建 agentCreate
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function agentCreate(Request $request)
+    {
+		if (! $request->isMethod('post') || ! $request->ajax()) return false;
+
+		// $nowtime = date("Y-m-d H:i:s",time());
+		$typedesc = $request->input('typedesc');
+		$hassoftware = $request->input('hassoftware');
+		
+		try	{
+			$result = Agents::create([
+				'typedesc' => $typedesc,
+				'hassoftware' => $hassoftware,
+			]);
+			Cache::flush();
+		}
+		catch (\Exception $e) {
+			// echo 'Message: ' .$e->getMessage();
+			$result = 0;
+		}
+
+		return $result;
+    }
+
+
+
+
+
+
+
+
 	/**
 	 * 读取记录 itemtypes
 	 *
@@ -187,34 +223,6 @@ class AgentsController extends Controller
 	}
 
 
-    /**
-     * 新建 itemtypes
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function itemItemtypesCreate(Request $request)
-    {
-		if (! $request->isMethod('post') || ! $request->ajax()) return false;
-
-		// $nowtime = date("Y-m-d H:i:s",time());
-		$typedesc = $request->input('typedesc');
-		$hassoftware = $request->input('hassoftware');
-		
-		try	{
-			$result = Item_itemtypes::create([
-				'typedesc' => $typedesc,
-				'hassoftware' => $hassoftware,
-			]);
-			Cache::flush();
-		}
-		catch (\Exception $e) {
-			// echo 'Message: ' .$e->getMessage();
-			$result = 0;
-		}
-
-		return $result;
-    }
 
 
 	
