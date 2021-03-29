@@ -11,9 +11,36 @@
 |
 */
 
+// Softs 路由
+// Route::group(['prefix'=>'renshi', 'namespace'=>'Admin', 'middleware'=>['jwtauth','permission:permission_admin_permission|permission_super_admin']], function() {
+Route::group(['prefix'=>'soft', 'namespace'=>'Soft', 'middleware'=>['jwtauth']], function() {
+
+	// 显示 Softs 页面
+	Route::get('softSofts', 'SoftsController@softSofts')->name('agent.softs');
+
+	// Agents gets列表
+	Route::get('agentGets', 'AgentsController@agentGets')->name('agent.gets');
+
+	// Agents Update typedesc
+	// Route::post('itemItemtypesUpdateTypedesc', 'ItemItemtypesController@itemItemtypesUpdateTypedesc')->name('item.itemtypesupdate_typedesc');
+
+	// Agents Update
+	// Route::post('itemItemtypesUpdateHassoftware', 'ItemItemtypesController@itemItemtypesUpdateHassoftware')->name('item.itemtypesupdate_hassoftware');
+
+	// Agents Delete
+	// Route::post('itemItemtypesDelete', 'ItemItemtypesController@itemItemtypesDelete')->name('item.itemtypesdelete');
+
+	// 显示 Softs add 页面
+	Route::get('softAdd', 'SoftsController@softAdd')->name('soft.add');
+
+	// Softs Create
+	Route::post('softCreate', 'SoftsController@softCreate')->name('soft.create');
+
+});
+	
 
 
-// Item Agents 路由
+// Agents 路由
 // Route::group(['prefix'=>'renshi', 'namespace'=>'Admin', 'middleware'=>['jwtauth','permission:permission_admin_permission|permission_super_admin']], function() {
 Route::group(['prefix'=>'agent', 'namespace'=>'Agent', 'middleware'=>['jwtauth']], function() {
 
@@ -40,7 +67,6 @@ Route::group(['prefix'=>'agent', 'namespace'=>'Agent', 'middleware'=>['jwtauth']
 
 });
 	
-
 
 // Item items 路由
 // Route::group(['prefix'=>'renshi', 'namespace'=>'Admin', 'middleware'=>['jwtauth','permission:permission_admin_permission|permission_super_admin']], function() {
