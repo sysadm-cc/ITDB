@@ -13,7 +13,7 @@
 
 // Locations 路由
 // Route::group(['prefix'=>'renshi', 'namespace'=>'Admin', 'middleware'=>['jwtauth','permission:permission_admin_permission|permission_super_admin']], function() {
-Route::group(['prefix'=>'location', 'namespace'=>'Locations', 'middleware'=>['jwtauth']], function() {
+Route::group(['prefix'=>'location', 'namespace'=>'Location', 'middleware'=>['jwtauth']], function() {
 
 	// 显示 Locations 页面
 	Route::get('locationLocations', 'LocationsController@locationLocations')->name('location.locations');
@@ -40,7 +40,7 @@ Route::group(['prefix'=>'location', 'namespace'=>'Locations', 'middleware'=>['jw
 
 // Racks 路由
 // Route::group(['prefix'=>'renshi', 'namespace'=>'Admin', 'middleware'=>['jwtauth','permission:permission_admin_permission|permission_super_admin']], function() {
-Route::group(['prefix'=>'rack', 'namespace'=>'Racks', 'middleware'=>['jwtauth']], function() {
+Route::group(['prefix'=>'rack', 'namespace'=>'Rack', 'middleware'=>['jwtauth']], function() {
 
 	// 显示 Racks 页面
 	Route::get('rackRacks', 'RacksController@rackRacks')->name('rack.racks');
@@ -67,7 +67,7 @@ Route::group(['prefix'=>'rack', 'namespace'=>'Racks', 'middleware'=>['jwtauth']]
 
 // Files 路由
 // Route::group(['prefix'=>'renshi', 'namespace'=>'Admin', 'middleware'=>['jwtauth','permission:permission_admin_permission|permission_super_admin']], function() {
-Route::group(['prefix'=>'file', 'namespace'=>'Files', 'middleware'=>['jwtauth']], function() {
+Route::group(['prefix'=>'file', 'namespace'=>'File', 'middleware'=>['jwtauth']], function() {
 
 	// 显示 Files 页面
 	Route::get('fileFiles', 'FilesController@fileFiles')->name('file.files');
@@ -94,7 +94,7 @@ Route::group(['prefix'=>'file', 'namespace'=>'Files', 'middleware'=>['jwtauth']]
 
 // Contracts 路由
 // Route::group(['prefix'=>'renshi', 'namespace'=>'Admin', 'middleware'=>['jwtauth','permission:permission_admin_permission|permission_super_admin']], function() {
-Route::group(['prefix'=>'contract', 'namespace'=>'Contracts', 'middleware'=>['jwtauth']], function() {
+Route::group(['prefix'=>'contract', 'namespace'=>'Contract', 'middleware'=>['jwtauth']], function() {
 
 	// 显示 Contracts 页面
 	Route::get('contractContracts', 'ContractsController@contractContracts')->name('contract.contracts');
@@ -121,7 +121,7 @@ Route::group(['prefix'=>'contract', 'namespace'=>'Contracts', 'middleware'=>['jw
 
 // Invoices 路由
 // Route::group(['prefix'=>'renshi', 'namespace'=>'Admin', 'middleware'=>['jwtauth','permission:permission_admin_permission|permission_super_admin']], function() {
-Route::group(['prefix'=>'invoice', 'namespace'=>'Invoices', 'middleware'=>['jwtauth']], function() {
+Route::group(['prefix'=>'invoice', 'namespace'=>'Invoice', 'middleware'=>['jwtauth']], function() {
 
 	// 显示 Invoices 页面
 	Route::get('invoiceInvoices', 'InvoicesController@invoiceInvoices')->name('invoice.invoices');

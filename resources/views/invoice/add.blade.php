@@ -1,7 +1,7 @@
-@extends('agent.layouts.mainbase')
+@extends('invoice.layouts.mainbase')
 
 @section('my_title')
-供应商添加 - 
+发票添加 - 
 @parent
 @endsection
 
@@ -16,7 +16,7 @@
 
 @section('my_body')
 @parent
-<!-- <Divider orientation="left">供应商添加</Divider> -->
+<!-- <Divider orientation="left">发票添加</Divider> -->
 &nbsp;<br>
 
 
@@ -29,20 +29,23 @@
 				<Form-Item label="* 名称" style="margin-bottom:0px">
 					<i-input v-model.lazy="add_title" size="small"></i-input>
 				</Form-Item>
-				<Form-Item label="类型" style="margin-bottom:0px">
-					<!-- <i-select v-model.lazy="add_type_select" multiple size="small" placeholder=""> -->
-					<i-select v-model.lazy="add_type_select" size="small" placeholder="">
-						<i-option v-for="item in add_type_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+				<Form-Item label="代理商" style="margin-bottom:0px">
+					<!-- <i-select v-model.lazy="add_vendor_select" multiple size="small" placeholder=""> -->
+					<i-select v-model.lazy="add_vendor_select" size="small" placeholder="">
+						<i-option v-for="item in add_vendor_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
 					</i-select>
 				</Form-Item>
-				<Form-Item label="联络信息" style="margin-bottom:0px">
-					<i-input v-model.lazy="add_contactinfo" size="small" type="textarea"></i-input>
+				<Form-Item label="订单编号" style="margin-bottom:0px">
+					<i-input v-model.lazy="add_ordernumber" size="small"></i-input>
 				</Form-Item>
-				<Form-Item label="联系方式" style="margin-bottom:0px">
-					<i-input v-model.lazy="add_contacts" size="small"></i-input>
+				<Form-Item label="购买者" style="margin-bottom:0px">
+					<i-input v-model.lazy="add_buyer" size="small"></i-input>
 				</Form-Item>
-				<Form-Item label="URLs" style="margin-bottom:0px">
-					<i-input v-model.lazy="add_urls" size="small"></i-input>
+				<Form-Item label="发票日期" style="margin-bottom:0px">
+					<Date-picker v-model.lazy="add_invoicedate" type="date" size="small"></Date-picker>
+				</Form-Item>
+				<Form-Item label="详细描述" style="margin-bottom:0px">
+					<i-input v-model.lazy="add_description" type="textarea" size="small"></i-input>
 				</Form-Item>
 
 			</i-form>
@@ -107,8 +110,8 @@ var vm_app = new Vue({
 		current_nav: '',
 		current_subnav: '',
 		
-		sideractivename: '5-2',
-		sideropennames: ['5'],
+		sideractivename: '3-2',
+		sideropennames: ['3'],
 		
 		//分页
 		page_current: 1,
@@ -125,17 +128,18 @@ var vm_app = new Vue({
 
 		// 参数变量
 		add_title: '',
-		add_type_select: '',
-		add_type_options: [
-			{label: '售卖方', value: '售卖方'},
-			{label: '软件销售商', value: '软件销售商'},
+		add_vendor_select: '',
+		add_vendor_options: [
+			{label: 'Lenovo', value: 'Lenovo'},
+			{label: 'Dell', value: 'Dell'},
 			{label: '硬件销售商', value: '硬件销售商'},
 			{label: '买方', value: '买方'},
 			{label: '承包商', value: '承包商'},
 		],
-		add_contactinfo: '',
-		add_contacts: '',
-		add_urls: '',
+		add_ordernumber: '',
+		add_buyer: '',
+		add_invoicedate: '',
+		add_description: '',
 
 
 
@@ -428,10 +432,11 @@ var vm_app = new Vue({
 		add_clear_var () {
 			var _this = this;
 			_this.add_title = '';
-			_this.add_type_select = '';
-			_this.add_contactinfo = '';
-			_this.add_contacts = '';
-			_this.add_urls = '';
+			_this.add_vendor_select = '';
+			_this.add_ordernumber = '';
+			_this.add_buyer = '';
+			_this.add_invoicedate = '';
+			_this.add_description = '';
 		},
 
 
@@ -441,10 +446,11 @@ var vm_app = new Vue({
 			_this.add_create_disabled = true;
 
 			var add_title = _this.add_title;
-			var add_type_select = _this.add_type_select;
-			var add_contactinfo = _this.add_contactinfo;
-			var add_contacts = _this.add_contacts;
-			var add_urls = _this.add_urls;
+			var add_vendor_select = _this.add_vendor_select;
+			var add_ordernumber = _this.add_ordernumber;
+			var add_buyer = _this.add_buyer;
+			var add_invoicedate = _this.add_invoicedate ? new Date(_this.add_invoicedate).Format("yyyy-MM-dd") : '';
+			var add_description = _this.add_description;
 
 			if (add_title == '' || add_title == undefined) {
 				_this.error(false, '错误', '内容为空或不正确！');
@@ -453,14 +459,15 @@ var vm_app = new Vue({
 			}
 // console.log(add_itemtype_select);return false;
 
-			var url = "{{ route('agent.create') }}";
+			var url = "{{ route('invoice.create') }}";
 			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
 			axios.post(url, {
 				add_title: add_title,
-				add_type_select: add_type_select,
-				add_contactinfo: add_contactinfo,
-				add_contacts: add_contacts,
-				add_urls: add_urls,
+				add_vendor_select: add_vendor_select,
+				add_ordernumber: add_ordernumber,
+				add_buyer: add_buyer,
+				add_invoicedate: add_invoicedate,
+				add_description: add_description,
 			})
 			.then(function (response) {
 				// console.log(response.data);
@@ -539,7 +546,7 @@ var vm_app = new Vue({
 	mounted: function(){
 		var _this = this;
 		_this.loadingbarstart();
-		_this.current_nav = '代理商';
+		_this.current_nav = '发票';
 		_this.current_subnav = '添加';
 
 

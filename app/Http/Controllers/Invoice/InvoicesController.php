@@ -98,18 +98,20 @@ class InvoicesController extends Controller
 
 		// $nowtime = date("Y-m-d H:i:s",time());
 		$title = $request->input('add_title');
-		$type = $request->input('add_type_select');
-		$contactinfo = $request->input('add_contactinfo');
-		$contacts = $request->input('add_contacts');
-		$urls = $request->input('add_urls');
-		
+		$vendorid = 1; //$request->input('add_vendor_select');
+		$ordernumber = $request->input('add_ordernumber');
+		$buyer = $request->input('add_buyer');
+		$invoicedate = $request->input('add_invoicedate');
+		$description = $request->input('add_description');
+
 		try	{
 			$result = Invoices::create([
 				'title' => $title,
-				'type' => $type,
-				'contactinfo' => $contactinfo,
-				'contacts' => $contacts,
-				'urls' => $urls,
+				'vendorid' => $vendorid,
+				'ordernumber' => $ordernumber,
+				'buyer' => $buyer,
+				'invoicedate' => $invoicedate,
+				'description' => $description,
 			]);
 			Cache::flush();
 		}
@@ -151,7 +153,7 @@ class InvoicesController extends Controller
 	if (Cache::has($fullUrl)) {
 		$result = Cache::get($fullUrl);    //直接读取cache
 	} else {                                   //如果cache里面没有
-		$result = Agents::select()
+		$result = Invoices::select()
 			->limit(1000)
 			->orderBy('created_at', 'asc')
 			->paginate($perPage, ['*'], 'page', $page);

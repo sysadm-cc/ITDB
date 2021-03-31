@@ -52,18 +52,18 @@
 		</Panel>
 	</Collapse>
 	
-	<i-row :gutter="16">
+	<i-row>
 		<br>
 		<i-col span="3">
-			<i-button @click="items_delete()" :disabled="agents_delete_disabled" type="warning" size="small">删除</i-button>&nbsp;<br>&nbsp;
+			<i-button @click="items_delete()" :disabled="invoices_delete_disabled" type="warning" size="small">删除</i-button>&nbsp;<br>&nbsp;
 		</i-col>
-		<i-col span="2">
-			<i-button type="default" size="small" @click="invoices_add()"><Icon type="ios-color-wand-outline"></Icon> 新建</i-button>
+		<i-col span="3">
+			<i-button type="default" size="small" @click="invoices_add()"><Icon type="ios-color-wand-outline"></Icon> 添加发票</i-button>
 		</i-col>
-		<i-col span="2">
-			<i-button type="default" size="small" @click="items_export()"><Icon type="ios-download-outline"></Icon> 导出</i-button>
+		<i-col span="3">
+			<i-button type="default" size="small" @click="items_export()"><Icon type="ios-download-outline"></Icon> 导出列表</i-button>
 		</i-col>
-		<i-col span="17">
+		<i-col span="15">
 			&nbsp;
 		</i-col>
 	</i-row>
@@ -122,8 +122,8 @@ var vm_app = new Vue({
 		current_nav: '',
 		current_subnav: '',
 		
-		sideractivename: '5-1',
-		sideropennames: ['5'],
+		sideractivename: '3-1',
+		sideropennames: ['3'],
 		
 		//分页
 		page_current: 1,
@@ -141,7 +141,7 @@ var vm_app = new Vue({
 		collapse_query: '',
 
 		// 删除按钮禁用
-		agents_delete_disabled: true,
+		invoices_delete_disabled: true,
 
 
 		//新增
@@ -172,26 +172,31 @@ var vm_app = new Vue({
 				width: 160,
 			},
 			{
-				title: '类型',
-				key: 'type',
+				title: '代理商',
+				key: 'vendorid',
 				resizable: true,
 				width: 180,
 			},
 			{
-				title: '联系信息',
-				key: 'contactinfo',
+				title: '订单编号',
+				key: 'ordernumber',
 				resizable: true,
 				width: 180,
 			},
 			{
-				title: '联系方式',
-				key: 'contact',
+				title: '购买者',
+				key: 'buyer',
 				resizable: true,
 				width: 180,
 			},
 			{
-				title: 'URLs',
-				key: 'urls',
+				title: '发票日期',
+				key: 'invoicedate',
+				width: 160
+			},
+			{
+				title: '详细描述',
+				key: 'description',
 				resizable: true,
 				width: 180,
 			},
@@ -340,7 +345,7 @@ var vm_app = new Vue({
 				}
 
 				if (response.data) {
-					_this.agents_delete_disabled = true;
+					_this.invoices_delete_disabled = true;
 					_this.tableselect = [];
 					
 					_this.page_current = response.data.current_page;
@@ -372,7 +377,7 @@ var vm_app = new Vue({
 				_this.tableselect.push(selection[i].id);
 			}
 			
-			_this.agents_delete_disabled = _this.tableselect[0] == undefined ? true : false;
+			_this.invoices_delete_disabled = _this.tableselect[0] == undefined ? true : false;
 		},
 
 		// 跳转至添加页面

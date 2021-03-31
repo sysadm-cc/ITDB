@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Models\Soft;
+namespace App\Models\Location;
 
 use Illuminate\Database\Eloquent\Model;
 // use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Softs extends Model
+class Locations extends Model
 {
     // use SoftDeletes;
 
