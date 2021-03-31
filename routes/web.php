@@ -11,6 +11,114 @@
 |
 */
 
+// Locations 路由
+// Route::group(['prefix'=>'renshi', 'namespace'=>'Admin', 'middleware'=>['jwtauth','permission:permission_admin_permission|permission_super_admin']], function() {
+Route::group(['prefix'=>'location', 'namespace'=>'Locations', 'middleware'=>['jwtauth']], function() {
+
+	// 显示 Locations 页面
+	Route::get('locationLocations', 'LocationsController@locationLocations')->name('location.locations');
+
+	// Locations gets列表
+	Route::get('locationGets', 'LocationsController@locationGets')->name('location.gets');
+
+	// Agents Update typedesc
+	// Route::post('itemItemtypesUpdateTypedesc', 'ItemItemtypesController@itemItemtypesUpdateTypedesc')->name('item.itemtypesupdate_typedesc');
+
+	// Agents Update
+	// Route::post('itemItemtypesUpdateHassoftware', 'ItemItemtypesController@itemItemtypesUpdateHassoftware')->name('item.itemtypesupdate_hassoftware');
+
+	// Agents Delete
+	// Route::post('itemItemtypesDelete', 'ItemItemtypesController@itemItemtypesDelete')->name('item.itemtypesdelete');
+
+	// 显示 Locations add 页面
+	Route::get('locationAdd', 'LocationsController@locationAdd')->name('location.add');
+
+	// Locations Create
+	Route::post('locationCreate', 'LocationsController@locationCreate')->name('location.create');
+
+});
+
+// Racks 路由
+// Route::group(['prefix'=>'renshi', 'namespace'=>'Admin', 'middleware'=>['jwtauth','permission:permission_admin_permission|permission_super_admin']], function() {
+Route::group(['prefix'=>'rack', 'namespace'=>'Racks', 'middleware'=>['jwtauth']], function() {
+
+	// 显示 Racks 页面
+	Route::get('rackRacks', 'RacksController@rackRacks')->name('rack.racks');
+
+	// Racks gets列表
+	Route::get('rackGets', 'RacksController@rackGets')->name('rack.gets');
+
+	// Agents Update typedesc
+	// Route::post('itemItemtypesUpdateTypedesc', 'ItemItemtypesController@itemItemtypesUpdateTypedesc')->name('item.itemtypesupdate_typedesc');
+
+	// Agents Update
+	// Route::post('itemItemtypesUpdateHassoftware', 'ItemItemtypesController@itemItemtypesUpdateHassoftware')->name('item.itemtypesupdate_hassoftware');
+
+	// Agents Delete
+	// Route::post('itemItemtypesDelete', 'ItemItemtypesController@itemItemtypesDelete')->name('item.itemtypesdelete');
+
+	// 显示 Racks add 页面
+	Route::get('rackAdd', 'RacksController@rackAdd')->name('rack.add');
+
+	// Racks Create
+	Route::post('rackCreate', 'RacksController@rackCreate')->name('rack.create');
+
+});
+
+// Files 路由
+// Route::group(['prefix'=>'renshi', 'namespace'=>'Admin', 'middleware'=>['jwtauth','permission:permission_admin_permission|permission_super_admin']], function() {
+Route::group(['prefix'=>'file', 'namespace'=>'Files', 'middleware'=>['jwtauth']], function() {
+
+	// 显示 Files 页面
+	Route::get('fileFiles', 'FilesController@fileFiles')->name('file.files');
+
+	// Files gets列表
+	Route::get('fileGets', 'FilesController@fileGets')->name('file.gets');
+
+	// Agents Update typedesc
+	// Route::post('itemItemtypesUpdateTypedesc', 'ItemItemtypesController@itemItemtypesUpdateTypedesc')->name('item.itemtypesupdate_typedesc');
+
+	// Agents Update
+	// Route::post('itemItemtypesUpdateHassoftware', 'ItemItemtypesController@itemItemtypesUpdateHassoftware')->name('item.itemtypesupdate_hassoftware');
+
+	// Agents Delete
+	// Route::post('itemItemtypesDelete', 'ItemItemtypesController@itemItemtypesDelete')->name('item.itemtypesdelete');
+
+	// 显示 Files add 页面
+	Route::get('fileAdd', 'FilesController@fileAdd')->name('file.add');
+
+	// Files Create
+	Route::post('fileCreate', 'FilesController@fileCreate')->name('file.create');
+
+});
+
+// Contracts 路由
+// Route::group(['prefix'=>'renshi', 'namespace'=>'Admin', 'middleware'=>['jwtauth','permission:permission_admin_permission|permission_super_admin']], function() {
+Route::group(['prefix'=>'contract', 'namespace'=>'Contracts', 'middleware'=>['jwtauth']], function() {
+
+	// 显示 Contracts 页面
+	Route::get('contractContracts', 'ContractsController@contractContracts')->name('contract.contracts');
+
+	// Contracts gets列表
+	Route::get('contractGets', 'ContractsController@contractGets')->name('contract.gets');
+
+	// Agents Update typedesc
+	// Route::post('itemItemtypesUpdateTypedesc', 'ItemItemtypesController@itemItemtypesUpdateTypedesc')->name('item.itemtypesupdate_typedesc');
+
+	// Agents Update
+	// Route::post('itemItemtypesUpdateHassoftware', 'ItemItemtypesController@itemItemtypesUpdateHassoftware')->name('item.itemtypesupdate_hassoftware');
+
+	// Agents Delete
+	// Route::post('itemItemtypesDelete', 'ItemItemtypesController@itemItemtypesDelete')->name('item.itemtypesdelete');
+
+	// 显示 Contracts add 页面
+	Route::get('contractAdd', 'ContractsController@contractAdd')->name('contract.add');
+
+	// Contracts Create
+	Route::post('contractCreate', 'ContractsController@contractCreate')->name('contract.create');
+
+});
+
 // Invoices 路由
 // Route::group(['prefix'=>'renshi', 'namespace'=>'Admin', 'middleware'=>['jwtauth','permission:permission_admin_permission|permission_super_admin']], function() {
 Route::group(['prefix'=>'invoice', 'namespace'=>'Invoices', 'middleware'=>['jwtauth']], function() {

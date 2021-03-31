@@ -382,6 +382,7 @@ if (isMobile) {
 function navmenuselect (name) {
 	switch(name)
 	{
+	// 硬件
 	case '1-1':
 	  window.location.href = "{{route('item.items')}}";
 	  break;
@@ -395,6 +396,7 @@ function navmenuselect (name) {
 	  window.location.href = "{{ route('item.statustypes') }}";
 	  break;
 
+	// 软件
 	case '2-1':
 	  window.location.href = "{{route('soft.softs')}}";
 	  break;
@@ -402,43 +404,46 @@ function navmenuselect (name) {
 	  window.location.href = "{{route('soft.add')}}";
 	  break;
 
-	case '2-2-1':
-	  window.location.href = "";
-	  break;
-	case '2-2-2':
-	  window.location.href = "";
+	// case '2-2-1':
+	//   window.location.href = "";
+	//   break;
+	// case '2-2-2':
+	//   window.location.href = "";
+	//   break;
+
+	// case '2-3-1':
+	//   window.location.href = "";
+	//   break;
+	// case '2-3-2':
+	//   window.location.href = "";
+	//   break;
+	// case '2-3-3':
+	//   window.location.href = "";
 	  break;
 
-	case '2-3-1':
-	  window.location.href = "";
-	  break;
-	case '2-3-2':
-	  window.location.href = "";
-	  break;
-	case '2-3-3':
-	  window.location.href = "";
-	  break;
-
+	// 发票
 	case '3-1':
-	  window.location.href = "{{route('portal')}}";
+	  window.location.href = "{{route('invoice.invoices')}}";
 	  break;
 	case '3-2':
-	  window.location.href = "{{route('portal')}}";
+	  window.location.href = "{{route('invoice.add')}}";
 	  break;
 	case '3-3':
 	  window.location.href = "";
 	  break;
 
+	// 合同
 	case '4-1':
-	  window.location.href = "{{route('portal')}}";
+	  window.location.href = "{{route('contract.contracts')}}";
 	  break;
 	case '4-2':
-	  window.location.href = "{{route('portal')}}";
+	  window.location.href = "{{route('contract.add')}}";
 	  break;
 	case '4-3':
 	  window.location.href = "";
 	  break;
 
+	// 代理商
 	case '5-1':
 	  window.location.href = "{{route('agent.agents')}}";
 	  break;
@@ -446,6 +451,50 @@ function navmenuselect (name) {
 	  window.location.href = "{{route('agent.add')}}";
 	  break;
 	case '5-3':
+	  window.location.href = "";
+	  break;
+
+	// 文件
+	case '6-1':
+	  window.location.href = "{{route('file.files')}}";
+	  break;
+	case '6-2':
+	  window.location.href = "{{route('file.add')}}";
+	  break;
+	case '6-3':
+	  window.location.href = "";
+	  break;
+
+	// 机架
+	case '7-1':
+	  window.location.href = "{{route('rack.racks')}}";
+	  break;
+	case '7-2':
+	  window.location.href = "{{route('rack.add')}}";
+	  break;
+	case '7-3':
+	  window.location.href = "";
+	  break;
+
+	// 场所
+	case '8-1':
+	  window.location.href = "{{route('location.locations')}}";
+	  break;
+	case '8-2':
+	  window.location.href = "{{route('location.add')}}";
+	  break;
+	case '8-3':
+	  window.location.href = "";
+	  break;
+
+	// 用户
+	case '9-1':
+	  window.location.href = "{{route('portal')}}";
+	  break;
+	case '9-2':
+	  window.location.href = "{{route('portal')}}";
+	  break;
+	case '9-3':
 	  window.location.href = "";
 	  break;
 
