@@ -102,14 +102,8 @@ Route::group(['prefix'=>'contract', 'namespace'=>'Contract', 'middleware'=>['jwt
 	// Contracts gets列表
 	Route::get('contractGets', 'ContractsController@contractGets')->name('contract.gets');
 
-	// Agents Update typedesc
-	// Route::post('itemItemtypesUpdateTypedesc', 'ItemItemtypesController@itemItemtypesUpdateTypedesc')->name('item.itemtypesupdate_typedesc');
-
 	// Agents Update
 	// Route::post('itemItemtypesUpdateHassoftware', 'ItemItemtypesController@itemItemtypesUpdateHassoftware')->name('item.itemtypesupdate_hassoftware');
-
-	// Agents Delete
-	// Route::post('itemItemtypesDelete', 'ItemItemtypesController@itemItemtypesDelete')->name('item.itemtypesdelete');
 
 	// 显示 Contracts add 页面
 	Route::get('contractAdd', 'ContractsController@contractAdd')->name('contract.add');
@@ -117,8 +111,21 @@ Route::group(['prefix'=>'contract', 'namespace'=>'Contract', 'middleware'=>['jwt
 	// Contracts Create
 	Route::post('contractCreate', 'ContractsController@contractCreate')->name('contract.create');
 
+
 	// 显示 Contracttypes 页面
 	Route::get('contractContracttypes', 'ContractsController@contractContracttypes')->name('contract.contracttypes');
+	
+	// Contracttypes gets列表
+	Route::get('ContracttypesGets', 'ContractsController@contracttypesGets')->name('contracttypes.gets');
+
+	// Contracttypes Update name
+	Route::post('contracttypesUpdateName', 'ContractsController@contracttypesUpdateName')->name('contracttypes.update_name');
+
+	// Contracttypes Delete
+	Route::post('contracttypesDelete', 'ContractsController@contracttypesDelete')->name('contracttypes.delete');
+
+	// Contracts Create
+	Route::post('contracttypesCreate', 'ContractsController@contracttypesCreate')->name('contracttypes.create');
 
 
 });

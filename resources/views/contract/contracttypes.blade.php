@@ -19,63 +19,35 @@
 <!-- <Divider orientation="left">合同类型</Divider> -->
 &nbsp;<br>
 
-<Collapse v-model="collapse_query">
-		<Panel name="1">
-			查询条件
-			<p slot="content">
-			
-				<i-row :gutter="16">
-					<i-col span="8">
-						* login time&nbsp;&nbsp;
-						<Date-picker v-model.lazy="queryfilter_logintime" @on-change="usergets(page_current, page_last);onselectchange();" type="daterange" size="small" placement="top" style="width:200px"></Date-picker>
-					</i-col>
-					<i-col span="4">
-						name&nbsp;&nbsp;
-						<i-input v-model.lazy="queryfilter_name" @on-change="usergets(page_current, page_last)" size="small" clearable style="width: 100px"></i-input>
-					</i-col>
-					<i-col span="4">
-						email&nbsp;&nbsp;
-						<i-input v-model.lazy="queryfilter_email" @on-change="usergets(page_current, page_last)" size="small" clearable style="width: 100px"></i-input>
-					</i-col>
-					<i-col span="4">
-						login ip&nbsp;&nbsp;
-						<i-input v-model.lazy="queryfilter_loginip" @on-change="usergets(page_current, page_last)" size="small" clearable style="width: 100px"></i-input>
-					</i-col>
-					<i-col span="4">
-						&nbsp;
-					</i-col>
-				</i-row>
-			
-			
-			&nbsp;
-			</p>
-		</Panel>
-	</Collapse>
-	
-	<i-row :gutter="16">
-		<br>
-		<i-col span="3">
-			<i-button @click="items_delete()" :disabled="softs_delete_disabled" type="warning" size="small">删除</i-button>&nbsp;<br>&nbsp;
-		</i-col>
-		<i-col span="2">
-			<i-button type="default" size="small" @click="softs_add()"><Icon type="ios-color-wand-outline"></Icon> 新建</i-button>
-		</i-col>
-		<i-col span="2">
-			<i-button type="default" size="small" @click="items_export()"><Icon type="ios-download-outline"></Icon> 导出</i-button>
-		</i-col>
-		<i-col span="17">
-			&nbsp;
-		</i-col>
-	</i-row>
 
+<i-row :gutter="16">
 
+	<i-col span="4">
+		<i-input v-model.lazy="contracttypes_add_name" >
+			<i-button slot="append" icon="md-add" @click="contracttypes_create()"></i-button>
+		</i-input>
+	</i-col>
+
+	<i-col span="1">
+	&nbsp;
+	</i-col>
+
+	<i-col span="6">
+		&nbsp;
+	</i-col>
+
+	<i-col span="13">
+	&nbsp;
+	</i-col>
+
+</i-row>
 
 &nbsp;
 
 <i-row :gutter="16">
 	<i-col span="24">
 
-		<i-table height="300" size="small" border :columns="tablecolumns" :data="tabledata" @on-selection-change="selection => onselectchange(selection)"></i-table>
+		<i-table height="300" size="small" border :columns="tablecolumns" :data="tabledata"></i-table>
 		<br><Page :current="page_current" :total="page_total" :page-size="page_size" @on-change="currentpage => oncurrentpagechange(currentpage)" @on-page-size-change="pagesize => onpagesizechange(pagesize)" :page-size-opts="[5, 10, 20, 50]" show-total show-elevator show-sizer></Page>
 
 		</i-col>
@@ -131,22 +103,8 @@ var vm_app = new Vue({
 		page_size: {{ $user['configs']['PERPAGE_RECORDS_FOR_APPLICANT'] ?? 10 }},
 		page_last: 1,
 
-		// 查询过滤器
-		queryfilter_name: "{{ $config['FILTERS_USER_NAME'] }}",
-		queryfilter_email: "{{ $config['FILTERS_USER_EMAIL'] }}",
-		queryfilter_logintime: "{{ $config['FILTERS_USER_LOGINTIME'] }}" || [],
-		queryfilter_loginip: "{{ $config['FILTERS_USER_LOGINIP'] }}",
-		
-		// 查询过滤器下拉
-		collapse_query: '',
-
-		// 删除按钮禁用
-		softs_delete_disabled: true,
-
-
 		//新增
-		// itemtypes_add_typedesc: '',
-		// itemtypes_add_hassoftware: false,
+		contracttypes_add_name: '',
 
 
 		tablecolumns: [
@@ -166,49 +124,43 @@ var vm_app = new Vue({
 				}
 			},
 			{
-				title: '名称',
-				key: 'stitle',
-				resizable: true,
-				width: 160,
-			},
-			{
-				title: '制造商',
-				key: 'manufacturerid',
-				resizable: true,
+				title: '合同类型名称',
+				key: 'name',
 				width: 180,
-			},
-			{
-				title: '版本',
-				key: 'sversion',
-				resizable: true,
-				width: 180,
-			},
-			{
-				title: '购买日期',
-				key: 'purchdate',
-				resizable: true,
-				width: 180,
-			},
-			{
-				title: 'License数量',
-				key: 'licqty',
-				resizable: true,
-				width: 180,
-			},
-			{
-				title: 'License类型',
-				key: 'lictype',
-				resizable: true,
-				width: 180,
+				render: (h, params) => {
+					
+					return h('div', {}, [
+						h('i-input',{
+							// style:{
+							// 	color: '#ff9900'
+							// },
+							props: {
+								value: params.row.name,
+								size: 'small',
+							},
+							'on': {
+								'on-blur':() => {
+									// alert(params.row.id);
+									// alert(event.target.value);
+									if (params.row.name != event.target.value) {
+										vm_app.contracttypes_update_name(params.row.id, event.target.value)
+									}
+								}
+							},
+						})
+					])
+				}
 			},
 			{
 				title: '创建时间',
 				key: 'created_at',
+				sortable: true,
 				width: 160
 			},
 			{
 				title: '更新时间',
 				key: 'updated_at',
+				sortable: true,
 				width: 160
 			},
 			@hasanyrole('role_super_admin')
@@ -223,7 +175,7 @@ var vm_app = new Vue({
 						return h('div', [
 							h('Button', {
 								props: {
-									type: 'primary',
+									type: 'error',
 									size: 'small',
 									icon: 'md-arrow-round-down'
 								},
@@ -232,10 +184,10 @@ var vm_app = new Vue({
 								},
 								on: {
 									click: () => {
-										vm_app.itemtypes_delete(params.row)
+										vm_app.contracttypes_delete(params.row)
 									}
 								}
-							}, '编辑'),
+							}, '删除'),
 							
 
 						]);
@@ -317,7 +269,7 @@ var vm_app = new Vue({
 		},
 
 		//
-		contractsgets (page, last_page){
+		contracttypesgets (page, last_page){
 			var _this = this;
 			
 			if (page > last_page) {
@@ -328,7 +280,7 @@ var vm_app = new Vue({
 			
 
 			_this.loadingbarstart();
-			var url = "{{ route('soft.gets') }}";
+			var url = "{{ route('contracttypes.gets') }}";
 			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
 			axios.get(url,{
 				params: {
@@ -366,7 +318,7 @@ var vm_app = new Vue({
 	
 		// 切换当前页
 		oncurrentpagechange (currentpage) {
-			this.contractsgets(currentpage, this.page_last);
+			this.contracttypesgets(currentpage, this.page_last);
 		},
 
 		// 表格选择
@@ -381,34 +333,24 @@ var vm_app = new Vue({
 			_this.softs_delete_disabled = _this.tableselect[0] == undefined ? true : false;
 		},
 
-		// 跳转至添加页面
-		softs_add () {
-			window.location.href = "{{ route('soft.add') }}";
-		},
 
 
-
-
-
-
-
-
-		// 更新 typedesc
-		itemtypes_update_typedesc (id, typedesc) {
+		// 更新 name
+		contracttypes_update_name (id, name) {
 			var _this = this;
 			
 			var id = id;
-			var typedesc = typedesc;
-			// _this.itemtypes_edit_id = id;
-			// _this.itemtypes_edit_statusdesc = row.itemtypes_edit_statusdesc;
+			var name = name;
+			// _this.contracttypes_edit_id = id;
+			// _this.contracttypes_edit_statusdesc = row.contracttypes_edit_statusdesc;
 			// _this.jiaban_edit_created_at = row.created_at;
 			// _this.jiaban_edit_updated_at = row.updated_at;
 
-			var url = "{{ route('item.itemtypesupdate_typedesc') }}";
+			var url = "{{ route('contracttypes.update_name') }}";
 			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
 			axios.post(url,{
 				id: id,
-				typedesc: typedesc
+				name: name
 			})
 			.then(function (response) {
                 // alert(index);
@@ -421,7 +363,7 @@ var vm_app = new Vue({
 				}
 				
 				if (response.data) {
-					_this.itemtypesgets(_this.page_current, _this.page_last);
+					_this.contracttypesgets(_this.page_current, _this.page_last);
                     // _this.$Message.success('保存成功！');
 					_this.success(false, '成功', '保存成功！');
                 } else {
@@ -442,11 +384,11 @@ var vm_app = new Vue({
 
 
 		// 删除
-		itemtypes_delete (row) {
+		contracttypes_delete (row) {
 			var _this = this;
 			var id = row.id;
 			if (id == undefined) return false;
-			var url = "{{ route('item.itemtypesdelete') }}";
+			var url = "{{ route('contracttypes.delete') }}";
 			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
 			axios.post(url, {
 				id: id
@@ -458,7 +400,7 @@ var vm_app = new Vue({
 				}
 				
 				if (response.data) {
-					_this.itemtypesgets(_this.page_current, _this.page_last);
+					_this.contracttypesgets(_this.page_current, _this.page_last);
 					_this.success(false, '成功', '删除成功！');
 				} else {
 					_this.error(false, '失败', '删除失败！');
@@ -471,23 +413,22 @@ var vm_app = new Vue({
 
 
 		//新增
-		itemtypes_create () {
+		contracttypes_create () {
 			var _this = this;
 
-			var typedesc = _this.itemtypes_add_typedesc;
-			var hassoftware = _this.itemtypes_add_hassoftware;
+			var name = _this.contracttypes_add_name;
+			var hassoftware = _this.contracttypes_add_hassoftware;
 
-			if (typedesc == '' || typedesc == undefined) {
+			if (name == '' || name == undefined) {
 					// console.log(hassoftware);
 				// _this.error(false, '失败', '用户ID为空或不正确！');
 				return false;
 			}
 
-			var url = "{{ route('item.itemtypescreate') }}";
+			var url = "{{ route('contracttypes.create') }}";
 			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
 			axios.post(url, {
-				typedesc: typedesc,
-				hassoftware: hassoftware,
+				name: name,
 			})
 			.then(function (response) {
 				// console.log(response.data);
@@ -499,8 +440,8 @@ var vm_app = new Vue({
 				}
 				
  				if (response.data) {
-					_this.itemtypes_add_typedesc = '';
-					_this.itemtypesgets(_this.page_current, _this.page_last);
+					_this.contracttypes_add_name = '';
+					_this.contracttypesgets(_this.page_current, _this.page_last);
 					_this.success(false, '成功', '新建成功！');
 				} else {
 					_this.error(false, '失败', '新建失败！');
@@ -513,50 +454,11 @@ var vm_app = new Vue({
 
 		},
 
-		
-		// 更新 hassoftware
-		itemtypes_update_hassoftware (id, hassoftware) {
-			var _this = this;
-			
-			var id = id;
-			var hassoftware = hassoftware;
-// console.log(hassoftware);return false;
 
-			var url = "{{ route('item.itemtypesupdate_hassoftware') }}";
-			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
-			axios.post(url,{
-				id: id,
-				hassoftware: hassoftware
-			})
-			.then(function (response) {
-                // alert(index);
-				// console.log(response.data);
-				// return false;
 
-				if (response.data['jwt'] == 'logout') {
-					_this.alert_logout();
-					return false;
-				}
-				
-				if (response.data) {
-					_this.itemtypesgets(_this.page_current, _this.page_last);
-                    // _this.$Message.success('保存成功！');
-					_this.success(false, '成功', '保存成功！');
-                } else {
-					// _this.$Message.warning('保存失败！');
-					_this.warning(false, '失败', '保存失败！');
-				}
-			})
-			.catch(function (error) {
-				_this.error(false, 'Error', error);
-			})
 
-			setTimeout(() => {
-				_this.modal_jiaban_edit = true;
-			}, 500);
 
-			
-		},
+
 		
 
 
@@ -567,7 +469,7 @@ var vm_app = new Vue({
 		_this.current_subnav = '编辑';
 
 		// // 显示所有
-		_this.contractsgets(1, 1); // page: 1, last_page: 1
+		_this.contracttypesgets(1, 1); // page: 1, last_page: 1
 		// _this.loadapplicantgroup();
 
 		// GetCurrentDatetime('getcurrentdatetime');

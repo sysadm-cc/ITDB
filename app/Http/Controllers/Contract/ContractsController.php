@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Admin\Config;
 use App\Models\Admin\User;
 use App\Models\Contract\Contracts;
+use App\Models\Contract\Contracttypes;
 
 use DB;
 use Mail;
@@ -132,17 +133,25 @@ class ContractsController extends Controller
 		// $nowtime = date("Y-m-d H:i:s",time());
 		$title = $request->input('add_title');
 		$type = $request->input('add_type_select');
-		$contactinfo = $request->input('add_contactinfo');
-		$contacts = $request->input('add_contacts');
-		$urls = $request->input('add_urls');
-		
+		$number = $request->input('add_number');
+		$description = $request->input('add_description');
+		$comments = $request->input('add_comments');
+		$totalcost = $request->input('add_totalcost');
+		$startdate = $request->input('add_startdate');
+		$currentenddate = $request->input('add_currentenddate');
+		$renewals = $request->input('add_renewals');
+
 		try	{
 			$result = Contracts::create([
 				'title' => $title,
 				'type' => $type,
-				'contactinfo' => $contactinfo,
-				'contacts' => $contacts,
-				'urls' => $urls,
+				'number' => $number,
+				'description' => $description,
+				'comments' => $comments,
+				'totalcost' => $totalcost,
+				'startdate' => $startdate,
+				'currentenddate' => $currentenddate,
+				'renewals' => $renewals,
 			]);
 			Cache::flush();
 		}
@@ -195,32 +204,27 @@ class ContractsController extends Controller
 	return $result;
 	}
 
-
-
-
-
-
 	
 	/**
-	 * 更新 itemtypes typedesc
+	 * 更新 contracttypes name
 	 *
 	 * @param  int  $id
 	 * @return \Illuminate\Http\Response
 	 */
-	public function itemItemtypesUpdateTypedesc(Request $request)
+	public function contracttypesUpdateName(Request $request)
 	{
 	if (! $request->isMethod('post') || ! $request->ajax()) return null;
 
 	$id = $request->input('id');
-	$typedesc = $request->input('typedesc');
+	$name = $request->input('name');
 
 	// 写入数据库
 	try	{
 		DB::beginTransaction();
 		
-		$result = Item_itemtypes::where('id', $id)
+		$result = Contracttypes::where('id', $id)
 		->update([
-			'typedesc' => $typedesc,
+			'name' => $name,
 		]);
 
 		$result = 1;
@@ -239,61 +243,95 @@ class ContractsController extends Controller
 	}
 	
 
+
+
+
 	/**
-	 * 更新 itemtypes hassoftware
+	 * 删除 contracttypes
 	 *
 	 * @param  int  $id
 	 * @return \Illuminate\Http\Response
 	 */
-	public function itemItemtypesUpdateHassoftware(Request $request)
-	{
-	if (! $request->isMethod('post') || ! $request->ajax()) return null;
-
-	$id = $request->input('id');
-	$hassoftware = $request->input('hassoftware');
-
-	// 写入数据库
-	try	{
-		DB::beginTransaction();
-		
-		$result = Item_itemtypes::where('id', $id)
-		->update([
-			'hassoftware' => $hassoftware,
-		]);
-
-		$result = 1;
-		Cache::flush();
-	}
-	catch (\Exception $e) {
-		// echo 'Message: ' .$e->getMessage();
-		DB::rollBack();
-		// dd('Message: ' .$e->getMessage());
-		return 0;
-	}
-
-	DB::commit();
-	// Cache::flush();
-	return $result;
-	}
-
-
-	/**
-	 * 删除 itemtypes
-	 *
-	 * @param  int  $id
-	 * @return \Illuminate\Http\Response
-	 */
-	public function itemItemtypesDelete(Request $request)
+	public function contracttypesDelete(Request $request)
 	{
 	if (! $request->isMethod('post') || ! $request->ajax())  return false;
 
 	$id = [$request->input('id')];
-	$result = Item_itemtypes::whereIn('id', $id)->delete();
+	$result = Contracttypes::whereIn('id', $id)->delete();
 	Cache::flush();
 	return $result;
 	}
 
 
+
+    /**
+     * 新建 contracttypesCreate
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function contracttypesCreate(Request $request)
+    {
+		if (! $request->isMethod('post') || ! $request->ajax()) return false;
+
+		// $nowtime = date("Y-m-d H:i:s",time());
+		$name = $request->input('name');
+
+		try	{
+			$result = Contracttypes::create([
+				'name' => $name,
+			]);
+			Cache::flush();
+		}
+		catch (\Exception $e) {
+			// dd('Message: ' .$e->getMessage());
+			$result = 0;
+		}
+
+		return $result;
+    }
+
+
+
+	/**
+	 * 读取记录 contracttypesGets
+	 *
+	 * @param  int  $id
+	 * @return \Illuminate\Http\Response
+	 */
+	public function contracttypesGets(Request $request)
+	{
+	if (! $request->ajax()) return null;
+
+	$url = request()->url();
+	$queryParams = request()->query();
+	
+	$perPage = $queryParams['perPage'] ?? 10000;
+	$page = $queryParams['page'] ?? 1;
+	
+	//对查询参数按照键名排序
+	ksort($queryParams);
+
+	//将查询数组转换为查询字符串
+	$queryString = http_build_query($queryParams);
+
+	$fullUrl = sha1("{$url}?{$queryString}");
+	
+	
+	//首先查寻cache如果找到
+	if (Cache::has($fullUrl)) {
+		$result = Cache::get($fullUrl);    //直接读取cache
+	} else {                                   //如果cache里面没有
+		$result = Contracttypes::select()
+			->limit(1000)
+			->orderBy('created_at', 'asc')
+			->paginate($perPage, ['*'], 'page', $page);
+
+		Cache::put($fullUrl, $result, now()->addSeconds(10));
+		}
+
+	return $result;
+	}
 
 
 	

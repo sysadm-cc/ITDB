@@ -27,28 +27,34 @@
 			
 			<i-form :label-width="100">
 				<Form-Item label="* 名称" style="margin-bottom:0px">
-					<i-input v-model.lazy="add_stitle" size="small"></i-input>
+					<i-input v-model.lazy="add_title" size="small"></i-input>
 				</Form-Item>
-				<Form-Item label="制造商" style="margin-bottom:0px">
+				<Form-Item label="类型" style="margin-bottom:0px">
 					<!-- <i-select v-model.lazy="add_type_select" multiple size="small" placeholder=""> -->
-					<i-select v-model.lazy="add_manufacturer_select" size="small" placeholder="">
-						<i-option v-for="item in add_manufacturer_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+					<i-select v-model.lazy="add_type_select" size="small" placeholder="">
+						<i-option v-for="item in add_type_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
 					</i-select>
 				</Form-Item>
-				<Form-Item label="购买日期" style="margin-bottom:0px">
-					<Date-picker v-model.lazy="add_purchdate" type="daterange" size="small"></Date-picker>
+				<Form-Item label="合同编号" style="margin-bottom:0px">
+					<i-input v-model.lazy="add_number" size="small"></i-input>
 				</Form-Item>
-				<Form-Item label="版本" style="margin-bottom:0px">
-					<i-input v-model.lazy="add_sversion" size="small"></i-input>
+				<Form-Item label="详细描述" style="margin-bottom:0px">
+					<i-input v-model.lazy="add_description" size="small" type="textarea"></i-input>
 				</Form-Item>
-				<Form-Item label="License数量" style="margin-bottom:0px">
-					<Input-Number v-model.lazy="add_licqty" size="small" :min="1"></Input-Number>
+				<Form-Item label="备注" style="margin-bottom:0px">
+					<i-input v-model.lazy="add_comments" size="small"></i-input>
 				</Form-Item>
-				<Form-Item label="License类型" style="margin-bottom:0px">
-					<i-input v-model.lazy="add_lictype" size="small"></i-input>
+				<Form-Item label="总价值" style="margin-bottom:0px">
+					<Input-Number v-model.lazy="add_totalcost" size="small" :min="1"></Input-Number>
 				</Form-Item>
-				<Form-Item label="License信息" style="margin-bottom:0px">
-					<i-input v-model.lazy="add_slicenseinfo" size="small" type="textarea"></i-input>
+				<Form-Item label="开始日期" style="margin-bottom:0px">
+					<Date-picker v-model.lazy="add_startdate" type="date" size="small"></Date-picker>
+				</Form-Item>
+				<Form-Item label="当前结束日期" style="margin-bottom:0px">
+					<Date-picker v-model.lazy="add_currentenddate" type="date" size="small"></Date-picker>
+				</Form-Item>
+				<Form-Item label="合同续约" style="margin-bottom:0px">
+					<i-input v-model.lazy="add_renewals" size="small"></i-input>
 				</Form-Item>
 
 			</i-form>
@@ -130,21 +136,22 @@ var vm_app = new Vue({
 		add_create_disabled: false,
 
 		// 参数变量
-		add_stitle: '',
-		add_manufacturer_select: '',
-		add_manufacturer_options: [
-			{label: 'lenovo', value: '售卖方'},
-			{label: 'dell', value: '软件销售商'},
-			{label: '硬件销售商', value: '硬件销售商'},
-			{label: '买方', value: '买方'},
-			{label: '承包商', value: '承包商'},
+		add_title: '',
+		add_type_select: '',
+		add_type_options: [
+			{label: 'Support & Maintenance', value: 1},
+			{label: '维修', value: 2},
+			{label: '硬件销售商', value: 3},
+			{label: '买方', value: 4},
+			{label: '承包商', value: 5},
 		],
-		add_purchdate: '',
-		add_sversion: '',
-		add_licqty: '1',
-		add_lictype: '',
-		add_slicenseinfo: '',
-
+		add_number: '',
+		add_description: '',
+		add_comments: '',
+		add_totalcost: '',
+		add_startdate: '',
+		add_currentenddate: '',
+		add_renewals: '',
 
 
 
@@ -435,10 +442,10 @@ var vm_app = new Vue({
 		// 清除所有变量
 		add_clear_var () {
 			var _this = this;
-			_this.add_stitle = '';
+			_this.add_title = '';
 			_this.add_type_select = '';
-			_this.add_purchdate = '';
-			_this.add_sversion = '';
+			_this.add_startdate = '';
+			_this.add_number = '';
 			_this.add_licqty = '';
 		},
 
@@ -448,27 +455,35 @@ var vm_app = new Vue({
 			var _this = this;
 			_this.add_create_disabled = true;
 
-			var add_stitle = _this.add_stitle;
+			var add_title = _this.add_title;
 			var add_type_select = _this.add_type_select;
-			var add_purchdate = _this.add_purchdate;
-			var add_sversion = _this.add_sversion;
-			var add_licqty = _this.add_licqty;
+			var add_number = _this.add_number;
+			var add_description = _this.add_description;
+			var add_comments = _this.add_comments;
+			var add_totalcost = _this.add_totalcost;
+			var add_startdate = _this.add_startdate ? new Date(_this.add_startdate).Format("yyyy-MM-dd") : '';
+			var add_currentenddate = _this.add_currentenddate ? new Date(_this.add_currentenddate).Format("yyyy-MM-dd") : '';
+			var add_renewals = _this.add_renewals;
 
-			if (add_stitle == '' || add_stitle == undefined) {
+			if (add_title == '' || add_title == undefined) {
 				_this.error(false, '错误', '内容为空或不正确！');
 				_this.add_create_disabled = false;
 				return false;
 			}
 // console.log(add_itemtype_select);return false;
 
-			var url = "{{ route('agent.create') }}";
+			var url = "{{ route('contract.create') }}";
 			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
 			axios.post(url, {
-				add_stitle: add_stitle,
+				add_title: add_title,
 				add_type_select: add_type_select,
-				add_purchdate: add_purchdate,
-				add_sversion: add_sversion,
-				add_licqty: add_licqty,
+				add_number: add_number,
+				add_description: add_description,
+				add_comments: add_comments,
+				add_totalcost: add_totalcost,
+				add_startdate: add_startdate,
+				add_currentenddate: add_currentenddate,
+				add_renewals: add_renewals,
 			})
 			.then(function (response) {
 				// console.log(response.data);

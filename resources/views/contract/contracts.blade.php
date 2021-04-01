@@ -58,7 +58,7 @@
 			<i-button @click="items_delete()" :disabled="softs_delete_disabled" type="warning" size="small">删除</i-button>&nbsp;<br>&nbsp;
 		</i-col>
 		<i-col span="2">
-			<i-button type="default" size="small" @click="softs_add()"><Icon type="ios-color-wand-outline"></Icon> 新建</i-button>
+			<i-button type="default" size="small" @click="contracts_add()"><Icon type="ios-color-wand-outline"></Icon> 新建</i-button>
 		</i-col>
 		<i-col span="2">
 			<i-button type="default" size="small" @click="items_export()"><Icon type="ios-download-outline"></Icon> 导出</i-button>
@@ -167,37 +167,55 @@ var vm_app = new Vue({
 			},
 			{
 				title: '名称',
-				key: 'stitle',
+				key: 'title',
 				resizable: true,
 				width: 160,
 			},
 			{
-				title: '制造商',
-				key: 'manufacturerid',
+				title: '类型',
+				key: 'type',
 				resizable: true,
 				width: 180,
 			},
 			{
-				title: '版本',
-				key: 'sversion',
+				title: '合同编号',
+				key: 'number',
 				resizable: true,
 				width: 180,
 			},
 			{
-				title: '购买日期',
-				key: 'purchdate',
+				title: '合同详细描述',
+				key: 'description',
 				resizable: true,
 				width: 180,
 			},
 			{
-				title: 'License数量',
-				key: 'licqty',
+				title: '备注',
+				key: 'comments',
 				resizable: true,
 				width: 180,
 			},
 			{
-				title: 'License类型',
-				key: 'lictype',
+				title: '总价值',
+				key: 'totalcost',
+				resizable: true,
+				width: 180,
+			},
+			{
+				title: '开始日期',
+				key: 'startdate',
+				resizable: true,
+				width: 180,
+			},
+			{
+				title: '当前结束日期',
+				key: 'currentenddate',
+				resizable: true,
+				width: 180,
+			},
+			{
+				title: '合同续约',
+				key: 'renewals',
 				resizable: true,
 				width: 180,
 			},
@@ -328,7 +346,7 @@ var vm_app = new Vue({
 			
 
 			_this.loadingbarstart();
-			var url = "{{ route('soft.gets') }}";
+			var url = "{{ route('contract.gets') }}";
 			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
 			axios.get(url,{
 				params: {
@@ -382,8 +400,8 @@ var vm_app = new Vue({
 		},
 
 		// 跳转至添加页面
-		softs_add () {
-			window.location.href = "{{ route('soft.add') }}";
+		contracts_add () {
+			window.location.href = "{{ route('contract.add') }}";
 		},
 
 
