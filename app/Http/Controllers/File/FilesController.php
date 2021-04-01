@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Soft;
+namespace App\Http\Controllers\File;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 use App\Models\Admin\Config;
 use App\Models\Admin\User;
-use App\Models\Soft\Softs;
+use App\Models\File\Files;
 
 use DB;
 use Mail;
@@ -18,7 +18,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Cache;
 use Ramsey\Uuid\Uuid;
 
-class SoftsController extends Controller
+class FilesController extends Controller
 {
 	/**
 	 * 显示页面 itemtypes
@@ -26,7 +26,7 @@ class SoftsController extends Controller
 	 * @param  int  $id
 	 * @return \Illuminate\Http\Response
 	 */
-	public function softSofts()
+	public function fileFiles()
 	{
 	// 获取JSON格式的jwt-auth用户响应
 	$me = response()->json(auth()->user());
@@ -49,7 +49,7 @@ class SoftsController extends Controller
 	$info_todo = [];
 
 	$share = compact('config', 'user', 'info_todo');
-	return view('soft.softs', $share);
+	return view('file.files', $share);
 	}
 
 
@@ -59,7 +59,7 @@ class SoftsController extends Controller
 	 * @param  int  $id
 	 * @return \Illuminate\Http\Response
 	 */
-	public function softAdd()
+	public function fileAdd()
 	{
 	// 获取JSON格式的jwt-auth用户响应
 	$me = response()->json(auth()->user());
@@ -82,17 +82,17 @@ class SoftsController extends Controller
 	$info_todo = [];
 
 	$share = compact('config', 'user', 'info_todo');
-	return view('soft.add', $share);
+	return view('file.add', $share);
 	}
 
 
     /**
-     * 新建 softCreate
+     * 新建 fileCreate
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function softCreate(Request $request)
+    public function fileCreate(Request $request)
     {
 		if (! $request->isMethod('post') || ! $request->ajax()) return false;
 
@@ -104,7 +104,7 @@ class SoftsController extends Controller
 		$urls = $request->input('add_urls');
 		
 		try	{
-			$result = Softs::create([
+			$result = Files::create([
 				'title' => $title,
 				'type' => $type,
 				'contactinfo' => $contactinfo,
@@ -128,7 +128,7 @@ class SoftsController extends Controller
 	 * @param  int  $id
 	 * @return \Illuminate\Http\Response
 	 */
-	public function softGets(Request $request)
+	public function fileGets(Request $request)
 	{
 	if (! $request->ajax()) return null;
 
@@ -151,7 +151,7 @@ class SoftsController extends Controller
 	if (Cache::has($fullUrl)) {
 		$result = Cache::get($fullUrl);    //直接读取cache
 	} else {                                   //如果cache里面没有
-		$result = Softs::select()
+		$result = Files::select()
 			->limit(1000)
 			->orderBy('created_at', 'asc')
 			->paginate($perPage, ['*'], 'page', $page);

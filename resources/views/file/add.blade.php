@@ -1,7 +1,7 @@
-@extends('soft.layouts.mainbase')
+@extends('file.layouts.mainbase')
 
 @section('my_title')
-软件添加 - 
+文件添加 - 
 @parent
 @endsection
 
@@ -16,7 +16,7 @@
 
 @section('my_body')
 @parent
-<!-- <Divider orientation="left">软件添加</Divider> -->
+<!-- <Divider orientation="left">文件添加</Divider> -->
 &nbsp;<br>
 
 
@@ -113,8 +113,8 @@ var vm_app = new Vue({
 		current_nav: '',
 		current_subnav: '',
 		
-		sideractivename: '2-2',
-		sideropennames: ['2'],
+		sideractivename: '6-2',
+		sideropennames: ['6'],
 		
 		//分页
 		page_current: 1,
@@ -547,7 +547,7 @@ var vm_app = new Vue({
 	mounted: function(){
 		var _this = this;
 		_this.loadingbarstart();
-		_this.current_nav = '软件';
+		_this.current_nav = '文件';
 		_this.current_subnav = '添加';
 
 

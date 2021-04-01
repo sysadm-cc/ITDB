@@ -1,7 +1,7 @@
-@extends('soft.layouts.mainbase')
+@extends('file.layouts.mainbase')
 
 @section('my_title')
-软件 - 
+文件 - 
 @parent
 @endsection
 
@@ -16,7 +16,7 @@
 
 @section('my_body')
 @parent
-<!-- <Divider orientation="left">软件</Divider> -->
+<!-- <Divider orientation="left">文件</Divider> -->
 &nbsp;<br>
 
 <Collapse v-model="collapse_query">
@@ -58,7 +58,7 @@
 			<i-button @click="items_delete()" :disabled="softs_delete_disabled" type="warning" size="small">删除</i-button>&nbsp;<br>&nbsp;
 		</i-col>
 		<i-col span="2">
-			<i-button type="default" size="small" @click="softs_add()"><Icon type="ios-color-wand-outline"></Icon> 新建</i-button>
+			<i-button type="default" size="small" @click="files_add()"><Icon type="ios-color-wand-outline"></Icon> 新建</i-button>
 		</i-col>
 		<i-col span="2">
 			<i-button type="default" size="small" @click="items_export()"><Icon type="ios-download-outline"></Icon> 导出</i-button>
@@ -122,8 +122,8 @@ var vm_app = new Vue({
 		current_nav: '',
 		current_subnav: '',
 		
-		sideractivename: '2-1',
-		sideropennames: ['2'],
+		sideractivename: '6-1',
+		sideropennames: ['6'],
 		
 		//分页
 		page_current: 1,
@@ -317,7 +317,7 @@ var vm_app = new Vue({
 		},
 
 		//
-		softsgets (page, last_page){
+		filesgets (page, last_page){
 			var _this = this;
 			
 			if (page > last_page) {
@@ -366,7 +366,7 @@ var vm_app = new Vue({
 	
 		// 切换当前页
 		oncurrentpagechange (currentpage) {
-			this.softsgets(currentpage, this.page_last);
+			this.filesgets(currentpage, this.page_last);
 		},
 
 		// 表格选择
@@ -382,8 +382,8 @@ var vm_app = new Vue({
 		},
 
 		// 跳转至添加页面
-		softs_add () {
-			window.location.href = "{{ route('soft.add') }}";
+		files_add () {
+			window.location.href = "{{ route('file.add') }}";
 		},
 
 
@@ -563,11 +563,11 @@ var vm_app = new Vue({
 	},
 	mounted: function(){
 		var _this = this;
-		_this.current_nav = '软件';
+		_this.current_nav = '文件';
 		_this.current_subnav = '查询';
 
 		// // 显示所有
-		_this.softsgets(1, 1); // page: 1, last_page: 1
+		_this.filesgets(1, 1); // page: 1, last_page: 1
 		// _this.loadapplicantgroup();
 
 		// GetCurrentDatetime('getcurrentdatetime');

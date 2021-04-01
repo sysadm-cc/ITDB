@@ -2,9 +2,9 @@
 
 use Illuminate\Database\Seeder;
 
-use App\Models\Soft\Softs;
+use App\Models\File\Files;
 
-class SoftsTableSeeder extends Seeder
+class FilesTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,22 +15,16 @@ class SoftsTableSeeder extends Seeder
     {
 		$nowtime = date("Y-m-d H:i:s",time());
 		
-		Softs::truncate();
+		Files::truncate();
 
-        Softs::insert(array (
+        Files::insert(array (
             0 => 
             array (
                 'id' => 1,
-                'stitle' => 'RedHat Linux',
-                'invoiceid' => null,
-                'slicenseinfo' => null,
-                'stype' => null,
-                'manufacturerid' => null,
-                'sversion' => null,
-                'sinfo' => null,
-                'purchdate' => null,
-                'licqty' => 1,
-                'lictype' => 'Box',
+                'title' => '文件一',
+                'type' => 1,
+                'filename' => 'xxx.pdf',
+                'uploader' => 'admin',
                 'created_at' => $nowtime,
                 'updated_at' => $nowtime,
                 'deleted_at' => NULL,

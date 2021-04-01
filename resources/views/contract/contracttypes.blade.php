@@ -23,7 +23,7 @@
 <i-row :gutter="16">
 
 	<i-col span="4">
-		<i-input v-model.lazy="contracttypes_add_name" >
+		<i-input v-model.lazy="contracttypes_add_name" placeholder="合同类型名称">
 			<i-button slot="append" icon="md-add" @click="contracttypes_create()"></i-button>
 		</i-input>
 	</i-col>
