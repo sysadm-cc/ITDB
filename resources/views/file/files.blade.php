@@ -55,7 +55,7 @@
 	<i-row :gutter="16">
 		<br>
 		<i-col span="3">
-			<i-button @click="items_delete()" :disabled="softs_delete_disabled" type="warning" size="small">删除</i-button>&nbsp;<br>&nbsp;
+			<i-button @click="items_delete()" :disabled="files_delete_disabled" type="warning" size="small">删除</i-button>&nbsp;<br>&nbsp;
 		</i-col>
 		<i-col span="2">
 			<i-button type="default" size="small" @click="files_add()"><Icon type="ios-color-wand-outline"></Icon> 新建</i-button>
@@ -141,7 +141,7 @@ var vm_app = new Vue({
 		collapse_query: '',
 
 		// 删除按钮禁用
-		softs_delete_disabled: true,
+		files_delete_disabled: true,
 
 
 		//新增
@@ -167,37 +167,172 @@ var vm_app = new Vue({
 			},
 			{
 				title: '名称',
-				key: 'stitle',
+				key: 'title',
 				resizable: true,
 				width: 160,
 			},
 			{
-				title: '制造商',
-				key: 'manufacturerid',
+				title: '类型',
+				key: 'type',
+				resizable: true,
+				width: 180,
+				render: (h, params) => {
+					if (params.row.id == 1) {
+						return h('div', {}, [
+							h('Icon',{
+								props: {
+									type: 'md-bookmark',
+									size: 14,
+									color: 'blue',
+									}
+								},
+							),
+							h('span',{
+								// style:{
+								// 	color: '#ff9900'
+								// }
+							}, '合同 Contract')
+						])
+					} else if (params.row.id == 2) {
+						return h('div', {}, [
+							h('Icon',{
+								props: {
+									type: 'md-bookmark',
+									size: 14,
+									color: 'green',
+									}
+								}
+							),
+							h('span',{
+								// style:{
+								// 	color: '#ff9900'
+								// }
+							}, '认证 License')
+						])
+					} else if (params.row.id == 3) {
+						return h('div', {}, [
+							h('Icon',{
+								props: {
+									type: 'md-bookmark',
+									size: 14,
+									color: 'green',
+									}
+								}
+							),
+							h('span',{
+								// style:{
+								// 	color: '#ff9900'
+								// }
+							}, '手册 Manual')
+						])
+					} else if (params.row.id == 4) {
+						return h('div', {}, [
+							h('Icon',{
+								props: {
+									type: 'md-bookmark',
+									size: 14,
+									color: 'green',
+									}
+								}
+							),
+							h('span',{
+								// style:{
+								// 	color: '#ff9900'
+								// }
+							}, '报价 Offer')
+						])
+					} else if (params.row.id == 5) {
+						return h('div', {}, [
+							h('Icon',{
+								props: {
+									type: 'md-bookmark',
+									size: 14,
+									color: 'green',
+									}
+								}
+							),
+							h('span',{
+								// style:{
+								// 	color: '#ff9900'
+								// }
+							}, '订单 Order')
+						])
+					} else if (params.row.id == 6) {
+						return h('div', {}, [
+							h('Icon',{
+								props: {
+									type: 'md-bookmark',
+									size: 14,
+									color: 'green',
+									}
+								}
+							),
+							h('span',{
+								// style:{
+								// 	color: '#ff9900'
+								// }
+							}, '图片 Photo')
+						])
+					} else if (params.row.id == 7) {
+						return h('div', {}, [
+							h('Icon',{
+								props: {
+									type: 'md-bookmark',
+									size: 14,
+									color: 'green',
+									}
+								}
+							),
+							h('span',{
+								// style:{
+								// 	color: '#ff9900'
+								// }
+							}, '报表 Report')
+						])
+					} else if (params.row.id == 8) {
+						return h('div', {}, [
+							h('Icon',{
+								props: {
+									type: 'md-bookmark',
+									size: 14,
+									color: 'green',
+									}
+								}
+							),
+							h('span',{
+								// style:{
+								// 	color: '#ff9900'
+								// }
+							}, '服务 Service')
+						])
+					} else if (params.row.id == 9) {
+						return h('div', {}, [
+							h('Icon',{
+								props: {
+									type: 'md-bookmark',
+									size: 14,
+									color: 'green',
+									}
+								}
+							),
+							h('span',{
+								// style:{
+								// 	color: '#ff9900'
+								// }
+							}, '其他 Other')
+						])
+					}
+				}
+			},
+			{
+				title: '文件名',
+				key: 'filename',
 				resizable: true,
 				width: 180,
 			},
 			{
-				title: '版本',
-				key: 'sversion',
-				resizable: true,
-				width: 180,
-			},
-			{
-				title: '购买日期',
-				key: 'purchdate',
-				resizable: true,
-				width: 180,
-			},
-			{
-				title: 'License数量',
-				key: 'licqty',
-				resizable: true,
-				width: 180,
-			},
-			{
-				title: 'License类型',
-				key: 'lictype',
+				title: '上传者',
+				key: 'uploader',
 				resizable: true,
 				width: 180,
 			},
@@ -328,7 +463,7 @@ var vm_app = new Vue({
 			
 
 			_this.loadingbarstart();
-			var url = "{{ route('soft.gets') }}";
+			var url = "{{ route('file.gets') }}";
 			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
 			axios.get(url,{
 				params: {
@@ -346,7 +481,7 @@ var vm_app = new Vue({
 				}
 
 				if (response.data) {
-					_this.softs_delete_disabled = true;
+					_this.files_delete_disabled = true;
 					_this.tableselect = [];
 					
 					_this.page_current = response.data.current_page;
@@ -378,7 +513,7 @@ var vm_app = new Vue({
 				_this.tableselect.push(selection[i].id);
 			}
 			
-			_this.softs_delete_disabled = _this.tableselect[0] == undefined ? true : false;
+			_this.files_delete_disabled = _this.tableselect[0] == undefined ? true : false;
 		},
 
 		// 跳转至添加页面

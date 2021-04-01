@@ -307,32 +307,32 @@ if (isMobile) {
 								<template slot="title">
 										<Icon type="ios-analytics-outline" size="20"></Icon> 文件 <span style="color:rgb(158, 167, 180);font-size:10px;">Files</span>
 								</template>
-								<Menu-item name="3-1"><Icon type="ios-folder-outline" size="18"></Icon> 查询</Menu-item>
-								<Menu-item name="3-2"><Icon type="ios-analytics-outline" size="18"></Icon> 添加</Menu-item>
+								<Menu-item name="6-1"><Icon type="ios-folder-outline" size="18"></Icon> 查询</Menu-item>
+								<Menu-item name="6-2"><Icon type="ios-analytics-outline" size="18"></Icon> 添加</Menu-item>
 							</Submenu>
 
 							<Submenu name="7">
 								<template slot="title">
 										<Icon type="ios-analytics-outline" size="20"></Icon> 机架 <span style="color:rgb(158, 167, 180);font-size:10px;">Racks</span>
 								</template>
-								<Menu-item name="3-1"><Icon type="ios-folder-outline" size="18"></Icon> 查询</Menu-item>
-								<Menu-item name="3-2"><Icon type="ios-analytics-outline" size="18"></Icon> 添加</Menu-item>
+								<Menu-item name="7-1"><Icon type="ios-folder-outline" size="18"></Icon> 查询</Menu-item>
+								<Menu-item name="7-2"><Icon type="ios-analytics-outline" size="18"></Icon> 添加</Menu-item>
 							</Submenu>
 
 							<Submenu name="8">
 								<template slot="title">
 										<Icon type="ios-analytics-outline" size="20"></Icon> 场所 <span style="color:rgb(158, 167, 180);font-size:10px;">Locations</span>
 								</template>
-								<Menu-item name="3-1"><Icon type="ios-folder-outline" size="18"></Icon> 查询</Menu-item>
-								<Menu-item name="3-2"><Icon type="ios-analytics-outline" size="18"></Icon> 添加</Menu-item>
+								<Menu-item name="8-1"><Icon type="ios-folder-outline" size="18"></Icon> 查询</Menu-item>
+								<Menu-item name="8-2"><Icon type="ios-analytics-outline" size="18"></Icon> 添加</Menu-item>
 							</Submenu>
 
 							<Submenu name="9">
 								<template slot="title">
 										<Icon type="ios-analytics-outline" size="20"></Icon> 用户 <span style="color:rgb(158, 167, 180);font-size:10px;">Users</span>
 								</template>
-								<Menu-item name="3-1"><Icon type="ios-folder-outline" size="18"></Icon> 查询</Menu-item>
-								<Menu-item name="3-2"><Icon type="ios-analytics-outline" size="18"></Icon> 添加</Menu-item>
+								<Menu-item name="9-1"><Icon type="ios-folder-outline" size="18"></Icon> 查询</Menu-item>
+								<Menu-item name="9-2"><Icon type="ios-analytics-outline" size="18"></Icon> 添加</Menu-item>
 							</Submenu>
 		
 						</i-menu>
