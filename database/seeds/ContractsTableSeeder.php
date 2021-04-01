@@ -2,9 +2,9 @@
 
 use Illuminate\Database\Seeder;
 
-use App\Models\Soft\Softs;
+use App\Models\Contract\Contracts;
 
-class SoftsTableSeeder extends Seeder
+class ContractsTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,22 +15,22 @@ class SoftsTableSeeder extends Seeder
     {
 		$nowtime = date("Y-m-d H:i:s",time());
 		
-		Softs::truncate();
+		Contracts::truncate();
 
-        Softs::insert(array (
+        Contracts::insert(array (
             0 => 
             array (
                 'id' => 1,
-                'stitle' => 'RedHat Linux',
-                'invoiceid' => null,
-                'slicenseinfo' => null,
-                'stype' => null,
-                'manufacturerid' => null,
-                'sversion' => null,
-                'sinfo' => null,
-                'purchdate' => null,
-                'licqty' => 1,
-                'lictype' => 'Box',
+                'title' => '合同名称一',
+                'type' => 1,
+                'number' => null,
+                'description' => null,
+                'comments' => null,
+                'totalcost' => null,
+                'startdate' => null,
+                'currentenddate' => null,
+                'renewals' => null,
+                    
                 'created_at' => $nowtime,
                 'updated_at' => $nowtime,
                 'deleted_at' => NULL,

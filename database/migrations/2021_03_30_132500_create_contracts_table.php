@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSoftsTable extends Migration
+class CreateContractsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,18 +13,19 @@ class CreateSoftsTable extends Migration
      */
     public function up()
     {
-        Schema::create('softs', function (Blueprint $table) {
+        Schema::create('contracts', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('stitle')->comment('软件名称');
-            $table->integer('invoiceid')->nullable()->comment('发票编号');
-            $table->string('slicenseinfo')->nullable()->comment('License信息');
-            $table->string('stype')->nullable()->comment('软件类型');
-            $table->integer('manufacturerid')->nullable()->comment('制造商编号');
-            $table->string('sversion')->nullable()->comment('版本');
-            $table->string('sinfo')->nullable()->comment('信息');
-            $table->datetime('purchdate')->nullable()->comment('购买日期');
-            $table->integer('licqty')->nullable()->comment('License数量');
-            $table->string('lictype')->nullable()->comment('License类型（Box/CPU/Core）');
+            $table->string('title')->comment('合同名称');
+            // $table->integer('parentid')->nullable()->comment('合同编号');
+            $table->integer('type')->nullable()->comment('合同类型');
+            // $table->integer('subtype')->nullable()->comment('合同子类型');
+            $table->string('number')->nullable()->comment('合同编号');
+            $table->text('description')->nullable()->comment('合同详细描述');
+            $table->string('comments')->nullable()->comment('备注');
+            $table->string('totalcost')->nullable()->comment('总价值');
+            $table->datetime('startdate')->nullable()->comment('开始日期');
+            $table->datetime('currentenddate')->nullable()->comment('当前结束日期');
+            $table->string('renewals')->nullable()->comment('合同续约');
 
             $table->timestamps();
             $table->softDeletes();
@@ -40,6 +41,6 @@ class CreateSoftsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('softs');
+        Schema::dropIfExists('contracts');
     }
 }

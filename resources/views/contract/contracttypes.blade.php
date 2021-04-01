@@ -1,7 +1,7 @@
 @extends('contract.layouts.mainbase')
 
 @section('my_title')
-合同 - 
+合同类型 - 
 @parent
 @endsection
 
@@ -16,7 +16,7 @@
 
 @section('my_body')
 @parent
-<!-- <Divider orientation="left">合同</Divider> -->
+<!-- <Divider orientation="left">合同类型</Divider> -->
 &nbsp;<br>
 
 <Collapse v-model="collapse_query">
@@ -122,7 +122,7 @@ var vm_app = new Vue({
 		current_nav: '',
 		current_subnav: '',
 		
-		sideractivename: '4-1',
+		sideractivename: '4-3',
 		sideropennames: ['4'],
 		
 		//分页
@@ -563,8 +563,8 @@ var vm_app = new Vue({
 	},
 	mounted: function(){
 		var _this = this;
-		_this.current_nav = '合同';
-		_this.current_subnav = '查询';
+		_this.current_nav = '合同类型';
+		_this.current_subnav = '编辑';
 
 		// // 显示所有
 		_this.contractsgets(1, 1); // page: 1, last_page: 1

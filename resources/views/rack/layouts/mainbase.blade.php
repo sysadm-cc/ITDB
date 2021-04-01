@@ -440,7 +440,7 @@ function navmenuselect (name) {
 	  window.location.href = "{{route('contract.add')}}";
 	  break;
 	case '4-3':
-	  window.location.href = "";
+	  window.location.href = "{{route('contract.contracttypes')}}";
 	  break;
 
 	// 代理商

@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Soft;
+namespace App\Http\Controllers\Contract;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 use App\Models\Admin\Config;
 use App\Models\Admin\User;
-use App\Models\Soft\Softs;
+use App\Models\Contract\Contracts;
 
 use DB;
 use Mail;
@@ -18,15 +18,15 @@ use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Cache;
 use Ramsey\Uuid\Uuid;
 
-class SoftsController extends Controller
+class ContractsController extends Controller
 {
 	/**
-	 * 显示页面 itemtypes
+	 * 显示页面 contractContracts
 	 *
 	 * @param  int  $id
 	 * @return \Illuminate\Http\Response
 	 */
-	public function softSofts()
+	public function contractContracts()
 	{
 	// 获取JSON格式的jwt-auth用户响应
 	$me = response()->json(auth()->user());
@@ -49,7 +49,40 @@ class SoftsController extends Controller
 	$info_todo = [];
 
 	$share = compact('config', 'user', 'info_todo');
-	return view('soft.softs', $share);
+	return view('contract.contracts', $share);
+	}
+
+
+	/**
+	 * 显示页面 contractContracttypes
+	 *
+	 * @param  int  $id
+	 * @return \Illuminate\Http\Response
+	 */
+	public function contractContracttypes()
+	{
+	// 获取JSON格式的jwt-auth用户响应
+	$me = response()->json(auth()->user());
+
+	// 获取JSON格式的jwt-auth用户信息（$me->getContent()），就是$me的data部分
+	$user = json_decode($me->getContent(), true);
+	// 用户信息：$user['id']、$user['name'] 等
+
+	// 获取系统配置
+	$config = Config::pluck('cfg_value', 'cfg_name')->toArray();
+
+	// 获取 itemtypes 信息
+	// $info_todo = Item_itemtypes::select('id', 'statusdesc', 'created_at', 'updated_at', 'deleted_at')
+	// 	// ->where('uid_of_auditor', $user['uid'])
+	// 	// ->whereBetween('status', [1, 98])
+	// 	// ->where('archived', false)
+	// 	->limit(100)
+	// 	->orderBy('created_at', 'desc')
+	// 	->get()->toArray();
+	$info_todo = [];
+
+	$share = compact('config', 'user', 'info_todo');
+	return view('contract.contracttypes', $share);
 	}
 
 
@@ -59,7 +92,7 @@ class SoftsController extends Controller
 	 * @param  int  $id
 	 * @return \Illuminate\Http\Response
 	 */
-	public function softAdd()
+	public function contractAdd()
 	{
 	// 获取JSON格式的jwt-auth用户响应
 	$me = response()->json(auth()->user());
@@ -82,17 +115,17 @@ class SoftsController extends Controller
 	$info_todo = [];
 
 	$share = compact('config', 'user', 'info_todo');
-	return view('soft.add', $share);
+	return view('contract.add', $share);
 	}
 
 
     /**
-     * 新建 softCreate
+     * 新建 contractCreate
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function softCreate(Request $request)
+    public function contractCreate(Request $request)
     {
 		if (! $request->isMethod('post') || ! $request->ajax()) return false;
 
@@ -104,7 +137,7 @@ class SoftsController extends Controller
 		$urls = $request->input('add_urls');
 		
 		try	{
-			$result = Softs::create([
+			$result = Contracts::create([
 				'title' => $title,
 				'type' => $type,
 				'contactinfo' => $contactinfo,
@@ -123,12 +156,12 @@ class SoftsController extends Controller
 
 
 	/**
-	 * 读取记录 agents
+	 * 读取记录 contract
 	 *
 	 * @param  int  $id
 	 * @return \Illuminate\Http\Response
 	 */
-	public function softGets(Request $request)
+	public function contractGets(Request $request)
 	{
 	if (! $request->ajax()) return null;
 
@@ -151,7 +184,7 @@ class SoftsController extends Controller
 	if (Cache::has($fullUrl)) {
 		$result = Cache::get($fullUrl);    //直接读取cache
 	} else {                                   //如果cache里面没有
-		$result = Softs::select()
+		$result = Contracts::select()
 			->limit(1000)
 			->orderBy('created_at', 'asc')
 			->paginate($perPage, ['*'], 'page', $page);

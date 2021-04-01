@@ -117,6 +117,10 @@ Route::group(['prefix'=>'contract', 'namespace'=>'Contract', 'middleware'=>['jwt
 	// Contracts Create
 	Route::post('contractCreate', 'ContractsController@contractCreate')->name('contract.create');
 
+	// 显示 Contracttypes 页面
+	Route::get('contractContracttypes', 'ContractsController@contractContracttypes')->name('contract.contracttypes');
+
+
 });
 
 // Invoices 路由
