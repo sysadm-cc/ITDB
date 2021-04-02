@@ -26,29 +26,23 @@
 		<i-col span="8">
 			
 			<i-form :label-width="100">
-				<Form-Item label="* 名称" style="margin-bottom:0px">
-					<i-input v-model.lazy="add_stitle" size="small"></i-input>
+				<Form-Item label="* 文件名称" style="margin-bottom:0px">
+					<i-input v-model.lazy="add_title" size="small"></i-input>
 				</Form-Item>
-				<Form-Item label="制造商" style="margin-bottom:0px">
+				<Form-Item label="文件类型" style="margin-bottom:0px">
 					<!-- <i-select v-model.lazy="add_type_select" multiple size="small" placeholder=""> -->
-					<i-select v-model.lazy="add_manufacturer_select" size="small" placeholder="">
-						<i-option v-for="item in add_manufacturer_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+					<i-select v-model.lazy="add_type_select" size="small" placeholder="">
+						<i-option v-for="item in add_type_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
 					</i-select>
 				</Form-Item>
-				<Form-Item label="购买日期" style="margin-bottom:0px">
+				<!-- <Form-Item label="购买日期" style="margin-bottom:0px">
 					<Date-picker v-model.lazy="add_purchdate" type="daterange" size="small"></Date-picker>
+				</Form-Item> -->
+				<Form-Item label="文件名" style="margin-bottom:0px">
+					<i-input v-model.lazy="add_filename" size="small"></i-input>
 				</Form-Item>
-				<Form-Item label="版本" style="margin-bottom:0px">
-					<i-input v-model.lazy="add_sversion" size="small"></i-input>
-				</Form-Item>
-				<Form-Item label="License数量" style="margin-bottom:0px">
-					<Input-Number v-model.lazy="add_licqty" size="small" :min="1"></Input-Number>
-				</Form-Item>
-				<Form-Item label="License类型" style="margin-bottom:0px">
-					<i-input v-model.lazy="add_lictype" size="small"></i-input>
-				</Form-Item>
-				<Form-Item label="License信息" style="margin-bottom:0px">
-					<i-input v-model.lazy="add_slicenseinfo" size="small" type="textarea"></i-input>
+				<Form-Item label="上传者" style="margin-bottom:0px">
+					<i-input v-model.lazy="add_uploader" size="small"></i-input>
 				</Form-Item>
 
 			</i-form>
@@ -130,20 +124,21 @@ var vm_app = new Vue({
 		add_create_disabled: false,
 
 		// 参数变量
-		add_stitle: '',
-		add_manufacturer_select: '',
-		add_manufacturer_options: [
-			{label: 'lenovo', value: '售卖方'},
-			{label: 'dell', value: '软件销售商'},
-			{label: '硬件销售商', value: '硬件销售商'},
-			{label: '买方', value: '买方'},
-			{label: '承包商', value: '承包商'},
+		add_title: '',
+		add_type_select: '',
+		add_type_options: [
+			{label: '合同 Contract', value: 1},
+			{label: '认证 License', value: 2},
+			{label: '手册 Manual', value: 3},
+			{label: '报价 Offer', value: 4},
+			{label: '订单 Order', value: 5},
+			{label: '图片 Photo', value: 6},
+			{label: '报表 Report', value: 7},
+			{label: '服务 Service', value: 8},
+			{label: '其他 Other', value: 9},
 		],
-		add_purchdate: '',
-		add_sversion: '',
-		add_licqty: '1',
-		add_lictype: '',
-		add_slicenseinfo: '',
+		add_filename: '',
+		add_uploader: '',
 
 
 
@@ -435,11 +430,10 @@ var vm_app = new Vue({
 		// 清除所有变量
 		add_clear_var () {
 			var _this = this;
-			_this.add_stitle = '';
+			_this.add_title = '';
 			_this.add_type_select = '';
-			_this.add_purchdate = '';
-			_this.add_sversion = '';
-			_this.add_licqty = '';
+			_this.add_filename = '';
+			_this.add_uploader = '';
 		},
 
 
@@ -448,27 +442,25 @@ var vm_app = new Vue({
 			var _this = this;
 			_this.add_create_disabled = true;
 
-			var add_stitle = _this.add_stitle;
+			var add_title = _this.add_title;
 			var add_type_select = _this.add_type_select;
-			var add_purchdate = _this.add_purchdate;
-			var add_sversion = _this.add_sversion;
-			var add_licqty = _this.add_licqty;
+			var add_filename = _this.add_filename;
+			var add_uploader = _this.add_uploader;
 
-			if (add_stitle == '' || add_stitle == undefined) {
+			if (add_title == '' || add_title == undefined) {
 				_this.error(false, '错误', '内容为空或不正确！');
 				_this.add_create_disabled = false;
 				return false;
 			}
 // console.log(add_itemtype_select);return false;
 
-			var url = "{{ route('agent.create') }}";
+			var url = "{{ route('file.create') }}";
 			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
 			axios.post(url, {
-				add_stitle: add_stitle,
+				add_title: add_title,
 				add_type_select: add_type_select,
-				add_purchdate: add_purchdate,
-				add_sversion: add_sversion,
-				add_licqty: add_licqty,
+				add_filename: add_filename,
+				add_uploader: add_uploader,
 			})
 			.then(function (response) {
 				// console.log(response.data);

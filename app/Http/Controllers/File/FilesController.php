@@ -99,17 +99,15 @@ class FilesController extends Controller
 		// $nowtime = date("Y-m-d H:i:s",time());
 		$title = $request->input('add_title');
 		$type = $request->input('add_type_select');
-		$contactinfo = $request->input('add_contactinfo');
-		$contacts = $request->input('add_contacts');
-		$urls = $request->input('add_urls');
+		$filename = $request->input('add_filename');
+		$uploader = $request->input('add_uploader');
 		
 		try	{
 			$result = Files::create([
 				'title' => $title,
 				'type' => $type,
-				'contactinfo' => $contactinfo,
-				'contacts' => $contacts,
-				'urls' => $urls,
+				'filename' => $filename,
+				'uploader' => $uploader,
 			]);
 			Cache::flush();
 		}
@@ -123,7 +121,7 @@ class FilesController extends Controller
 
 
 	/**
-	 * 读取记录 agents
+	 * 读取记录 files
 	 *
 	 * @param  int  $id
 	 * @return \Illuminate\Http\Response
