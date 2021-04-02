@@ -21,7 +21,7 @@ class AgentsTableSeeder extends Seeder
             0 => 
             array (
                 'id' => 1,
-                'type' => null,
+                'type' => json_encode(array(1)),
                 'title' => 'Lenovo',
                 'contactinfo' => '联想',
                 'contacts' => 'xxx-xxxxxxxx',
@@ -33,7 +33,7 @@ class AgentsTableSeeder extends Seeder
             1 => 
             array (
                 'id' => 2,
-                'type' => null,
+                'type' => json_encode(array(2)),
                 'title' => 'Dell',
                 'contactinfo' => '戴尔',
                 'contacts' => 'yyy-yyyyyyyy',

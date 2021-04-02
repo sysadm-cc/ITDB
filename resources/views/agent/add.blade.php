@@ -26,17 +26,32 @@
 		<i-col span="8">
 			
 			<i-form :label-width="100">
-				<Form-Item label="* 名称" style="margin-bottom:0px">
+				<Form-Item label="名称" required style="margin-bottom:0px">
 					<i-input v-model.lazy="add_title" size="small"></i-input>
 				</Form-Item>
-				<Form-Item label="类型" style="margin-bottom:0px">
-					<!-- <i-select v-model.lazy="add_type_select" multiple size="small" placeholder=""> -->
-					<i-select v-model.lazy="add_type_select" size="small" placeholder="">
+				<Form-Item label="类型" required style="margin-bottom:0px">
+					<i-select v-model.lazy="add_type_select" size="small" multiple clearable placeholder="">
 						<i-option v-for="item in add_type_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
 					</i-select>
+					<Tooltip max-width="460" placement="bottom">
+						<span style="color: rgb(158, 167, 180);font-size:10px;">
+						* 此项可多选。
+						</span>
+						<div slot="content">
+							<p>售卖方及购买方将出现在发票及合同模块中；</p>
+							<p>硬件销售商将出现的物品模块中；</p>
+							<p>软件销售商将出现在合同模块中；</p>
+							<p>承包商将出现的合同模块中。</p>
+						</div>
+						
+						
+						
+						
+						
+					</Tooltip>
 				</Form-Item>
-				<Form-Item label="联络信息" style="margin-bottom:0px">
-					<i-input v-model.lazy="add_contactinfo" size="small" type="textarea"></i-input>
+				<Form-Item label="备注" style="margin-bottom:0px">
+					<i-input v-model.lazy="add_contactinfo" size="small" type="textarea" placeholder="地址、电话号码以及其他信息..."></i-input>
 				</Form-Item>
 				<Form-Item label="联系方式" style="margin-bottom:0px">
 					<i-input v-model.lazy="add_contacts" size="small"></i-input>
@@ -125,13 +140,13 @@ var vm_app = new Vue({
 
 		// 参数变量
 		add_title: '',
-		add_type_select: '',
+		add_type_select: [],
 		add_type_options: [
-			{label: '售卖方', value: '售卖方'},
-			{label: '软件销售商', value: '软件销售商'},
-			{label: '硬件销售商', value: '硬件销售商'},
-			{label: '买方', value: '买方'},
-			{label: '承包商', value: '承包商'},
+			{label: '售卖方 - Vendoer', value: 1},
+			{label: '软件销售商 - S/W Manufacturer', value: 2},
+			{label: '硬件销售商 - H/W Manufacturer', value: 3},
+			{label: '购买方 - Buyer', value: 4},
+			{label: '承包商 - Contractor', value: 5},
 		],
 		add_contactinfo: '',
 		add_contacts: '',
@@ -428,7 +443,7 @@ var vm_app = new Vue({
 		add_clear_var () {
 			var _this = this;
 			_this.add_title = '';
-			_this.add_type_select = '';
+			_this.add_type_select = [];
 			_this.add_contactinfo = '';
 			_this.add_contacts = '';
 			_this.add_urls = '';
@@ -451,7 +466,7 @@ var vm_app = new Vue({
 				_this.add_create_disabled = false;
 				return false;
 			}
-// console.log(add_itemtype_select);return false;
+// console.log(add_type_select);return false;
 
 			var url = "{{ route('agent.create') }}";
 			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
@@ -463,8 +478,7 @@ var vm_app = new Vue({
 				add_urls: add_urls,
 			})
 			.then(function (response) {
-				// console.log(response.data);
-				// return false;
+				// console.log(response.data);return false;
 
 				if (response.data['jwt'] == 'logout') {
 					_this.alert_logout();

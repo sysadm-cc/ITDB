@@ -57,13 +57,13 @@
 		<i-col span="3">
 			<i-button @click="items_delete()" :disabled="locations_delete_disabled" type="warning" size="small">删除</i-button>&nbsp;<br>&nbsp;
 		</i-col>
-		<i-col span="2">
-			<i-button type="default" size="small" @click="locations_add()"><Icon type="ios-color-wand-outline"></Icon> 新建</i-button>
+		<i-col span="3">
+			<i-button type="default" size="small" @click="locations_add()"><Icon type="ios-color-wand-outline"></Icon> 添加新位置</i-button>
 		</i-col>
-		<i-col span="2">
-			<i-button type="default" size="small" @click="items_export()"><Icon type="ios-download-outline"></Icon> 导出</i-button>
+		<i-col span="3">
+			<i-button type="default" size="small" @click="items_export()"><Icon type="ios-download-outline"></Icon> 导出列表</i-button>
 		</i-col>
-		<i-col span="17">
+		<i-col span="15">
 			&nbsp;
 		</i-col>
 	</i-row>

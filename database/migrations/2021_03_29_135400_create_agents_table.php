@@ -15,11 +15,11 @@ class CreateAgentsTable extends Migration
     {
         Schema::create('agents', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('type')->nullable()->comment('代理商类型');
+            $table->json('type')->nullable()->comment('代理商类型');
             $table->string('title')->comment('代理商名称');
-            $table->string('contactinfo')->nullable()->comment('联系信息');
-            $table->string('contacts')->nullable()->comment('联系方式');
-            $table->string('urls')->nullable()->comment('URL');
+            $table->string('contactinfo')->nullable()->comment('备注');
+            $table->json('contacts')->nullable()->comment('联系方式');
+            $table->json('urls')->nullable()->comment('URLs');
             $table->timestamps();
             $table->softDeletes();
             $table->engine = 'InnoDB';

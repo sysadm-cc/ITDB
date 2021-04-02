@@ -102,7 +102,7 @@ class AgentsController extends Controller
 		$contactinfo = $request->input('add_contactinfo');
 		$contacts = $request->input('add_contacts');
 		$urls = $request->input('add_urls');
-		
+
 		try	{
 			$result = Agents::create([
 				'title' => $title,
@@ -114,7 +114,7 @@ class AgentsController extends Controller
 			Cache::flush();
 		}
 		catch (\Exception $e) {
-			// dd('Message: ' .$e->getMessage());
+			dd('Message: ' .$e->getMessage());
 			$result = 0;
 		}
 
