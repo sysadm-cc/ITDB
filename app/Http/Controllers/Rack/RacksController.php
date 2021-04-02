@@ -98,18 +98,26 @@ class RacksController extends Controller
 
 		// $nowtime = date("Y-m-d H:i:s",time());
 		$title = $request->input('add_title');
-		$type = $request->input('add_type_select');
-		$contactinfo = $request->input('add_contactinfo');
-		$contacts = $request->input('add_contacts');
-		$urls = $request->input('add_urls');
+		$model = $request->input('add_model');
+		$usize = $request->input('add_usize');
+		$depth = $request->input('add_depth');
+		$revnums = $request->input('add_revnums_select');
+		$locationid = $request->input('add_location_select');
+		$locareaid = $request->input('add_locarea_select');
+		$label = $request->input('add_label');
+		$comments = $request->input('add_comments');
 		
 		try	{
 			$result = Racks::create([
 				'title' => $title,
-				'type' => $type,
-				'contactinfo' => $contactinfo,
-				'contacts' => $contacts,
-				'urls' => $urls,
+				'model' => $model,
+				'usize' => $usize,
+				'depth' => $depth,
+				'revnums' => $revnums,
+				'locationid' => $locationid,
+				'locareaid' => $locareaid,
+				'label' => $label,
+				'comments' => $comments,
 			]);
 			Cache::flush();
 		}
@@ -123,7 +131,7 @@ class RacksController extends Controller
 
 
 	/**
-	 * 读取记录 agents
+	 * 读取记录 racks
 	 *
 	 * @param  int  $id
 	 * @return \Illuminate\Http\Response

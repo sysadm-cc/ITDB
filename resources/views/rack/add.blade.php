@@ -29,17 +29,43 @@
 				<Form-Item label="* 名称" style="margin-bottom:0px">
 					<i-input v-model.lazy="add_title" size="small"></i-input>
 				</Form-Item>
-				<Form-Item label="制造商" style="margin-bottom:0px">
-					<!-- <i-select v-model.lazy="add_type_select" multiple size="small" placeholder=""> -->
-					<i-select v-model.lazy="add_manufacturer_select" size="small" placeholder="">
-						<i-option v-for="item in add_manufacturer_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+				<Form-Item label="型号" style="margin-bottom:0px">
+					<i-input v-model.lazy="add_model" size="small"></i-input>
+				</Form-Item>
+				<Form-Item label="尺寸（U）" style="margin-bottom:0px">
+					<i-select v-model.lazy="add_usize_select" size="small" placeholder="">
+						<i-option v-for="item in add_usize_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
 					</i-select>
 				</Form-Item>
-				<Form-Item label="购买日期" style="margin-bottom:0px">
-					<Date-picker v-model.lazy="add_purchdate" type="daterange" size="small"></Date-picker>
+				<Form-Item label="深度（mm）" style="margin-bottom:0px">
+					<Input-Number v-model.lazy="add_depth" size="small" :min="1"></Input-Number>
 				</Form-Item>
-				<Form-Item label="版本" style="margin-bottom:0px">
-					<i-input v-model.lazy="add_sversion" size="small"></i-input>
+				<Form-Item label="U数顺序" style="margin-bottom:0px">
+					<i-select v-model.lazy="add_revnums_select" size="small" placeholder="">
+						<i-option v-for="item in add_revnums_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+					</i-select>
+				</Form-Item>
+				<Form-Item label="场所/楼层" style="margin-bottom:0px">
+					<i-select v-model.lazy="add_location_select" size="small" placeholder="">
+						<i-option v-for="item in add_location_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+					</i-select>
+				</Form-Item>
+				<Form-Item label="区域/房间" style="margin-bottom:0px">
+					<i-select v-model.lazy="add_locarea_select" size="small" placeholder="">
+						<i-option v-for="item in add_locarea_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+					</i-select>
+				</Form-Item>
+				<Form-Item label="标签" style="margin-bottom:0px">
+					<i-input v-model.lazy="add_label" size="small"></i-input>
+				</Form-Item>
+				<Form-Item label="备注" style="margin-bottom:0px">
+					<i-input v-model.lazy="add_comments" size="small" type="textarea"></i-input>
+				</Form-Item>
+
+
+
+				<!-- <Form-Item label="购买日期" style="margin-bottom:0px">
+					<Date-picker v-model.lazy="add_purchdate" type="daterange" size="small"></Date-picker>
 				</Form-Item>
 				<Form-Item label="License数量" style="margin-bottom:0px">
 					<Input-Number v-model.lazy="add_licqty" size="small" :min="1"></Input-Number>
@@ -49,7 +75,7 @@
 				</Form-Item>
 				<Form-Item label="License信息" style="margin-bottom:0px">
 					<i-input v-model.lazy="add_slicenseinfo" size="small" type="textarea"></i-input>
-				</Form-Item>
+				</Form-Item> -->
 
 			</i-form>
 
@@ -131,19 +157,33 @@ var vm_app = new Vue({
 
 		// 参数变量
 		add_title: '',
-		add_manufacturer_select: '',
-		add_manufacturer_options: [
-			{label: 'lenovo', value: '售卖方'},
-			{label: 'dell', value: '软件销售商'},
+		add_model: '',
+		add_usize_select: '',
+		add_usize_options: [],
+		add_depth: '',
+		add_revnums_select: '',
+		add_revnums_options: [
+			{label: '1-Bottom', value: 0},
+			{label: '1-Top', value: 1},
+		],
+		add_location_select: '',
+		add_location_options: [
+			{label: '楼层一', value: 1},
+			{label: '楼层二', value: 2},
 			{label: '硬件销售商', value: '硬件销售商'},
 			{label: '买方', value: '买方'},
 			{label: '承包商', value: '承包商'},
 		],
-		add_purchdate: '',
-		add_sversion: '',
-		add_licqty: '1',
-		add_lictype: '',
-		add_slicenseinfo: '',
+		add_locarea_select: '',
+		add_locarea_options: [
+			{label: '房间一', value: 1},
+			{label: '房间二', value: 2},
+			{label: '硬件销售商', value: '硬件销售商'},
+			{label: '买方', value: '买方'},
+			{label: '承包商', value: '承包商'},
+		],
+		add_label: '',
+		add_comments: '',
 
 
 
@@ -436,10 +476,14 @@ var vm_app = new Vue({
 		add_clear_var () {
 			var _this = this;
 			_this.add_title = '';
-			_this.add_type_select = '';
-			_this.add_purchdate = '';
-			_this.add_sversion = '';
-			_this.add_licqty = '';
+			_this.add_model = '';
+			_this.add_usize_select = '';
+			_this.add_depth = '';
+			_this.add_revnums_select = '';
+			_this.add_location_select = '';
+			_this.add_locarea_select = '';
+			_this.add_label = '';
+			_this.add_comments = '';
 		},
 
 
@@ -449,10 +493,14 @@ var vm_app = new Vue({
 			_this.add_create_disabled = true;
 
 			var add_title = _this.add_title;
-			var add_type_select = _this.add_type_select;
-			var add_purchdate = _this.add_purchdate;
-			var add_sversion = _this.add_sversion;
-			var add_licqty = _this.add_licqty;
+			var add_model = _this.add_model;
+			var add_usize_select = _this.add_usize_select;
+			var add_depth = _this.add_depth;
+			var add_revnums_select = _this.add_revnums_select;
+			var add_location_select = _this.add_location_select;
+			var add_locarea_select = _this.add_locarea_select;
+			var add_label = _this.add_label;
+			var add_comments = _this.add_comments;
 
 			if (add_title == '' || add_title == undefined) {
 				_this.error(false, '错误', '内容为空或不正确！');
@@ -461,14 +509,18 @@ var vm_app = new Vue({
 			}
 // console.log(add_itemtype_select);return false;
 
-			var url = "{{ route('agent.create') }}";
+			var url = "{{ route('rack.create') }}";
 			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
 			axios.post(url, {
 				add_title: add_title,
-				add_type_select: add_type_select,
-				add_purchdate: add_purchdate,
-				add_sversion: add_sversion,
-				add_licqty: add_licqty,
+				add_model: add_model,
+				add_usize_select: add_usize_select,
+				add_depth: add_depth,
+				add_revnums_select: add_revnums_select,
+				add_location_select: add_location_select,
+				add_locarea_select: add_locarea_select,
+				add_label: add_label,
+				add_comments: add_comments,
 			})
 			.then(function (response) {
 				// console.log(response.data);
@@ -550,9 +602,9 @@ var vm_app = new Vue({
 
 		
 
-		// for (var i=1;i<=44;i++) {
-		// 	_this.add_usize_options.push({label: i, value: i});
-		// }
+		for (var i=50;i>=4;i--) {
+			_this.add_usize_options.push({label: i+'U', value: i});
+		}
 
 		// for (var i=1;i<=50;i++) {
 		// 	_this.add_rackposition_options1.push({label: i, value: i});

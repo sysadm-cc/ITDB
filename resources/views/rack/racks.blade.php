@@ -57,13 +57,13 @@
 		<i-col span="3">
 			<i-button @click="items_delete()" :disabled="softs_delete_disabled" type="warning" size="small">删除</i-button>&nbsp;<br>&nbsp;
 		</i-col>
-		<i-col span="2">
-			<i-button type="default" size="small" @click="softs_add()"><Icon type="ios-color-wand-outline"></Icon> 新建</i-button>
+		<i-col span="3">
+			<i-button type="default" size="small" @click="racks_add()"><Icon type="ios-color-wand-outline"></Icon> 添加机架</i-button>
 		</i-col>
-		<i-col span="2">
-			<i-button type="default" size="small" @click="items_export()"><Icon type="ios-download-outline"></Icon> 导出</i-button>
+		<i-col span="3">
+			<i-button type="default" size="small" @click="items_export()"><Icon type="ios-download-outline"></Icon> 导出列表</i-button>
 		</i-col>
-		<i-col span="17">
+		<i-col span="15">
 			&nbsp;
 		</i-col>
 	</i-row>
@@ -172,32 +172,53 @@ var vm_app = new Vue({
 				width: 160,
 			},
 			{
-				title: '制造商',
-				key: 'manufacturerid',
+				title: '型号',
+				key: 'model',
 				resizable: true,
 				width: 180,
 			},
 			{
-				title: '版本',
-				key: 'sversion',
+				title: '尺寸（U）',
+				key: 'usize',
 				resizable: true,
 				width: 180,
 			},
 			{
-				title: '购买日期',
-				key: 'purchdate',
+				title: '深度（mm）',
+				key: 'depth',
 				resizable: true,
 				width: 180,
 			},
 			{
-				title: 'License数量',
-				key: 'licqty',
+				title: '起始顺序',
+				key: 'revnums',
+				resizable: true,
+				width: 180,
+				render: (h, params) => {
+					return params.row.revnums ? h('div', {}, '1=Top') : h('div', {}, '1=Bottom')
+				},
+			},
+			{
+				title: '位置场所/楼层',
+				key: 'locationid',
 				resizable: true,
 				width: 180,
 			},
 			{
-				title: 'License类型',
-				key: 'lictype',
+				title: '区域/房间',
+				key: 'locareaid',
+				resizable: true,
+				width: 180,
+			},
+			{
+				title: '标签',
+				key: 'label',
+				resizable: true,
+				width: 180,
+			},
+			{
+				title: '备注',
+				key: 'comments',
 				resizable: true,
 				width: 180,
 			},
@@ -328,7 +349,7 @@ var vm_app = new Vue({
 			
 
 			_this.loadingbarstart();
-			var url = "{{ route('soft.gets') }}";
+			var url = "{{ route('rack.gets') }}";
 			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
 			axios.get(url,{
 				params: {
@@ -382,8 +403,8 @@ var vm_app = new Vue({
 		},
 
 		// 跳转至添加页面
-		softs_add () {
-			window.location.href = "{{ route('soft.add') }}";
+		racks_add () {
+			window.location.href = "{{ route('rack.add') }}";
 		},
 
 
