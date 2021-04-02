@@ -2,9 +2,9 @@
 
 use Illuminate\Database\Seeder;
 
-use App\Models\Soft\Softs;
+use App\Models\Location\Locations;
 
-class SoftsTableSeeder extends Seeder
+class LocationsTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,22 +15,20 @@ class SoftsTableSeeder extends Seeder
     {
 		$nowtime = date("Y-m-d H:i:s",time());
 		
-		Softs::truncate();
+		Locations::truncate();
 
-        Softs::insert(array (
+        Locations::insert(array (
             0 => 
             array (
                 'id' => 1,
-                'stitle' => 'RedHat Linux',
-                'invoiceid' => null,
-                'slicenseinfo' => null,
-                'stype' => null,
-                'manufacturerid' => null,
-                'sversion' => null,
-                'sinfo' => null,
-                'purchdate' => null,
-                'licqty' => 1,
-                'lictype' => 'Box',
+                'title' => '位置场所一',
+                'building' => '开发大厦',
+                'floor' => '三楼',
+                'area' => '中心机房',
+                'x1' => null,
+                'y1' => null,
+                'x2' => null,
+                'y2' => null,
                 'created_at' => $nowtime,
                 'updated_at' => $nowtime,
                 'deleted_at' => NULL,

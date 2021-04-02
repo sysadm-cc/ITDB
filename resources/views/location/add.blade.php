@@ -1,7 +1,7 @@
-@extends('soft.layouts.mainbase')
+@extends('location.layouts.mainbase')
 
 @section('my_title')
-软件添加 - 
+位置场所添加 - 
 @parent
 @endsection
 
@@ -16,7 +16,7 @@
 
 @section('my_body')
 @parent
-<!-- <Divider orientation="left">软件添加</Divider> -->
+<!-- <Divider orientation="left">位置场所添加</Divider> -->
 &nbsp;<br>
 
 
@@ -27,28 +27,28 @@
 			
 			<i-form :label-width="100">
 				<Form-Item label="* 名称" style="margin-bottom:0px">
-					<i-input v-model.lazy="add_stitle" size="small"></i-input>
+					<i-input v-model.lazy="add_title" size="small"></i-input>
 				</Form-Item>
-				<Form-Item label="制造商" style="margin-bottom:0px">
-					<!-- <i-select v-model.lazy="add_type_select" multiple size="small" placeholder=""> -->
-					<i-select v-model.lazy="add_manufacturer_select" size="small" placeholder="">
-						<i-option v-for="item in add_manufacturer_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
-					</i-select>
+				<Form-Item label="建筑" style="margin-bottom:0px">
+					<i-input v-model.lazy="add_building" size="small"></i-input>
 				</Form-Item>
-				<Form-Item label="购买日期" style="margin-bottom:0px">
-					<Date-picker v-model.lazy="add_purchdate" type="daterange" size="small"></Date-picker>
+				<Form-Item label="楼层" style="margin-bottom:0px">
+					<i-input v-model.lazy="add_floor" size="small"></i-input>
 				</Form-Item>
-				<Form-Item label="版本" style="margin-bottom:0px">
-					<i-input v-model.lazy="add_sversion" size="small"></i-input>
+				<Form-Item label="区域/房间" style="margin-bottom:0px">
+					<i-input v-model.lazy="add_area" size="small"></i-input>
 				</Form-Item>
-				<Form-Item label="License数量" style="margin-bottom:0px">
-					<Input-Number v-model.lazy="add_licqty" size="small" :min="1"></Input-Number>
+				<Form-Item label="坐标x1" style="margin-bottom:0px">
+					<Input-Number v-model.lazy="add_x1" size="small"></Input-Number>
 				</Form-Item>
-				<Form-Item label="License类型" style="margin-bottom:0px">
-					<i-input v-model.lazy="add_lictype" size="small"></i-input>
+				<Form-Item label="坐标y1" style="margin-bottom:0px">
+					<Input-Number v-model.lazy="add_y1" size="small"></Input-Number>
 				</Form-Item>
-				<Form-Item label="License信息" style="margin-bottom:0px">
-					<i-input v-model.lazy="add_slicenseinfo" size="small" type="textarea"></i-input>
+				<Form-Item label="坐标x2" style="margin-bottom:0px">
+					<Input-Number v-model.lazy="add_x2" size="small"></Input-Number>
+				</Form-Item>
+				<Form-Item label="坐标y2" style="margin-bottom:0px">
+					<Input-Number v-model.lazy="add_y2" size="small"></Input-Number>
 				</Form-Item>
 
 			</i-form>
@@ -113,8 +113,8 @@ var vm_app = new Vue({
 		current_nav: '',
 		current_subnav: '',
 		
-		sideractivename: '2-2',
-		sideropennames: ['2'],
+		sideractivename: '8-2',
+		sideropennames: ['8'],
 		
 		//分页
 		page_current: 1,
@@ -130,20 +130,22 @@ var vm_app = new Vue({
 		add_create_disabled: false,
 
 		// 参数变量
-		add_stitle: '',
-		add_manufacturer_select: '',
-		add_manufacturer_options: [
-			{label: 'lenovo', value: '售卖方'},
-			{label: 'dell', value: '软件销售商'},
-			{label: '硬件销售商', value: '硬件销售商'},
-			{label: '买方', value: '买方'},
-			{label: '承包商', value: '承包商'},
-		],
-		add_purchdate: '',
-		add_sversion: '',
-		add_licqty: '1',
-		add_lictype: '',
-		add_slicenseinfo: '',
+		add_title: '',
+		// add_manufacturer_select: '',
+		// add_manufacturer_options: [
+		// 	{label: 'lenovo', value: '售卖方'},
+		// 	{label: 'dell', value: '软件销售商'},
+		// 	{label: '硬件销售商', value: '硬件销售商'},
+		// 	{label: '买方', value: '买方'},
+		// 	{label: '承包商', value: '承包商'},
+		// ],
+		add_building: '',
+		add_floor: '',
+		add_area: '',
+		add_x1: '',
+		add_y1: '',
+		add_x2: '',
+		add_y2: '',
 
 
 
@@ -435,11 +437,14 @@ var vm_app = new Vue({
 		// 清除所有变量
 		add_clear_var () {
 			var _this = this;
-			_this.add_stitle = '';
-			_this.add_type_select = '';
-			_this.add_purchdate = '';
-			_this.add_sversion = '';
-			_this.add_licqty = '';
+			_this.add_title = '';
+			_this.add_building = '';
+			_this.add_floor = '';
+			_this.add_area = '';
+			_this.add_x1 = '';
+			_this.add_y1 = '';
+			_this.add_x2 = '';
+			_this.add_y2 = '';
 		},
 
 
@@ -448,27 +453,33 @@ var vm_app = new Vue({
 			var _this = this;
 			_this.add_create_disabled = true;
 
-			var add_stitle = _this.add_stitle;
-			var add_type_select = _this.add_type_select;
-			var add_purchdate = _this.add_purchdate;
-			var add_sversion = _this.add_sversion;
-			var add_licqty = _this.add_licqty;
+			var add_title = _this.add_title;
+			var add_building = _this.add_building;
+			var add_floor = _this.add_floor;
+			var add_area = _this.add_area;
+			var add_x1 = _this.add_x1;
+			var add_y1 = _this.add_y1;
+			var add_x2 = _this.add_x2;
+			var add_y2 = _this.add_y2;
 
-			if (add_stitle == '' || add_stitle == undefined) {
+			if (add_title == '' || add_title == undefined) {
 				_this.error(false, '错误', '内容为空或不正确！');
 				_this.add_create_disabled = false;
 				return false;
 			}
 // console.log(add_itemtype_select);return false;
 
-			var url = "{{ route('agent.create') }}";
+			var url = "{{ route('location.create') }}";
 			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
 			axios.post(url, {
-				add_stitle: add_stitle,
-				add_type_select: add_type_select,
-				add_purchdate: add_purchdate,
-				add_sversion: add_sversion,
-				add_licqty: add_licqty,
+				add_title: add_title,
+				add_building: add_building,
+				add_floor: add_floor,
+				add_area: add_area,
+				add_x1: add_x1,
+				add_y1: add_y1,
+				add_x2: add_x2,
+				add_y2: add_y2,
 			})
 			.then(function (response) {
 				// console.log(response.data);
@@ -547,7 +558,7 @@ var vm_app = new Vue({
 	mounted: function(){
 		var _this = this;
 		_this.loadingbarstart();
-		_this.current_nav = '软件';
+		_this.current_nav = '位置场所';
 		_this.current_subnav = '添加';
 
 

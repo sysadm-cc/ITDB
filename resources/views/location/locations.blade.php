@@ -1,7 +1,7 @@
-@extends('soft.layouts.mainbase')
+@extends('location.layouts.mainbase')
 
 @section('my_title')
-软件 - 
+位置场所 - 
 @parent
 @endsection
 
@@ -16,7 +16,7 @@
 
 @section('my_body')
 @parent
-<!-- <Divider orientation="left">软件</Divider> -->
+<!-- <Divider orientation="left">位置场所</Divider> -->
 &nbsp;<br>
 
 <Collapse v-model="collapse_query">
@@ -55,10 +55,10 @@
 	<i-row :gutter="16">
 		<br>
 		<i-col span="3">
-			<i-button @click="items_delete()" :disabled="softs_delete_disabled" type="warning" size="small">删除</i-button>&nbsp;<br>&nbsp;
+			<i-button @click="items_delete()" :disabled="locations_delete_disabled" type="warning" size="small">删除</i-button>&nbsp;<br>&nbsp;
 		</i-col>
 		<i-col span="2">
-			<i-button type="default" size="small" @click="softs_add()"><Icon type="ios-color-wand-outline"></Icon> 新建</i-button>
+			<i-button type="default" size="small" @click="locations_add()"><Icon type="ios-color-wand-outline"></Icon> 新建</i-button>
 		</i-col>
 		<i-col span="2">
 			<i-button type="default" size="small" @click="items_export()"><Icon type="ios-download-outline"></Icon> 导出</i-button>
@@ -122,8 +122,8 @@ var vm_app = new Vue({
 		current_nav: '',
 		current_subnav: '',
 		
-		sideractivename: '2-1',
-		sideropennames: ['2'],
+		sideractivename: '8-1',
+		sideropennames: ['8'],
 		
 		//分页
 		page_current: 1,
@@ -141,7 +141,7 @@ var vm_app = new Vue({
 		collapse_query: '',
 
 		// 删除按钮禁用
-		softs_delete_disabled: true,
+		locations_delete_disabled: true,
 
 
 		//新增
@@ -167,39 +167,51 @@ var vm_app = new Vue({
 			},
 			{
 				title: '名称',
-				key: 'stitle',
+				key: 'title',
 				resizable: true,
 				width: 160,
 			},
 			{
-				title: '制造商',
-				key: 'manufacturerid',
+				title: '建筑',
+				key: 'building',
 				resizable: true,
 				width: 180,
 			},
 			{
-				title: '版本',
-				key: 'sversion',
+				title: '楼层',
+				key: 'floor',
 				resizable: true,
 				width: 180,
 			},
 			{
-				title: '购买日期',
-				key: 'purchdate',
+				title: '区域/房间',
+				key: 'area',
 				resizable: true,
 				width: 180,
 			},
 			{
-				title: 'License数量',
-				key: 'licqty',
+				title: '坐标x1',
+				key: 'x1',
 				resizable: true,
-				width: 180,
+				width: 80,
 			},
 			{
-				title: 'License类型',
-				key: 'lictype',
+				title: '坐标y1',
+				key: 'y1',
 				resizable: true,
-				width: 180,
+				width: 80,
+			},
+			{
+				title: '坐标x2',
+				key: 'x2',
+				resizable: true,
+				width: 80,
+			},
+			{
+				title: '坐标y2',
+				key: 'y2',
+				resizable: true,
+				width: 80,
 			},
 			{
 				title: '创建时间',
@@ -317,7 +329,7 @@ var vm_app = new Vue({
 		},
 
 		//
-		softsgets (page, last_page){
+		locationsgets (page, last_page){
 			var _this = this;
 			
 			if (page > last_page) {
@@ -328,7 +340,7 @@ var vm_app = new Vue({
 			
 
 			_this.loadingbarstart();
-			var url = "{{ route('soft.gets') }}";
+			var url = "{{ route('location.gets') }}";
 			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
 			axios.get(url,{
 				params: {
@@ -346,7 +358,7 @@ var vm_app = new Vue({
 				}
 
 				if (response.data) {
-					_this.softs_delete_disabled = true;
+					_this.locations_delete_disabled = true;
 					_this.tableselect = [];
 					
 					_this.page_current = response.data.current_page;
@@ -366,7 +378,7 @@ var vm_app = new Vue({
 	
 		// 切换当前页
 		oncurrentpagechange (currentpage) {
-			this.softsgets(currentpage, this.page_last);
+			this.locationsgets(currentpage, this.page_last);
 		},
 
 		// 表格选择
@@ -378,12 +390,12 @@ var vm_app = new Vue({
 				_this.tableselect.push(selection[i].id);
 			}
 			
-			_this.softs_delete_disabled = _this.tableselect[0] == undefined ? true : false;
+			_this.locations_delete_disabled = _this.tableselect[0] == undefined ? true : false;
 		},
 
 		// 跳转至添加页面
-		softs_add () {
-			window.location.href = "{{ route('soft.add') }}";
+		locations_add () {
+			window.location.href = "{{ route('location.add') }}";
 		},
 
 
@@ -563,11 +575,11 @@ var vm_app = new Vue({
 	},
 	mounted: function(){
 		var _this = this;
-		_this.current_nav = '软件';
+		_this.current_nav = '位置场所';
 		_this.current_subnav = '查询';
 
 		// // 显示所有
-		_this.softsgets(1, 1); // page: 1, last_page: 1
+		_this.locationsgets(1, 1); // page: 1, last_page: 1
 		// _this.loadapplicantgroup();
 
 		// GetCurrentDatetime('getcurrentdatetime');

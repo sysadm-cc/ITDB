@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Soft;
+namespace App\Http\Controllers\Location;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 use App\Models\Admin\Config;
 use App\Models\Admin\User;
-use App\Models\Soft\Softs;
+use App\Models\Location\Locations;
 
 use DB;
 use Mail;
@@ -18,7 +18,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Cache;
 use Ramsey\Uuid\Uuid;
 
-class SoftsController extends Controller
+class LocationsController extends Controller
 {
 	/**
 	 * 显示页面 itemtypes
@@ -26,7 +26,7 @@ class SoftsController extends Controller
 	 * @param  int  $id
 	 * @return \Illuminate\Http\Response
 	 */
-	public function softSofts()
+	public function locationLocations()
 	{
 	// 获取JSON格式的jwt-auth用户响应
 	$me = response()->json(auth()->user());
@@ -49,7 +49,7 @@ class SoftsController extends Controller
 	$info_todo = [];
 
 	$share = compact('config', 'user', 'info_todo');
-	return view('soft.softs', $share);
+	return view('location.locations', $share);
 	}
 
 
@@ -59,7 +59,7 @@ class SoftsController extends Controller
 	 * @param  int  $id
 	 * @return \Illuminate\Http\Response
 	 */
-	public function softAdd()
+	public function locationAdd()
 	{
 	// 获取JSON格式的jwt-auth用户响应
 	$me = response()->json(auth()->user());
@@ -82,34 +82,40 @@ class SoftsController extends Controller
 	$info_todo = [];
 
 	$share = compact('config', 'user', 'info_todo');
-	return view('soft.add', $share);
+	return view('location.add', $share);
 	}
 
 
     /**
-     * 新建 softCreate
+     * 新建 locationCreate
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function softCreate(Request $request)
+    public function locationCreate(Request $request)
     {
 		if (! $request->isMethod('post') || ! $request->ajax()) return false;
 
 		// $nowtime = date("Y-m-d H:i:s",time());
 		$title = $request->input('add_title');
-		$type = $request->input('add_type_select');
-		$contactinfo = $request->input('add_contactinfo');
-		$contacts = $request->input('add_contacts');
-		$urls = $request->input('add_urls');
+		$building = $request->input('add_building');
+		$floor = $request->input('add_floor');
+		$area = $request->input('add_area');
+		$x1 = $request->input('add_x1');
+		$y1 = $request->input('add_y1');
+		$x2 = $request->input('add_x2');
+		$y2 = $request->input('add_y2');
 		
 		try	{
-			$result = Softs::create([
+			$result = Locations::create([
 				'title' => $title,
-				'type' => $type,
-				'contactinfo' => $contactinfo,
-				'contacts' => $contacts,
-				'urls' => $urls,
+				'building' => $building,
+				'floor' => $floor,
+				'area' => $area,
+				'x1' => $x1,
+				'y1' => $y1,
+				'x2' => $x2,
+				'y2' => $y2,
 			]);
 			Cache::flush();
 		}
@@ -123,12 +129,12 @@ class SoftsController extends Controller
 
 
 	/**
-	 * 读取记录 agents
+	 * 读取记录 locations
 	 *
 	 * @param  int  $id
 	 * @return \Illuminate\Http\Response
 	 */
-	public function softGets(Request $request)
+	public function locationGets(Request $request)
 	{
 	if (! $request->ajax()) return null;
 
@@ -151,7 +157,7 @@ class SoftsController extends Controller
 	if (Cache::has($fullUrl)) {
 		$result = Cache::get($fullUrl);    //直接读取cache
 	} else {                                   //如果cache里面没有
-		$result = Softs::select()
+		$result = Locations::select()
 			->limit(1000)
 			->orderBy('created_at', 'asc')
 			->paginate($perPage, ['*'], 'page', $page);
