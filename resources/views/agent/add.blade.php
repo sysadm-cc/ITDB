@@ -64,10 +64,10 @@
 			<Divider orientation="left">供应商联系方式</Divider>
 
 			↓ 批量录入&nbsp;&nbsp;
-			<Input-number v-model.lazy="piliangluruxiang_contracts" @on-change="value=>piliangluru_generate_contracts(value)" :min="1" :max="10" size="small" style="width: 60px"></Input-number>
+			<Input-number v-model.lazy="piliangluruxiang_contacts" @on-change="value=>piliangluru_generate_contracts(value)" :min="1" :max="10" size="small" style="width: 60px"></Input-number>
 			&nbsp;项（最多10项）&nbsp;&nbsp;<br>
 
-			<span v-for="(item, index) in piliangluru_contracts">
+			<span v-for="(item, index) in piliangluru_contacts">
 			<br>
 			<i-form :label-width="90">
 			<i-row>
@@ -110,13 +110,34 @@
 						<i-input v-model.lazy="add_contacts" size="small"></i-input>
 				</Form-Item>
 			</i-form> -->
-<br>&nbsp;<br><br><br><br>
+<br>&nbsp;<br>
 
 			<Divider orientation="left">供应商网站</Divider>
-			<i-form :label-width="100">
-				<Form-Item label="URLs" style="margin-bottom:0px">
-					<i-input v-model.lazy="add_urls" size="small"></i-input>
+
+			↓ 批量录入&nbsp;&nbsp;
+			<Input-number v-model.lazy="piliangluruxiang_urls" @on-change="value=>piliangluru_generate_urls(value)" :min="1" :max="10" size="small" style="width: 60px"></Input-number>
+			&nbsp;项（最多10项）&nbsp;&nbsp;<br>
+
+			<span v-for="(item, index) in piliangluru_urls">
+			<br>
+			<i-form :label-width="90">
+			<i-row>
+				<i-col span="1">
+					<label class="ivu-form-item-label">
+						No.@{{index+1}}
+					</label>
+				</i-col>
+				<i-col span="9">
+				<Form-Item label="说明" style="margin-bottom:0px">
+					<i-input v-model.lazy="item.description" size="small"></i-input>
 				</Form-Item>
+				</i-col>
+				<i-col span="14">
+				<Form-Item label="网址" style="margin-bottom:0px">
+					<i-input v-model.lazy="item.url" size="small"></i-input>
+				</Form-Item>
+				</i-col>
+			</i-row>
 			</i-form>
 		</i-col>
 
@@ -201,9 +222,9 @@ var vm_app = new Vue({
 		add_urls: '',
 
 		// 批量录入项 - 联络方式
-		piliangluruxiang_contracts: 1,
+		piliangluruxiang_contacts: 1,
 		// 批量录入 - 联络方式
-		piliangluru_contracts: [
+		piliangluru_contacts: [
 			{
 				name: '',
 				phonenumber: '',
@@ -515,8 +536,28 @@ var vm_app = new Vue({
 			_this.add_title = '';
 			_this.add_type_select = [];
 			_this.add_contactinfo = '';
-			_this.add_contacts = '';
-			_this.add_urls = '';
+			// _this.add_contacts = '';
+			// _this.add_urls = '';
+
+			_this.piliangluru_contacts = [
+				{
+					name: '',
+					phonenumber: '',
+					email: '',
+					role: '',
+					comments: '',
+				}
+			];
+			_this.piliangluruxiang_contacts = 1;
+
+			_this.piliangluru_urls = [
+				{
+					description: '',
+					url: '',
+				}
+			];
+			_this.piliangluruxiang_urls = 1;
+
 		},
 
 
@@ -528,8 +569,39 @@ var vm_app = new Vue({
 			var add_title = _this.add_title;
 			var add_type_select = _this.add_type_select;
 			var add_contactinfo = _this.add_contactinfo;
-			var add_contacts = _this.add_contacts;
-			var add_urls = _this.add_urls;
+
+			// 删除空json节点
+			var piliangluru_tmp_contacts = [];
+			for (var v of _this.piliangluru_contacts) {
+				if (v.name == '' || v.name == undefined) {
+				} else {
+					piliangluru_tmp_contacts.push(v);
+				}
+			}
+			// if (piliangluru_tmp_contacts.length == 0) {
+			// 	_this.warning(false, '警告', '批量录入内容为空！');
+			// 	_this.disabled_create = false;
+			// 	return false;
+			// }
+			// console.log(piliangluru_tmp);return false;
+			// console.log(_this.piliangluru);return false;
+
+			var add_contacts = piliangluru_tmp_contacts;
+
+			// 删除空json节点
+			var piliangluru_tmp_urls = [];
+			for (var v of _this.piliangluru_urls) {
+				if (v.url == '' || v.url == undefined) {
+				} else {
+					piliangluru_tmp_urls.push(v);
+				}
+			}
+			var add_urls = piliangluru_tmp_urls;
+
+
+
+			// var add_contacts = _this.add_contacts;
+			// var add_urls = _this.add_urls;
 
 			if (add_title == '' || add_title == undefined) {
 				_this.error(false, '错误', '内容为空或不正确！');
@@ -574,36 +646,68 @@ var vm_app = new Vue({
 		},
 
 
-		// 生成piliangluru
+		// 生成piliangluru 联系方式
 		piliangluru_generate_contracts (counts) {
 			if (counts == undefined) counts = 1;
-			var len = this.piliangluru_contracts.length;
+			var len = this.piliangluru_contacts.length;
 			
 			if (counts > len) {
 				for (var i=0;i<counts-len;i++) {
 					// this.piliangluru.push({value: 'piliangluru'+parseInt(len+i+1)});
-					this.piliangluru_contracts.push(
+					this.piliangluru_contacts.push(
 						{
-							jianchajileixing: '',
-							buliangneirong: '',
-							weihao: '',
-							shuliang: '',
-							jianchazhe: ''
+							name: '',
+							phonenumber: '',
+							email: '',
+							role: '',
+							comments: ''
 						}
 					);
 				}
 			} else if (counts < len) {
-				if (this.piliangluruxiang_contracts != '') {
+				if (this.piliangluruxiang_contacts != '') {
 					for (var i=counts;i<len;i++) {
-						if (this.piliangluruxiang_contracts == this.piliangluru_contracts[i].value) {
-							this.piliangluruxiang_contracts = '';
+						if (this.piliangluruxiang_contacts == this.piliangluru_contacts[i].value) {
+							this.piliangluruxiang_contacts = '';
 							break;
 						}
 					}
 				}
 				
 				for (var i=0;i<len-counts;i++) {
-					this.piliangluru_contracts.pop();
+					this.piliangluru_contacts.pop();
+				}
+			}			
+
+		},	
+
+		// 生成piliangluru 网站
+		piliangluru_generate_urls (counts) {
+			if (counts == undefined) counts = 1;
+			var len = this.piliangluru_urls.length;
+			
+			if (counts > len) {
+				for (var i=0;i<counts-len;i++) {
+					// this.piliangluru.push({value: 'piliangluru'+parseInt(len+i+1)});
+					this.piliangluru_urls.push(
+						{
+							description: '',
+							url: '',
+						}
+					);
+				}
+			} else if (counts < len) {
+				if (this.piliangluruxiang_urls != '') {
+					for (var i=counts;i<len;i++) {
+						if (this.piliangluruxiang_urls == this.piliangluru_urls[i].value) {
+							this.piliangluruxiang_urls = '';
+							break;
+						}
+					}
+				}
+				
+				for (var i=0;i<len-counts;i++) {
+					this.piliangluru_urls.pop();
 				}
 			}			
 
