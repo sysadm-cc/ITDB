@@ -24,8 +24,21 @@ class AgentsTableSeeder extends Seeder
                 'type' => json_encode(array(1)),
                 'title' => 'Lenovo',
                 'contactinfo' => '联想',
-                'contacts' => 'xxx-xxxxxxxx',
-                'urls' => 'https://www.lenovo.com.cn',
+                'contacts' => json_encode(array(
+                    array(
+                        'name' => '张三',
+                        'phonenumber' => 'xxx-xxxxxxxx',
+                        'email' => 'zhangsan@lenovo.local',
+                        'role' => '客户经理',
+                        'comments' => '备注内容一',
+                    ),
+                )),
+                'urls' => json_encode(array(
+                    array(
+                        'description' => '官方网站',
+                        'url' => 'https://www.lenovo.com.cn',
+                    )
+                )),
                 'created_at' => $nowtime,
                 'updated_at' => $nowtime,
                 'deleted_at' => NULL,
@@ -36,8 +49,21 @@ class AgentsTableSeeder extends Seeder
                 'type' => json_encode(array(2)),
                 'title' => 'Dell',
                 'contactinfo' => '戴尔',
-                'contacts' => 'yyy-yyyyyyyy',
-                'urls' => 'https://www.dell.com',
+                'contacts' => json_encode(array(
+                    array(
+                        'name' => '李四',
+                        'phonenumber' => 'xxx-xxxxxxxx',
+                        'email' => 'lisi@lenovo.local',
+                        'role' => '销售经理',
+                        'comments' => '备注内容二',
+                    ),
+                )),
+                'urls' => json_encode(array(
+                    array(
+                        'description' => '官方网站',
+                        'url' => 'https://www.dell.com',
+                    )
+                )),
                 'created_at' => $nowtime,
                 'updated_at' => $nowtime,
                 'deleted_at' => NULL,

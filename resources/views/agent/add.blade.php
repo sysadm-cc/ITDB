@@ -17,14 +17,11 @@
 @section('my_body')
 @parent
 <!-- <Divider orientation="left">供应商添加</Divider> -->
-&nbsp;<br>
-
-
 
 	<i-row :gutter="16">
 
-		<i-col span="8">
-			
+		<i-col span="7">
+			<Divider orientation="left">供应商属性</Divider>
 			<i-form :label-width="100">
 				<Form-Item label="名称" required style="margin-bottom:0px">
 					<i-input v-model.lazy="add_title" size="small"></i-input>
@@ -43,11 +40,6 @@
 							<p>软件销售商将出现在合同模块中；</p>
 							<p>承包商将出现的合同模块中。</p>
 						</div>
-						
-						
-						
-						
-						
 					</Tooltip>
 				</Form-Item>
 				<Form-Item label="备注" style="margin-bottom:0px">
@@ -62,16 +54,72 @@
 
 			</i-form>
 
-
 		</i-col>
 
-
-
-
-
-		<i-col span="16">
+		<i-col span="1">
 		&nbsp;
 		</i-col>
+
+		<i-col span="16">
+			<Divider orientation="left">供应商联系方式</Divider>
+
+			↓ 批量录入&nbsp;&nbsp;
+			<Input-number v-model.lazy="piliangluruxiang_contracts" @on-change="value=>piliangluru_generate_contracts(value)" :min="1" :max="10" size="small" style="width: 60px"></Input-number>
+			&nbsp;项（最多10项）&nbsp;&nbsp;<br>
+
+			<span v-for="(item, index) in piliangluru_contracts">
+			<br>
+			<i-form :label-width="90">
+			<i-row>
+				<i-col span="1">
+					<label class="ivu-form-item-label">
+						No.@{{index+1}}
+					</label>
+				</i-col>
+				<i-col span="8">
+					<Form-Item label="名称" style="margin-bottom:0px">
+						<i-input v-model.lazy="item.name" size="small"></i-input>
+					</Form-Item>
+					<Form-Item label="电话号码" style="margin-bottom:0px">
+						<i-input v-model.lazy="item.phonenumber" size="small"></i-input>
+					</Form-Item>
+				</i-col>
+				<i-col span="8">
+					<Form-Item label="角色" style="margin-bottom:0px">
+						<i-input v-model.lazy="item.role" size="small"></i-input>
+					</Form-Item>
+					<Form-Item label="电子邮件" style="margin-bottom:0px">
+						<i-input v-model.lazy="item.email" size="small"></i-input>
+					</Form-Item>
+				</i-col>
+				<i-col span="7">
+					<Form-Item label="备注" style="margin-bottom:0px">
+						<i-input v-model.lazy="item.comments" size="small" type="textarea"></i-input>
+					</Form-Item>
+				</i-col>
+			</i-row>
+			</i-form>&nbsp;
+			</span>
+
+
+
+
+
+			<!-- <i-form :label-width="100">
+				<Form-Item label="联系方式" style="margin-bottom:0px">
+						<i-input v-model.lazy="add_contacts" size="small"></i-input>
+				</Form-Item>
+			</i-form> -->
+<br>&nbsp;<br><br><br><br>
+
+			<Divider orientation="left">供应商网站</Divider>
+			<i-form :label-width="100">
+				<Form-Item label="URLs" style="margin-bottom:0px">
+					<i-input v-model.lazy="add_urls" size="small"></i-input>
+				</Form-Item>
+			</i-form>
+		</i-col>
+
 
 	</i-row>
 
@@ -152,6 +200,28 @@ var vm_app = new Vue({
 		add_contacts: '',
 		add_urls: '',
 
+		// 批量录入项 - 联络方式
+		piliangluruxiang_contracts: 1,
+		// 批量录入 - 联络方式
+		piliangluru_contracts: [
+			{
+				name: '',
+				phonenumber: '',
+				email: '',
+				role: '',
+				comments: ''
+			},
+		],
+
+		// 批量录入项 - URLs
+		piliangluruxiang_urls: 1,
+		// 批量录入 - URLs
+		piliangluru_urls: [
+			{
+				description: '',
+				url: '',
+			},
+		],
 
 
 
@@ -504,31 +574,40 @@ var vm_app = new Vue({
 		},
 
 
-
-
-
-
-		// ajax 获取物品类型列表
-		itemtypesgets () {
-			var _this = this;
-			var url = "{{ route('item.itemtypesgets') }}";
-			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
-			axios.get(url)
-			.then(function (response) {
-				if (response.data['jwt'] == 'logout') {
-					_this.alert_logout();
-					return false;
+		// 生成piliangluru
+		piliangluru_generate_contracts (counts) {
+			if (counts == undefined) counts = 1;
+			var len = this.piliangluru_contracts.length;
+			
+			if (counts > len) {
+				for (var i=0;i<counts-len;i++) {
+					// this.piliangluru.push({value: 'piliangluru'+parseInt(len+i+1)});
+					this.piliangluru_contracts.push(
+						{
+							jianchajileixing: '',
+							buliangneirong: '',
+							weihao: '',
+							shuliang: '',
+							jianchazhe: ''
+						}
+					);
 				}
-				if (response.data) {
-					response.data.data.map(function (v, i) {
-						_this.add_itemtype_options.push({label: v.typedesc, value: v.id});
-					});
+			} else if (counts < len) {
+				if (this.piliangluruxiang_contracts != '') {
+					for (var i=counts;i<len;i++) {
+						if (this.piliangluruxiang_contracts == this.piliangluru_contracts[i].value) {
+							this.piliangluruxiang_contracts = '';
+							break;
+						}
+					}
 				}
-			})
-			.catch(function (error) {
-			})
-		},
-	
+				
+				for (var i=0;i<len-counts;i++) {
+					this.piliangluru_contracts.pop();
+				}
+			}			
+
+		},	
 		
 
 
