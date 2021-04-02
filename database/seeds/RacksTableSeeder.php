@@ -2,9 +2,9 @@
 
 use Illuminate\Database\Seeder;
 
-use App\Models\Soft\Softs;
+use App\Models\Rack\Racks;
 
-class SoftsTableSeeder extends Seeder
+class RacksTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,22 +15,21 @@ class SoftsTableSeeder extends Seeder
     {
 		$nowtime = date("Y-m-d H:i:s",time());
 		
-		Softs::truncate();
+		Racks::truncate();
 
-        Softs::insert(array (
+        Racks::insert(array (
             0 => 
             array (
                 'id' => 1,
-                'stitle' => 'RedHat Linux',
-                'invoiceid' => null,
-                'slicenseinfo' => null,
-                'stype' => null,
-                'manufacturerid' => null,
-                'sversion' => null,
-                'sinfo' => null,
-                'purchdate' => null,
-                'licqty' => 1,
-                'lictype' => 'Box',
+                'title' => '机架一',
+                'model' => '华为50U',
+                'usize' => 50,
+                'depth' => null,
+                // 'revnums' => 0,
+                'locationid' => 1,
+                'locareaid' => 1,
+                'label' => null,
+                'comments' => null,
                 'created_at' => $nowtime,
                 'updated_at' => $nowtime,
                 'deleted_at' => NULL,

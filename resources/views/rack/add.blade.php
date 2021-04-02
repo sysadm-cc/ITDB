@@ -1,7 +1,7 @@
-@extends('soft.layouts.mainbase')
+@extends('rack.layouts.mainbase')
 
 @section('my_title')
-软件添加 - 
+机架添加 - 
 @parent
 @endsection
 
@@ -16,7 +16,7 @@
 
 @section('my_body')
 @parent
-<!-- <Divider orientation="left">软件添加</Divider> -->
+<!-- <Divider orientation="left">机架添加</Divider> -->
 &nbsp;<br>
 
 
@@ -27,7 +27,7 @@
 			
 			<i-form :label-width="100">
 				<Form-Item label="* 名称" style="margin-bottom:0px">
-					<i-input v-model.lazy="add_stitle" size="small"></i-input>
+					<i-input v-model.lazy="add_title" size="small"></i-input>
 				</Form-Item>
 				<Form-Item label="制造商" style="margin-bottom:0px">
 					<!-- <i-select v-model.lazy="add_type_select" multiple size="small" placeholder=""> -->
@@ -113,8 +113,8 @@ var vm_app = new Vue({
 		current_nav: '',
 		current_subnav: '',
 		
-		sideractivename: '2-2',
-		sideropennames: ['2'],
+		sideractivename: '7-2',
+		sideropennames: ['7'],
 		
 		//分页
 		page_current: 1,
@@ -130,7 +130,7 @@ var vm_app = new Vue({
 		add_create_disabled: false,
 
 		// 参数变量
-		add_stitle: '',
+		add_title: '',
 		add_manufacturer_select: '',
 		add_manufacturer_options: [
 			{label: 'lenovo', value: '售卖方'},
@@ -435,7 +435,7 @@ var vm_app = new Vue({
 		// 清除所有变量
 		add_clear_var () {
 			var _this = this;
-			_this.add_stitle = '';
+			_this.add_title = '';
 			_this.add_type_select = '';
 			_this.add_purchdate = '';
 			_this.add_sversion = '';
@@ -448,13 +448,13 @@ var vm_app = new Vue({
 			var _this = this;
 			_this.add_create_disabled = true;
 
-			var add_stitle = _this.add_stitle;
+			var add_title = _this.add_title;
 			var add_type_select = _this.add_type_select;
 			var add_purchdate = _this.add_purchdate;
 			var add_sversion = _this.add_sversion;
 			var add_licqty = _this.add_licqty;
 
-			if (add_stitle == '' || add_stitle == undefined) {
+			if (add_title == '' || add_title == undefined) {
 				_this.error(false, '错误', '内容为空或不正确！');
 				_this.add_create_disabled = false;
 				return false;
@@ -464,7 +464,7 @@ var vm_app = new Vue({
 			var url = "{{ route('agent.create') }}";
 			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
 			axios.post(url, {
-				add_stitle: add_stitle,
+				add_title: add_title,
 				add_type_select: add_type_select,
 				add_purchdate: add_purchdate,
 				add_sversion: add_sversion,
@@ -541,13 +541,10 @@ var vm_app = new Vue({
 
 
 	},
-	beforeCreated: function(){
-		
-	},
 	mounted: function(){
 		var _this = this;
 		_this.loadingbarstart();
-		_this.current_nav = '软件';
+		_this.current_nav = '机架';
 		_this.current_subnav = '添加';
 
 

@@ -1,7 +1,7 @@
-@extends('soft.layouts.mainbase')
+@extends('rack.layouts.mainbase')
 
 @section('my_title')
-软件 - 
+机架 - 
 @parent
 @endsection
 
@@ -16,7 +16,7 @@
 
 @section('my_body')
 @parent
-<!-- <Divider orientation="left">软件</Divider> -->
+<!-- <Divider orientation="left">机架</Divider> -->
 &nbsp;<br>
 
 <Collapse v-model="collapse_query">
@@ -122,8 +122,8 @@ var vm_app = new Vue({
 		current_nav: '',
 		current_subnav: '',
 		
-		sideractivename: '2-1',
-		sideropennames: ['2'],
+		sideractivename: '7-1',
+		sideropennames: ['7'],
 		
 		//分页
 		page_current: 1,
@@ -167,7 +167,7 @@ var vm_app = new Vue({
 			},
 			{
 				title: '名称',
-				key: 'stitle',
+				key: 'title',
 				resizable: true,
 				width: 160,
 			},
@@ -317,7 +317,7 @@ var vm_app = new Vue({
 		},
 
 		//
-		softsgets (page, last_page){
+		racksgets (page, last_page){
 			var _this = this;
 			
 			if (page > last_page) {
@@ -366,7 +366,7 @@ var vm_app = new Vue({
 	
 		// 切换当前页
 		oncurrentpagechange (currentpage) {
-			this.softsgets(currentpage, this.page_last);
+			this.racksgets(currentpage, this.page_last);
 		},
 
 		// 表格选择
@@ -563,11 +563,11 @@ var vm_app = new Vue({
 	},
 	mounted: function(){
 		var _this = this;
-		_this.current_nav = '软件';
+		_this.current_nav = '机架';
 		_this.current_subnav = '查询';
 
 		// // 显示所有
-		_this.softsgets(1, 1); // page: 1, last_page: 1
+		_this.racksgets(1, 1); // page: 1, last_page: 1
 		// _this.loadapplicantgroup();
 
 		// GetCurrentDatetime('getcurrentdatetime');

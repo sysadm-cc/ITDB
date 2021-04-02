@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSoftsTable extends Migration
+class CreateRacksTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,18 +13,17 @@ class CreateSoftsTable extends Migration
      */
     public function up()
     {
-        Schema::create('softs', function (Blueprint $table) {
+        Schema::create('racks', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('stitle')->comment('软件名称');
-            $table->integer('invoiceid')->nullable()->comment('发票编号');
-            $table->string('slicenseinfo')->nullable()->comment('License信息');
-            $table->string('stype')->nullable()->comment('软件类型');
-            $table->integer('manufacturerid')->nullable()->comment('制造商编号');
-            $table->string('sversion')->nullable()->comment('版本');
-            $table->string('sinfo')->nullable()->comment('信息');
-            $table->datetime('purchdate')->nullable()->comment('购买日期');
-            $table->integer('licqty')->nullable()->comment('License数量');
-            $table->string('lictype')->nullable()->comment('License类型（Box/CPU/Core）');
+            $table->string('title')->comment('机架名称');
+            $table->string('model')->nullable()->comment('机架型号');
+            $table->integer('usize')->nullable()->comment('U数');
+            $table->integer('depth')->nullable()->comment('深度（mm）');
+            $table->boolean('revnums')->default(false)->comment('U数顺序（默认从下向上为0，从上向下为1）');
+            $table->integer('locationid')->nullable()->comment('机架所在场所/楼层');
+            $table->integer('locareaid')->nullable()->comment('机架所在区域/房间');
+            $table->string('label')->nullable()->comment('标签');
+            $table->string('comments')->nullable()->comment('备注');
 
             $table->timestamps();
             $table->softDeletes();
@@ -40,6 +39,6 @@ class CreateSoftsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('softs');
+        Schema::dropIfExists('racks');
     }
 }
