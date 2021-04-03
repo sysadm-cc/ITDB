@@ -7,6 +7,56 @@
 
 @section('my_style')
 <!-- <link rel="stylesheet" href="{{ asset('css/camera.css') }}"> -->
+<style type="text/css">
+/* 合并单元格样式 */
+.subCol>ul>li{
+      margin:0 -18px;
+      list-style:none;
+      text-Align: center;
+      padding: 9px;
+      border-bottom:1px solid #E8EAEC;
+      overflow-x: hidden;
+	  line-height: 2.2;
+}
+.subCol>ul>li:last-child{
+  border-bottom: none
+}
+
+.ivu-table .table-info-row td{
+	background-color: #2db7f5;
+	color: #fff;
+}
+.ivu-table .table-error-row td{
+	background-color: #ff6600;
+	color: #fff;
+}
+.ivu-table td.table-info-column{
+	background-color: #2db7f5;
+	color: #fff;
+}
+.ivu-table .table-info-cell-name {
+	background-color: #2db7f5;
+	color: #fff;
+}
+.ivu-table .table-info-cell-age {
+	background-color: #ff6600;
+	color: #fff;
+}
+.ivu-table .table-info-cell-address {
+	background-color: #187;
+	color: #fff;
+}
+
+.ivu-table td.table-info-column-contacts {
+	/* background-color: #90A4AE; */
+	background-color: #5cadff;
+	color: #fff;
+}
+.ivu-table td.table-info-column-urls {
+	background-color: #2db7f5;
+	color: #fff;
+}
+</style>
 @endsection
 
 @section('my_js')
@@ -75,7 +125,7 @@
 <i-row :gutter="16">
 	<i-col span="24">
 
-		<i-table height="300" size="small" border :columns="tablecolumns" :data="tabledata" @on-selection-change="selection => onselectchange(selection)"></i-table>
+		<i-table height="460" size="small" border :columns="tablecolumns" :data="tabledata" @on-selection-change="selection => onselectchange(selection)"></i-table>
 		<br><Page :current="page_current" :total="page_total" :page-size="page_size" @on-change="currentpage => oncurrentpagechange(currentpage)" @on-page-size-change="pagesize => onpagesizechange(pagesize)" :page-size-opts="[5, 10, 20, 50]" show-total show-elevator show-sizer></Page>
 
 		</i-col>
@@ -183,17 +233,220 @@ var vm_app = new Vue({
 				resizable: true,
 				width: 180,
 			},
+			// {
+			// 	title: '联系方式',
+			// 	key: 'contacts',
+			// 	resizable: true,
+			// 	width: 180,
+			// },
 			{
 				title: '联系方式',
-				key: 'contact',
-				resizable: true,
-				width: 180,
+				align: 'center',
+				children: [
+					// {
+					// 	title: '序号',
+					// 	key: 'contacts',
+					// 	align:'center',
+					// 	width: 70,
+					// 	className: 'table-info-column-contacts',
+					// 	render: (h, params) => {
+					// 		if (params.row.contacts!=undefined && params.row.contacts!=null) {
+					// 			return h('div', {
+					// 				attrs: {
+					// 					class:'subCol'
+					// 				},
+					// 			}, [
+					// 				h('ul', params.row.contacts.map((item, index) => {
+					// 					return h('li', {
+					// 					// }, item.id)
+					// 					}, ++index)
+					// 				}))
+					// 			]);
+					// 		}
+					// 	}
+					// },
+					{
+						title: '联系人',
+						key: 'contacts',
+						align:'center',
+						width: 90,
+						className: 'table-info-column-contacts',
+						render: (h, params) => {
+							if (params.row.contacts!=undefined && params.row.contacts!=null) {
+								return h('div', {
+									attrs: {
+										class:'subCol'
+									},
+								}, [
+									h('ul', params.row.contacts.map(item => {
+										return h('li', {
+										}, item.name == null || item.name == '' ? '-' : item.name)
+									}))
+								]);
+							}
+						}
+					},
+					{
+						title: '角色',
+						key: 'contacts',
+						align:'center',
+						width: 90,
+						className: 'table-info-column-contacts',
+						render: (h, params) => {
+							if (params.row.contacts!=undefined && params.row.contacts!=null) {
+								return h('div', {
+									attrs: {
+										class:'subCol'
+									},
+								}, [
+									h('ul', params.row.contacts.map(item => {
+										return h('li', {
+										}, item.role == null || item.role == '' ? '-' : item.role)
+									}))
+								]);
+							}
+						}
+					},
+					{
+						title: '电话号码',
+						key: 'contacts',
+						align:'center',
+						width: 90,
+						className: 'table-info-column-contacts',
+						render: (h, params) => {
+							if (params.row.contacts!=undefined && params.row.contacts!=null) {
+								return h('div', {
+									attrs: {
+										class:'subCol'
+									},
+								}, [
+									h('ul', params.row.contacts.map(item => {
+										return h('li', {
+										}, item.phonenumber == null || item.phonenumber == '' ? '-' : item.phonenumber)
+									}))
+								]);
+							}
+						}
+					},
+					{
+						title: '电子邮件',
+						key: 'contacts',
+						align:'center',
+						width: 170,
+						className: 'table-info-column-contacts',
+						render: (h, params) => {
+							if (params.row.contacts!=undefined && params.row.contacts!=null) {
+								return h('div', {
+									attrs: {
+										class:'subCol'
+									},
+								}, [
+									h('ul', params.row.contacts.map(item => {
+										return h('li', {
+										}, item.email == null || item.email == '' ? '-' : item.email)
+									}))
+								]);
+							}
+						}
+					},
+					{
+						title: '备注',
+						key: 'contacts',
+						align:'center',
+						width: 170,
+						className: 'table-info-column-contacts',
+						render: (h, params) => {
+							if (params.row.contacts!=undefined && params.row.contacts!=null) {
+								return h('div', {
+									attrs: {
+										class:'subCol'
+									},
+								}, [
+									h('ul', params.row.contacts.map(item => {
+										return h('li', {
+										}, item.comments == null || item.comments == '' ? '-' : item.comments)
+									}))
+								]);
+							}
+						}
+					},
+				]
 			},
+			// {
+			// 	title: 'URLs',
+			// 	key: 'urls',
+			// 	resizable: true,
+			// 	width: 180,
+			// },
 			{
-				title: 'URLs',
-				key: 'urls',
-				resizable: true,
-				width: 180,
+				title: '官方网站',
+				align: 'center',
+				children: [
+					// {
+					// 	title: '序号',
+					// 	key: 'urls',
+					// 	align:'center',
+					// 	width: 70,
+					// 	className: 'table-info-column-urls',
+					// 	render: (h, params) => {
+					// 		if (params.row.urls!=undefined && params.row.urls!=null) {
+					// 			return h('div', {
+					// 				attrs: {
+					// 					class:'subCol'
+					// 				},
+					// 			}, [
+					// 				h('ul', params.row.urls.map((item, index) => {
+					// 					return h('li', {
+					// 					// }, item.id)
+					// 					}, ++index)
+					// 				}))
+					// 			]);
+					// 		}
+					// 	}
+					// },
+					{
+						title: '说明',
+						key: 'urls',
+						align:'center',
+						width: 90,
+						// className: 'table-info-column-urls',
+						render: (h, params) => {
+							if (params.row.urls!=undefined && params.row.urls!=null) {
+								return h('div', {
+									attrs: {
+										class:'subCol'
+									},
+								}, [
+									h('ul', params.row.urls.map(item => {
+										return h('li', {
+										}, item.description == null || item.description == '' ? '-' : item.description)
+									}))
+								]);
+							}
+						}
+					},
+					{
+						title: 'URL',
+						key: 'urls',
+						align:'center',
+						width: 170,
+						// className: 'table-info-column-urls',
+						render: (h, params) => {
+							if (params.row.urls!=undefined && params.row.urls!=null) {
+								return h('div', {
+									attrs: {
+										class:'subCol'
+									},
+								}, [
+									h('ul', params.row.urls.map(item => {
+										return h('li', {
+										}, item.url == null || item.url == '' ? '-' : item.url)
+									}))
+								]);
+							}
+						}
+					},
+				]
 			},
 			{
 				title: '创建时间',
@@ -379,6 +632,10 @@ var vm_app = new Vue({
 		agents_add () {
 			window.location.href = "{{ route('agent.add') }}";
 		},
+
+
+
+
 
 
 
