@@ -53,7 +53,7 @@
 	color: #fff;
 }
 .ivu-table td.table-info-column-urls {
-	background-color: #2db7f5;
+	background-color: #187;
 	color: #fff;
 }
 </style>
@@ -105,15 +105,15 @@
 	<i-row :gutter="16">
 		<br>
 		<i-col span="3">
-			<i-button @click="items_delete()" :disabled="agents_delete_disabled" type="warning" size="small">删除</i-button>&nbsp;<br>&nbsp;
+			<i-button @click="items_delete()" :disabled="agents_delete_disabled" type="warning" size="small"><Icon type="md-trash"></Icon> 删除</i-button>&nbsp;<br>&nbsp;
 		</i-col>
-		<i-col span="2">
-			<i-button type="default" size="small" @click="agents_add()"><Icon type="ios-color-wand-outline"></Icon> 新建</i-button>
+		<i-col span="3">
+			<i-button type="primary" size="small" @click="agents_add()"><Icon type="md-add"></Icon> 添加代理商</i-button>
 		</i-col>
-		<i-col span="2">
-			<i-button type="default" size="small" @click="items_export()"><Icon type="ios-download-outline"></Icon> 导出</i-button>
+		<i-col span="3">
+			<i-button type="default" size="small" @click="items_export()"><Icon type="md-download"></Icon> 导出列表</i-button>
 		</i-col>
-		<i-col span="17">
+		<i-col span="15">
 			&nbsp;
 		</i-col>
 	</i-row>
@@ -370,6 +370,49 @@ var vm_app = new Vue({
 							}
 						}
 					},
+					{
+						title: '操作',
+						key: 'action',
+						align: 'center',
+						width: 100,
+						className: 'table-info-column-contacts',
+						render: (h, params) => {
+								return h('div', [
+									h('Button', {
+										props: {
+											type: 'primary',
+											size: 'small',
+											icon: 'md-create'
+										},
+										style: {
+											marginRight: '5px'
+										},
+										on: {
+											click: () => {
+												vm_app.itemtypes_delete(params.row)
+											}
+										}
+									}),
+									h('Button', {
+										props: {
+											type: 'error',
+											size: 'small',
+											icon: 'md-trash'
+										},
+										style: {
+											marginRight: '5px'
+										},
+										on: {
+											click: () => {
+												vm_app.itemtypes_delete(params.row)
+											}
+										}
+									}),
+									
+
+								]);
+						},
+					}
 				]
 			},
 			// {
@@ -409,7 +452,7 @@ var vm_app = new Vue({
 						key: 'urls',
 						align:'center',
 						width: 90,
-						// className: 'table-info-column-urls',
+						className: 'table-info-column-urls',
 						render: (h, params) => {
 							if (params.row.urls!=undefined && params.row.urls!=null) {
 								return h('div', {
@@ -430,7 +473,7 @@ var vm_app = new Vue({
 						key: 'urls',
 						align:'center',
 						width: 170,
-						// className: 'table-info-column-urls',
+						className: 'table-info-column-urls',
 						render: (h, params) => {
 							if (params.row.urls!=undefined && params.row.urls!=null) {
 								return h('div', {
@@ -446,6 +489,49 @@ var vm_app = new Vue({
 							}
 						}
 					},
+					{
+						title: '操作',
+						key: 'action',
+						align: 'center',
+						width: 100,
+						className: 'table-info-column-urls',
+						render: (h, params) => {
+								return h('div', [
+									h('Button', {
+										props: {
+											type: 'primary',
+											size: 'small',
+											icon: 'md-create'
+										},
+										style: {
+											marginRight: '5px'
+										},
+										on: {
+											click: () => {
+												vm_app.itemtypes_delete(params.row)
+											}
+										}
+									}),
+									h('Button', {
+										props: {
+											type: 'error',
+											size: 'small',
+											icon: 'md-trash'
+										},
+										style: {
+											marginRight: '5px'
+										},
+										on: {
+											click: () => {
+												vm_app.itemtypes_delete(params.row)
+											}
+										}
+									}),
+									
+
+								]);
+						},
+					}
 				]
 			},
 			{
@@ -472,7 +558,7 @@ var vm_app = new Vue({
 								props: {
 									type: 'primary',
 									size: 'small',
-									icon: 'md-arrow-round-down'
+									icon: 'md-create'
 								},
 								style: {
 									marginRight: '5px'
