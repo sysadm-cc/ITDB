@@ -134,6 +134,50 @@
 </Tab-pane>
 
 
+<!-- 以下为各元素编辑窗口 -->
+
+<!-- 子编辑窗口 contacts-->
+<Modal v-model="modal_subedit_contacts" @on-ok="subupdate_contacts" ok-text="保存" title="编辑 - 供应商联系方式" width="540">
+	<div style="text-align:left">
+
+		<p>
+		<i-form :label-width="90">
+			<i-row>
+				<i-col span="8">
+					<Form-Item label="名称" style="margin-bottom:0px">
+						<i-input v-model.lazy="subedit_contacts_name" size="small"></i-input>
+					</Form-Item>
+					<Form-Item label="电话号码" style="margin-bottom:0px">
+						<i-input v-model.lazy="subedit_contacts_phonenumber" size="small"></i-input>
+					</Form-Item>
+				</i-col>
+				<i-col span="8">
+					<Form-Item label="角色" style="margin-bottom:0px">
+						<i-input v-model.lazy="subedit_contacts_role" size="small"></i-input>
+					</Form-Item>
+					<Form-Item label="电子邮件" style="margin-bottom:0px">
+						<i-input v-model.lazy="subedit_contacts_email" size="small"></i-input>
+					</Form-Item>
+				</i-col>
+				<i-col span="8">
+					<Form-Item label="备注" style="margin-bottom:0px">
+						<i-input v-model.lazy="subedit_contacts_comments" size="small" type="textarea"></i-input>
+					</Form-Item>
+				</i-col>
+			</i-row>
+			</i-form>&nbsp;		
+		</p>
+		
+		<Divider dash></Divider>
+
+
+		
+		&nbsp;
+	
+	
+	</div>	
+</Modal>
+
 
 
 
@@ -193,10 +237,18 @@ var vm_app = new Vue({
 		// 删除按钮禁用
 		agents_delete_disabled: true,
 
+		// 编辑变量
+		modal_edit_agents: false,
 
-		//新增
-		// itemtypes_add_typedesc: '',
-		// itemtypes_add_hassoftware: false,
+
+		modal_subedit_contacts: false,
+		subedit_contacts_name: '',
+		subedit_contacts_role: '',
+		subedit_contacts_phonenumber: '',
+		subedit_contacts_email: '',
+		subedit_contacts_comments: '',
+
+		modal_subedit_urls: false,
 
 
 		tablecolumns: [
@@ -377,40 +429,62 @@ var vm_app = new Vue({
 						width: 100,
 						className: 'table-info-column-contacts',
 						render: (h, params) => {
-								return h('div', [
-									h('Button', {
-										props: {
-											type: 'primary',
-											size: 'small',
-											icon: 'md-create'
+							if (params.row.contacts!=undefined && params.row.contacts!=null) {
+								return h('div', {
+										attrs: {
+											class:'subCol'
 										},
-										style: {
-											marginRight: '5px'
-										},
-										on: {
-											click: () => {
-												vm_app.itemtypes_delete(params.row)
-											}
-										}
-									}),
-									h('Button', {
-										props: {
-											type: 'error',
-											size: 'small',
-											icon: 'md-trash'
-										},
-										style: {
-											marginRight: '5px'
-										},
-										on: {
-											click: () => {
-												vm_app.itemtypes_delete(params.row)
-											}
-										}
-									}),
-									
+									}, [
+									h('ul', params.row.contacts.map((item, index) => {
+										return h('li', {
+										}, [
+											h('Button', {
+												props: {
+													type: 'primary',
+													size: 'small',
+													icon: 'md-create'
+												},
+												style: {
+													marginRight: '5px'
+												},
+												on: {
+													click: () => {
+														vm_app.subedit_contacts(params.row, item, index)
+													}
+												}
+											}),
 
+
+											h('Poptip', {
+												props: {
+													'word-wrap': true,
+													'trigger': 'click',
+													'confirm': true,
+													'title': '真的要删除吗？',
+													'transfer': true
+												},
+												on: {
+													'on-ok': () => {
+														vm_app.subdelete_contacts(params.row, item, index)
+													}
+												}
+											}, [
+												h('Button', {
+													props: {
+														type: 'warning',
+														size: 'small',
+														icon: 'md-trash'
+													},
+													style: {
+														marginRight: '5px'
+													},
+												})
+											]),
+
+										])
+									}))
 								]);
+							}
 						},
 					}
 				]
@@ -720,35 +794,61 @@ var vm_app = new Vue({
 		},
 
 
-
-
-
-
-
-
-
-
-
-
-		// 更新 typedesc
-		itemtypes_update_typedesc (id, typedesc) {
+		// 子编辑前查看 - contacts
+		subedit_contacts (row, subrow, index) {
 			var _this = this;
-			
-			var id = id;
-			var typedesc = typedesc;
-			// _this.itemtypes_edit_id = id;
-			// _this.itemtypes_edit_statusdesc = row.itemtypes_edit_statusdesc;
-			// _this.jiaban_edit_created_at = row.created_at;
-			// _this.jiaban_edit_updated_at = row.updated_at;
 
-			var url = "{{ route('item.itemtypesupdate_typedesc') }}";
+			_this.modal_subedit_contacts = true;
+			return false;
+			
+			_this.id_edit = row.id;
+			_this.subid_edit = index;
+
+			_this.jizhongming_edit = row.jizhongming;
+			_this.pinming_edit = row.pinming;
+			_this.gongxu_edit = row.gongxu;
+
+			_this.created_at_edit = row.created_at;
+			_this.updated_at_edit = row.updated_at;
+
+			_this.jianchajileixing_edit = subrow.jianchajileixing;
+			_this.buliangneirong_edit = subrow.buliangneirong;
+			_this.weihao_edit = subrow.weihao;
+			_this.shuliang_edit[0] = subrow.shuliang;
+			_this.shuliang_edit[1] = subrow.shuliang;
+			_this.jianchazhe_edit = subrow.jianchazhe;
+
+			_this.dianmei_edit = row.dianmei;
+			_this.meishu_edit = row.meishu;
+			_this.hejidianshu_edit = row.hejidianshu;
+			_this.bushihejianshuheji_edit = row.bushihejianshuheji;
+			_this.ppm_edit = row.ppm;
+
+			_this.modal_qcreport_edit_sub = true;
+		},
+
+		// 子编辑保存 - contacts
+		subupdate_contacts (row, subrow, index) {
+
+			var _this = this;
+
+			var id = row.id;
+			var subid = index;
+			var shuliang = item.shuliang;
+
+			if (id == undefined || subid == undefined) {
+				_this.warning(false, '警告', '不良内容选择不正确！');
+				return false;
+			}
+
+			var url = "{{ route('portal') }}";
 			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
-			axios.post(url,{
+			axios.post(url, {
 				id: id,
-				typedesc: typedesc
+				subid: subid,
+				shuliang: shuliang,
 			})
 			.then(function (response) {
-                // alert(index);
 				// console.log(response.data);
 				// return false;
 
@@ -758,45 +858,10 @@ var vm_app = new Vue({
 				}
 				
 				if (response.data) {
-					_this.itemtypesgets(_this.page_current, _this.page_last);
-                    // _this.$Message.success('保存成功！');
-					_this.success(false, '成功', '保存成功！');
-                } else {
-					// _this.$Message.warning('保存失败！');
-					_this.warning(false, '失败', '保存失败！');
-				}
-			})
-			.catch(function (error) {
-				_this.error(false, 'Error', error);
-			})
-
-			setTimeout(() => {
-				_this.modal_jiaban_edit = true;
-			}, 500);
-
-			
-		},
-
-
-		// 删除
-		itemtypes_delete (row) {
-			var _this = this;
-			var id = row.id;
-			if (id == undefined) return false;
-			var url = "{{ route('item.itemtypesdelete') }}";
-			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
-			axios.post(url, {
-				id: id
-			})
-			.then(function (response) {
-				if (response.data['jwt'] == 'logout') {
-					_this.alert_logout();
-					return false;
-				}
-				
-				if (response.data) {
-					_this.itemtypesgets(_this.page_current, _this.page_last);
 					_this.success(false, '成功', '删除成功！');
+					// if (_this.qcdate_filter[0] != '' && _this.qcdate_filter != undefined) {
+						_this.qcreportgets(_this.pagecurrent, _this.pagelast);
+					// }
 				} else {
 					_this.error(false, '失败', '删除失败！');
 				}
@@ -804,69 +869,32 @@ var vm_app = new Vue({
 			.catch(function (error) {
 				_this.error(false, '错误', '删除失败！');
 			})
+
 		},
 
-
-		//新增
-		itemtypes_create () {
+		// 子删除 - contacts
+		subdelete_contacts (row, subrow, index) {
 			var _this = this;
 
-			var typedesc = _this.itemtypes_add_typedesc;
-			var hassoftware = _this.itemtypes_add_hassoftware;
+console.log(index);return false;
 
-			if (typedesc == '' || typedesc == undefined) {
-					// console.log(hassoftware);
-				// _this.error(false, '失败', '用户ID为空或不正确！');
+			var id = row.id;
+			var subid = index;
+			var shuliang = item.shuliang;
+
+			if (id == undefined || subid == undefined) {
+				_this.warning(false, '警告', '不良内容选择不正确！');
 				return false;
 			}
 
-			var url = "{{ route('item.itemtypescreate') }}";
+			var url = "{{ route('portal') }}";
 			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
 			axios.post(url, {
-				typedesc: typedesc,
-				hassoftware: hassoftware,
-			})
-			.then(function (response) {
-				// console.log(response.data);
-				// return false;
-
-				if (response.data['jwt'] == 'logout') {
-					_this.alert_logout();
-					return false;
-				}
-				
- 				if (response.data) {
-					_this.itemtypes_add_typedesc = '';
-					_this.itemtypesgets(_this.page_current, _this.page_last);
-					_this.success(false, '成功', '新建成功！');
-				} else {
-					_this.error(false, '失败', '新建失败！');
-				}
-			})
-			.catch(function (error) {
-				_this.error(false, '错误', '新建失败！');
-			})
-
-
-		},
-
-		
-		// 更新 hassoftware
-		itemtypes_update_hassoftware (id, hassoftware) {
-			var _this = this;
-			
-			var id = id;
-			var hassoftware = hassoftware;
-// console.log(hassoftware);return false;
-
-			var url = "{{ route('item.itemtypesupdate_hassoftware') }}";
-			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
-			axios.post(url,{
 				id: id,
-				hassoftware: hassoftware
+				subid: subid,
+				shuliang: shuliang,
 			})
 			.then(function (response) {
-                // alert(index);
 				// console.log(response.data);
 				// return false;
 
@@ -876,24 +904,28 @@ var vm_app = new Vue({
 				}
 				
 				if (response.data) {
-					_this.itemtypesgets(_this.page_current, _this.page_last);
-                    // _this.$Message.success('保存成功！');
-					_this.success(false, '成功', '保存成功！');
-                } else {
-					// _this.$Message.warning('保存失败！');
-					_this.warning(false, '失败', '保存失败！');
+					_this.success(false, '成功', '删除成功！');
+					// if (_this.qcdate_filter[0] != '' && _this.qcdate_filter != undefined) {
+						_this.qcreportgets(_this.pagecurrent, _this.pagelast);
+					// }
+				} else {
+					_this.error(false, '失败', '删除失败！');
 				}
 			})
 			.catch(function (error) {
-				_this.error(false, 'Error', error);
+				_this.error(false, '错误', '删除失败！');
 			})
 
-			setTimeout(() => {
-				_this.modal_jiaban_edit = true;
-			}, 500);
-
-			
 		},
+
+
+
+
+
+
+
+
+
 		
 
 
