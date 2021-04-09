@@ -673,30 +673,58 @@ var vm_app = new Vue({
 				title: '操作',
 				key: 'action',
 				align: 'center',
-				width: 100,
+				width: 380,
 				fixed: 'right',
 				render: (h, params) => {
-					// if (params.row.id > 3) {
-						return h('div', [
-							h('Button', {
-								props: {
-									type: 'primary',
-									size: 'small',
-									icon: 'md-create'
-								},
-								style: {
-									marginRight: '5px'
-								},
-								on: {
-									click: () => {
-										vm_app.itemtypes_delete(params.row)
-									}
+					return h('div', [
+						h('Button', {
+							props: {
+								type: 'primary',
+								size: 'small',
+								icon: 'md-create'
+							},
+							style: {
+								marginRight: '5px'
+							},
+							on: {
+								click: () => {
+									vm_app.itemtypes_delete(params.row)
 								}
-							}, '编辑'),
-							
+							}
+						}, '编辑'),
+						h('Button', {
+							props: {
+								type: 'default',
+								size: 'small',
+								icon: 'md-add'
+							},
+							style: {
+								marginRight: '5px'
+							},
+							on: {
+								click: () => {
+									vm_app.itemtypes_delete(params.row)
+								}
+							}
+						}, '添加联系方式'),
+						h('Button', {
+							props: {
+								type: 'default',
+								size: 'small',
+								icon: 'md-add'
+							},
+							style: {
+								marginRight: '5px'
+							},
+							on: {
+								click: () => {
+									vm_app.itemtypes_delete(params.row)
+								}
+							}
+						}, '添加官方网站'),
+						
 
-						]);
-					// }
+					]);
 				},
 				
 			}
