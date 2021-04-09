@@ -214,18 +214,130 @@ class AgentsController extends Controller
 		}
 		catch (\Exception $e) {
 			DB::rollBack();
-			dd('Message: ' .$e->getMessage());
+			// dd('Message: ' .$e->getMessage());
 			$result = 0;
 		}
 		DB::commit();
 		Cache::flush();
 		// dd($result);
 		return $result;
-
 	}
 
 
-	
+	/**
+	 * contacts 子项删除 SubDeleteContacts
+	 *
+	 * @param  int  $id
+	 * @return \Illuminate\Http\Response
+	 */
+	public function SubDeleteContacts(Request $request)
+	{
+		if (! $request->isMethod('post') || ! $request->ajax()) return null;
+
+		$id = $request->input('id');
+		$subid = $request->input('subid');
+
+		$sql = 'JSON_REMOVE(contacts, \'$[' . $subid . ']\')';
+
+		$nowtime = date("Y-m-d H:i:s",time());
+
+		try	{
+			$result = DB::update('update agents set contacts = ' . $sql . ', updated_at = "' . $nowtime . '" where id = ?', [$id]);
+		}
+		catch (\Exception $e) {
+			// dd('Message: ' .$e->getMessage());
+			$result = 0;
+		}
+		
+		Cache::flush();
+		// dd($result);
+		return $result;
+	}
+
+	/**
+	 * contacts 子项更新 SubupdateUrls
+	 *
+	 * @param  int  $id
+	 * @return \Illuminate\Http\Response
+	 */
+	public function SubupdateUrls(Request $request)
+	{
+		if (! $request->isMethod('post') || ! $request->ajax()) return null;
+
+		$id = $request->input('id');
+		$subid = $request->input('subid');
+
+		$updated_at = $request->input('updated_at');
+
+		$url = $request->input('url');
+		$description = $request->input('description');
+
+		// 判断如果不是最新的记录，不可被编辑
+		// 因为可能有其他人在你当前表格未刷新的情况下已经更新过了
+		$res = Agents::select('updated_at')
+			->where('id', $id)
+			->first();
+		$res_updated_at = date('Y-m-d H:i:s', strtotime($res['updated_at']));
+		if ($updated_at != $res_updated_at) return 0;
+
+		$nowtime = date("Y-m-d H:i:s",time());
+
+		// 尝试更新json
+		try	{
+			DB::beginTransaction();
+
+			// if (empty($buliangneirong) && empty($weihao) && empty($shuliang[1])) {
+				// $result = DB::update('update smt_qcreports set bushihejianshuheji = ' . $bushihejianshuheji . ', ppm = ' . $ppm . ', updated_at = "' . $nowtime . '" where id = ?', [$id]);
+			// } else {
+				$sql = 'JSON_REPLACE(contacts, ';
+				$sql .= '\'$[' . $subid . '].url\', "' . $url . '", ';
+				$sql .= '\'$[' . $subid . '].description\', "' . $description . '", ';
+
+				$result = DB::update('update agents set urls = ' . $sql . ', updated_at = "' . $nowtime . '" where id = ?', [$id]);
+			// }
+			$result = 1;
+		}
+		catch (\Exception $e) {
+			DB::rollBack();
+			// dd('Message: ' .$e->getMessage());
+			$result = 0;
+		}
+		DB::commit();
+		Cache::flush();
+		// dd($result);
+		return $result;
+	}
+
+
+	/**
+	 * contacts 子项删除 SubDeleteUrls
+	 *
+	 * @param  int  $id
+	 * @return \Illuminate\Http\Response
+	 */
+	public function SubDeleteUrls(Request $request)
+	{
+		if (! $request->isMethod('post') || ! $request->ajax()) return null;
+
+		$id = $request->input('id');
+		$subid = $request->input('subid');
+
+		$sql = 'JSON_REMOVE(urls, \'$[' . $subid . ']\')';
+
+		$nowtime = date("Y-m-d H:i:s",time());
+
+		try	{
+			$result = DB::update('update agents set urls = ' . $sql . ', updated_at = "' . $nowtime . '" where id = ?', [$id]);
+		}
+		catch (\Exception $e) {
+			// dd('Message: ' .$e->getMessage());
+			$result = 0;
+		}
+		
+		Cache::flush();
+		// dd($result);
+		return $result;
+	}
 
 
 

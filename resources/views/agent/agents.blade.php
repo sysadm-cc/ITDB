@@ -167,7 +167,33 @@
 					</Form-Item>
 				</i-col>
 			</i-row>
-			</i-form>&nbsp;		
+			</i-form>&nbsp;
+		</p>
+	
+	</div>	
+</Modal>
+
+<!-- 子编辑窗口 urls-->
+<Modal v-model="modal_subedit_urls" @on-ok="subupdate_urls" ok-text="保存" title="编辑 - 供应商官方网站" width="640">
+	<div style="text-align:left">
+
+		<p>
+		<i-form :label-width="90">
+			<i-row>
+				<i-col span="24">
+					<Form-Item label="URL" style="margin-bottom:0px">
+						<i-input v-model.lazy="subedit_urls_url" size="small"></i-input>
+					</Form-Item>
+				</i-col>
+			</i-row>
+			<i-row>
+				<i-col span="24">
+					<Form-Item label="说明" style="margin-bottom:0px">
+						<i-input v-model.lazy="subedit_urls_description" size="small"></i-input>
+					</Form-Item>
+				</i-col>
+			</i-row>
+		</i-form>&nbsp;
 		</p>
 	
 	</div>	
@@ -237,16 +263,20 @@ var vm_app = new Vue({
 
 
 		modal_subedit_contacts: false,
+		modal_subedit_urls: false,
 		subedit_id: '',
 		subedit_subid: '',
 		subedit_updated_at: '',
+
 		subedit_contacts_name: '',
 		subedit_contacts_role: '',
 		subedit_contacts_phonenumber: '',
 		subedit_contacts_email: '',
 		subedit_contacts_comments: '',
 
-		modal_subedit_urls: false,
+		subedit_urls_url: '',
+		subedit_urls_description: '',
+		
 
 
 		tablecolumns: [
@@ -568,40 +598,62 @@ var vm_app = new Vue({
 						width: 100,
 						className: 'table-info-column-urls',
 						render: (h, params) => {
-								return h('div', [
-									h('Button', {
-										props: {
-											type: 'primary',
-											size: 'small',
-											icon: 'md-create'
+							if (params.row.urls!=undefined && params.row.urls!=null) {
+								return h('div', {
+										attrs: {
+											class:'subCol'
 										},
-										style: {
-											marginRight: '5px'
-										},
-										on: {
-											click: () => {
-												vm_app.itemtypes_delete(params.row)
-											}
-										}
-									}),
-									h('Button', {
-										props: {
-											type: 'error',
-											size: 'small',
-											icon: 'md-trash'
-										},
-										style: {
-											marginRight: '5px'
-										},
-										on: {
-											click: () => {
-												vm_app.itemtypes_delete(params.row)
-											}
-										}
-									}),
-									
+									}, [
+									h('ul', params.row.urls.map((item, index) => {
+										return h('li', {
+										}, [
+											h('Button', {
+												props: {
+													type: 'primary',
+													size: 'small',
+													icon: 'md-create'
+												},
+												style: {
+													marginRight: '5px'
+												},
+												on: {
+													click: () => {
+														vm_app.subedit_urls(params.row, item, index)
+													}
+												}
+											}),
 
+
+											h('Poptip', {
+												props: {
+													'word-wrap': true,
+													'trigger': 'click',
+													'confirm': true,
+													'title': '真的要删除吗？',
+													'transfer': true
+												},
+												on: {
+													'on-ok': () => {
+														vm_app.subdelete_urls(params.row, item, index)
+													}
+												}
+											}, [
+												h('Button', {
+													props: {
+														type: 'warning',
+														size: 'small',
+														icon: 'md-trash'
+													},
+													style: {
+														marginRight: '5px'
+													},
+												})
+											]),
+
+										])
+									}))
 								]);
+							}
 						},
 					}
 				]
@@ -864,18 +916,15 @@ var vm_app = new Vue({
 		subdelete_contacts (row, subrow, index) {
 			var _this = this;
 
-console.log(index);return false;
-
 			var id = row.id;
 			var subid = index;
-			var shuliang = item.shuliang;
 
 			if (id == undefined || subid == undefined) {
-				_this.warning(false, '警告', '不良内容选择不正确！');
+				_this.warning(false, '警告', '内容选择不正确！');
 				return false;
 			}
 
-			var url = "{{ route('portal') }}";
+			var url = "{{ route('agent.subdeletecontacts') }}";
 			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
 			axios.post(url, {
 				id: id,
@@ -896,6 +945,105 @@ console.log(index);return false;
 					// if (_this.qcdate_filter[0] != '' && _this.qcdate_filter != undefined) {
 						_this.qcreportgets(_this.pagecurrent, _this.pagelast);
 					// }
+				} else {
+					_this.error(false, '失败', '删除失败！');
+				}
+			})
+			.catch(function (error) {
+				_this.error(false, '错误', '删除失败！');
+			})
+
+		},
+
+		// 子编辑前查看 - urls
+		subedit_urls (row, subrow, index) {
+			var _this = this;
+
+			_this.subedit_id = row.id;
+			_this.subedit_subid = index;
+			_this.subedit_updated_at = row.updated_at;
+			_this.subedit_urls_url = subrow.url;
+			_this.subedit_urls_description = subrow.description;
+
+			_this.modal_subedit_urls = true;
+		},
+
+		// 子编辑保存 - urls
+		subupdate_urls () {
+
+			var _this = this;
+
+			var id = _this.subedit_id;
+			var subid = _this.subedit_subid;
+			var updated_at = _this.subedit_updated_at;
+			var url = _this.subedit_urls_url;
+			var description = _this.subedit_urls_description;
+			
+			if (id == undefined || subid == undefined) {
+				_this.warning(false, '警告', '内容选择不正确！');
+				return false;
+			}
+
+			var url = "{{ route('agent.subupdateurls') }}";
+			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
+			axios.post(url, {
+				id: id,
+				subid: subid,
+				updated_at: updated_at,
+				url: url,
+				description: description,
+			})
+			.then(function (response) {
+				// console.log(response.data);return false;
+
+				if (response.data['jwt'] == 'logout') {
+					_this.alert_logout();
+					return false;
+				}
+				
+				if (response.data) {
+					_this.success(false, '成功', '保存成功！');
+						_this.agentsgets(_this.pagecurrent, _this.pagelast);
+				} else {
+					_this.error(false, '失败', '保存失败！');
+				}
+			})
+			.catch(function (error) {
+				_this.error(false, '错误', '保存失败！');
+			})
+
+		},
+
+		// 子删除 - urls
+		subdelete_urls (row, subrow, index) {
+			var _this = this;
+
+			var id = row.id;
+			var subid = index;
+
+			if (id == undefined || subid == undefined) {
+				_this.warning(false, '警告', '内容选择不正确！');
+				return false;
+			}
+
+			var url = "{{ route('agent.subdeleteurls') }}";
+			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
+			axios.post(url, {
+				id: id,
+				subid: subid,
+			})
+			.then(function (response) {
+				// console.log(response.data);
+				// return false;
+
+				if (response.data['jwt'] == 'logout') {
+					_this.alert_logout();
+					return false;
+				}
+				
+				if (response.data) {
+					_this.success(false, '成功', '删除成功！');
+						_this.qcreportgets(_this.pagecurrent, _this.pagelast);
 				} else {
 					_this.error(false, '失败', '删除失败！');
 				}
