@@ -269,7 +269,7 @@ class AgentsController extends Controller
 
 		$updated_at = $request->input('updated_at');
 
-		$url = $request->input('url');
+		$myurl = $request->input('myurl');
 		$description = $request->input('description');
 
 		// 判断如果不是最新的记录，不可被编辑
@@ -289,9 +289,9 @@ class AgentsController extends Controller
 			// if (empty($buliangneirong) && empty($weihao) && empty($shuliang[1])) {
 				// $result = DB::update('update smt_qcreports set bushihejianshuheji = ' . $bushihejianshuheji . ', ppm = ' . $ppm . ', updated_at = "' . $nowtime . '" where id = ?', [$id]);
 			// } else {
-				$sql = 'JSON_REPLACE(contacts, ';
-				$sql .= '\'$[' . $subid . '].url\', "' . $url . '", ';
-				$sql .= '\'$[' . $subid . '].description\', "' . $description . '", ';
+				$sql = 'JSON_REPLACE(urls, ';
+				$sql .= '\'$[' . $subid . '].url\', "' . $myurl . '", ';
+				$sql .= '\'$[' . $subid . '].description\', "' . $description . '")';
 
 				$result = DB::update('update agents set urls = ' . $sql . ', updated_at = "' . $nowtime . '" where id = ?', [$id]);
 			// }
@@ -299,7 +299,7 @@ class AgentsController extends Controller
 		}
 		catch (\Exception $e) {
 			DB::rollBack();
-			// dd('Message: ' .$e->getMessage());
+			dd('Message: ' .$e->getMessage());
 			$result = 0;
 		}
 		DB::commit();

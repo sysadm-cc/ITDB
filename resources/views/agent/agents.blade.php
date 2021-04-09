@@ -553,7 +553,7 @@ var vm_app = new Vue({
 						title: '说明',
 						key: 'urls',
 						align:'center',
-						width: 90,
+						width: 110,
 						className: 'table-info-column-urls',
 						render: (h, params) => {
 							if (params.row.urls!=undefined && params.row.urls!=null) {
@@ -929,11 +929,9 @@ var vm_app = new Vue({
 			axios.post(url, {
 				id: id,
 				subid: subid,
-				shuliang: shuliang,
 			})
 			.then(function (response) {
-				// console.log(response.data);
-				// return false;
+				// console.log(response.data);return false;
 
 				if (response.data['jwt'] == 'logout') {
 					_this.alert_logout();
@@ -943,7 +941,7 @@ var vm_app = new Vue({
 				if (response.data) {
 					_this.success(false, '成功', '删除成功！');
 					// if (_this.qcdate_filter[0] != '' && _this.qcdate_filter != undefined) {
-						_this.qcreportgets(_this.pagecurrent, _this.pagelast);
+						_this.agentsgets(_this.pagecurrent, _this.pagelast);
 					// }
 				} else {
 					_this.error(false, '失败', '删除失败！');
@@ -976,7 +974,7 @@ var vm_app = new Vue({
 			var id = _this.subedit_id;
 			var subid = _this.subedit_subid;
 			var updated_at = _this.subedit_updated_at;
-			var url = _this.subedit_urls_url;
+			var myurl = _this.subedit_urls_url;
 			var description = _this.subedit_urls_description;
 			
 			if (id == undefined || subid == undefined) {
@@ -990,7 +988,7 @@ var vm_app = new Vue({
 				id: id,
 				subid: subid,
 				updated_at: updated_at,
-				url: url,
+				myurl: myurl,
 				description: description,
 			})
 			.then(function (response) {
@@ -1043,7 +1041,7 @@ var vm_app = new Vue({
 				
 				if (response.data) {
 					_this.success(false, '成功', '删除成功！');
-						_this.qcreportgets(_this.pagecurrent, _this.pagelast);
+						_this.agentsgets(_this.pagecurrent, _this.pagelast);
 				} else {
 					_this.error(false, '失败', '删除失败！');
 				}
