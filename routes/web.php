@@ -197,8 +197,6 @@ Route::group(['prefix'=>'agent', 'namespace'=>'Agent', 'middleware'=>['jwtauth']
 	// Agents gets列表
 	Route::get('agentGets', 'AgentsController@agentGets')->name('agent.gets');
 
-	// Agents Update typedesc
-	// Route::post('itemItemtypesUpdateTypedesc', 'ItemItemtypesController@itemItemtypesUpdateTypedesc')->name('item.itemtypesupdate_typedesc');
 
 	// Agents Update
 	// Route::post('itemItemtypesUpdateHassoftware', 'ItemItemtypesController@itemItemtypesUpdateHassoftware')->name('item.itemtypesupdate_hassoftware');
@@ -211,6 +209,9 @@ Route::group(['prefix'=>'agent', 'namespace'=>'Agent', 'middleware'=>['jwtauth']
 
 	// Agents Create
 	Route::post('agentCreate', 'AgentsController@agentCreate')->name('agent.create');
+
+	// Agents Update typedesc
+	Route::post('SubupdateContacts', 'AgentsController@SubupdateContacts')->name('agent.subupdatecontacts');
 
 });
 	

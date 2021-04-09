@@ -163,102 +163,70 @@ class AgentsController extends Controller
 	}
 
 
+	/**
+	 * contacts 子项更新 SubupdateContacts
+	 *
+	 * @param  int  $id
+	 * @return \Illuminate\Http\Response
+	 */
+	public function SubupdateContacts(Request $request)
+	{
+		if (! $request->isMethod('post') || ! $request->ajax()) return null;
 
+		$id = $request->input('id');
+		$subid = $request->input('subid');
 
+		$updated_at = $request->input('updated_at');
+
+		$name = $request->input('name');
+		$role = $request->input('role');
+		$phonenumber = $request->input('phonenumber');
+		$email = $request->input('email');
+		$comments = $request->input('comments');
+
+		// 判断如果不是最新的记录，不可被编辑
+		// 因为可能有其他人在你当前表格未刷新的情况下已经更新过了
+		$res = Agents::select('updated_at')
+			->where('id', $id)
+			->first();
+		$res_updated_at = date('Y-m-d H:i:s', strtotime($res['updated_at']));
+		if ($updated_at != $res_updated_at) return 0;
+
+		$nowtime = date("Y-m-d H:i:s",time());
+
+		// 尝试更新json
+		try	{
+			DB::beginTransaction();
+
+			// if (empty($buliangneirong) && empty($weihao) && empty($shuliang[1])) {
+				// $result = DB::update('update smt_qcreports set bushihejianshuheji = ' . $bushihejianshuheji . ', ppm = ' . $ppm . ', updated_at = "' . $nowtime . '" where id = ?', [$id]);
+			// } else {
+				$sql = 'JSON_REPLACE(contacts, ';
+				$sql .= '\'$[' . $subid . '].name\', "' . $name . '", ';
+				$sql .= '\'$[' . $subid . '].role\', "' . $role . '", ';
+				$sql .= '\'$[' . $subid . '].phonenumber\', "' . $phonenumber . '", ';
+				$sql .= '\'$[' . $subid . '].email\', "' . $email . '", ';
+				$sql .= '\'$[' . $subid . '].comments\', "' . $comments . '")';
+
+				$result = DB::update('update agents set contacts = ' . $sql . ', updated_at = "' . $nowtime . '" where id = ?', [$id]);
+			// }
+			$result = 1;
+		}
+		catch (\Exception $e) {
+			DB::rollBack();
+			dd('Message: ' .$e->getMessage());
+			$result = 0;
+		}
+		DB::commit();
+		Cache::flush();
+		// dd($result);
+		return $result;
+
+	}
 
 
 	
-	/**
-	 * 更新 itemtypes typedesc
-	 *
-	 * @param  int  $id
-	 * @return \Illuminate\Http\Response
-	 */
-	public function itemItemtypesUpdateTypedesc(Request $request)
-	{
-	if (! $request->isMethod('post') || ! $request->ajax()) return null;
 
-	$id = $request->input('id');
-	$typedesc = $request->input('typedesc');
-
-	// 写入数据库
-	try	{
-		DB::beginTransaction();
-		
-		$result = Item_itemtypes::where('id', $id)
-		->update([
-			'typedesc' => $typedesc,
-		]);
-
-		$result = 1;
-		Cache::flush();
-	}
-	catch (\Exception $e) {
-		// echo 'Message: ' .$e->getMessage();
-		DB::rollBack();
-		// dd('Message: ' .$e->getMessage());
-		return 0;
-	}
-
-	DB::commit();
-	// Cache::flush();
-	return $result;
-	}
-	
-
-	/**
-	 * 更新 itemtypes hassoftware
-	 *
-	 * @param  int  $id
-	 * @return \Illuminate\Http\Response
-	 */
-	public function itemItemtypesUpdateHassoftware(Request $request)
-	{
-	if (! $request->isMethod('post') || ! $request->ajax()) return null;
-
-	$id = $request->input('id');
-	$hassoftware = $request->input('hassoftware');
-
-	// 写入数据库
-	try	{
-		DB::beginTransaction();
-		
-		$result = Item_itemtypes::where('id', $id)
-		->update([
-			'hassoftware' => $hassoftware,
-		]);
-
-		$result = 1;
-		Cache::flush();
-	}
-	catch (\Exception $e) {
-		// echo 'Message: ' .$e->getMessage();
-		DB::rollBack();
-		// dd('Message: ' .$e->getMessage());
-		return 0;
-	}
-
-	DB::commit();
-	// Cache::flush();
-	return $result;
-	}
-
-
-	/**
-	 * 删除 itemtypes
-	 *
-	 * @param  int  $id
-	 * @return \Illuminate\Http\Response
-	 */
-	public function itemItemtypesDelete(Request $request)
-	{
-	if (! $request->isMethod('post') || ! $request->ajax())  return false;
-
-	$id = [$request->input('id')];
-	$result = Item_itemtypes::whereIn('id', $id)->delete();
-	Cache::flush();
-	return $result;
-	}
 
 
 

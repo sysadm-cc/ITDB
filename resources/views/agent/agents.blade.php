@@ -137,13 +137,13 @@
 <!-- 以下为各元素编辑窗口 -->
 
 <!-- 子编辑窗口 contacts-->
-<Modal v-model="modal_subedit_contacts" @on-ok="subupdate_contacts" ok-text="保存" title="编辑 - 供应商联系方式" width="540">
+<Modal v-model="modal_subedit_contacts" @on-ok="subupdate_contacts" ok-text="保存" title="编辑 - 供应商联系方式" width="640">
 	<div style="text-align:left">
 
 		<p>
 		<i-form :label-width="90">
 			<i-row>
-				<i-col span="8">
+				<i-col span="12">
 					<Form-Item label="名称" style="margin-bottom:0px">
 						<i-input v-model.lazy="subedit_contacts_name" size="small"></i-input>
 					</Form-Item>
@@ -151,7 +151,7 @@
 						<i-input v-model.lazy="subedit_contacts_phonenumber" size="small"></i-input>
 					</Form-Item>
 				</i-col>
-				<i-col span="8">
+				<i-col span="12">
 					<Form-Item label="角色" style="margin-bottom:0px">
 						<i-input v-model.lazy="subedit_contacts_role" size="small"></i-input>
 					</Form-Item>
@@ -159,7 +159,9 @@
 						<i-input v-model.lazy="subedit_contacts_email" size="small"></i-input>
 					</Form-Item>
 				</i-col>
-				<i-col span="8">
+			</i-row>
+			<i-row>
+				<i-col span="24">
 					<Form-Item label="备注" style="margin-bottom:0px">
 						<i-input v-model.lazy="subedit_contacts_comments" size="small" type="textarea"></i-input>
 					</Form-Item>
@@ -167,13 +169,6 @@
 			</i-row>
 			</i-form>&nbsp;		
 		</p>
-		
-		<Divider dash></Divider>
-
-
-		
-		&nbsp;
-	
 	
 	</div>	
 </Modal>
@@ -242,6 +237,9 @@ var vm_app = new Vue({
 
 
 		modal_subedit_contacts: false,
+		subedit_id: '',
+		subedit_subid: '',
+		subedit_updated_at: '',
 		subedit_contacts_name: '',
 		subedit_contacts_role: '',
 		subedit_contacts_phonenumber: '',
@@ -798,59 +796,51 @@ var vm_app = new Vue({
 		subedit_contacts (row, subrow, index) {
 			var _this = this;
 
+			_this.subedit_id = row.id;
+			_this.subedit_subid = index;
+			_this.subedit_updated_at = row.updated_at;
+			_this.subedit_contacts_name = subrow.name;
+			_this.subedit_contacts_role = subrow.role;
+			_this.subedit_contacts_phonenumber = subrow.phonenumber;
+			_this.subedit_contacts_email = subrow.email;
+			_this.subedit_contacts_comments = subrow.comments;
+
 			_this.modal_subedit_contacts = true;
-			return false;
-			
-			_this.id_edit = row.id;
-			_this.subid_edit = index;
-
-			_this.jizhongming_edit = row.jizhongming;
-			_this.pinming_edit = row.pinming;
-			_this.gongxu_edit = row.gongxu;
-
-			_this.created_at_edit = row.created_at;
-			_this.updated_at_edit = row.updated_at;
-
-			_this.jianchajileixing_edit = subrow.jianchajileixing;
-			_this.buliangneirong_edit = subrow.buliangneirong;
-			_this.weihao_edit = subrow.weihao;
-			_this.shuliang_edit[0] = subrow.shuliang;
-			_this.shuliang_edit[1] = subrow.shuliang;
-			_this.jianchazhe_edit = subrow.jianchazhe;
-
-			_this.dianmei_edit = row.dianmei;
-			_this.meishu_edit = row.meishu;
-			_this.hejidianshu_edit = row.hejidianshu;
-			_this.bushihejianshuheji_edit = row.bushihejianshuheji;
-			_this.ppm_edit = row.ppm;
-
-			_this.modal_qcreport_edit_sub = true;
 		},
 
 		// 子编辑保存 - contacts
-		subupdate_contacts (row, subrow, index) {
+		subupdate_contacts () {
 
 			var _this = this;
 
-			var id = row.id;
-			var subid = index;
-			var shuliang = item.shuliang;
-
+			var id = _this.subedit_id;
+			var subid = _this.subedit_subid;
+			var updated_at = _this.subedit_updated_at;
+			var name = _this.subedit_contacts_name;
+			var role = _this.subedit_contacts_role;
+			var phonenumber = _this.subedit_contacts_phonenumber;
+			var email = _this.subedit_contacts_email;
+			var comments = _this.subedit_contacts_comments;
+			
 			if (id == undefined || subid == undefined) {
-				_this.warning(false, '警告', '不良内容选择不正确！');
+				_this.warning(false, '警告', '内容选择不正确！');
 				return false;
 			}
 
-			var url = "{{ route('portal') }}";
+			var url = "{{ route('agent.subupdatecontacts') }}";
 			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
 			axios.post(url, {
 				id: id,
 				subid: subid,
-				shuliang: shuliang,
+				updated_at: updated_at,
+				name: name,
+				role: role,
+				phonenumber: phonenumber,
+				email: email,
+				comments: comments,
 			})
 			.then(function (response) {
-				// console.log(response.data);
-				// return false;
+				// console.log(response.data);return false;
 
 				if (response.data['jwt'] == 'logout') {
 					_this.alert_logout();
@@ -858,16 +848,14 @@ var vm_app = new Vue({
 				}
 				
 				if (response.data) {
-					_this.success(false, '成功', '删除成功！');
-					// if (_this.qcdate_filter[0] != '' && _this.qcdate_filter != undefined) {
-						_this.qcreportgets(_this.pagecurrent, _this.pagelast);
-					// }
+					_this.success(false, '成功', '保存成功！');
+						_this.agentsgets(_this.pagecurrent, _this.pagelast);
 				} else {
-					_this.error(false, '失败', '删除失败！');
+					_this.error(false, '失败', '保存失败！');
 				}
 			})
 			.catch(function (error) {
-				_this.error(false, '错误', '删除失败！');
+				_this.error(false, '错误', '保存失败！');
 			})
 
 		},
