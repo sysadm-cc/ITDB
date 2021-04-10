@@ -21,7 +21,7 @@ use Ramsey\Uuid\Uuid;
 class AgentsController extends Controller
 {
 	/**
-	 * 显示页面 itemtypes
+	 * 显示页面 agentAgents
 	 *
 	 * @param  int  $id
 	 * @return \Illuminate\Http\Response
@@ -123,7 +123,7 @@ class AgentsController extends Controller
 
 
 	/**
-	 * 读取记录 agents
+	 * 读取记录 agentGets
 	 *
 	 * @param  int  $id
 	 * @return \Illuminate\Http\Response
@@ -160,6 +160,56 @@ class AgentsController extends Controller
 		}
 
 	return $result;
+	}
+
+
+	/**
+	 * 更新 agentUpdate
+	 *
+	 * @param  int  $id
+	 * @return \Illuminate\Http\Response
+	 */
+	public function agentUpdate(Request $request)
+	{
+		if (! $request->isMethod('post') || ! $request->ajax()) return null;
+
+		$id = $request->input('id');
+		$updated_at = $request->input('updated_at');
+		$title = $request->input('title');
+		$type = $request->input('type');
+		$contactinfo = $request->input('contactinfo');
+
+		// dd($id);
+		// dd($updated_at);
+		
+		// 判断如果不是最新的记录，不可被编辑
+		// 因为可能有其他人在你当前表格未刷新的情况下已经更新过了
+		$res = Agents::select('updated_at')
+			->where('id', $id)
+			->first();
+		$res_updated_at = date('Y-m-d H:i:s', strtotime($res['updated_at']));
+		if ($updated_at != $res_updated_at) return 0;
+
+		// 尝试更新
+		try	{
+			DB::beginTransaction();
+			$result = Agents::where('id', $id)
+				->update([
+					'title'			=> $title,
+					'type'			=> $type,
+					'contactinfo'	=> $contactinfo,
+				]);
+			$result = 1;
+		}
+		catch (\Exception $e) {
+			DB::rollBack();
+			// dd('Message: ' .$e->getMessage());
+			$result = 0;
+		}
+		DB::commit();
+		Cache::flush();
+		// dd($result);
+		return $result;
 	}
 
 

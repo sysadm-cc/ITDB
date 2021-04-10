@@ -136,8 +136,37 @@
 
 <!-- 以下为各元素编辑窗口 -->
 
+<!-- 主编辑窗口 agents-->
+<Modal v-model="modal_edit_agents" @on-ok="update_agents" ok-text="保存" title="编辑 - 代理商" width="640">
+	<div style="text-align:left">
+
+		<p>
+		<i-form :label-width="90">
+			<i-row>
+				<i-col span="24">
+					<Form-Item label="名称" required style="margin-bottom:0px">
+						<i-input v-model.lazy="edit_title" size="small"></i-input>
+					</Form-Item>
+					<Form-Item label="类型" required style="margin-bottom:0px">
+						<Poptip word-wrap trigger="hover" placement="bottom" width="300" content="售卖方及购买方将出现在发票及合同模块中；售卖方及购买方将出现在发票及合同模块中；硬件销售商将出现的物品模块中；软件销售商将出现在合同模块中；承包商将出现的合同模块中。">
+							<i-select v-model.lazy="edit_type_select" size="small" multiple clearable placeholder="">
+								<i-option v-for="item in edit_type_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+							</i-select>
+						</Poptip>
+					</Form-Item>
+					<Form-Item label="联系信息" style="margin-bottom:0px">
+						<i-input v-model.lazy="edit_contactinfo" size="small" type="textarea"></i-input>
+					</Form-Item>
+				</i-col>
+			</i-row>
+		</i-form>&nbsp;
+		</p>
+	
+	</div>	
+</Modal>
+
 <!-- 子编辑窗口 contacts-->
-<Modal v-model="modal_subedit_contacts" @on-ok="subupdate_contacts" ok-text="保存" title="编辑 - 供应商联系方式" width="640">
+<Modal v-model="modal_subedit_contacts" @on-ok="subupdate_contacts" ok-text="保存" title="编辑 - 代理商联系方式" width="640">
 	<div style="text-align:left">
 
 		<p>
@@ -174,7 +203,7 @@
 </Modal>
 
 <!-- 子编辑窗口 urls-->
-<Modal v-model="modal_subedit_urls" @on-ok="subupdate_urls" ok-text="保存" title="编辑 - 供应商官方网站" width="640">
+<Modal v-model="modal_subedit_urls" @on-ok="subupdate_urls" ok-text="保存" title="编辑 - 代理商官方网站" width="640">
 	<div style="text-align:left">
 
 		<p>
@@ -258,10 +287,23 @@ var vm_app = new Vue({
 		// 删除按钮禁用
 		agents_delete_disabled: true,
 
-		// 编辑变量
+		// 主编辑变量
 		modal_edit_agents: false,
+		edit_id: '',
+		edit_updated_at: '',
+		edit_title: '',
+		edit_type_select: [],
+		edit_type_options: [
+			{label: '售卖方 - Vendoer', value: 1},
+			{label: '软件销售商 - S/W Manufacturer', value: 2},
+			{label: '硬件销售商 - H/W Manufacturer', value: 3},
+			{label: '购买方 - Buyer', value: 4},
+			{label: '承包商 - Contractor', value: 5},
+		],
+		edit_contactinfo: '',
 
 
+		// 子编辑 变量
 		modal_subedit_contacts: false,
 		modal_subedit_urls: false,
 		subedit_id: '',
@@ -306,6 +348,29 @@ var vm_app = new Vue({
 				key: 'type',
 				resizable: true,
 				width: 180,
+				render: (h, params) => {
+
+					var x = '';
+					// console.log(x);
+					if (params.row.type.indexOf(1) > -1) x += '售卖方 - Vendoer';
+					if (params.row.type.indexOf(2) > -1) x += '软件销售商 - S/W Manufacturer';
+					if (params.row.type.indexOf(3) > -1) x += '硬件销售商 - H/W Manufacturer';
+					if (params.row.type.indexOf(4) > -1) x += '购买方 - Buyer';
+					if (params.row.type.indexOf(5) > -1) x += '承包商 - Contractor';
+
+					return h('span', params.row.type.map(item => {
+						if (params.row.type.indexOf(1) > -1) {
+						return h('span', {
+
+
+						},  '售卖方 - Vendoer')
+						}
+						
+					}))
+
+					
+
+				}
 			},
 			{
 				title: '联系信息',
@@ -313,38 +378,10 @@ var vm_app = new Vue({
 				resizable: true,
 				width: 180,
 			},
-			// {
-			// 	title: '联系方式',
-			// 	key: 'contacts',
-			// 	resizable: true,
-			// 	width: 180,
-			// },
 			{
 				title: '联系方式',
 				align: 'center',
 				children: [
-					// {
-					// 	title: '序号',
-					// 	key: 'contacts',
-					// 	align:'center',
-					// 	width: 70,
-					// 	className: 'table-info-column-contacts',
-					// 	render: (h, params) => {
-					// 		if (params.row.contacts!=undefined && params.row.contacts!=null) {
-					// 			return h('div', {
-					// 				attrs: {
-					// 					class:'subCol'
-					// 				},
-					// 			}, [
-					// 				h('ul', params.row.contacts.map((item, index) => {
-					// 					return h('li', {
-					// 					// }, item.id)
-					// 					}, ++index)
-					// 				}))
-					// 			]);
-					// 		}
-					// 	}
-					// },
 					{
 						title: '联系人',
 						key: 'contacts',
@@ -673,7 +710,7 @@ var vm_app = new Vue({
 				title: '操作',
 				key: 'action',
 				align: 'center',
-				width: 380,
+				width: 260,
 				fixed: 'right',
 				render: (h, params) => {
 					return h('div', [
@@ -688,41 +725,62 @@ var vm_app = new Vue({
 							},
 							on: {
 								click: () => {
-									vm_app.itemtypes_delete(params.row)
+									vm_app.edit_agents(params.row)
 								}
 							}
 						}, '编辑'),
-						h('Button', {
+
+						h('Poptip', {
 							props: {
-								type: 'default',
-								size: 'small',
-								icon: 'md-add'
+								'word-wrap': true,
+								'trigger': 'hover',
+								'confirm': false,
+								'content': '添加'+params.row.title+'的联系方式',
+								'transfer': true
 							},
-							style: {
-								marginRight: '5px'
-							},
-							on: {
-								click: () => {
-									vm_app.itemtypes_delete(params.row)
+						}, [
+							h('Button', {
+								props: {
+									type: 'default',
+									size: 'small',
+									icon: 'md-contacts'
+								},
+								style: {
+									marginRight: '5px'
+								},
+								on: {
+									click: () => {
+										vm_app.add_contacts(params.row)
+									}
 								}
-							}
-						}, '添加联系方式'),
-						h('Button', {
+							}, '添加')
+						]),
+
+						h('Poptip', {
 							props: {
-								type: 'default',
-								size: 'small',
-								icon: 'md-add'
+								'word-wrap': true,
+								'trigger': 'hover',
+								'confirm': false,
+								'content': '添加'+params.row.title+'官方网站',
+								'transfer': true
 							},
-							style: {
-								marginRight: '5px'
-							},
-							on: {
-								click: () => {
-									vm_app.itemtypes_delete(params.row)
+						}, [
+							h('Button', {
+								props: {
+									type: 'default',
+									size: 'small',
+									icon: 'md-home'
+								},
+								style: {
+									marginRight: '5px'
+								},
+								on: {
+									click: () => {
+										vm_app.add_urls(params.row)
+									}
 								}
-							}
-						}, '添加官方网站'),
-						
+							}, '添加'),
+						]),
 
 					]);
 				},
@@ -1080,13 +1138,77 @@ var vm_app = new Vue({
 
 		},
 
+		// 主编辑前查看 - agents
+		edit_agents (row) {
+			var _this = this;
+
+			_this.edit_id = row.id;
+			_this.edit_updated_at = row.updated_at;
+			_this.edit_title = row.title;
+			_this.edit_type_select = row.type;
+			_this.edit_contactinfo = row.contactinfo;
+
+			_this.modal_edit_agents = true;
+		},
+
+		// 主编辑保存 - agents
+		update_agents () {
+			var _this = this;
+
+			var id = _this.edit_id;
+			var updated_at = _this.edit_updated_at;
+			var title = _this.edit_title;
+			var type = _this.edit_type_select;
+			var contactinfo = _this.edit_contactinfo;
+
+			if (id == undefined || title == undefined || type == undefined) {
+				_this.warning(false, '警告', '内容选择不正确！');
+				return false;
+			}
+
+			var url = "{{ route('agent.update') }}";
+			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
+			axios.post(url, {
+				id: id,
+				updated_at: updated_at,
+				title: title,
+				type: type,
+				contactinfo: contactinfo,
+			})
+			.then(function (response) {
+				// console.log(response.data);return false;
+
+				if (response.data['jwt'] == 'logout') {
+					_this.alert_logout();
+					return false;
+				}
+				
+				if (response.data) {
+					_this.success(false, '成功', '保存成功！');
+						_this.agentsgets(_this.pagecurrent, _this.pagelast);
+				} else {
+					_this.error(false, '失败', '保存失败！');
+				}
+			})
+			.catch(function (error) {
+				_this.error(false, '错误', '保存失败！');
+			})
+
+		},
 
 
 
 
+		// 添加联系方式
+		add_contacts () {
 
 
+		},
 
+		// 添加官方网站
+		add_urls () {
+			
+		},
 
 		
 

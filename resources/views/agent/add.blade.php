@@ -1,7 +1,7 @@
 @extends('agent.layouts.mainbase')
 
 @section('my_title')
-供应商添加 - 
+代理商添加 - 
 @parent
 @endsection
 
@@ -16,12 +16,12 @@
 
 @section('my_body')
 @parent
-<!-- <Divider orientation="left">供应商添加</Divider> -->
+<!-- <Divider orientation="left">代理商添加</Divider> -->
 
 	<i-row :gutter="16">
 
 		<i-col span="7">
-			<Divider orientation="left">供应商属性</Divider>
+			<Divider orientation="left">代理商属性</Divider>
 			<i-form :label-width="100">
 				<Form-Item label="名称" required style="margin-bottom:0px">
 					<i-input v-model.lazy="add_title" size="small"></i-input>
@@ -30,7 +30,12 @@
 					<i-select v-model.lazy="add_type_select" size="small" multiple clearable placeholder="">
 						<i-option v-for="item in add_type_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
 					</i-select>
-					<Tooltip max-width="460" placement="bottom">
+					<Poptip word-wrap trigger="hover" placement="bottom" width="300" content="售卖方及购买方将出现在发票及合同模块中；售卖方及购买方将出现在发票及合同模块中；硬件销售商将出现的物品模块中；软件销售商将出现在合同模块中；承包商将出现的合同模块中。">
+						<span style="color: rgb(158, 167, 180);font-size:10px;">
+						<Icon type="md-information-circle"></Icon> 此项可多选。
+						</span>
+					</Poptip>
+					<!-- <Tooltip max-width="460" placement="bottom">
 						<span style="color: rgb(158, 167, 180);font-size:10px;">
 						* 此项可多选。
 						</span>
@@ -40,7 +45,7 @@
 							<p>软件销售商将出现在合同模块中；</p>
 							<p>承包商将出现的合同模块中。</p>
 						</div>
-					</Tooltip>
+					</Tooltip> -->
 				</Form-Item>
 				<Form-Item label="备注" style="margin-bottom:0px">
 					<i-input v-model.lazy="add_contactinfo" size="small" type="textarea" placeholder="地址、电话号码以及其他信息..."></i-input>
@@ -61,7 +66,7 @@
 		</i-col>
 
 		<i-col span="16">
-			<Divider orientation="left">供应商联系方式</Divider>
+			<Divider orientation="left">代理商联系方式</Divider>
 
 			↓ 批量录入&nbsp;&nbsp;
 			<Input-number v-model.lazy="piliangluruxiang_contacts" @on-change="value=>piliangluru_generate_contracts(value)" :min="1" :max="10" size="small" style="width: 60px"></Input-number>
@@ -112,7 +117,7 @@
 			</i-form> -->
 <br>&nbsp;<br>
 
-			<Divider orientation="left">供应商网站</Divider>
+			<Divider orientation="left">代理商网站</Divider>
 
 			↓ 批量录入&nbsp;&nbsp;
 			<Input-number v-model.lazy="piliangluruxiang_urls" @on-change="value=>piliangluru_generate_urls(value)" :min="1" :max="10" size="small" style="width: 60px"></Input-number>
@@ -248,219 +253,7 @@ var vm_app = new Vue({
 
 
 
-		tablecolumns: [
-			{
-				type: 'selection',
-				width: 60,
-				align: 'center',
-				fixed: 'left'
-			},
-			{
-				title: '序号',
-				type: 'index',
-				align: 'center',
-				width: 70,
-				indexMethod: (row) => {
-					return row._index + 1 + vm_app.page_size * (vm_app.page_current - 1)
-				}
-			},
-			{
-				title: '图标',
-				key: 'id',
-				// sortable: true,
-				width: 70,
-				render: (h, params) => {
-					if (params.row.id == 1) {
-						return h('div', {}, [
-							h('Icon',{
-								props: {
-									type: 'md-bookmark',
-									size: 14,
-									color: 'blue',
-									}
-								}
-							),
-						])
-					} else if (params.row.id == 2) {
-						return h('div', {}, [
-							h('Icon',{
-								props: {
-									type: 'md-bookmark',
-									size: 14,
-									color: 'green',
-									}
-								}
-							),
-						])
-					} else if (params.row.id == 3) {
-						return h('div', {}, [
-							h('Icon',{
-								props: {
-									type: 'md-bookmark',
-									size: 14,
-									color: 'red',
-									}
-								}
-							),
-						])
-					} else if (params.row.id == 4) {
-						return h('div', {}, [
-							h('Icon',{
-								props: {
-									type: 'md-bookmark',
-									size: 14,
-									color: 'gray',
-									}
-								}
-							),
-						])
-					} else if (params.row.id == 5) {
-						return h('div', {}, [
-							h('Icon',{
-								props: {
-									type: 'md-bookmark',
-									size: 14,
-									color: 'yellow',
-									}
-								}
-							),
-						])
-					} else if (params.row.id == 6) {
-						return h('div', {}, [
-							h('Icon',{
-								props: {
-									type: 'md-bookmark',
-									size: 14,
-									color: 'black',
-									}
-								}
-							),
-						])
-					} else {
-						return h('div', {}, [
-							h('Icon',{
-								props: {
-									type: 'md-bookmark',
-									size: 14,
-									}
-								}
-							),
-						])
-					}	
-				}
-			},
-			{
-				title: '项目描述',
-				key: 'typedesc',
-				width: 180,
-				render: (h, params) => {
-					
-					return h('div', {}, [
-						h('i-input',{
-							// style:{
-							// 	color: '#ff9900'
-							// },
-							props: {
-								value: params.row.typedesc,
-								size: 'small',
-							},
-							'on': {
-								'on-blur':() => {
-									// alert(params.row.id);
-									// alert(event.target.value);
-									if (params.row.typedesc != event.target.value) {
-										vm_app.itemtypes_update_typedesc(params.row.id, event.target.value)
-									}
-								}
-							},
-						})
-					])
-				}
-			},
-			{
-				title: '可安装软件',
-				key: 'hassoftware',
-				align: 'center',
-				width: 100,
-				// render: (h, params) => {
-				// 	if (params.row.hassoftware == true) {
-				// 		return h('div', {}, '是')
-				// 	} else {
-				// 		return h('div', {}, '否')
-				// 	}
-				// }
-				render: (h, params) => {
 
-					return h('div', [
-						// params.row.deleted_at.toLocaleString()
-						// params.row.deleted_at ? '禁用' : '启用'
-						
-						h('i-switch', {
-							props: {
-								type: 'primary',
-								size: 'small',
-								value: params.row.hassoftware ? true : false
-							},
-							style: {
-								marginRight: '5px'
-							},
-							on: {
-								'on-change': (value) => {//触发事件是on-change,用双引号括起来，
-									//参数value是回调值，并没有使用到
-									vm_app.itemtypes_update_hassoftware(params.row.id, value) //params.index是拿到table的行序列，可以取到对应的表格值
-								}
-							}
-						}, 'Edit')
-						
-					]);
-				}
-			},
-			{
-				title: '创建时间',
-				key: 'created_at',
-				sortable: true,
-				width: 160
-			},
-			{
-				title: '更新时间',
-				key: 'updated_at',
-				sortable: true,
-				width: 160
-			},
-			@hasanyrole('role_super_admin')
-			{
-				title: '操作',
-				key: 'action',
-				align: 'center',
-				width: 100,
-				render: (h, params) => {
-					if (params.row.id > 3) {
-						return h('div', [
-							h('Button', {
-								props: {
-									type: 'error',
-									size: 'small'
-								},
-								style: {
-									marginRight: '5px'
-								},
-								on: {
-									click: () => {
-										vm_app.itemtypes_delete(params.row)
-									}
-								}
-							}, '删除'),
-							
-
-						]);
-					}
-				},
-				// fixed: 'right'
-			}
-			@endhasanyrole
-		],
-		tabledata: [],
-		tableselect: [],
 		
 
 		
