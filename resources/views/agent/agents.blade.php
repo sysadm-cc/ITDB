@@ -228,6 +228,69 @@
 	</div>	
 </Modal>
 
+<!-- 子添加窗口 contacts-->
+<Modal v-model="modal_subadd_contacts" @on-ok="subcreate_contacts" ok-text="添加" title="添加 - 代理商联系方式" width="640">
+	<div style="text-align:left">
+
+		<p>
+		<i-form :label-width="90">
+			<i-row>
+				<i-col span="12">
+					<Form-Item label="名称" style="margin-bottom:0px">
+						<i-input v-model.lazy="subadd_contacts_name" size="small"></i-input>
+					</Form-Item>
+					<Form-Item label="电话号码" style="margin-bottom:0px">
+						<i-input v-model.lazy="subadd_contacts_phonenumber" size="small"></i-input>
+					</Form-Item>
+				</i-col>
+				<i-col span="12">
+					<Form-Item label="角色" style="margin-bottom:0px">
+						<i-input v-model.lazy="subadd_contacts_role" size="small"></i-input>
+					</Form-Item>
+					<Form-Item label="电子邮件" style="margin-bottom:0px">
+						<i-input v-model.lazy="subadd_contacts_email" size="small"></i-input>
+					</Form-Item>
+				</i-col>
+			</i-row>
+			<i-row>
+				<i-col span="24">
+					<Form-Item label="备注" style="margin-bottom:0px">
+						<i-input v-model.lazy="subadd_contacts_comments" size="small" type="textarea"></i-input>
+					</Form-Item>
+				</i-col>
+			</i-row>
+			</i-form>&nbsp;
+		</p>
+	
+	</div>	
+</Modal>
+
+<!-- 子添加窗口 urls-->
+<Modal v-model="modal_subadd_urls" @on-ok="subcreate_urls" ok-text="添加" title="添加 - 代理商官方网站" width="640">
+	<div style="text-align:left">
+
+		<p>
+		<i-form :label-width="90">
+			<i-row>
+				<i-col span="24">
+					<Form-Item label="URL" style="margin-bottom:0px">
+						<i-input v-model.lazy="subadd_urls_url" size="small"></i-input>
+					</Form-Item>
+				</i-col>
+			</i-row>
+			<i-row>
+				<i-col span="24">
+					<Form-Item label="说明" style="margin-bottom:0px">
+						<i-input v-model.lazy="subadd_urls_description" size="small"></i-input>
+					</Form-Item>
+				</i-col>
+			</i-row>
+		</i-form>&nbsp;
+		</p>
+	
+	</div>	
+</Modal>
+
 
 
 
@@ -320,6 +383,23 @@ var vm_app = new Vue({
 		subedit_urls_description: '',
 		
 
+		// 子添加 变量
+		modal_subadd_contacts: false,
+		modal_subadd_urls: false,
+		subadd_id: '',
+		subadd_subid: '',
+		subadd_updated_at: '',
+
+		subadd_contacts_name: '',
+		subadd_contacts_role: '',
+		subadd_contacts_phonenumber: '',
+		subadd_contacts_email: '',
+		subadd_contacts_comments: '',
+
+		subadd_urls_url: '',
+		subadd_urls_description: '',
+
+
 
 		tablecolumns: [
 			{
@@ -347,29 +427,15 @@ var vm_app = new Vue({
 				title: '类型',
 				key: 'type',
 				resizable: true,
-				width: 180,
+				width: 210,
 				render: (h, params) => {
-
-					var x = '';
-					// console.log(x);
-					if (params.row.type.indexOf(1) > -1) x += '售卖方 - Vendoer';
-					if (params.row.type.indexOf(2) > -1) x += '软件销售商 - S/W Manufacturer';
-					if (params.row.type.indexOf(3) > -1) x += '硬件销售商 - H/W Manufacturer';
-					if (params.row.type.indexOf(4) > -1) x += '购买方 - Buyer';
-					if (params.row.type.indexOf(5) > -1) x += '承包商 - Contractor';
-
 					return h('span', params.row.type.map(item => {
-						if (params.row.type.indexOf(1) > -1) {
-						return h('span', {
-
-
-						},  '售卖方 - Vendoer')
-						}
-						
+						if (item == 1) return h('p', {}, '售卖方 - Vendoer')
+						if (item == 2) return h('p', {}, '软件销售商 - S/W Manufacturer')
+						if (item == 3) return h('p', {}, '硬件销售商 - H/W Manufacturer')
+						if (item == 4) return h('p', {}, '购买方 - Buyer')
+						if (item == 5) return h('p', {}, '承包商 - Contractor')
 					}))
-
-					
-
 				}
 			},
 			{
@@ -761,7 +827,7 @@ var vm_app = new Vue({
 								'word-wrap': true,
 								'trigger': 'hover',
 								'confirm': false,
-								'content': '添加'+params.row.title+'官方网站',
+								'content': '添加'+params.row.title+'的官方网站',
 								'transfer': true
 							},
 						}, [
@@ -1161,8 +1227,8 @@ var vm_app = new Vue({
 			var type = _this.edit_type_select;
 			var contactinfo = _this.edit_contactinfo;
 
-			if (id == undefined || title == undefined || type == undefined) {
-				_this.warning(false, '警告', '内容选择不正确！');
+			if (id == undefined || title == undefined || title == '' || type == undefined || type == '') {
+				_this.warning(false, '警告', '内容不能为空！');
 				return false;
 			}
 
@@ -1197,20 +1263,127 @@ var vm_app = new Vue({
 		},
 
 
-
-
-		// 添加联系方式
-		add_contacts () {
-
-
+		// 添加联系方式 - 查看
+		add_contacts (row) {
+			var _this = this;
+			_this.subadd_id = row.id;
+			_this.modal_subadd_contacts = true;
 		},
 
-		// 添加官方网站
-		add_urls () {
+
+		// 添加联系方式 - 保存
+		subcreate_contacts () {
+			var _this = this;
+
+			var id = _this.subadd_id;
+			var name = _this.subadd_contacts_name;
+			var role = _this.subadd_contacts_role;
+			var phonenumber = _this.subadd_contacts_phonenumber;
+			var email = _this.subadd_contacts_email;
+			var comments = _this.subadd_contacts_comments;
 			
+			if (id == undefined) {
+				_this.warning(false, '警告', '内容选择不正确！');
+				return false;
+			}
+
+			var url = "{{ route('agent.subcreatecontacts') }}";
+			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
+			axios.post(url, {
+				id: id,
+				name: name,
+				role: role,
+				phonenumber: phonenumber,
+				email: email,
+				comments: comments,
+			})
+			.then(function (response) {
+				// console.log(response.data);return false;
+
+				if (response.data['jwt'] == 'logout') {
+					_this.alert_logout();
+					return false;
+				}
+				
+				if (response.data) {
+					_this.add_clear_var();
+					_this.success(false, '成功', '添加成功！');
+					_this.agentsgets(_this.pagecurrent, _this.pagelast);
+				} else {
+					_this.error(false, '失败', '添加失败！');
+				}
+			})
+			.catch(function (error) {
+				_this.error(false, '错误', '添加失败！');
+			})
+		},
+
+
+		// 添加官方网站 - 查看
+		add_urls (row) {
+			var _this = this;
+			_this.subadd_id = row.id;
+			_this.modal_subadd_urls = true;
+		},
+
+
+		// 添加官方网站 - 保存
+		subcreate_urls () {
+			var _this = this;
+
+			var id = _this.subadd_id;
+			var myurl = _this.subadd_urls_url;
+			var description = _this.subadd_urls_description;
+			
+			if (id == undefined) {
+				_this.warning(false, '警告', '内容选择不正确！');
+				return false;
+			}
+
+			var url = "{{ route('agent.subcreateurls') }}";
+			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
+			axios.post(url, {
+				id: id,
+				myurl: myurl,
+				description: description,
+			})
+			.then(function (response) {
+				// console.log(response.data);return false;
+
+				if (response.data['jwt'] == 'logout') {
+					_this.alert_logout();
+					return false;
+				}
+				
+				if (response.data) {
+					_this.add_clear_var();
+					_this.success(false, '成功', '添加成功！');
+					_this.agentsgets(_this.pagecurrent, _this.pagelast);
+				} else {
+					_this.error(false, '失败', '添加失败！');
+				}
+			})
+			.catch(function (error) {
+				_this.error(false, '错误', '添加失败！');
+			})
 		},
 
 		
+		// 清除所有添加变量
+		add_clear_var () {
+			var _this = this;
+			_this.subadd_id = '';
+			_this.subadd_subid = '';
+			_this.subadd_updated_at = '';
+			_this.subadd_contacts_name = '';
+			_this.subadd_contacts_role = '';
+			_this.subadd_contacts_phonenumber = '';
+			_this.subadd_contacts_email = '';
+			_this.subadd_contacts_comments = '';
+			_this.subadd_urls_url = '';
+			_this.subadd_urls_description = '';
+		},
+
 
 
 	},

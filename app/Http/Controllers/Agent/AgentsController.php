@@ -390,7 +390,95 @@ class AgentsController extends Controller
 	}
 
 
+	/**
+	* Contacts 子项添加 SubCreateContacts
+	*
+	* @param  int  $id
+	* @return \Illuminate\Http\Response
+	*/
+	public function SubCreateContacts(Request $request)
+	{
+		if (! $request->isMethod('post') || ! $request->ajax()) return null;
 
+		$id = $request->input('id');
+		$a['name'] = $request->input('name');
+		$a['role'] = $request->input('role');
+		$a['phonenumber'] = $request->input('phonenumber');
+		$a['email'] = $request->input('email');
+		$a['comments'] = $request->input('comments');
+
+		// 确认json id
+		$contacts = '';
+		foreach ($a as $key => $value) {
+			$contacts .= '"'. $key . '":"' . $value . '",';
+		}
+		$contacts = substr($contacts, 0, strlen($contacts)-1);
+
+	//    if ($count_of_contacts_append == 0) {
+	// 	   $sql = '\'[{' . $contacts . '}]\'';
+	//    } else {
+			// $sql = 'JSON_MERGE(contacts, '[{"id":3, "weihao":"ZZZ", "shuliang":5, "jianchazhe":"张三"}]')';
+			$sql = 'JSON_MERGE(contacts, \'[{' . $contacts . '}]\')';
+	//    }
+		// dd($sql);
+
+		$nowtime = date("Y-m-d H:i:s",time());
+
+		// 尝试更新（追加json）
+		try	{
+			DB::beginTransaction();
+			$result = DB::update('update agents set contacts = ' . $sql . ', updated_at = "' . $nowtime . '" where id = ?', [$id]);
+			$result = 1;
+		}
+		catch (\Exception $e) {
+			DB::rollBack();
+			// dd('Message: ' .$e->getMessage());
+			$result = 0;
+		}
+		DB::commit();
+		Cache::flush();
+		return $result;
+	}
+
+
+	/**
+	* Urls 子项添加 SubCreateUrls
+	*
+	* @param  int  $id
+	* @return \Illuminate\Http\Response
+	*/
+	public function SubCreateUrls(Request $request)
+	{
+		if (! $request->isMethod('post') || ! $request->ajax()) return null;
+
+		$id = $request->input('id');
+		$a['url'] = $request->input('myurl');
+		$a['description'] = $request->input('description');
+
+		// 确认json id
+		$urls = '';
+		foreach ($a as $key => $value) {
+			$urls .= '"'. $key . '":"' . $value . '",';
+		}
+		$urls = substr($urls, 0, strlen($urls)-1);
+
+		$sql = 'JSON_MERGE(urls, \'[{' . $urls . '}]\')';
+		$nowtime = date("Y-m-d H:i:s",time());
+
+		// 尝试更新（追加json）
+		try	{
+			DB::beginTransaction();
+			$result = DB::update('update agents set urls = ' . $sql . ', updated_at = "' . $nowtime . '" where id = ?', [$id]);
+		}
+		catch (\Exception $e) {
+			DB::rollBack();
+			// dd('Message: ' .$e->getMessage());
+			$result = 0;
+		}
+		DB::commit();
+		Cache::flush();
+		return $result;
+	}
 
 
 	

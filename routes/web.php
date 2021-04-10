@@ -222,6 +222,12 @@ Route::group(['prefix'=>'agent', 'namespace'=>'Agent', 'middleware'=>['jwtauth']
 	// Agents SubDelete Urls
 	Route::post('SubdeleteUrls', 'AgentsController@SubDeleteUrls')->name('agent.subdeleteurls');
 
+	// Agents SubCreate Urls
+	Route::post('SubCreateContacts', 'AgentsController@SubCreateContacts')->name('agent.subcreatecontacts');
+	
+	// Agents SubCreate Urls
+	Route::post('SubCreateUrls', 'AgentsController@SubCreateUrls')->name('agent.subcreateurls');
+
 });
 	
 
