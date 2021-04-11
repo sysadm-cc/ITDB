@@ -146,7 +146,7 @@
 						<i-input v-model.lazy="edit_title" size="small"></i-input>
 					</Form-Item>
 					<Form-Item label="类型" required style="margin-bottom:0px">
-						<Poptip word-wrap trigger="hover" placement="bottom" width="300" content="售卖方及购买方将出现在发票及合同模块中；售卖方及购买方将出现在发票及合同模块中；硬件销售商将出现的物品模块中；软件销售商将出现在合同模块中；承包商将出现的合同模块中。">
+						<Poptip word-wrap trigger="hover" placement="top" width="300" content="售卖方及购买方将出现在发票及合同模块中；售卖方及购买方将出现在发票及合同模块中；硬件销售商将出现的物品模块中；软件销售商将出现在合同模块中；承包商将出现的合同模块中。">
 							<i-select v-model.lazy="edit_type_select" size="small" multiple clearable placeholder="">
 								<i-option v-for="item in edit_type_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
 							</i-select>

@@ -297,7 +297,7 @@ if (isMobile) {
 
 							<Submenu name="5">
 								<template slot="title">
-										<Icon type="ios-analytics-outline" size="20"></Icon> 代理商 <span style="color:rgb(158, 167, 180);font-size:10px;">Agents</span>
+										<Icon type="md-contacts" size="20"></Icon> 代理商 <span style="color:rgb(158, 167, 180);font-size:10px;">Agents</span>
 								</template>
 								<Menu-item name="5-1"><Icon type="ios-folder-outline" size="18"></Icon> 查询</Menu-item>
 								<Menu-item name="5-2"><Icon type="ios-analytics-outline" size="18"></Icon> 添加</Menu-item>
