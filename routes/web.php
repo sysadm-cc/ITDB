@@ -202,7 +202,7 @@ Route::group(['prefix'=>'agent', 'namespace'=>'Agent', 'middleware'=>['jwtauth']
 	Route::post('agentUpdate', 'AgentsController@agentUpdate')->name('agent.update');
 
 	// Agents Delete
-	// Route::post('itemItemtypesDelete', 'ItemItemtypesController@itemItemtypesDelete')->name('item.itemtypesdelete');
+	Route::post('agentDelete', 'AgentsController@agentDelete')->name('agent.delete');
 
 	// 显示 Agents add 页面
 	Route::get('agentAdd', 'AgentsController@agentAdd')->name('agent.add');

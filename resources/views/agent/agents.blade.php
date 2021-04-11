@@ -105,7 +105,9 @@
 	<i-row :gutter="16">
 		<br>
 		<i-col span="3">
-			<i-button @click="items_delete()" :disabled="agents_delete_disabled" type="warning" size="small"><Icon type="md-trash"></Icon> 删除</i-button>&nbsp;<br>&nbsp;
+			<Poptip confirm word-wrap title="真的要删除这些记录吗？" @on-ok="agents_delete()">
+				<i-button :disabled="agents_delete_disabled" type="warning" size="small"><Icon type="md-trash"></Icon> 删除</i-button>&nbsp;<br>&nbsp;
+			</Poptip>
 		</i-col>
 		<i-col span="3">
 			<i-button type="primary" size="small" @click="agents_add()"><Icon type="md-add"></Icon> 添加代理商</i-button>
@@ -118,16 +120,12 @@
 		</i-col>
 	</i-row>
 
+	&nbsp;
 
-
-&nbsp;
-
-<i-row :gutter="16">
-	<i-col span="24">
-
-		<i-table height="460" size="small" border :columns="tablecolumns" :data="tabledata" @on-selection-change="selection => onselectchange(selection)"></i-table>
-		<br><Page :current="page_current" :total="page_total" :page-size="page_size" @on-change="currentpage => oncurrentpagechange(currentpage)" @on-page-size-change="pagesize => onpagesizechange(pagesize)" :page-size-opts="[5, 10, 20, 50]" show-total show-elevator show-sizer></Page>
-
+	<i-row :gutter="16">
+		<i-col span="24">
+			<i-table height="460" size="small" border :columns="tablecolumns" :data="tabledata" @on-selection-change="selection => onselectchange(selection)"></i-table>
+			<br><Page :current="page_current" :total="page_total" :page-size="page_size" @on-change="currentpage => oncurrentpagechange(currentpage)" @on-page-size-change="pagesize => onpagesizechange(pagesize)" :page-size-opts="[5, 10, 20, 50]" show-total show-elevator show-sizer></Page>
 		</i-col>
 	</i-row>
 
@@ -154,7 +152,7 @@
 							</i-select>
 						</Poptip>
 					</Form-Item>
-					<Form-Item label="联系信息" style="margin-bottom:0px">
+					<Form-Item label="备注" style="margin-bottom:0px">
 						<i-input v-model.lazy="edit_contactinfo" size="small" type="textarea"></i-input>
 					</Form-Item>
 				</i-col>
@@ -439,7 +437,7 @@ var vm_app = new Vue({
 				}
 			},
 			{
-				title: '联系信息',
+				title: '备注',
 				key: 'contactinfo',
 				resizable: true,
 				width: 180,
@@ -776,25 +774,36 @@ var vm_app = new Vue({
 				title: '操作',
 				key: 'action',
 				align: 'center',
-				width: 260,
+				width: 130,
 				fixed: 'right',
 				render: (h, params) => {
 					return h('div', [
-						h('Button', {
+
+						h('Poptip', {
 							props: {
-								type: 'primary',
-								size: 'small',
-								icon: 'md-create'
+								'word-wrap': true,
+								'trigger': 'hover',
+								'confirm': false,
+								'content': '编辑'+params.row.title+'的信息',
+								'transfer': true
 							},
-							style: {
-								marginRight: '5px'
-							},
-							on: {
-								click: () => {
-									vm_app.edit_agents(params.row)
+						}, [
+							h('Button', {
+								props: {
+									type: 'primary',
+									size: 'small',
+									icon: 'md-create'
+								},
+								style: {
+									marginRight: '5px'
+								},
+								on: {
+									click: () => {
+										vm_app.edit_agents(params.row)
+									}
 								}
-							}
-						}, '编辑'),
+							}),
+						]),
 
 						h('Poptip', {
 							props: {
@@ -819,7 +828,7 @@ var vm_app = new Vue({
 										vm_app.add_contacts(params.row)
 									}
 								}
-							}, '添加')
+							})
 						]),
 
 						h('Poptip', {
@@ -845,7 +854,7 @@ var vm_app = new Vue({
 										vm_app.add_urls(params.row)
 									}
 								}
-							}, '添加'),
+							}),
 						]),
 
 					]);
@@ -988,6 +997,34 @@ var vm_app = new Vue({
 			}
 			
 			_this.agents_delete_disabled = _this.tableselect[0] == undefined ? true : false;
+		},
+
+		// 删除记录
+		agents_delete () {
+			var _this = this;
+			
+			var tableselect = _this.tableselect;
+			
+			if (tableselect[0] == undefined) return false;
+
+			var url = "{{ route('agent.delete') }}";
+			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
+			axios.post(url, {
+				tableselect: tableselect
+			})
+			.then(function (response) {
+				if (response.data) {
+					_this.agents_delete_disabled = true;
+					_this.tableselect = [];
+					_this.success(false, '成功', '删除成功！');
+					_this.agentsgets(_this.pagecurrent, _this.pagelast);
+				} else {
+					_this.error(false, '失败', '删除失败！');
+				}
+			})
+			.catch(function (error) {
+				_this.error(false, '错误', '删除失败！');
+			})
 		},
 
 		// 跳转至添加页面
