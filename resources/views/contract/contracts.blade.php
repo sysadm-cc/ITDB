@@ -115,24 +115,92 @@
 		</i-col>
 	</i-row>
 
+	&nbsp;
 
-
-&nbsp;
-
-<i-row>
-	<i-col span="24">
-
-		<i-table height="300" size="small" border :columns="tablecolumns" :data="tabledata" @on-selection-change="selection => onselectchange(selection)"></i-table>
-		<br><Page :current="page_current" :total="page_total" :page-size="page_size" @on-change="currentpage => oncurrentpagechange(currentpage)" @on-page-size-change="pagesize => onpagesizechange(pagesize)" :page-size-opts="[5, 10, 20, 50]" show-total show-elevator show-sizer></Page>
-
+	<i-row>
+		<i-col span="24">
+			<i-table height="300" size="small" border :columns="tablecolumns" :data="tabledata" @on-selection-change="selection => onselectchange(selection)"></i-table>
+			<br><Page :current="page_current" :total="page_total" :page-size="page_size" @on-change="currentpage => oncurrentpagechange(currentpage)" @on-page-size-change="pagesize => onpagesizechange(pagesize)" :page-size-opts="[5, 10, 20, 50]" show-total show-elevator show-sizer></Page>
 		</i-col>
 	</i-row>
 
 </Tab-pane>
 
 
+<!-- 以下为各元素编辑窗口 -->
+
+<!-- 主编辑窗口 contracts-->
+<Modal v-model="modal_edit_contracts" @on-ok="update_contracts" ok-text="保存" title="编辑 - 合同" width="460">
+	<div style="text-align:left">
+
+		<p>
+		<i-form :label-width="100">
+			<i-row>
+				<i-col span="24">
+					<Form-Item label="名称" required style="margin-bottom:0px">
+						<i-input v-model.lazy="edit_title" size="small"></i-input>
+					</Form-Item>
+					<Form-Item label="类型" required style="margin-bottom:0px">
+						<i-select v-model.lazy="edit_type_select" size="small" clearable placeholder="">
+							<i-option v-for="item in edit_type_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+						</i-select>
+					</Form-Item>
+					<Form-Item label="合同编号" style="margin-bottom:0px">
+						<i-input v-model.lazy="edit_number" size="small"></i-input>
+					</Form-Item>
+					<Form-Item label="备注" style="margin-bottom:0px">
+						<i-input v-model.lazy="edit_comments" size="small"></i-input>
+					</Form-Item>
+					<Form-Item label="总价值(¥)" style="margin-bottom:0px">
+						<Input-Number v-model.lazy="edit_totalcost" size="small" :min="1"></Input-Number>
+					</Form-Item>
+					<Form-Item label="开始日期" style="margin-bottom:0px">
+						<Date-picker v-model.lazy="edit_startdate" type="date" size="small"></Date-picker>
+					</Form-Item>
+					<Form-Item label="当前结束日期" style="margin-bottom:0px">
+						<Date-picker v-model.lazy="edit_currentenddate" type="date" size="small"></Date-picker>
+					</Form-Item>
+					<Form-Item label="详细内容" style="margin-bottom:0px">
+						<i-input v-model.lazy="edit_description" size="small" type="textarea"></i-input>
+					</Form-Item>
+				</i-col>
+			</i-row>
+		</i-form>&nbsp;
+		</p>
+	
+	</div>	
+</Modal>
 
 
+<!-- 子编辑窗口 renewals-->
+<Modal v-model="modal_subedit_renewals" @on-ok="subupdate_renewals" ok-text="保存" title="编辑 - 续约合同" width="640">
+	<div style="text-align:left">
+
+		<p>
+		<i-form :label-width="90">
+			<i-row>
+				<i-col span="12">
+				<Form-Item label="续约开始日期" style="margin-bottom:0px">
+						<Date-picker v-model.lazy="subedit_renewals_enddatebefore" type="date" size="small"></Date-picker>
+					</Form-Item>
+					<Form-Item label="续约结束日期" style="margin-bottom:0px">
+						<Date-picker v-model.lazy="subedit_renewals_enddateafter" type="date" size="small"></Date-picker>
+					</Form-Item>
+					<Form-Item label="生效日期" style="margin-bottom:0px">
+						<Date-picker v-model.lazy="subedit_renewals_effectivedate" type="date" size="small"></Date-picker>
+					</Form-Item>
+				</i-col>
+				<i-col span="14">
+					<Form-Item label="备注" style="margin-bottom:0px">
+						<i-input v-model.lazy="subedit_renewals_notes" size="small" type="textarea" rows="3"></i-input>
+					</Form-Item>
+				</i-col>
+			</i-row>
+			</i-form>&nbsp;
+		</p>
+	
+	</div>	
+</Modal>
 
 
 <!-- <my-passwordchange></my-passwordchange>
@@ -198,7 +266,8 @@ var vm_app = new Vue({
 		edit_id: '',
 		edit_updated_at: '',
 		edit_title: '',
-		edit_type_select: [],
+		edit_type_select: '',
+		edit_type_options: [],
 		edit_number: '',
 		edit_description: '',
 		edit_comments: '',
@@ -211,11 +280,20 @@ var vm_app = new Vue({
 		subedit_id: '',
 		subedit_subid: '',
 		subedit_updated_at: '',
-
 		subedit_renewals_enddatebefore: '',
 		subedit_renewals_enddateafter: '',
 		subedit_renewals_effectivedate: '',
 		subedit_renewals_notes: '',
+
+		// 子添加 变量
+		modal_subadd_renewals: false,
+		subadd_id: '',
+		subadd_subid: '',
+		subadd_updated_at: '',
+		subadd_renewals_enddatebefore: '',
+		subadd_renewals_enddateafter: '',
+		subadd_renewals_effectivedate: '',
+		subadd_renewals_notes: '',
 
 
 
@@ -254,19 +332,10 @@ var vm_app = new Vue({
 				width: 210,
 				render: (h, params) => {
 					return h('span', vm_app.contracts_type_options.map(item => {
-						console.log(item.id);
 						if (params.row.type == item.id) {
 							return h('p', {}, item.name)
 						}
-						// if (item == 1) return h('p', {}, '售卖方 - Vendoer')
-						// if (item == 2) return h('p', {}, '软件销售商 - S/W Manufacturer')
-						// if (item == 3) return h('p', {}, '硬件销售商 - H/W Manufacturer')
-						// if (item == 4) return h('p', {}, '购买方 - Buyer')
-						// if (item == 5) return h('p', {}, '承包商 - Contractor')
-						// console.log(item);
 					}))
-					// console.log(vm_app.contracts_type_options);
-					// return h('span', {}, vm_app.contracts_type_options)
 				}
 			},
 
@@ -528,7 +597,7 @@ var vm_app = new Vue({
 									},
 									on: {
 										click: () => {
-											vm_app.add_contracts(params.row)
+											vm_app.add_renewals(params.row)
 										}
 									}
 								})
@@ -735,6 +804,7 @@ var vm_app = new Vue({
 				if (response.data) {
 					// _this.contracts_type_options = _this.json2selectvalue(response.data.data);
 					_this.contracts_type_options = response.data.data;
+					_this.edit_type_options = _this.json2selectvalue(response.data.data);
 				}
 				
 			})
@@ -751,9 +821,14 @@ var vm_app = new Vue({
 			_this.edit_updated_at = row.updated_at;
 			_this.edit_title = row.title;
 			_this.edit_type_select = row.type;
-			_this.edit_contactinfo = row.contactinfo;
+			_this.edit_number = row.number;
+			_this.edit_description = row.description;
+			_this.edit_comments = row.comments;
+			_this.edit_totalcost = row.totalcost;
+			_this.edit_startdate = row.startdate;
+			_this.edit_currentenddate = row.currentenddate;
 
-			_this.modal_edit_agents = true;
+			_this.modal_edit_contracts = true;
 		},
 
 		// 主编辑保存 - contracts
@@ -763,22 +838,34 @@ var vm_app = new Vue({
 			var id = _this.edit_id;
 			var updated_at = _this.edit_updated_at;
 			var title = _this.edit_title;
+
+			var title = _this.edit_title;
 			var type = _this.edit_type_select;
-			var contactinfo = _this.edit_contactinfo;
+			var number = _this.edit_number;
+			var description = _this.edit_description;
+			var comments = _this.edit_comments;
+			var totalcost = _this.edit_totalcost;
+			var startdate = _this.edit_startdate;
+			var currentenddate = _this.edit_currentenddate;
 
 			if (id == undefined || title == undefined || title == '' || type == undefined || type == '') {
 				_this.warning(false, '警告', '内容不能为空！');
 				return false;
 			}
 
-			var url = "{{ route('agent.update') }}";
+			var url = "{{ route('contract.update') }}";
 			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
 			axios.post(url, {
 				id: id,
 				updated_at: updated_at,
 				title: title,
 				type: type,
-				contactinfo: contactinfo,
+				number: number,
+				description: description,
+				comments: comments,
+				totalcost: totalcost,
+				startdate: startdate,
+				currentenddate: currentenddate,
 			})
 			.then(function (response) {
 				// console.log(response.data);return false;
@@ -790,7 +877,7 @@ var vm_app = new Vue({
 				
 				if (response.data) {
 					_this.success(false, '成功', '保存成功！');
-						_this.agentsgets(_this.pagecurrent, _this.pagelast);
+						_this.contractsgets(_this.pagecurrent, _this.pagelast);
 				} else {
 					_this.error(false, '失败', '保存失败！');
 				}
@@ -802,16 +889,125 @@ var vm_app = new Vue({
 		},
 
 
+		// 子编辑前查看 - renewals
+		subedit_renewals (row, subrow, index) {
+			var _this = this;
+
+			_this.subedit_id = row.id;
+			_this.subedit_subid = index;
+			_this.subedit_updated_at = row.updated_at;
+			_this.subedit_renewals_enddatebefore = row.enddatebefore;
+			_this.subedit_renewals_enddateafter = row.enddateafter;
+			_this.subedit_renewals_effectivedate = row.effectivedate;
+			_this.subedit_renewals_notes = row.notes;
+
+			_this.modal_subedit_urls = true;
+		},
+
+		// 子编辑保存 - renewals
+		subupdate_renewals () {
+
+			var _this = this;
+
+			var id = _this.subedit_id;
+			var subid = _this.subedit_subid;
+			var updated_at = _this.subedit_updated_at;
+			var enddatebefore = _this.subedit_renewals_enddatebefore;
+			var enddateafter = _this.subedit_renewals_enddateafter;
+			var effectivedate = _this.subedit_renewals_effectivedate;
+			var notes = _this.subedit_renewals_notes;
+			
+			if (id == undefined || subid == undefined) {
+				_this.warning(false, '警告', '内容选择不正确！');
+				return false;
+			}
+
+			var url = "{{ route('contract.subupdaterenewals') }}";
+			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
+			axios.post(url, {
+				id: id,
+				subid: subid,
+				updated_at: updated_at,
+				enddatebefore: enddatebefore,
+				enddateafter: enddateafter,
+				effectivedate: effectivedate,
+				notes: notes,
+			})
+			.then(function (response) {
+				// console.log(response.data);return false;
+
+				if (response.data['jwt'] == 'logout') {
+					_this.alert_logout();
+					return false;
+				}
+				
+				if (response.data) {
+					_this.success(false, '成功', '保存成功！');
+						_this.contractsgets(_this.pagecurrent, _this.pagelast);
+				} else {
+					_this.error(false, '失败', '保存失败！');
+				}
+			})
+			.catch(function (error) {
+				_this.error(false, '错误', '保存失败！');
+			})
+
+		},
+
+
+		// 子删除 - renewals
+		subdelete_renewals (row, subrow, index) {
+			var _this = this;
+
+			var id = row.id;
+			var subid = index;
+
+			if (id == undefined || subid == undefined) {
+				_this.warning(false, '警告', '内容选择不正确！');
+				return false;
+			}
+
+			var url = "{{ route('contract.subdeleterenewals') }}";
+			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
+			axios.post(url, {
+				id: id,
+				subid: subid,
+			})
+			.then(function (response) {
+				// console.log(response.data);
+				// return false;
+
+				if (response.data['jwt'] == 'logout') {
+					_this.alert_logout();
+					return false;
+				}
+				
+				if (response.data) {
+					_this.success(false, '成功', '删除成功！');
+						_this.contractsgets(_this.pagecurrent, _this.pagelast);
+				} else {
+					_this.error(false, '失败', '删除失败！');
+				}
+			})
+			.catch(function (error) {
+				_this.error(false, '错误', '删除失败！');
+			})
+
+		},
+
+
+
+
 		// 添加续约合同 - 查看
-		add_contracts (row) {
+		add_renewals (row) {
 			var _this = this;
 			_this.subadd_id = row.id;
-			_this.modal_subadd_contacts = true;
+			_this.modal_subadd_renewals = true;
 		},
 
 
 		// 添加续约合同 - 保存
-		subcreate_contracts () {
+		subcreate_renewals () {
 			var _this = this;
 
 			var id = _this.subadd_id;
@@ -826,7 +1022,7 @@ var vm_app = new Vue({
 				return false;
 			}
 
-			var url = "{{ route('agent.subcreatecontacts') }}";
+			var url = "{{ route('contract.subcreaterenewals') }}";
 			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
 			axios.post(url, {
 				id: id,
@@ -847,7 +1043,7 @@ var vm_app = new Vue({
 				if (response.data) {
 					_this.add_clear_var();
 					_this.success(false, '成功', '添加成功！');
-					_this.agentsgets(_this.pagecurrent, _this.pagelast);
+					_this.contractsgets(_this.pagecurrent, _this.pagelast);
 				} else {
 					_this.error(false, '失败', '添加失败！');
 				}

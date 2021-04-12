@@ -103,7 +103,7 @@ Route::group(['prefix'=>'contract', 'namespace'=>'Contract', 'middleware'=>['jwt
 	Route::get('contractGets', 'ContractsController@contractGets')->name('contract.gets');
 
 	// Agents Update
-	// Route::post('itemItemtypesUpdateHassoftware', 'ItemItemtypesController@itemItemtypesUpdateHassoftware')->name('item.itemtypesupdate_hassoftware');
+	Route::post('contractUpdate', 'ContractsController@contractUpdate')->name('contract.update');
 
 	// 显示 Contracts add 页面
 	Route::get('contractAdd', 'ContractsController@contractAdd')->name('contract.add');
@@ -113,6 +113,20 @@ Route::group(['prefix'=>'contract', 'namespace'=>'Contract', 'middleware'=>['jwt
 
 	// Contracts Delete
 	Route::post('contractDelete', 'ContractsController@contractDelete')->name('contract.delete');
+
+
+	// Contracts SubUpdate Renewals
+	Route::post('SubupdateRenewals', 'ContractsController@SubupdateRenewals')->name('contract.subupdaterenewals');
+	
+	// Contracts SubDelete Renewals
+	Route::post('SubdeleteRenewals', 'ContractsController@SubdeleteRenewals')->name('contract.subdeleterenewals');
+	
+	// Contracts SubCreate Renewals
+	Route::post('SubCreateRenewals', 'ContractsController@SubCreateRenewals')->name('contract.subcreaterenewals');
+
+
+
+
 
 
 	// 显示 Contracttypes 页面
@@ -218,14 +232,14 @@ Route::group(['prefix'=>'agent', 'namespace'=>'Agent', 'middleware'=>['jwtauth']
 	// Agents SubDelete Contacts
 	Route::post('SubdeleteContacts', 'AgentsController@SubDeleteContacts')->name('agent.subdeletecontacts');
 
+	// Agents SubCreate Contacts
+	Route::post('SubCreateContacts', 'AgentsController@SubCreateContacts')->name('agent.subcreatecontacts');
+
 	// Agents SubUpdate Urls
 	Route::post('SubupdateUrls', 'AgentsController@SubupdateUrls')->name('agent.subupdateurls');
 	
 	// Agents SubDelete Urls
 	Route::post('SubdeleteUrls', 'AgentsController@SubDeleteUrls')->name('agent.subdeleteurls');
-
-	// Agents SubCreate Urls
-	Route::post('SubCreateContacts', 'AgentsController@SubCreateContacts')->name('agent.subcreatecontacts');
 	
 	// Agents SubCreate Urls
 	Route::post('SubCreateUrls', 'AgentsController@SubCreateUrls')->name('agent.subcreateurls');
