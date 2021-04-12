@@ -177,7 +177,7 @@
 	<div style="text-align:left">
 
 		<p>
-		<i-form :label-width="90">
+		<i-form :label-width="100">
 			<i-row>
 				<i-col span="12">
 				<Form-Item label="续约开始日期" style="margin-bottom:0px">
@@ -190,13 +190,13 @@
 						<Date-picker v-model.lazy="subedit_renewals_effectivedate" type="date" size="small"></Date-picker>
 					</Form-Item>
 				</i-col>
-				<i-col span="14">
+				<i-col span="12">
 					<Form-Item label="备注" style="margin-bottom:0px">
 						<i-input v-model.lazy="subedit_renewals_notes" size="small" type="textarea" rows="3"></i-input>
 					</Form-Item>
 				</i-col>
 			</i-row>
-			</i-form>&nbsp;
+		</i-form>&nbsp;
 		</p>
 	
 	</div>	
@@ -490,7 +490,7 @@ var vm_app = new Vue({
 												},
 												on: {
 													click: () => {
-														vm_app.subedit_urls(params.row, item, index)
+														vm_app.subedit_renewals(params.row, item, index)
 													}
 												}
 											}),
@@ -506,7 +506,7 @@ var vm_app = new Vue({
 												},
 												on: {
 													'on-ok': () => {
-														vm_app.subdelete_urls(params.row, item, index)
+														vm_app.subdelete_renewals(params.row, item, index)
 													}
 												}
 											}, [
@@ -845,8 +845,8 @@ var vm_app = new Vue({
 			var description = _this.edit_description;
 			var comments = _this.edit_comments;
 			var totalcost = _this.edit_totalcost;
-			var startdate = _this.edit_startdate;
-			var currentenddate = _this.edit_currentenddate;
+			var startdate = new Date(_this.edit_startdate).Format("yyyy-MM-dd");
+			var currentenddate = new Date(_this.edit_currentenddate).Format("yyyy-MM-dd");
 
 			if (id == undefined || title == undefined || title == '' || type == undefined || type == '') {
 				_this.warning(false, '警告', '内容不能为空！');
@@ -896,12 +896,12 @@ var vm_app = new Vue({
 			_this.subedit_id = row.id;
 			_this.subedit_subid = index;
 			_this.subedit_updated_at = row.updated_at;
-			_this.subedit_renewals_enddatebefore = row.enddatebefore;
-			_this.subedit_renewals_enddateafter = row.enddateafter;
-			_this.subedit_renewals_effectivedate = row.effectivedate;
-			_this.subedit_renewals_notes = row.notes;
+			_this.subedit_renewals_enddatebefore = subrow.enddatebefore;
+			_this.subedit_renewals_enddateafter = subrow.enddateafter;
+			_this.subedit_renewals_effectivedate = subrow.effectivedate;
+			_this.subedit_renewals_notes = subrow.notes;
 
-			_this.modal_subedit_urls = true;
+			_this.modal_subedit_renewals = true;
 		},
 
 		// 子编辑保存 - renewals
@@ -912,12 +912,15 @@ var vm_app = new Vue({
 			var id = _this.subedit_id;
 			var subid = _this.subedit_subid;
 			var updated_at = _this.subedit_updated_at;
-			var enddatebefore = _this.subedit_renewals_enddatebefore;
-			var enddateafter = _this.subedit_renewals_enddateafter;
-			var effectivedate = _this.subedit_renewals_effectivedate;
+			var enddatebefore = _this.subedit_renewals_enddatebefore != '' && _this.subedit_renewals_enddatebefore != undefined ? new Date(_this.subedit_renewals_enddatebefore).Format("yyyy-MM-dd") : '';
+			var enddateafter = _this.subedit_renewals_enddateafter != '' && _this.subedit_renewals_enddateafter != undefined ? new Date(_this.subedit_renewals_enddateafter).Format("yyyy-MM-dd") : '';
+			var effectivedate = _this.subedit_renewals_effectivedate != '' && _this.subedit_renewals_effectivedate != undefined ? new Date(_this.subedit_renewals_effectivedate).Format("yyyy-MM-dd") : '';
 			var notes = _this.subedit_renewals_notes;
-			
-			if (id == undefined || subid == undefined) {
+
+			if (id == undefined || subid == undefined
+				|| enddatebefore == '' || enddatebefore == undefined
+				|| enddateafter == '' || enddateafter == undefined
+				|| effectivedate == '' || effectivedate == undefined) {
 				_this.warning(false, '警告', '内容选择不正确！');
 				return false;
 			}

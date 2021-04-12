@@ -231,6 +231,152 @@ class ContractsController extends Controller
 
 
 	/**
+	 * 更新 contractUpdate
+	 *
+	 * @param  int  $id
+	 * @return \Illuminate\Http\Response
+	 */
+	public function contractUpdate(Request $request)
+	{
+		if (! $request->isMethod('post') || ! $request->ajax()) return null;
+
+		$id = $request->input('id');
+		$updated_at = $request->input('updated_at');
+		$title = $request->input('title');
+		$type = $request->input('type');
+		$number = $request->input('number');
+		$description = $request->input('description');
+		$comments = $request->input('comments');
+		$totalcost = $request->input('totalcost');
+		$startdate = $request->input('startdate');
+		$currentenddate = $request->input('currentenddate');
+		
+		// 判断如果不是最新的记录，不可被编辑
+		// 因为可能有其他人在你当前表格未刷新的情况下已经更新过了
+		$res = Contracts::select('updated_at')
+			->where('id', $id)
+			->first();
+		$res_updated_at = date('Y-m-d H:i:s', strtotime($res['updated_at']));
+		if ($updated_at != $res_updated_at) return 0;
+
+		// 尝试更新
+		try	{
+			DB::beginTransaction();
+			$result = Contracts::where('id', $id)
+				->update([
+					'title'				=> $title,
+					'type'				=> $type,
+					'number'			=> $number,
+					'description'		=> $description,
+					'comments'			=> $comments,
+					'totalcost'			=> $totalcost,
+					'startdate'			=> $startdate,
+					'currentenddate'	=> $currentenddate,
+				]);
+			$result = 1;
+		}
+		catch (\Exception $e) {
+			DB::rollBack();
+			// dd('Message: ' .$e->getMessage());
+			$result = 0;
+		}
+		DB::commit();
+		Cache::flush();
+		// dd($result);
+		return $result;
+	}
+
+
+	/**
+	 * renewals 子项更新 SubupdateRenewals
+	 *
+	 * @param  int  $id
+	 * @return \Illuminate\Http\Response
+	 */
+	public function SubupdateRenewals(Request $request)
+	{
+		if (! $request->isMethod('post') || ! $request->ajax()) return null;
+
+		$id = $request->input('id');
+		$subid = $request->input('subid');
+		$updated_at = $request->input('updated_at');
+
+		$enddatebefore = $request->input('enddatebefore');
+		$enddateafter = $request->input('enddateafter');
+		$effectivedate = $request->input('effectivedate');
+		$notes = $request->input('notes');
+
+		// 判断如果不是最新的记录，不可被编辑
+		// 因为可能有其他人在你当前表格未刷新的情况下已经更新过了
+		$res = Contracts::select('updated_at')
+			->where('id', $id)
+			->first();
+		$res_updated_at = date('Y-m-d H:i:s', strtotime($res['updated_at']));
+		if ($updated_at != $res_updated_at) return 0;
+
+		$nowtime = date("Y-m-d H:i:s",time());
+
+		// 尝试更新json
+		try	{
+			DB::beginTransaction();
+
+			// if (empty($buliangneirong) && empty($weihao) && empty($shuliang[1])) {
+				// $result = DB::update('update smt_qcreports set bushihejianshuheji = ' . $bushihejianshuheji . ', ppm = ' . $ppm . ', updated_at = "' . $nowtime . '" where id = ?', [$id]);
+			// } else {
+				$sql = 'JSON_REPLACE(renewals, ';
+				$sql .= '\'$[' . $subid . '].enddatebefore\', "' . $enddatebefore . '", ';
+				$sql .= '\'$[' . $subid . '].enddateafter\', "' . $enddateafter . '", ';
+				$sql .= '\'$[' . $subid . '].effectivedate\', "' . $effectivedate . '", ';
+				$sql .= '\'$[' . $subid . '].notes\', "' . $notes . '")';
+
+				$result = DB::update('update contracts set renewals = ' . $sql . ', updated_at = "' . $nowtime . '" where id = ?', [$id]);
+			// }
+			$result = 1;
+		}
+		catch (\Exception $e) {
+			DB::rollBack();
+			// dd('Message: ' .$e->getMessage());
+			$result = 0;
+		}
+		DB::commit();
+		Cache::flush();
+		// dd($result);
+		return $result;
+	}
+
+
+	/**
+	 * renewals 子项删除 SubDeleteRenewals
+	 *
+	 * @param  int  $id
+	 * @return \Illuminate\Http\Response
+	 */
+	public function SubDeleteRenewals(Request $request)
+	{
+		if (! $request->isMethod('post') || ! $request->ajax()) return null;
+
+		$id = $request->input('id');
+		$subid = $request->input('subid');
+
+		$sql = 'JSON_REMOVE(renewals, \'$[' . $subid . ']\')';
+
+		$nowtime = date("Y-m-d H:i:s",time());
+
+		try	{
+			$result = DB::update('update contracts set renewals = ' . $sql . ', updated_at = "' . $nowtime . '" where id = ?', [$id]);
+		}
+		catch (\Exception $e) {
+			// dd('Message: ' .$e->getMessage());
+			$result = 0;
+		}
+		
+		Cache::flush();
+		// dd($result);
+		return $result;
+	}
+
+
+	/**
 	 * 更新 contracttypes name
 	 *
 	 * @param  int  $id
