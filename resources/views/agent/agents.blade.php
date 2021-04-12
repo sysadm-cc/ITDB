@@ -106,7 +106,7 @@
 		<br>
 		<i-col span="3">
 			<Poptip confirm word-wrap title="真的要删除这些记录吗？" @on-ok="agents_delete()">
-				<i-button :disabled="agents_delete_disabled" type="warning" size="small"><Icon type="md-trash"></Icon> 删除</i-button>&nbsp;<br>&nbsp;
+				<i-button :disabled="agents_delete_disabled" type="warning" size="small"><Icon type="md-remove"></Icon> 删除</i-button>&nbsp;<br>&nbsp;
 			</Poptip>
 		</i-col>
 		<i-col span="3">
@@ -602,7 +602,7 @@ var vm_app = new Vue({
 													props: {
 														type: 'warning',
 														size: 'small',
-														icon: 'md-trash'
+														icon: 'md-remove'
 													},
 													style: {
 														marginRight: '5px'
@@ -743,7 +743,7 @@ var vm_app = new Vue({
 													props: {
 														type: 'warning',
 														size: 'small',
-														icon: 'md-trash'
+														icon: 'md-remove'
 													},
 													style: {
 														marginRight: '5px'
