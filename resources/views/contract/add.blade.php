@@ -23,8 +23,10 @@
 
 	<i-row :gutter="16">
 
-		<i-col span="8">
+		<i-col span="9">
 			
+			<Divider orientation="left">合同属性</Divider>
+
 			<i-form :label-width="100">
 				<Form-Item label="* 名称" style="margin-bottom:0px">
 					<i-input v-model.lazy="add_title" size="small"></i-input>
@@ -38,13 +40,10 @@
 				<Form-Item label="合同编号" style="margin-bottom:0px">
 					<i-input v-model.lazy="add_number" size="small"></i-input>
 				</Form-Item>
-				<Form-Item label="详细描述" style="margin-bottom:0px">
-					<i-input v-model.lazy="add_description" size="small" type="textarea"></i-input>
-				</Form-Item>
 				<Form-Item label="备注" style="margin-bottom:0px">
 					<i-input v-model.lazy="add_comments" size="small"></i-input>
 				</Form-Item>
-				<Form-Item label="总价值" style="margin-bottom:0px">
+				<Form-Item label="总价值(¥)" style="margin-bottom:0px">
 					<Input-Number v-model.lazy="add_totalcost" size="small" :min="1"></Input-Number>
 				</Form-Item>
 				<Form-Item label="开始日期" style="margin-bottom:0px">
@@ -53,28 +52,61 @@
 				<Form-Item label="当前结束日期" style="margin-bottom:0px">
 					<Date-picker v-model.lazy="add_currentenddate" type="date" size="small"></Date-picker>
 				</Form-Item>
-				<Form-Item label="合同续约" style="margin-bottom:0px">
-					<i-input v-model.lazy="add_renewals" size="small"></i-input>
+				<Form-Item label="详细内容" style="margin-bottom:0px">
+					<i-input v-model.lazy="add_description" size="small" type="textarea"></i-input>
 				</Form-Item>
-
-			</i-form>
-
+			</i-form>&nbsp;
 
 		</i-col>
 
-
-
-
-
-		<i-col span="16">
+		<i-col span="1">
 		&nbsp;
+		</i-col>
+
+		<i-col span="14">
+		
+			<Divider orientation="left">合同续约</Divider>
+
+			↓ 批量录入&nbsp;&nbsp;
+			<Input-number v-model.lazy="piliangluruxiang_renewals" @on-change="value=>piliangluru_generate_renewals(value)" :min="1" :max="10" size="small" style="width: 60px"></Input-number>
+			&nbsp;项（最多10项）&nbsp;&nbsp;<br>
+
+			<span v-for="(item, index) in piliangluru_renewals">
+			<br>
+			<i-form :label-width="100">
+			<i-row>
+				<i-col span="1">
+					<label class="ivu-form-item-label">
+						No.@{{index+1}}
+					</label>
+				</i-col>
+				<i-col span="23">
+					<i-row>
+						<i-col span="10">
+							<Form-Item label="续约开始日期" style="margin-bottom:0px">
+								<Date-picker v-model.lazy="item.enddatebefore" type="date" size="small"></Date-picker>
+							</Form-Item>
+							<Form-Item label="续约结束日期" style="margin-bottom:0px">
+								<Date-picker v-model.lazy="item.enddateafter" type="date" size="small"></Date-picker>
+							</Form-Item>
+							<Form-Item label="生效日期" style="margin-bottom:0px">
+								<Date-picker v-model.lazy="item.effectivedate" type="date" size="small"></Date-picker>
+							</Form-Item>
+						</i-col>
+						<i-col span="14">
+							<Form-Item label="备注" style="margin-bottom:0px">
+								<i-input v-model.lazy="item.notes" size="small" type="textarea" rows="3"></i-input>
+							</Form-Item>
+						</i-col>
+					</i-row>
+			</i-row>
+			</i-form>
+
 		</i-col>
 
 	</i-row>
 
-
-
-
+&nbsp;
 
 <Divider dashed></Divider>
 
@@ -139,11 +171,8 @@ var vm_app = new Vue({
 		add_title: '',
 		add_type_select: '',
 		add_type_options: [
-			{label: 'Support & Maintenance', value: 1},
-			{label: '维修', value: 2},
-			{label: '硬件销售商', value: 3},
-			{label: '买方', value: 4},
-			{label: '承包商', value: 5},
+			{label: '支持维护', value: 1},
+			{label: '维修保养', value: 2},
 		],
 		add_number: '',
 		add_description: '',
@@ -151,225 +180,24 @@ var vm_app = new Vue({
 		add_totalcost: '',
 		add_startdate: '',
 		add_currentenddate: '',
-		add_renewals: '',
+		// add_renewals: '',
 
-
-
-
-
-		tablecolumns: [
+		// 批量录入项 - Renewals
+		piliangluruxiang_renewals: 1,
+		// 批量录入 - Renewals
+		piliangluru_renewals: [
 			{
-				type: 'selection',
-				width: 60,
-				align: 'center',
-				fixed: 'left'
+				enddatebefore: '',
+				enddateafter: '',
+				effectivedate: '',
+				notes: '',
 			},
-			{
-				title: '序号',
-				type: 'index',
-				align: 'center',
-				width: 70,
-				indexMethod: (row) => {
-					return row._index + 1 + vm_app.page_size * (vm_app.page_current - 1)
-				}
-			},
-			{
-				title: '图标',
-				key: 'id',
-				// sortable: true,
-				width: 70,
-				render: (h, params) => {
-					if (params.row.id == 1) {
-						return h('div', {}, [
-							h('Icon',{
-								props: {
-									type: 'md-bookmark',
-									size: 14,
-									color: 'blue',
-									}
-								}
-							),
-						])
-					} else if (params.row.id == 2) {
-						return h('div', {}, [
-							h('Icon',{
-								props: {
-									type: 'md-bookmark',
-									size: 14,
-									color: 'green',
-									}
-								}
-							),
-						])
-					} else if (params.row.id == 3) {
-						return h('div', {}, [
-							h('Icon',{
-								props: {
-									type: 'md-bookmark',
-									size: 14,
-									color: 'red',
-									}
-								}
-							),
-						])
-					} else if (params.row.id == 4) {
-						return h('div', {}, [
-							h('Icon',{
-								props: {
-									type: 'md-bookmark',
-									size: 14,
-									color: 'gray',
-									}
-								}
-							),
-						])
-					} else if (params.row.id == 5) {
-						return h('div', {}, [
-							h('Icon',{
-								props: {
-									type: 'md-bookmark',
-									size: 14,
-									color: 'yellow',
-									}
-								}
-							),
-						])
-					} else if (params.row.id == 6) {
-						return h('div', {}, [
-							h('Icon',{
-								props: {
-									type: 'md-bookmark',
-									size: 14,
-									color: 'black',
-									}
-								}
-							),
-						])
-					} else {
-						return h('div', {}, [
-							h('Icon',{
-								props: {
-									type: 'md-bookmark',
-									size: 14,
-									}
-								}
-							),
-						])
-					}	
-				}
-			},
-			{
-				title: '项目描述',
-				key: 'typedesc',
-				width: 180,
-				render: (h, params) => {
-					
-					return h('div', {}, [
-						h('i-input',{
-							// style:{
-							// 	color: '#ff9900'
-							// },
-							props: {
-								value: params.row.typedesc,
-								size: 'small',
-							},
-							'on': {
-								'on-blur':() => {
-									// alert(params.row.id);
-									// alert(event.target.value);
-									if (params.row.typedesc != event.target.value) {
-										vm_app.itemtypes_update_typedesc(params.row.id, event.target.value)
-									}
-								}
-							},
-						})
-					])
-				}
-			},
-			{
-				title: '可安装软件',
-				key: 'hassoftware',
-				align: 'center',
-				width: 100,
-				// render: (h, params) => {
-				// 	if (params.row.hassoftware == true) {
-				// 		return h('div', {}, '是')
-				// 	} else {
-				// 		return h('div', {}, '否')
-				// 	}
-				// }
-				render: (h, params) => {
-
-					return h('div', [
-						// params.row.deleted_at.toLocaleString()
-						// params.row.deleted_at ? '禁用' : '启用'
-						
-						h('i-switch', {
-							props: {
-								type: 'primary',
-								size: 'small',
-								value: params.row.hassoftware ? true : false
-							},
-							style: {
-								marginRight: '5px'
-							},
-							on: {
-								'on-change': (value) => {//触发事件是on-change,用双引号括起来，
-									//参数value是回调值，并没有使用到
-									vm_app.itemtypes_update_hassoftware(params.row.id, value) //params.index是拿到table的行序列，可以取到对应的表格值
-								}
-							}
-						}, 'Edit')
-						
-					]);
-				}
-			},
-			{
-				title: '创建时间',
-				key: 'created_at',
-				sortable: true,
-				width: 160
-			},
-			{
-				title: '更新时间',
-				key: 'updated_at',
-				sortable: true,
-				width: 160
-			},
-			@hasanyrole('role_super_admin')
-			{
-				title: '操作',
-				key: 'action',
-				align: 'center',
-				width: 100,
-				render: (h, params) => {
-					if (params.row.id > 3) {
-						return h('div', [
-							h('Button', {
-								props: {
-									type: 'error',
-									size: 'small'
-								},
-								style: {
-									marginRight: '5px'
-								},
-								on: {
-									click: () => {
-										vm_app.itemtypes_delete(params.row)
-									}
-								}
-							}, '删除'),
-							
-
-						]);
-					}
-				},
-				// fixed: 'right'
-			}
-			@endhasanyrole
 		],
-		tabledata: [],
-		tableselect: [],
+
+
+
+
+
 		
 
 		
@@ -426,13 +254,13 @@ var vm_app = new Vue({
 		},
 		
 		// 把laravel返回的结果转换成select能接受的格式
-		json2selectvalue (json) {
+		json2selectvalue (json, key) {
 			var arr = [];
-			for (var key in json) {
+			for (var k in json) {
 				// alert(key);
 				// alert(json[key]);
 				// arr.push({ obj.['value'] = key, obj.['label'] = json[key] });
-				arr.push({ value: key, label: json[key] });
+				arr.push({ value: ++k, label: json[k].key });
 			}
 			return arr;
 			// return arr.reverse();
@@ -463,7 +291,7 @@ var vm_app = new Vue({
 			var add_totalcost = _this.add_totalcost;
 			var add_startdate = _this.add_startdate ? new Date(_this.add_startdate).Format("yyyy-MM-dd") : '';
 			var add_currentenddate = _this.add_currentenddate ? new Date(_this.add_currentenddate).Format("yyyy-MM-dd") : '';
-			var add_renewals = _this.add_renewals;
+			var add_renewals = _this.piliangluru_renewals;
 
 			if (add_title == '' || add_title == undefined) {
 				_this.error(false, '错误', '内容为空或不正确！');
@@ -507,37 +335,71 @@ var vm_app = new Vue({
 				_this.error(false, '错误', '新建失败！');
 				_this.add_create_disabled = false;
 			})
-
-			
-
 		},
 
 
+		// 生成piliangluru Renewals
+		piliangluru_generate_renewals (counts) {
+			if (counts == undefined) counts = 1;
+			var len = this.piliangluru_renewals.length;
+			
+			if (counts > len) {
+				for (var i=0;i<counts-len;i++) {
+					this.piliangluru_renewals.push(
+						{
+							enddatebefore: '',
+							enddateafter: '',
+							effectivedate: '',
+							notes: '',
+						}
+					);
+				}
+			} else if (counts < len) {
+				if (this.piliangluruxiang_urls != '') {
+					for (var i=counts;i<len;i++) {
+						if (this.piliangluruxiang_urls == this.piliangluru_renewals[i].value) {
+							this.piliangluruxiang_urls = '';
+							break;
+						}
+					}
+				}
+				
+				for (var i=0;i<len-counts;i++) {
+					this.piliangluru_renewals.pop();
+				}
+			}			
+
+		},	
 
 
-
-
-		// ajax 获取物品类型列表
-		itemtypesgets () {
+		// 获取合同类型列表
+		contracttypesgets () {
 			var _this = this;
-			var url = "{{ route('item.itemtypesgets') }}";
+			var url = "{{ route('contracttypes.gets') }}";
 			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
-			axios.get(url)
+			axios.get(url,{
+				params: {
+					perPage: 1,
+					page: 1,
+				}
+			})
 			.then(function (response) {
+				// console.log(response.data.data);return false;
+
 				if (response.data['jwt'] == 'logout') {
 					_this.alert_logout();
 					return false;
 				}
+
 				if (response.data) {
-					response.data.data.map(function (v, i) {
-						_this.add_itemtype_options.push({label: v.typedesc, value: v.id});
-					});
+					_this.add_type_options = _this.json2selectvalue(response.data.data, 'name');
 				}
+				
 			})
 			.catch(function (error) {
+				// _this.error(false, 'Error', error);
 			})
 		},
-	
 		
 
 
@@ -581,7 +443,7 @@ var vm_app = new Vue({
 
 
 
-
+		_this.contracttypesgets();
 
 
 		_this.loadingbarfinish();

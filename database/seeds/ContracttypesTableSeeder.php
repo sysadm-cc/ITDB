@@ -21,8 +21,15 @@ class ContracttypesTableSeeder extends Seeder
             0 => 
             array (
                 'id' => 1,
-                'name' => '合同类型名称一',
-                    
+                'name' => '支持维护',
+                'created_at' => $nowtime,
+                'updated_at' => $nowtime,
+                'deleted_at' => NULL,
+            ),
+            1 => 
+            array (
+                'id' => 2,
+                'name' => '维修保养',
                 'created_at' => $nowtime,
                 'updated_at' => $nowtime,
                 'deleted_at' => NULL,

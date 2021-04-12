@@ -22,11 +22,9 @@ class Contracts extends Model
      * 用于json与array互相转换
      * @var array
      */
-    // protected $casts = [
-    //     'application' => 'array',
-    //     // 'actuality' => 'array',
-    //     'auditing' => 'array',
-    // ];
+    protected $casts = [
+        'renewals' => 'array',
+    ];
 
 
 }

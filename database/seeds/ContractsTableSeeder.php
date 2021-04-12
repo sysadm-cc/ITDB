@@ -21,7 +21,7 @@ class ContractsTableSeeder extends Seeder
             0 => 
             array (
                 'id' => 1,
-                'title' => '合同名称一',
+                'title' => 'XXXX技术支持合同',
                 'type' => 1,
                 'number' => null,
                 'description' => null,

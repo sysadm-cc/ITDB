@@ -169,7 +169,7 @@ var vm_app = new Vue({
 				key: 'action',
 				align: 'center',
 				width: 100,
-				fixed: 'right',
+				// fixed: 'right',
 				render: (h, params) => {
 					// if (params.row.id > 3) {
 						return h('div', [
@@ -177,7 +177,7 @@ var vm_app = new Vue({
 								props: {
 									type: 'error',
 									size: 'small',
-									icon: 'md-arrow-round-down'
+									icon: 'md-remove'
 								},
 								style: {
 									marginRight: '5px'
@@ -187,7 +187,7 @@ var vm_app = new Vue({
 										vm_app.contracttypes_delete(params.row)
 									}
 								}
-							}, '删除'),
+							}),
 							
 
 						]);
