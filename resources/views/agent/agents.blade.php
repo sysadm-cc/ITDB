@@ -628,28 +628,6 @@ var vm_app = new Vue({
 				title: '官方网站',
 				align: 'center',
 				children: [
-					// {
-					// 	title: '序号',
-					// 	key: 'urls',
-					// 	align:'center',
-					// 	width: 70,
-					// 	className: 'table-info-column-urls',
-					// 	render: (h, params) => {
-					// 		if (params.row.urls!=undefined && params.row.urls!=null) {
-					// 			return h('div', {
-					// 				attrs: {
-					// 					class:'subCol'
-					// 				},
-					// 			}, [
-					// 				h('ul', params.row.urls.map((item, index) => {
-					// 					return h('li', {
-					// 					// }, item.id)
-					// 					}, ++index)
-					// 				}))
-					// 			]);
-					// 		}
-					// 	}
-					// },
 					{
 						title: '说明',
 						key: 'urls',

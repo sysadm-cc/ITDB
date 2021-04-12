@@ -7,6 +7,51 @@
 
 @section('my_style')
 <!-- <link rel="stylesheet" href="{{ asset('css/camera.css') }}"> -->
+<style type="text/css">
+/* 合并单元格样式 */
+.subCol>ul>li{
+      margin:0 -18px;
+      list-style:none;
+      text-Align: center;
+      padding: 9px;
+      border-bottom:1px solid #E8EAEC;
+      overflow-x: hidden;
+	  line-height: 2.2;
+}
+.subCol>ul>li:last-child{
+  border-bottom: none
+}
+
+.ivu-table .table-info-row td{
+	background-color: #2db7f5;
+	color: #fff;
+}
+.ivu-table .table-error-row td{
+	background-color: #ff6600;
+	color: #fff;
+}
+.ivu-table td.table-info-column{
+	background-color: #2db7f5;
+	color: #fff;
+}
+.ivu-table .table-info-cell-name {
+	background-color: #2db7f5;
+	color: #fff;
+}
+.ivu-table .table-info-cell-age {
+	background-color: #ff6600;
+	color: #fff;
+}
+.ivu-table .table-info-cell-address {
+	background-color: #187;
+	color: #fff;
+}
+
+.ivu-table td.table-info-column-renewals {
+	background-color: #187;
+	color: #fff;
+}
+</style>
 @endsection
 
 @section('my_js')
@@ -215,9 +260,158 @@ var vm_app = new Vue({
 			},
 			{
 				title: '合同续约',
-				key: 'renewals',
-				resizable: true,
-				width: 180,
+				align: 'center',
+				children: [
+					{
+						title: '开始日期',
+						key: 'renewals',
+						align:'center',
+						width: 90,
+						className: 'table-info-column-renewals',
+						render: (h, params) => {
+							if (params.row.renewals!=undefined && params.row.renewals!=null) {
+								return h('div', {
+									attrs: {
+										class:'subCol'
+									},
+								}, [
+									h('ul', params.row.renewals.map(item => {
+										return h('li', {
+										}, item.enddatebefore == null || item.enddatebefore == '' ? '-' : item.enddatebefore)
+									}))
+								]);
+							}
+						}
+					},
+					{
+						title: '结束日期',
+						key: 'renewals',
+						align:'center',
+						width: 90,
+						className: 'table-info-column-renewals',
+						render: (h, params) => {
+							if (params.row.renewals!=undefined && params.row.renewals!=null) {
+								return h('div', {
+									attrs: {
+										class:'subCol'
+									},
+								}, [
+									h('ul', params.row.renewals.map(item => {
+										return h('li', {
+										}, item.enddateafter == null || item.enddateafter == '' ? '-' : item.enddateafter)
+									}))
+								]);
+							}
+						}
+					},
+					{
+						title: '生效日期',
+						key: 'renewals',
+						align:'center',
+						width: 90,
+						className: 'table-info-column-renewals',
+						render: (h, params) => {
+							if (params.row.renewals!=undefined && params.row.renewals!=null) {
+								return h('div', {
+									attrs: {
+										class:'subCol'
+									},
+								}, [
+									h('ul', params.row.renewals.map(item => {
+										return h('li', {
+										}, item.effectivedate == null || item.effectivedate == '' ? '-' : item.effectivedate)
+									}))
+								]);
+							}
+						}
+					},
+					{
+						title: '备注',
+						key: 'renewals',
+						align:'center',
+						width: 90,
+						className: 'table-info-column-renewals',
+						render: (h, params) => {
+							if (params.row.renewals!=undefined && params.row.renewals!=null) {
+								return h('div', {
+									attrs: {
+										class:'subCol'
+									},
+								}, [
+									h('ul', params.row.renewals.map(item => {
+										return h('li', {
+										}, item.notes == null || item.notes == '' ? '-' : item.notes)
+									}))
+								]);
+							}
+						}
+					},
+					{
+						title: '操作',
+						key: 'action',
+						align: 'center',
+						width: 100,
+						className: 'table-info-column-renewals',
+						render: (h, params) => {
+							if (params.row.renewals!=undefined && params.row.renewals!=null) {
+								return h('div', {
+										attrs: {
+											class:'subCol'
+										},
+									}, [
+									h('ul', params.row.renewals.map((item, index) => {
+										return h('li', {
+										}, [
+											h('Button', {
+												props: {
+													type: 'primary',
+													size: 'small',
+													icon: 'md-create'
+												},
+												style: {
+													marginRight: '5px'
+												},
+												on: {
+													click: () => {
+														vm_app.subedit_urls(params.row, item, index)
+													}
+												}
+											}),
+
+
+											h('Poptip', {
+												props: {
+													'word-wrap': true,
+													'trigger': 'click',
+													'confirm': true,
+													'title': '真的要删除吗？',
+													'transfer': true
+												},
+												on: {
+													'on-ok': () => {
+														vm_app.subdelete_urls(params.row, item, index)
+													}
+												}
+											}, [
+												h('Button', {
+													props: {
+														type: 'warning',
+														size: 'small',
+														icon: 'md-remove'
+													},
+													style: {
+														marginRight: '5px'
+													},
+												})
+											]),
+
+										])
+									}))
+								]);
+							}
+						},
+					}
+				]
 			},
 			{
 				title: '创建时间',

@@ -197,7 +197,6 @@ Route::group(['prefix'=>'agent', 'namespace'=>'Agent', 'middleware'=>['jwtauth']
 	// Agents gets列表
 	Route::get('agentGets', 'AgentsController@agentGets')->name('agent.gets');
 
-
 	// Agents Update
 	Route::post('agentUpdate', 'AgentsController@agentUpdate')->name('agent.update');
 

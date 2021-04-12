@@ -275,6 +275,12 @@ var vm_app = new Vue({
 			_this.add_startdate = '';
 			_this.add_number = '';
 			_this.add_licqty = '';
+			_this.add_description = '';
+			_this.add_comments = '';
+			_this.add_totalcost = '';
+			_this.add_startdate = '';
+			_this.add_currentenddate = '';
+			_this.add_renewals = [];
 		},
 
 
@@ -291,14 +297,22 @@ var vm_app = new Vue({
 			var add_totalcost = _this.add_totalcost;
 			var add_startdate = _this.add_startdate ? new Date(_this.add_startdate).Format("yyyy-MM-dd") : '';
 			var add_currentenddate = _this.add_currentenddate ? new Date(_this.add_currentenddate).Format("yyyy-MM-dd") : '';
-			var add_renewals = _this.piliangluru_renewals;
+			
+			// 删除空json节点
+			var piliangluru_tmp_renewals = [];
+			for (var v of _this.piliangluru_renewals) {
+				if (v.effectivedate == '' || v.effectivedate == undefined) {
+				} else {
+					piliangluru_tmp_renewals.push(v);
+				}
+			}
+			var add_renewals = _this.piliangluru_tmp_renewals;
 
 			if (add_title == '' || add_title == undefined) {
 				_this.error(false, '错误', '内容为空或不正确！');
 				_this.add_create_disabled = false;
 				return false;
 			}
-// console.log(add_itemtype_select);return false;
 
 			var url = "{{ route('contract.create') }}";
 			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
