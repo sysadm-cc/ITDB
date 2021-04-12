@@ -171,7 +171,6 @@
 	</div>	
 </Modal>
 
-
 <!-- 子编辑窗口 renewals-->
 <Modal v-model="modal_subedit_renewals" @on-ok="subupdate_renewals" ok-text="保存" title="编辑 - 续约合同" width="640">
 	<div style="text-align:left">
@@ -199,6 +198,36 @@
 		</i-form>&nbsp;
 		</p>
 	
+	</div>	
+</Modal>
+
+<!-- 子添加窗口 urls-->
+<Modal v-model="modal_subadd_renewals" @on-ok="subcreate_urls" ok-text="添加" title="添加 - 代理商官方网站" width="640">
+	<div style="text-align:left">
+
+		<p>
+		<i-form :label-width="100">
+			<i-row>
+				<i-col span="12">
+				<Form-Item label="续约开始日期" style="margin-bottom:0px">
+						<Date-picker v-model.lazy="subadd_renewals_enddatebefore" type="date" size="small"></Date-picker>
+					</Form-Item>
+					<Form-Item label="续约结束日期" style="margin-bottom:0px">
+						<Date-picker v-model.lazy="subadd_renewals_enddateafter" type="date" size="small"></Date-picker>
+					</Form-Item>
+					<Form-Item label="生效日期" style="margin-bottom:0px">
+						<Date-picker v-model.lazy="subadd_renewals_effectivedate" type="date" size="small"></Date-picker>
+					</Form-Item>
+				</i-col>
+				<i-col span="12">
+					<Form-Item label="备注" style="margin-bottom:0px">
+						<i-input v-model.lazy="subadd_renewals_notes" size="small" type="textarea" rows="3"></i-input>
+					</Form-Item>
+				</i-col>
+			</i-row>
+		</i-form>&nbsp;
+		</p>
+
 	</div>	
 </Modal>
 
@@ -977,8 +1006,7 @@ var vm_app = new Vue({
 				subid: subid,
 			})
 			.then(function (response) {
-				// console.log(response.data);
-				// return false;
+				// console.log(response.data);return false;
 
 				if (response.data['jwt'] == 'logout') {
 					_this.alert_logout();
@@ -995,7 +1023,6 @@ var vm_app = new Vue({
 			.catch(function (error) {
 				_this.error(false, '错误', '删除失败！');
 			})
-
 		},
 
 
