@@ -399,7 +399,7 @@ class ContractsController extends Controller
 		}
 		$renewals = substr($renewals, 0, strlen($renewals)-1);
 
-		$sql = 'JSON_MERGE(renewals, \'[{' . $renewals . '}]\')';
+		$sql = 'JSON_MERGE_PRESERVE(renewals, \'[{' . $renewals . '}]\')';
 		$nowtime = date("Y-m-d H:i:s",time());
 
 		// 尝试更新（追加json）

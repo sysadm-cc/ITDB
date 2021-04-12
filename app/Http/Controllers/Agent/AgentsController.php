@@ -419,7 +419,7 @@ class AgentsController extends Controller
 	// 	   $sql = '\'[{' . $contacts . '}]\'';
 	//    } else {
 			// $sql = 'JSON_MERGE(contacts, '[{"id":3, "weihao":"ZZZ", "shuliang":5, "jianchazhe":"张三"}]')';
-			$sql = 'JSON_MERGE(contacts, \'[{' . $contacts . '}]\')';
+			$sql = 'JSON_MERGE_PRESERVE(contacts, \'[{' . $contacts . '}]\')';
 	//    }
 		// dd($sql);
 
@@ -463,7 +463,7 @@ class AgentsController extends Controller
 		}
 		$urls = substr($urls, 0, strlen($urls)-1);
 
-		$sql = 'JSON_MERGE(urls, \'[{' . $urls . '}]\')';
+		$sql = 'JSON_MERGE_PRESERVE(urls, \'[{' . $urls . '}]\')';
 		$nowtime = date("Y-m-d H:i:s",time());
 
 		// 尝试更新（追加json）
