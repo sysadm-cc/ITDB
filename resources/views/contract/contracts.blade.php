@@ -201,8 +201,8 @@
 	</div>	
 </Modal>
 
-<!-- 子添加窗口 urls-->
-<Modal v-model="modal_subadd_renewals" @on-ok="subcreate_urls" ok-text="添加" title="添加 - 代理商官方网站" width="640">
+<!-- 子添加窗口 renewals-->
+<Modal v-model="modal_subadd_renewals" @on-ok="subcreate_renewals" ok-text="添加" title="添加 - 代理商官方网站" width="640">
 	<div style="text-align:left">
 
 		<p>
@@ -874,8 +874,8 @@ var vm_app = new Vue({
 			var description = _this.edit_description;
 			var comments = _this.edit_comments;
 			var totalcost = _this.edit_totalcost;
-			var startdate = new Date(_this.edit_startdate).Format("yyyy-MM-dd");
-			var currentenddate = new Date(_this.edit_currentenddate).Format("yyyy-MM-dd");
+			var startdate = _this.edit_startdate != '' && _this.edit_startdate != undefined ? new Date(_this.edit_startdate).Format("yyyy-MM-dd") : '';
+			var currentenddate = _this.edit_currentenddate != '' && _this.edit_currentenddate != undefined ? new Date(_this.edit_currentenddate).Format("yyyy-MM-dd") : '';
 
 			if (id == undefined || title == undefined || title == '' || type == undefined || type == '') {
 				_this.warning(false, '警告', '内容不能为空！');
@@ -1041,11 +1041,10 @@ var vm_app = new Vue({
 			var _this = this;
 
 			var id = _this.subadd_id;
-			var name = _this.subadd_contacts_name;
-			var role = _this.subadd_contacts_role;
-			var phonenumber = _this.subadd_contacts_phonenumber;
-			var email = _this.subadd_contacts_email;
-			var comments = _this.subadd_contacts_comments;
+			var enddatebefore = _this.subadd_renewals_enddatebefore != '' && _this.subadd_renewals_enddatebefore != undefined ? new Date(_this.subadd_renewals_enddatebefore).Format("yyyy-MM-dd") : '';
+			var enddateafter = _this.subadd_renewals_enddateafter != '' && _this.subadd_renewals_enddateafter != undefined ? new Date(_this.subadd_renewals_enddateafter).Format("yyyy-MM-dd") : '';
+			var effectivedate = _this.subadd_renewals_effectivedate != '' && _this.subadd_renewals_effectivedate != undefined ? new Date(_this.subadd_renewals_effectivedate).Format("yyyy-MM-dd") : '';
+			var notes = _this.subadd_renewals_notes;
 			
 			if (id == undefined) {
 				_this.warning(false, '警告', '内容选择不正确！');
@@ -1056,11 +1055,10 @@ var vm_app = new Vue({
 			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
 			axios.post(url, {
 				id: id,
-				name: name,
-				role: role,
-				phonenumber: phonenumber,
-				email: email,
-				comments: comments,
+				enddatebefore: enddatebefore,
+				enddateafter: enddateafter,
+				effectivedate: effectivedate,
+				notes: notes,
 			})
 			.then(function (response) {
 				// console.log(response.data);return false;
@@ -1084,7 +1082,13 @@ var vm_app = new Vue({
 		},
 
 
-
+		add_clear_var () {
+			var _this = this;
+			_this.subadd_renewals_enddatebefore = '';
+ 			_this.subadd_renewals_enddateafter = '';
+			_this.subadd_renewals_effectivedate = '';
+			_this.subadd_renewals_notes = '';
+		},
 
 
 		

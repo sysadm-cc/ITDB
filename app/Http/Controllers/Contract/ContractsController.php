@@ -377,6 +377,48 @@ class ContractsController extends Controller
 
 
 	/**
+	* Renewals 子项添加 SubCreateRenewals
+	*
+	* @param  int  $id
+	* @return \Illuminate\Http\Response
+	*/
+	public function SubCreateRenewals(Request $request)
+	{
+		if (! $request->isMethod('post') || ! $request->ajax()) return null;
+
+		$id = $request->input('id');
+		$a['enddatebefore'] = $request->input('enddatebefore');
+		$a['enddateafter'] = $request->input('enddateafter');
+		$a['effectivedate'] = $request->input('effectivedate');
+		$a['notes'] = $request->input('notes');
+
+		// 确认json id
+		$renewals = '';
+		foreach ($a as $key => $value) {
+			$renewals .= '"'. $key . '":"' . $value . '",';
+		}
+		$renewals = substr($renewals, 0, strlen($renewals)-1);
+
+		$sql = 'JSON_MERGE(renewals, \'[{' . $renewals . '}]\')';
+		$nowtime = date("Y-m-d H:i:s",time());
+
+		// 尝试更新（追加json）
+		try	{
+			DB::beginTransaction();
+			$result = DB::update('update contracts set renewals = ' . $sql . ', updated_at = "' . $nowtime . '" where id = ?', [$id]);
+		}
+		catch (\Exception $e) {
+			DB::rollBack();
+			// dd('Message: ' .$e->getMessage());
+			$result = 0;
+		}
+		DB::commit();
+		Cache::flush();
+		return $result;
+	}
+
+
+	/**
 	 * 更新 contracttypes name
 	 *
 	 * @param  int  $id
