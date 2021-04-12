@@ -100,15 +100,17 @@
 	<i-row :gutter="16">
 		<br>
 		<i-col span="3">
-			<i-button @click="items_delete()" :disabled="softs_delete_disabled" type="warning" size="small">删除</i-button>&nbsp;<br>&nbsp;
+			<Poptip confirm word-wrap title="真的要删除这些记录吗？" @on-ok="contracts_delete()">
+				<i-button :disabled="contracts_delete_disabled" type="warning" size="small"><Icon type="md-remove"></Icon> 删除</i-button>&nbsp;<br>&nbsp;
+			</Poptip>
 		</i-col>
-		<i-col span="2">
-			<i-button type="default" size="small" @click="contracts_add()"><Icon type="ios-color-wand-outline"></Icon> 新建</i-button>
+		<i-col span="3">
+			<i-button type="primary" size="small" @click="contracts_add()"><Icon type="md-add"></Icon> 添加合同</i-button>
 		</i-col>
-		<i-col span="2">
+		<i-col span="3">
 			<i-button type="default" size="small" @click="items_export()"><Icon type="ios-download-outline"></Icon> 导出</i-button>
 		</i-col>
-		<i-col span="17">
+		<i-col span="15">
 			&nbsp;
 		</i-col>
 	</i-row>
@@ -117,7 +119,7 @@
 
 &nbsp;
 
-<i-row :gutter="16">
+<i-row>
 	<i-col span="24">
 
 		<i-table height="300" size="small" border :columns="tablecolumns" :data="tabledata" @on-selection-change="selection => onselectchange(selection)"></i-table>
@@ -186,7 +188,7 @@ var vm_app = new Vue({
 		collapse_query: '',
 
 		// 删除按钮禁用
-		softs_delete_disabled: true,
+		contracts_delete_disabled: true,
 
 
 		//新增
@@ -590,8 +592,38 @@ var vm_app = new Vue({
 				_this.tableselect.push(selection[i].id);
 			}
 			
-			_this.softs_delete_disabled = _this.tableselect[0] == undefined ? true : false;
+			_this.contracts_delete_disabled = _this.tableselect[0] == undefined ? true : false;
 		},
+
+
+		// 删除记录
+		contracts_delete () {
+			var _this = this;
+			
+			var tableselect = _this.tableselect;
+			
+			if (tableselect[0] == undefined) return false;
+
+			var url = "{{ route('contract.delete') }}";
+			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
+			axios.post(url, {
+				tableselect: tableselect
+			})
+			.then(function (response) {
+				if (response.data) {
+					_this.contracts_delete_disabled = true;
+					_this.tableselect = [];
+					_this.success(false, '成功', '删除成功！');
+					_this.contractsgets(_this.pagecurrent, _this.pagelast);
+				} else {
+					_this.error(false, '失败', '删除失败！');
+				}
+			})
+			.catch(function (error) {
+				_this.error(false, '错误', '删除失败！');
+			})
+		},
+
 
 		// 跳转至添加页面
 		contracts_add () {

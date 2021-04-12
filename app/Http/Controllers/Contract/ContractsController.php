@@ -206,6 +206,31 @@ class ContractsController extends Controller
 
 	
 	/**
+	 * 删除记录 contractDelete
+	 *
+	 * @param  int  $id
+	 * @return \Illuminate\Http\Response
+	 */
+	public function contractDelete(Request $request)
+	{
+		if (! $request->isMethod('post') || ! $request->ajax()) return null;
+
+		$id = $request->input('tableselect');
+
+		try	{
+			$result = Contracts::whereIn('id', $id)->delete();
+		}
+		catch (\Exception $e) {
+			// echo 'Message: ' .$e->getMessage();
+			$result = 0;
+		}
+		
+		Cache::flush();
+		return $result;
+	}
+
+
+	/**
 	 * 更新 contracttypes name
 	 *
 	 * @param  int  $id

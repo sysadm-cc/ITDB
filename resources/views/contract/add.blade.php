@@ -110,7 +110,7 @@
 
 <Divider dashed></Divider>
 
-<i-button @click="add_create()" :disabled="add_create_disabled" size="large" type="primary">添加</i-button>
+<i-button @click="add_create()" :disabled="add_create_disabled" icon="md-add" size="large" type="primary">添加</i-button>
 
 <br>
 
@@ -280,7 +280,8 @@ var vm_app = new Vue({
 			_this.add_totalcost = '';
 			_this.add_startdate = '';
 			_this.add_currentenddate = '';
-			_this.add_renewals = [];
+			_this.piliangluruxiang_renewals = 1;
+			_this.piliangluru_renewals = [];
 		},
 
 
@@ -301,12 +302,17 @@ var vm_app = new Vue({
 			// 删除空json节点
 			var piliangluru_tmp_renewals = [];
 			for (var v of _this.piliangluru_renewals) {
-				if (v.effectivedate == '' || v.effectivedate == undefined) {
+				if (v.enddatebefore == '' || v.enddatebefore == undefined
+					|| v.enddateafter == '' || v.enddateafter == undefined
+					|| v.effectivedate == '' || v.effectivedate == undefined) {
 				} else {
+					v.enddatebefore = new Date(v.enddatebefore).Format("yyyy-MM-dd");
+					v.enddateafter = new Date(v.enddateafter).Format("yyyy-MM-dd");
+					v.effectivedate = new Date(v.effectivedate).Format("yyyy-MM-dd");
 					piliangluru_tmp_renewals.push(v);
 				}
 			}
-			var add_renewals = _this.piliangluru_tmp_renewals;
+			var piliangluru_renewals = piliangluru_tmp_renewals;
 
 			if (add_title == '' || add_title == undefined) {
 				_this.error(false, '错误', '内容为空或不正确！');
@@ -325,7 +331,7 @@ var vm_app = new Vue({
 				add_totalcost: add_totalcost,
 				add_startdate: add_startdate,
 				add_currentenddate: add_currentenddate,
-				add_renewals: add_renewals,
+				add_renewals: piliangluru_renewals,
 			})
 			.then(function (response) {
 				// console.log(response.data);
@@ -339,14 +345,14 @@ var vm_app = new Vue({
  				if (response.data) {
 					_this.add_clear_var();
 					// _this.itemtypesgets(_this.page_current, _this.page_last);
-					_this.success(false, '成功', '新建成功！');
+					_this.success(false, '成功', '添加成功！');
 				} else {
-					_this.error(false, '失败', '新建失败！');
+					_this.error(false, '失败', '添加失败！');
 				}
 				_this.add_create_disabled = false;
 			})
 			.catch(function (error) {
-				_this.error(false, '错误', '新建失败！');
+				_this.error(false, '错误', '添加失败！');
 				_this.add_create_disabled = false;
 			})
 		},

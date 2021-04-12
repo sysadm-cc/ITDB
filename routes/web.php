@@ -111,6 +111,9 @@ Route::group(['prefix'=>'contract', 'namespace'=>'Contract', 'middleware'=>['jwt
 	// Contracts Create
 	Route::post('contractCreate', 'ContractsController@contractCreate')->name('contract.create');
 
+	// Contracts Delete
+	Route::post('contractDelete', 'ContractsController@contractDelete')->name('contract.delete');
+
 
 	// 显示 Contracttypes 页面
 	Route::get('contractContracttypes', 'ContractsController@contractContracttypes')->name('contract.contracttypes');
