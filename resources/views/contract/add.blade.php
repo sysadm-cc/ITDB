@@ -399,7 +399,7 @@ var vm_app = new Vue({
 			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
 			axios.get(url,{
 				params: {
-					perPage: 1,
+					perPage: 1000,
 					page: 1,
 				}
 			})

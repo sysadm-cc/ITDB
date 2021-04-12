@@ -262,7 +262,7 @@ var vm_app = new Vue({
 				// alert(key);
 				// alert(json[key]);
 				// arr.push({ obj.['value'] = key, obj.['label'] = json[key] });
-				arr.push({ value: key, label: json[key] });
+				arr.push({ value: json[k].id, label: json[key] });
 			}
 			return arr;
 			// return arr.reverse();
