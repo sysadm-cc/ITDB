@@ -190,9 +190,33 @@ var vm_app = new Vue({
 		// 删除按钮禁用
 		contracts_delete_disabled: true,
 
-
-		// 变量
+		// 合同类型变量
 		contracts_type_options: [],
+
+		// 主编辑变量
+		modal_edit_contracts: false,
+		edit_id: '',
+		edit_updated_at: '',
+		edit_title: '',
+		edit_type_select: [],
+		edit_number: '',
+		edit_description: '',
+		edit_comments: '',
+		edit_totalcost: '',
+		edit_startdate: '',
+		edit_currentenddate: '',
+		
+		// 子编辑 变量
+		modal_subedit_renewals: false,
+		subedit_id: '',
+		subedit_subid: '',
+		subedit_updated_at: '',
+
+		subedit_renewals_enddatebefore: '',
+		subedit_renewals_enddateafter: '',
+		subedit_renewals_effectivedate: '',
+		subedit_renewals_notes: '',
+
 
 
 		tablecolumns: [
@@ -457,22 +481,58 @@ var vm_app = new Vue({
 				render: (h, params) => {
 					// if (params.row.id > 3) {
 						return h('div', [
-							h('Button', {
+
+							h('Poptip', {
 								props: {
-									type: 'primary',
-									size: 'small',
-									icon: 'md-arrow-round-down'
+									'word-wrap': true,
+									'trigger': 'hover',
+									'confirm': false,
+									'content': '编辑合同信息',
+									'transfer': true
 								},
-								style: {
-									marginRight: '5px'
-								},
-								on: {
-									click: () => {
-										vm_app.itemtypes_delete(params.row)
+							}, [
+								h('Button', {
+									props: {
+										type: 'primary',
+										size: 'small',
+										icon: 'md-create'
+									},
+									style: {
+										marginRight: '5px'
+									},
+									on: {
+										click: () => {
+											vm_app.edit_contracts(params.row)
+										}
 									}
-								}
-							}, '编辑'),
-							
+								}),
+							]),
+
+							h('Poptip', {
+								props: {
+									'word-wrap': true,
+									'trigger': 'hover',
+									'confirm': false,
+									'content': '添加合同续约',
+									'transfer': true
+								},
+							}, [
+								h('Button', {
+									props: {
+										type: 'default',
+										size: 'small',
+										icon: 'md-document'
+									},
+									style: {
+										marginRight: '5px'
+									},
+									on: {
+										click: () => {
+											vm_app.add_contracts(params.row)
+										}
+									}
+								})
+							]),							
 
 						]);
 					// }
@@ -683,6 +743,119 @@ var vm_app = new Vue({
 			})
 		},
 
+		// 主编辑前查看 - contracts
+		edit_contracts (row) {
+			var _this = this;
+
+			_this.edit_id = row.id;
+			_this.edit_updated_at = row.updated_at;
+			_this.edit_title = row.title;
+			_this.edit_type_select = row.type;
+			_this.edit_contactinfo = row.contactinfo;
+
+			_this.modal_edit_agents = true;
+		},
+
+		// 主编辑保存 - contracts
+		update_contracts () {
+			var _this = this;
+
+			var id = _this.edit_id;
+			var updated_at = _this.edit_updated_at;
+			var title = _this.edit_title;
+			var type = _this.edit_type_select;
+			var contactinfo = _this.edit_contactinfo;
+
+			if (id == undefined || title == undefined || title == '' || type == undefined || type == '') {
+				_this.warning(false, '警告', '内容不能为空！');
+				return false;
+			}
+
+			var url = "{{ route('agent.update') }}";
+			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
+			axios.post(url, {
+				id: id,
+				updated_at: updated_at,
+				title: title,
+				type: type,
+				contactinfo: contactinfo,
+			})
+			.then(function (response) {
+				// console.log(response.data);return false;
+
+				if (response.data['jwt'] == 'logout') {
+					_this.alert_logout();
+					return false;
+				}
+				
+				if (response.data) {
+					_this.success(false, '成功', '保存成功！');
+						_this.agentsgets(_this.pagecurrent, _this.pagelast);
+				} else {
+					_this.error(false, '失败', '保存失败！');
+				}
+			})
+			.catch(function (error) {
+				_this.error(false, '错误', '保存失败！');
+			})
+
+		},
+
+
+		// 添加续约合同 - 查看
+		add_contracts (row) {
+			var _this = this;
+			_this.subadd_id = row.id;
+			_this.modal_subadd_contacts = true;
+		},
+
+
+		// 添加续约合同 - 保存
+		subcreate_contracts () {
+			var _this = this;
+
+			var id = _this.subadd_id;
+			var name = _this.subadd_contacts_name;
+			var role = _this.subadd_contacts_role;
+			var phonenumber = _this.subadd_contacts_phonenumber;
+			var email = _this.subadd_contacts_email;
+			var comments = _this.subadd_contacts_comments;
+			
+			if (id == undefined) {
+				_this.warning(false, '警告', '内容选择不正确！');
+				return false;
+			}
+
+			var url = "{{ route('agent.subcreatecontacts') }}";
+			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
+			axios.post(url, {
+				id: id,
+				name: name,
+				role: role,
+				phonenumber: phonenumber,
+				email: email,
+				comments: comments,
+			})
+			.then(function (response) {
+				// console.log(response.data);return false;
+
+				if (response.data['jwt'] == 'logout') {
+					_this.alert_logout();
+					return false;
+				}
+				
+				if (response.data) {
+					_this.add_clear_var();
+					_this.success(false, '成功', '添加成功！');
+					_this.agentsgets(_this.pagecurrent, _this.pagelast);
+				} else {
+					_this.error(false, '失败', '添加失败！');
+				}
+			})
+			.catch(function (error) {
+				_this.error(false, '错误', '添加失败！');
+			})
+		},
 
 
 
