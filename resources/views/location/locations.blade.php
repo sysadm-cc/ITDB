@@ -58,10 +58,10 @@
 			<i-button @click="items_delete()" :disabled="locations_delete_disabled" type="warning" size="small">删除</i-button>&nbsp;<br>&nbsp;
 		</i-col>
 		<i-col span="3">
-			<i-button type="default" size="small" @click="locations_add()"><Icon type="ios-color-wand-outline"></Icon> 添加新位置</i-button>
+			<i-button type="primary" icon="md-add" size="small" @click="locations_add()">添加新位置</i-button>
 		</i-col>
 		<i-col span="3">
-			<i-button type="default" size="small" @click="items_export()"><Icon type="ios-download-outline"></Icon> 导出列表</i-button>
+			<i-button type="default" icon="ios-download-outline" size="small" @click="items_export()">导出列表</i-button>
 		</i-col>
 		<i-col span="15">
 			&nbsp;
@@ -84,6 +84,52 @@
 </Tab-pane>
 
 
+<!-- 以下为各元素编辑窗口 -->
+
+<!-- 主编辑窗口 locations-->
+<Modal v-model="modal_edit_locations" @on-ok="update_locations" ok-text="保存" title="编辑 - 位置" width="460">
+	<div style="text-align:left">
+
+		<p>
+		<i-form :label-width="100">
+			<i-row>
+				<i-col span="24">
+					<Form-Item label="* 名称" style="margin-bottom:0px">
+						<i-input v-model.lazy="edit_title" size="small"></i-input>
+					</Form-Item>
+					<Form-Item label="建筑" style="margin-bottom:0px">
+						<i-input v-model.lazy="edit_building" size="small"></i-input>
+					</Form-Item>
+					<Form-Item label="楼层" style="margin-bottom:0px">
+						<i-input v-model.lazy="edit_floor" size="small"></i-input>
+					</Form-Item>
+					<Form-Item label="区域/房间" style="margin-bottom:0px">
+						<i-input v-model.lazy="edit_area" size="small"></i-input>
+					</Form-Item>
+					<Form-Item label="坐标 x1" style="margin-bottom:0px">
+						<Input-Number v-model.lazy="edit_x1" :min="0" :max="10000" size="small"></Input-Number>
+					</Form-Item>
+					<Form-Item label="坐标 y1" style="margin-bottom:0px">
+						<Input-Number v-model.lazy="edit_y1" :min="0" :max="10000" size="small"></Input-Number>
+					</Form-Item>
+					<Form-Item label="坐标 x2" style="margin-bottom:0px">
+						<Input-Number v-model.lazy="edit_x2" :min="0" :max="10000" size="small"></Input-Number>
+					</Form-Item>
+					<Form-Item label="坐标 y2" style="margin-bottom:0px">
+						<Input-Number v-model.lazy="edit_y2" :min="0" :max="10000" size="small"></Input-Number>
+					</Form-Item>
+					<Form-Item label="" style="margin-bottom:0px">
+						<span style="color: rgb(158, 167, 180);font-size:12px;">
+						<Icon type="md-information-circle"></Icon> 参照 TIA/EiA-942 国际标准，采用信息机房坐标位置唯一标识某一机柜，坐标单位为物理地板格数。
+						</span>
+					</Form-Item>
+				</i-col>
+			</i-row>
+		</i-form>&nbsp;
+		</p>
+	
+	</div>	
+</Modal>
 
 
 
@@ -143,10 +189,18 @@ var vm_app = new Vue({
 		// 删除按钮禁用
 		locations_delete_disabled: true,
 
-
-		//新增
-		// itemtypes_add_typedesc: '',
-		// itemtypes_add_hassoftware: false,
+		// 主编辑变量
+		modal_edit_locations: false,
+		edit_id: '',
+		edit_updated_at: '',
+		edit_title: '',
+		edit_building: '',
+		edit_floor: '',
+		edit_area: '',
+		edit_x1: '',
+		edit_y1: '',
+		edit_x2: '',
+		edit_y2: '',
 
 
 		tablecolumns: [
@@ -231,27 +285,35 @@ var vm_app = new Vue({
 				width: 100,
 				fixed: 'right',
 				render: (h, params) => {
-					// if (params.row.id > 3) {
-						return h('div', [
+					return h('div', [
+
+						h('Poptip', {
+							props: {
+								'word-wrap': true,
+								'trigger': 'hover',
+								'confirm': false,
+								'content': '编辑位置属性',
+								'transfer': true
+							},
+						}, [
 							h('Button', {
 								props: {
 									type: 'primary',
 									size: 'small',
-									icon: 'md-arrow-round-down'
+									icon: 'md-create'
 								},
 								style: {
 									marginRight: '5px'
 								},
 								on: {
 									click: () => {
-										vm_app.itemtypes_delete(params.row)
+										vm_app.edit_locations(params.row)
 									}
 								}
-							}, '编辑'),
-							
+							}),
+						]),
 
-						]);
-					// }
+					]);
 				},
 				
 			}
@@ -399,151 +461,60 @@ var vm_app = new Vue({
 		},
 
 
-
-
-
-
-
-
-		// 更新 typedesc
-		itemtypes_update_typedesc (id, typedesc) {
+		// 主编辑前查看 - locations
+		edit_locations (row) {
 			var _this = this;
-			
-			var id = id;
-			var typedesc = typedesc;
-			// _this.itemtypes_edit_id = id;
-			// _this.itemtypes_edit_statusdesc = row.itemtypes_edit_statusdesc;
-			// _this.jiaban_edit_created_at = row.created_at;
-			// _this.jiaban_edit_updated_at = row.updated_at;
 
-			var url = "{{ route('item.itemtypesupdate_typedesc') }}";
-			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
-			axios.post(url,{
-				id: id,
-				typedesc: typedesc
-			})
-			.then(function (response) {
-                // alert(index);
-				// console.log(response.data);
-				// return false;
+			_this.edit_id = row.id;
+			_this.edit_updated_at = row.updated_at;
+			_this.edit_title = row.title;
+			_this.edit_building = row.building;
+			_this.edit_floor = row.floor;
+			_this.edit_area = row.area;
+			_this.edit_x1 = row.x1;
+			_this.edit_y1 = row.y1;
+			_this.edit_x2 = row.x2;
+			_this.edit_y2 = row.y2;
 
-				if (response.data['jwt'] == 'logout') {
-					_this.alert_logout();
-					return false;
-				}
-				
-				if (response.data) {
-					_this.itemtypesgets(_this.page_current, _this.page_last);
-                    // _this.$Message.success('保存成功！');
-					_this.success(false, '成功', '保存成功！');
-                } else {
-					// _this.$Message.warning('保存失败！');
-					_this.warning(false, '失败', '保存失败！');
-				}
-			})
-			.catch(function (error) {
-				_this.error(false, 'Error', error);
-			})
-
-			setTimeout(() => {
-				_this.modal_jiaban_edit = true;
-			}, 500);
-
-			
+			_this.modal_edit_locations = true;
 		},
 
-
-		// 删除
-		itemtypes_delete (row) {
-			var _this = this;
-			var id = row.id;
-			if (id == undefined) return false;
-			var url = "{{ route('item.itemtypesdelete') }}";
-			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
-			axios.post(url, {
-				id: id
-			})
-			.then(function (response) {
-				if (response.data['jwt'] == 'logout') {
-					_this.alert_logout();
-					return false;
-				}
-				
-				if (response.data) {
-					_this.itemtypesgets(_this.page_current, _this.page_last);
-					_this.success(false, '成功', '删除成功！');
-				} else {
-					_this.error(false, '失败', '删除失败！');
-				}
-			})
-			.catch(function (error) {
-				_this.error(false, '错误', '删除失败！');
-			})
-		},
-
-
-		//新增
-		itemtypes_create () {
+		// 主编辑保存 - locations
+		update_locations () {
 			var _this = this;
 
-			var typedesc = _this.itemtypes_add_typedesc;
-			var hassoftware = _this.itemtypes_add_hassoftware;
+			var id = _this.edit_id;
+			var updated_at = _this.edit_updated_at;
+			var title = _this.edit_title;
+			var building = _this.edit_building;
+			var floor = _this.edit_floor;
+			var area = _this.edit_area;
+			var x1 = _this.edit_x1;
+			var y1 = _this.edit_y1;
+			var x2 = _this.edit_x2;
+			var y2 = _this.edit_y2;
 
-			if (typedesc == '' || typedesc == undefined) {
-					// console.log(hassoftware);
-				// _this.error(false, '失败', '用户ID为空或不正确！');
+			if (id == undefined || title == undefined || title == '') {
+				_this.warning(false, '警告', '内容不能为空！');
 				return false;
 			}
 
-			var url = "{{ route('item.itemtypescreate') }}";
+			var url = "{{ route('location.update') }}";
 			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
 			axios.post(url, {
-				typedesc: typedesc,
-				hassoftware: hassoftware,
-			})
-			.then(function (response) {
-				// console.log(response.data);
-				// return false;
-
-				if (response.data['jwt'] == 'logout') {
-					_this.alert_logout();
-					return false;
-				}
-				
- 				if (response.data) {
-					_this.itemtypes_add_typedesc = '';
-					_this.itemtypesgets(_this.page_current, _this.page_last);
-					_this.success(false, '成功', '新建成功！');
-				} else {
-					_this.error(false, '失败', '新建失败！');
-				}
-			})
-			.catch(function (error) {
-				_this.error(false, '错误', '新建失败！');
-			})
-
-
-		},
-
-		
-		// 更新 hassoftware
-		itemtypes_update_hassoftware (id, hassoftware) {
-			var _this = this;
-			
-			var id = id;
-			var hassoftware = hassoftware;
-// console.log(hassoftware);return false;
-
-			var url = "{{ route('item.itemtypesupdate_hassoftware') }}";
-			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
-			axios.post(url,{
 				id: id,
-				hassoftware: hassoftware
+				updated_at: updated_at,
+				title: title,
+				building: building,
+				floor: floor,
+				area: area,
+				x1: x1,
+				y1: y1,
+				x2: x2,
+				y2: y2,
 			})
 			.then(function (response) {
-                // alert(index);
-				// console.log(response.data);
-				// return false;
+				// console.log(response.data);return false;
 
 				if (response.data['jwt'] == 'logout') {
 					_this.alert_logout();
@@ -551,24 +522,23 @@ var vm_app = new Vue({
 				}
 				
 				if (response.data) {
-					_this.itemtypesgets(_this.page_current, _this.page_last);
-                    // _this.$Message.success('保存成功！');
 					_this.success(false, '成功', '保存成功！');
-                } else {
-					// _this.$Message.warning('保存失败！');
-					_this.warning(false, '失败', '保存失败！');
+						_this.locationsgets(_this.page_current, _this.page_last);
+				} else {
+					_this.error(false, '失败', '保存失败！');
 				}
 			})
 			.catch(function (error) {
-				_this.error(false, 'Error', error);
+				_this.error(false, '错误', '保存失败！');
 			})
 
-			setTimeout(() => {
-				_this.modal_jiaban_edit = true;
-			}, 500);
-
-			
 		},
+
+
+
+
+
+
 		
 
 

@@ -21,8 +21,8 @@ Route::group(['prefix'=>'location', 'namespace'=>'Location', 'middleware'=>['jwt
 	// Locations gets列表
 	Route::get('locationGets', 'LocationsController@locationGets')->name('location.gets');
 
-	// Agents Update typedesc
-	// Route::post('itemItemtypesUpdateTypedesc', 'ItemItemtypesController@itemItemtypesUpdateTypedesc')->name('item.itemtypesupdate_typedesc');
+	// Locations Update
+	Route::post('locationUpdate', 'LocationsController@locationUpdate')->name('location.update');
 
 	// Agents Update
 	// Route::post('itemItemtypesUpdateHassoftware', 'ItemItemtypesController@itemItemtypesUpdateHassoftware')->name('item.itemtypesupdate_hassoftware');

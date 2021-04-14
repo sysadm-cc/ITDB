@@ -169,102 +169,66 @@ class LocationsController extends Controller
 	}
 
 
+	/**
+	 * 更新 locationUpdate
+	 *
+	 * @param  int  $id
+	 * @return \Illuminate\Http\Response
+	 */
+	public function locationUpdate(Request $request)
+	{
+		if (! $request->isMethod('post') || ! $request->ajax()) return null;
 
+		$id = $request->input('id');
+		$updated_at = $request->input('updated_at');
+		$title = $request->input('title');
+		$building = $request->input('building');
+		$floor = $request->input('floor');
+		$area = $request->input('area');
+		$x1 = $request->input('x1');
+		$y1 = $request->input('y1');
+		$x2 = $request->input('x2');
+		$y2 = $request->input('y2');
+		
+		// 判断如果不是最新的记录，不可被编辑
+		// 因为可能有其他人在你当前表格未刷新的情况下已经更新过了
+		$res = Locations::select('updated_at')
+			->where('id', $id)
+			->first();
+		$res_updated_at = date('Y-m-d H:i:s', strtotime($res['updated_at']));
+		if ($updated_at != $res_updated_at) return 0;
 
+		// 尝试更新
+		try	{
+			DB::beginTransaction();
+			$result = Locations::where('id', $id)
+				->update([
+					'title'			=> $title,
+					'building'		=> $building,
+					'floor'			=> $floor,
+					'area'			=> $area,
+					'x1'			=> $x1,
+					'y1'			=> $y1,
+					'x2'			=> $x2,
+					'y2'			=> $y2,
+				]);
+			$result = 1;
+		}
+		catch (\Exception $e) {
+			DB::rollBack();
+			// dd('Message: ' .$e->getMessage());
+			$result = 0;
+		}
+		DB::commit();
+		Cache::flush();
+		// dd($result);
+		return $result;
+	}
 
 
 	
-	/**
-	 * 更新 itemtypes typedesc
-	 *
-	 * @param  int  $id
-	 * @return \Illuminate\Http\Response
-	 */
-	public function itemItemtypesUpdateTypedesc(Request $request)
-	{
-	if (! $request->isMethod('post') || ! $request->ajax()) return null;
 
-	$id = $request->input('id');
-	$typedesc = $request->input('typedesc');
-
-	// 写入数据库
-	try	{
-		DB::beginTransaction();
-		
-		$result = Item_itemtypes::where('id', $id)
-		->update([
-			'typedesc' => $typedesc,
-		]);
-
-		$result = 1;
-		Cache::flush();
-	}
-	catch (\Exception $e) {
-		// echo 'Message: ' .$e->getMessage();
-		DB::rollBack();
-		// dd('Message: ' .$e->getMessage());
-		return 0;
-	}
-
-	DB::commit();
-	// Cache::flush();
-	return $result;
-	}
 	
-
-	/**
-	 * 更新 itemtypes hassoftware
-	 *
-	 * @param  int  $id
-	 * @return \Illuminate\Http\Response
-	 */
-	public function itemItemtypesUpdateHassoftware(Request $request)
-	{
-	if (! $request->isMethod('post') || ! $request->ajax()) return null;
-
-	$id = $request->input('id');
-	$hassoftware = $request->input('hassoftware');
-
-	// 写入数据库
-	try	{
-		DB::beginTransaction();
-		
-		$result = Item_itemtypes::where('id', $id)
-		->update([
-			'hassoftware' => $hassoftware,
-		]);
-
-		$result = 1;
-		Cache::flush();
-	}
-	catch (\Exception $e) {
-		// echo 'Message: ' .$e->getMessage();
-		DB::rollBack();
-		// dd('Message: ' .$e->getMessage());
-		return 0;
-	}
-
-	DB::commit();
-	// Cache::flush();
-	return $result;
-	}
-
-
-	/**
-	 * 删除 itemtypes
-	 *
-	 * @param  int  $id
-	 * @return \Illuminate\Http\Response
-	 */
-	public function itemItemtypesDelete(Request $request)
-	{
-	if (! $request->isMethod('post') || ! $request->ajax())  return false;
-
-	$id = [$request->input('id')];
-	$result = Item_itemtypes::whereIn('id', $id)->delete();
-	Cache::flush();
-	return $result;
-	}
 
 
 

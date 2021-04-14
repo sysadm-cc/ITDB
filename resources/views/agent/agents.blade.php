@@ -110,10 +110,10 @@
 			</Poptip>
 		</i-col>
 		<i-col span="3">
-			<i-button type="primary" size="small" @click="agents_add()"><Icon type="md-add"></Icon> 添加代理商</i-button>
+			<i-button type="primary" icon="md-add" size="small" @click="agents_add()">添加代理商</i-button>
 		</i-col>
 		<i-col span="3">
-			<i-button type="default" size="small" @click="items_export()"><Icon type="md-download"></Icon> 导出列表</i-button>
+			<i-button type="default" icon="md-download" size="small" @click="items_export()">导出列表</i-button>
 		</i-col>
 		<i-col span="15">
 			&nbsp;

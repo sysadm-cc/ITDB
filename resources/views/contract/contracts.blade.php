@@ -105,10 +105,10 @@
 			</Poptip>
 		</i-col>
 		<i-col span="3">
-			<i-button type="primary" size="small" @click="contracts_add()"><Icon type="md-add"></Icon> 添加合同</i-button>
+			<i-button type="primary" icon="md-add" size="small" @click="contracts_add()">添加合同</i-button>
 		</i-col>
 		<i-col span="3">
-			<i-button type="default" size="small" @click="items_export()"><Icon type="ios-download-outline"></Icon> 导出</i-button>
+			<i-button type="default" icon="ios-download-outline" size="small" @click="items_export()">导出</i-button>
 		</i-col>
 		<i-col span="15">
 			&nbsp;
@@ -642,63 +642,61 @@ var vm_app = new Vue({
 				width: 100,
 				fixed: 'right',
 				render: (h, params) => {
-					// if (params.row.id > 3) {
-						return h('div', [
+					return h('div', [
 
-							h('Poptip', {
+						h('Poptip', {
+							props: {
+								'word-wrap': true,
+								'trigger': 'hover',
+								'confirm': false,
+								'content': '编辑合同信息',
+								'transfer': true
+							},
+						}, [
+							h('Button', {
 								props: {
-									'word-wrap': true,
-									'trigger': 'hover',
-									'confirm': false,
-									'content': '编辑合同信息',
-									'transfer': true
+									type: 'primary',
+									size: 'small',
+									icon: 'md-create'
 								},
-							}, [
-								h('Button', {
-									props: {
-										type: 'primary',
-										size: 'small',
-										icon: 'md-create'
-									},
-									style: {
-										marginRight: '5px'
-									},
-									on: {
-										click: () => {
-											vm_app.edit_contracts(params.row)
-										}
+								style: {
+									marginRight: '5px'
+								},
+								on: {
+									click: () => {
+										vm_app.edit_contracts(params.row)
 									}
-								}),
-							]),
+								}
+							}),
+						]),
 
-							h('Poptip', {
+						h('Poptip', {
+							props: {
+								'word-wrap': true,
+								'trigger': 'hover',
+								'confirm': false,
+								'content': '添加合同续约',
+								'transfer': true
+							},
+						}, [
+							h('Button', {
 								props: {
-									'word-wrap': true,
-									'trigger': 'hover',
-									'confirm': false,
-									'content': '添加合同续约',
-									'transfer': true
+									type: 'default',
+									size: 'small',
+									icon: 'md-document'
 								},
-							}, [
-								h('Button', {
-									props: {
-										type: 'default',
-										size: 'small',
-										icon: 'md-document'
-									},
-									style: {
-										marginRight: '5px'
-									},
-									on: {
-										click: () => {
-											vm_app.add_renewals(params.row)
-										}
+								style: {
+									marginRight: '5px'
+								},
+								on: {
+									click: () => {
+										vm_app.add_renewals(params.row)
 									}
-								})
-							]),							
+								}
+							})
+						]),							
 
-						]);
-					// }
+					]);
 				},
 				
 			}
@@ -932,8 +930,6 @@ var vm_app = new Vue({
 
 			var id = _this.edit_id;
 			var updated_at = _this.edit_updated_at;
-			var title = _this.edit_title;
-
 			var title = _this.edit_title;
 			var type = _this.edit_type_select;
 			var number = _this.edit_number;

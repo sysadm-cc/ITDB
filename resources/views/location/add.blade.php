@@ -23,8 +23,9 @@
 
 	<i-row :gutter="16">
 
-		<i-col span="10">
-			
+		<i-col span="9">
+			<Divider orientation="left">位置属性</Divider>
+
 			<i-form :label-width="100">
 				<Form-Item label="* 名称" style="margin-bottom:0px">
 					<i-input v-model.lazy="add_title" size="small"></i-input>
@@ -59,7 +60,12 @@
 
 		</i-col>
 
+		<i-col span="1">
+		&nbsp;
+		</i-col>
+
 		<i-col span="14">
+		<Divider orientation="left">关联文件</Divider>
 		&nbsp;
 		</i-col>
 
@@ -492,14 +498,14 @@ var vm_app = new Vue({
  				if (response.data) {
 					_this.add_clear_var();
 					// _this.itemtypesgets(_this.page_current, _this.page_last);
-					_this.success(false, '成功', '新建成功！');
+					_this.success(false, '成功', '添加成功！');
 				} else {
-					_this.error(false, '失败', '新建失败！');
+					_this.error(false, '失败', '添加失败！');
 				}
 				_this.add_create_disabled = false;
 			})
 			.catch(function (error) {
-				_this.error(false, '错误', '新建失败！');
+				_this.error(false, '错误', '添加失败！');
 				_this.add_create_disabled = false;
 			})
 
