@@ -176,8 +176,8 @@ var vm_app = new Vue({
 		add_title: '',
 		add_type_select: '',
 		add_type_options: [
-			{label: '支持维护', value: 1},
-			{label: '维修保养', value: 2},
+			// {label: '支持维护', value: 1},
+			// {label: '维修保养', value: 2},
 		],
 		add_number: '',
 		add_description: '',
@@ -266,13 +266,13 @@ var vm_app = new Vue({
 		},
 		
 		// 把laravel返回的结果转换成select能接受的格式
-		json2selectvalue (json, key) {
+		json2selectvalue (json) {
 			var arr = [];
 			for (var k in json) {
 				// alert(key);
 				// alert(json[key]);
 				// arr.push({ obj.['value'] = key, obj.['label'] = json[key] });
-				arr.push({ value: ++k, label: json[k].key });
+				arr.push({ value: json[k].id, label: json[k].name });
 			}
 			return arr;
 			// return arr.reverse();
@@ -431,7 +431,7 @@ var vm_app = new Vue({
 				}
 			})
 			.then(function (response) {
-				// console.log(response.data.data);return false;
+				// console.log(response.data);return false;
 
 				if (response.data['jwt'] == 'logout') {
 					_this.alert_logout();
@@ -439,12 +439,12 @@ var vm_app = new Vue({
 				}
 
 				if (response.data) {
-					_this.add_type_options = _this.json2selectvalue(response.data.data, 'name');
+					_this.add_type_options = _this.json2selectvalue(response.data.data);
 				}
 				
 			})
 			.catch(function (error) {
-				// _this.error(false, 'Error', error);
+				_this.error(false, 'Error', error);
 			})
 		},
 		
