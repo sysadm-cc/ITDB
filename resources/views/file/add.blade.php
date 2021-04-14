@@ -21,10 +21,11 @@
 
 
 
-	<i-row :gutter="16">
+	<i-row>
 
-		<i-col span="8">
-			
+		<i-col span="7">
+			<Divider orientation="left">文件属性</Divider>
+
 			<i-form :label-width="100">
 				<Form-Item label="* 文件名称" style="margin-bottom:0px">
 					<i-input v-model.lazy="add_title" size="small"></i-input>
@@ -44,17 +45,15 @@
 				<Form-Item label="上传者" style="margin-bottom:0px">
 					<i-input v-model.lazy="add_uploader" size="small"></i-input>
 				</Form-Item>
-
 			</i-form>
-
-
 		</i-col>
 
-
-
-
+		<i-col span="1">
+		&nbsp;
+		</i-col>
 
 		<i-col span="16">
+		<Divider orientation="left">关联预览</Divider>
 		&nbsp;
 		</i-col>
 
@@ -66,7 +65,7 @@
 
 <Divider dashed></Divider>
 
-<i-button @click="add_create()" :disabled="add_create_disabled" size="large" type="primary">添加</i-button>
+<i-button @click="add_create()" :disabled="add_create_disabled" icon="md-add" size="large" type="primary">添加</i-button>
 
 <br>
 
@@ -127,15 +126,15 @@ var vm_app = new Vue({
 		add_title: '',
 		add_type_select: '',
 		add_type_options: [
-			{label: '合同 Contract', value: 1},
-			{label: '认证 License', value: 2},
-			{label: '手册 Manual', value: 3},
-			{label: '报价 Offer', value: 4},
-			{label: '订单 Order', value: 5},
-			{label: '图片 Photo', value: 6},
-			{label: '报表 Report', value: 7},
-			{label: '服务 Service', value: 8},
-			{label: '其他 Other', value: 9},
+			{label: '合同 - Contract', value: 1},
+			{label: '认证 - License', value: 2},
+			{label: '手册 - Manual', value: 3},
+			{label: '报价 - Offer', value: 4},
+			{label: '订单 - Order', value: 5},
+			{label: '图片 - Photo', value: 6},
+			{label: '报表 - Report', value: 7},
+			{label: '服务 - Service', value: 8},
+			{label: '其他 - Other', value: 9},
 		],
 		add_filename: '',
 		add_uploader: '',
@@ -474,14 +473,14 @@ var vm_app = new Vue({
  				if (response.data) {
 					_this.add_clear_var();
 					// _this.itemtypesgets(_this.page_current, _this.page_last);
-					_this.success(false, '成功', '新建成功！');
+					_this.success(false, '成功', '添加成功！');
 				} else {
-					_this.error(false, '失败', '新建失败！');
+					_this.error(false, '失败', '添加失败！');
 				}
 				_this.add_create_disabled = false;
 			})
 			.catch(function (error) {
-				_this.error(false, '错误', '新建失败！');
+				_this.error(false, '错误', '添加失败！');
 				_this.add_create_disabled = false;
 			})
 

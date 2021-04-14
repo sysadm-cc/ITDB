@@ -78,8 +78,8 @@ Route::group(['prefix'=>'file', 'namespace'=>'File', 'middleware'=>['jwtauth']],
 	// Agents Update
 	// Route::post('itemItemtypesUpdateHassoftware', 'ItemItemtypesController@itemItemtypesUpdateHassoftware')->name('item.itemtypesupdate_hassoftware');
 
-	// Agents Delete
-	// Route::post('itemItemtypesDelete', 'ItemItemtypesController@itemItemtypesDelete')->name('item.itemtypesdelete');
+	// Files Delete
+	Route::post('fileDelete', 'FilesController@fileDelete')->name('file.delete');
 
 	// 显示 Files add 页面
 	Route::get('fileAdd', 'FilesController@fileAdd')->name('file.add');

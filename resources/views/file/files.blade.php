@@ -55,15 +55,17 @@
 	<i-row :gutter="16">
 		<br>
 		<i-col span="3">
-			<i-button @click="items_delete()" :disabled="files_delete_disabled" type="warning" size="small">删除</i-button>&nbsp;<br>&nbsp;
+			<Poptip confirm word-wrap title="真的要删除这些记录吗？" @on-ok="files_delete()">
+				<i-button :disabled="files_delete_disabled" icon="md-remove" type="warning" size="small">删除</i-button>&nbsp;<br>&nbsp;
+			</Poptip>
 		</i-col>
-		<i-col span="2">
-			<i-button type="default" size="small" @click="files_add()"><Icon type="ios-color-wand-outline"></Icon> 新建</i-button>
+		<i-col span="3">
+			<i-button type="primary" icon="md-add" size="small" @click="files_add()">添加文件</i-button>
 		</i-col>
-		<i-col span="2">
-			<i-button type="default" size="small" @click="items_export()"><Icon type="ios-download-outline"></Icon> 导出</i-button>
+		<i-col span="3">
+			<i-button type="default" icon="ios-download-outline" size="small" @click="items_export()">导出</i-button>
 		</i-col>
-		<i-col span="17">
+		<i-col span="15">
 			&nbsp;
 		</i-col>
 	</i-row>
@@ -177,151 +179,174 @@ var vm_app = new Vue({
 				resizable: true,
 				width: 180,
 				render: (h, params) => {
-					if (params.row.id == 1) {
-						return h('div', {}, [
-							h('Icon',{
-								props: {
-									type: 'md-bookmark',
-									size: 14,
-									color: 'blue',
+					switch (params.row.type) {
+						case 1:
+							return h('div', {}, [
+								h('Icon',{
+									props: {
+										type: 'md-bookmark',
+										size: 14,
+										color: 'purple',
+										}
+									},
+								),
+								h('span',{
+									// style:{
+									// 	color: '#ff9900'
+									// }
+								}, '合同 Contract')
+							]);
+							break;
+						
+						case 2:
+							return h('div', {}, [
+								h('Icon',{
+									props: {
+										type: 'md-bookmark',
+										size: 14,
+										color: 'red',
+										}
+									},
+								),
+								h('span',{
+									// style:{
+									// 	color: '#ff9900'
+									// }
+								}, '认证 License')
+							]);
+							break;
+
+						case 3:
+							return h('div', {}, [
+								h('Icon',{
+									props: {
+										type: 'md-bookmark',
+										size: 14,
+										color: 'blue',
+										}
 									}
-								},
-							),
-							h('span',{
-								// style:{
-								// 	color: '#ff9900'
-								// }
-							}, '合同 Contract')
-						])
-					} else if (params.row.id == 2) {
-						return h('div', {}, [
-							h('Icon',{
-								props: {
-									type: 'md-bookmark',
-									size: 14,
-									color: 'green',
+								),
+								h('span',{
+									// style:{
+									// 	color: '#ff9900'
+									// }
+								}, '手册 Manual')
+							]);
+							break;
+							
+						case 4:
+							return h('div', {}, [
+								h('Icon',{
+									props: {
+										type: 'md-bookmark',
+										size: 14,
+										color: 'silver',
+										}
 									}
-								}
-							),
-							h('span',{
-								// style:{
-								// 	color: '#ff9900'
-								// }
-							}, '认证 License')
-						])
-					} else if (params.row.id == 3) {
-						return h('div', {}, [
-							h('Icon',{
-								props: {
-									type: 'md-bookmark',
-									size: 14,
-									color: 'green',
+								),
+								h('span',{
+									// style:{
+									// 	color: '#ff9900'
+									// }
+								}, '报价 Offer')
+							]);
+							break;
+
+						case 5:
+							return h('div', {}, [
+								h('Icon',{
+									props: {
+										type: 'md-bookmark',
+										size: 14,
+										color: 'maroon',
+										}
 									}
-								}
-							),
-							h('span',{
-								// style:{
-								// 	color: '#ff9900'
-								// }
-							}, '手册 Manual')
-						])
-					} else if (params.row.id == 4) {
-						return h('div', {}, [
-							h('Icon',{
-								props: {
-									type: 'md-bookmark',
-									size: 14,
-									color: 'green',
+								),
+								h('span',{
+									// style:{
+									// 	color: '#ff9900'
+									// }
+								}, '订单 Order')
+							]);
+							break;
+
+						case 6:
+							return h('div', {}, [
+								h('Icon',{
+									props: {
+										type: 'md-bookmark',
+										size: 14,
+										color: 'yellow',
+										}
 									}
-								}
-							),
-							h('span',{
-								// style:{
-								// 	color: '#ff9900'
-								// }
-							}, '报价 Offer')
-						])
-					} else if (params.row.id == 5) {
-						return h('div', {}, [
-							h('Icon',{
-								props: {
-									type: 'md-bookmark',
-									size: 14,
-									color: 'green',
+								),
+								h('span',{
+									// style:{
+									// 	color: '#ff9900'
+									// }
+								}, '图片 Photo')
+							]);
+							break;
+
+						case 7:
+							return h('div', {}, [
+								h('Icon',{
+									props: {
+										type: 'md-bookmark',
+										size: 14,
+										color: 'lime',
+										}
 									}
-								}
-							),
-							h('span',{
-								// style:{
-								// 	color: '#ff9900'
-								// }
-							}, '订单 Order')
-						])
-					} else if (params.row.id == 6) {
-						return h('div', {}, [
-							h('Icon',{
-								props: {
-									type: 'md-bookmark',
-									size: 14,
-									color: 'green',
+								),
+								h('span',{
+									// style:{
+									// 	color: '#ff9900'
+									// }
+								}, '报表 Report')
+							]);
+							break;
+
+						case 8:
+							return h('div', {}, [
+								h('Icon',{
+									props: {
+										type: 'md-bookmark',
+										size: 14,
+										color: 'green',
+										}
 									}
-								}
-							),
-							h('span',{
-								// style:{
-								// 	color: '#ff9900'
-								// }
-							}, '图片 Photo')
-						])
-					} else if (params.row.id == 7) {
-						return h('div', {}, [
-							h('Icon',{
-								props: {
-									type: 'md-bookmark',
-									size: 14,
-									color: 'green',
+								),
+								h('span',{
+									// style:{
+									// 	color: '#ff9900'
+									// }
+								}, '服务 Service')
+							]);
+							break;
+
+						case 9:
+							return h('div', {}, [
+								h('Icon',{
+									props: {
+										type: 'md-bookmark',
+										size: 14,
+										color: 'black',
+										}
 									}
-								}
-							),
-							h('span',{
-								// style:{
-								// 	color: '#ff9900'
-								// }
-							}, '报表 Report')
-						])
-					} else if (params.row.id == 8) {
-						return h('div', {}, [
-							h('Icon',{
-								props: {
-									type: 'md-bookmark',
-									size: 14,
-									color: 'green',
-									}
-								}
-							),
-							h('span',{
-								// style:{
-								// 	color: '#ff9900'
-								// }
-							}, '服务 Service')
-						])
-					} else if (params.row.id == 9) {
-						return h('div', {}, [
-							h('Icon',{
-								props: {
-									type: 'md-bookmark',
-									size: 14,
-									color: 'green',
-									}
-								}
-							),
-							h('span',{
-								// style:{
-								// 	color: '#ff9900'
-								// }
-							}, '其他 Other')
-						])
+								),
+								h('span',{
+									// style:{
+									// 	color: '#ff9900'
+									// }
+								}, '其他 Other')
+							]);
+							break;
+					
+							default:
+								return h('div', {}, '未知');
 					}
+
+
 				}
 			},
 			{
@@ -522,79 +547,25 @@ var vm_app = new Vue({
 		},
 
 
-
-
-
-
-
-
-		// 更新 typedesc
-		itemtypes_update_typedesc (id, typedesc) {
+		// 删除记录
+		files_delete () {
 			var _this = this;
 			
-			var id = id;
-			var typedesc = typedesc;
-			// _this.itemtypes_edit_id = id;
-			// _this.itemtypes_edit_statusdesc = row.itemtypes_edit_statusdesc;
-			// _this.jiaban_edit_created_at = row.created_at;
-			// _this.jiaban_edit_updated_at = row.updated_at;
-
-			var url = "{{ route('item.itemtypesupdate_typedesc') }}";
-			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
-			axios.post(url,{
-				id: id,
-				typedesc: typedesc
-			})
-			.then(function (response) {
-                // alert(index);
-				// console.log(response.data);
-				// return false;
-
-				if (response.data['jwt'] == 'logout') {
-					_this.alert_logout();
-					return false;
-				}
-				
-				if (response.data) {
-					_this.itemtypesgets(_this.page_current, _this.page_last);
-                    // _this.$Message.success('保存成功！');
-					_this.success(false, '成功', '保存成功！');
-                } else {
-					// _this.$Message.warning('保存失败！');
-					_this.warning(false, '失败', '保存失败！');
-				}
-			})
-			.catch(function (error) {
-				_this.error(false, 'Error', error);
-			})
-
-			setTimeout(() => {
-				_this.modal_jiaban_edit = true;
-			}, 500);
-
+			var tableselect = _this.tableselect;
 			
-		},
+			if (tableselect[0] == undefined) return false;
 
-
-		// 删除
-		itemtypes_delete (row) {
-			var _this = this;
-			var id = row.id;
-			if (id == undefined) return false;
-			var url = "{{ route('item.itemtypesdelete') }}";
+			var url = "{{ route('file.delete') }}";
 			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
 			axios.post(url, {
-				id: id
+				tableselect: tableselect
 			})
 			.then(function (response) {
-				if (response.data['jwt'] == 'logout') {
-					_this.alert_logout();
-					return false;
-				}
-				
 				if (response.data) {
-					_this.itemtypesgets(_this.page_current, _this.page_last);
+					_this.locations_delete_disabled = true;
+					_this.tableselect = [];
 					_this.success(false, '成功', '删除成功！');
+					_this.filesgets(_this.page_current, _this.page_last);
 				} else {
 					_this.error(false, '失败', '删除失败！');
 				}
@@ -605,93 +576,9 @@ var vm_app = new Vue({
 		},
 
 
-		//新增
-		itemtypes_create () {
-			var _this = this;
-
-			var typedesc = _this.itemtypes_add_typedesc;
-			var hassoftware = _this.itemtypes_add_hassoftware;
-
-			if (typedesc == '' || typedesc == undefined) {
-					// console.log(hassoftware);
-				// _this.error(false, '失败', '用户ID为空或不正确！');
-				return false;
-			}
-
-			var url = "{{ route('item.itemtypescreate') }}";
-			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
-			axios.post(url, {
-				typedesc: typedesc,
-				hassoftware: hassoftware,
-			})
-			.then(function (response) {
-				// console.log(response.data);
-				// return false;
-
-				if (response.data['jwt'] == 'logout') {
-					_this.alert_logout();
-					return false;
-				}
-				
- 				if (response.data) {
-					_this.itemtypes_add_typedesc = '';
-					_this.itemtypesgets(_this.page_current, _this.page_last);
-					_this.success(false, '成功', '新建成功！');
-				} else {
-					_this.error(false, '失败', '新建失败！');
-				}
-			})
-			.catch(function (error) {
-				_this.error(false, '错误', '新建失败！');
-			})
 
 
-		},
 
-		
-		// 更新 hassoftware
-		itemtypes_update_hassoftware (id, hassoftware) {
-			var _this = this;
-			
-			var id = id;
-			var hassoftware = hassoftware;
-// console.log(hassoftware);return false;
-
-			var url = "{{ route('item.itemtypesupdate_hassoftware') }}";
-			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
-			axios.post(url,{
-				id: id,
-				hassoftware: hassoftware
-			})
-			.then(function (response) {
-                // alert(index);
-				// console.log(response.data);
-				// return false;
-
-				if (response.data['jwt'] == 'logout') {
-					_this.alert_logout();
-					return false;
-				}
-				
-				if (response.data) {
-					_this.itemtypesgets(_this.page_current, _this.page_last);
-                    // _this.$Message.success('保存成功！');
-					_this.success(false, '成功', '保存成功！');
-                } else {
-					// _this.$Message.warning('保存失败！');
-					_this.warning(false, '失败', '保存失败！');
-				}
-			})
-			.catch(function (error) {
-				_this.error(false, 'Error', error);
-			})
-
-			setTimeout(() => {
-				_this.modal_jiaban_edit = true;
-			}, 500);
-
-			
-		},
 		
 
 
