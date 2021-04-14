@@ -31,7 +31,7 @@
 					<i-option v-for="item in add_type_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
 				</i-select>
 				<Poptip word-wrap trigger="hover" placement="bottom" width="300" content="售卖方及购买方将出现在发票及合同模块中；售卖方及购买方将出现在发票及合同模块中；硬件销售商将出现的物品模块中；软件销售商将出现在合同模块中；承包商将出现的合同模块中。">
-					<span style="color: rgb(158, 167, 180);font-size:10px;">
+					<span style="color: rgb(158, 167, 180);font-size:12px;">
 					<Icon type="md-information-circle"></Icon> 此项可多选。
 					</span>
 				</Poptip>
@@ -125,7 +125,7 @@
 
 <Divider dashed></Divider>
 
-<i-button @click="add_create()" :disabled="add_create_disabled" size="large" type="primary">添加</i-button>
+<i-button @click="add_create()" :disabled="add_create_disabled" icon="md-add" size="large" type="primary">添加</i-button>
 
 &nbsp;
 

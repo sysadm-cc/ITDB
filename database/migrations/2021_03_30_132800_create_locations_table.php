@@ -19,10 +19,10 @@ class CreateLocationsTable extends Migration
             $table->string('building')->nullable()->comment('建筑名称');
             $table->string('floor')->nullable()->comment('楼层');
             $table->string('area')->nullable()->comment('区域/房间');
-            $table->float('x1')->nullable()->comment('坐标x1');
-            $table->float('y1')->nullable()->comment('坐标y1');
-            $table->float('x2')->nullable()->comment('坐标x2');
-            $table->float('y2')->nullable()->comment('坐标y2');
+            $table->integer('x1')->nullable()->comment('坐标x1');
+            $table->integer('y1')->nullable()->comment('坐标y1');
+            $table->integer('x2')->nullable()->comment('坐标x2');
+            $table->integer('y2')->nullable()->comment('坐标y2');
 
             $table->timestamps();
             $table->softDeletes();

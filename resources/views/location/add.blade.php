@@ -23,7 +23,7 @@
 
 	<i-row :gutter="16">
 
-		<i-col span="8">
+		<i-col span="10">
 			
 			<i-form :label-width="100">
 				<Form-Item label="* 名称" style="margin-bottom:0px">
@@ -38,29 +38,28 @@
 				<Form-Item label="区域/房间" style="margin-bottom:0px">
 					<i-input v-model.lazy="add_area" size="small"></i-input>
 				</Form-Item>
-				<Form-Item label="坐标x1" style="margin-bottom:0px">
-					<Input-Number v-model.lazy="add_x1" size="small"></Input-Number>
+				<Form-Item label="坐标 x1" style="margin-bottom:0px">
+					<Input-Number v-model.lazy="add_x1" :min="0" :max="10000" size="small"></Input-Number>
 				</Form-Item>
-				<Form-Item label="坐标y1" style="margin-bottom:0px">
-					<Input-Number v-model.lazy="add_y1" size="small"></Input-Number>
+				<Form-Item label="坐标 y1" style="margin-bottom:0px">
+					<Input-Number v-model.lazy="add_y1" :min="0" :max="10000" size="small"></Input-Number>
 				</Form-Item>
-				<Form-Item label="坐标x2" style="margin-bottom:0px">
-					<Input-Number v-model.lazy="add_x2" size="small"></Input-Number>
+				<Form-Item label="坐标 x2" style="margin-bottom:0px">
+					<Input-Number v-model.lazy="add_x2" :min="0" :max="10000" size="small"></Input-Number>
 				</Form-Item>
-				<Form-Item label="坐标y2" style="margin-bottom:0px">
-					<Input-Number v-model.lazy="add_y2" size="small"></Input-Number>
+				<Form-Item label="坐标 y2" style="margin-bottom:0px">
+					<Input-Number v-model.lazy="add_y2" :min="0" :max="10000" size="small"></Input-Number>
 				</Form-Item>
-
+				<Form-Item label="" style="margin-bottom:0px">
+					<span style="color: rgb(158, 167, 180);font-size:12px;">
+					<Icon type="md-information-circle"></Icon> 参照 TIA/EiA-942 国际标准，采用信息机房坐标位置唯一标识某一机柜，坐标单位为物理地板格数。
+					</span>
+				</Form-Item>
 			</i-form>
-
 
 		</i-col>
 
-
-
-
-
-		<i-col span="16">
+		<i-col span="14">
 		&nbsp;
 		</i-col>
 
@@ -72,7 +71,7 @@
 
 <Divider dashed></Divider>
 
-<i-button @click="add_create()" :disabled="add_create_disabled" size="large" type="primary">添加</i-button>
+<i-button @click="add_create()" :disabled="add_create_disabled" icon="md-add" size="large" type="primary">添加</i-button>
 
 <br>
 

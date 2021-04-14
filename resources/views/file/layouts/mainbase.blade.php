@@ -321,7 +321,7 @@ if (isMobile) {
 
 							<Submenu name="8">
 								<template slot="title">
-										<Icon type="md-pin" size="20"></Icon> 场所 <span style="color:rgb(158, 167, 180);font-size:10px;">Locations</span>
+										<Icon type="md-pin" size="20"></Icon> 位置 <span style="color:rgb(158, 167, 180);font-size:10px;">Locations</span>
 								</template>
 								<Menu-item name="8-1"><Icon type="md-search" size="18"></Icon> 查询</Menu-item>
 								<Menu-item name="8-2"><Icon type="md-add" size="18"></Icon> 添加</Menu-item>
@@ -476,7 +476,7 @@ function navmenuselect (name) {
 	  window.location.href = "";
 	  break;
 
-	// 场所
+	// 位置
 	case '8-1':
 	  window.location.href = "{{route('location.locations')}}";
 	  break;
