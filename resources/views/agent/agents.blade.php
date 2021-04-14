@@ -995,7 +995,7 @@ var vm_app = new Vue({
 					_this.agents_delete_disabled = true;
 					_this.tableselect = [];
 					_this.success(false, '成功', '删除成功！');
-					_this.agentsgets(_this.pagecurrent, _this.pagelast);
+					_this.agentsgets(_this.page_current, _this.page_last);
 				} else {
 					_this.error(false, '失败', '删除失败！');
 				}
@@ -1068,7 +1068,7 @@ var vm_app = new Vue({
 				
 				if (response.data) {
 					_this.success(false, '成功', '保存成功！');
-						_this.agentsgets(_this.pagecurrent, _this.pagelast);
+						_this.agentsgets(_this.page_current, _this.page_last);
 				} else {
 					_this.error(false, '失败', '保存失败！');
 				}
@@ -1108,7 +1108,7 @@ var vm_app = new Vue({
 				if (response.data) {
 					_this.success(false, '成功', '删除成功！');
 					// if (_this.qcdate_filter[0] != '' && _this.qcdate_filter != undefined) {
-						_this.agentsgets(_this.pagecurrent, _this.pagelast);
+						_this.agentsgets(_this.page_current, _this.page_last);
 					// }
 				} else {
 					_this.error(false, '失败', '删除失败！');
@@ -1168,7 +1168,7 @@ var vm_app = new Vue({
 				
 				if (response.data) {
 					_this.success(false, '成功', '保存成功！');
-						_this.agentsgets(_this.pagecurrent, _this.pagelast);
+						_this.agentsgets(_this.page_current, _this.page_last);
 				} else {
 					_this.error(false, '失败', '保存失败！');
 				}
@@ -1208,7 +1208,7 @@ var vm_app = new Vue({
 				
 				if (response.data) {
 					_this.success(false, '成功', '删除成功！');
-						_this.agentsgets(_this.pagecurrent, _this.pagelast);
+						_this.agentsgets(_this.page_current, _this.page_last);
 				} else {
 					_this.error(false, '失败', '删除失败！');
 				}
@@ -1266,7 +1266,7 @@ var vm_app = new Vue({
 				
 				if (response.data) {
 					_this.success(false, '成功', '保存成功！');
-						_this.agentsgets(_this.pagecurrent, _this.pagelast);
+						_this.agentsgets(_this.page_current, _this.page_last);
 				} else {
 					_this.error(false, '失败', '保存失败！');
 				}
@@ -1323,7 +1323,7 @@ var vm_app = new Vue({
 				if (response.data) {
 					_this.add_clear_var();
 					_this.success(false, '成功', '添加成功！');
-					_this.agentsgets(_this.pagecurrent, _this.pagelast);
+					_this.agentsgets(_this.page_current, _this.page_last);
 				} else {
 					_this.error(false, '失败', '添加失败！');
 				}
@@ -1373,7 +1373,7 @@ var vm_app = new Vue({
 				if (response.data) {
 					_this.add_clear_var();
 					_this.success(false, '成功', '添加成功！');
-					_this.agentsgets(_this.pagecurrent, _this.pagelast);
+					_this.agentsgets(_this.page_current, _this.page_last);
 				} else {
 					_this.error(false, '失败', '添加失败！');
 				}
