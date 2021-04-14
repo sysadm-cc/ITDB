@@ -28,10 +28,10 @@
 			<Divider orientation="left">合同属性</Divider>
 
 			<i-form :label-width="100">
-				<Form-Item label="* 名称" style="margin-bottom:0px">
+				<Form-Item label="名称" required style="margin-bottom:0px">
 					<i-input v-model.lazy="add_title" size="small"></i-input>
 				</Form-Item>
-				<Form-Item label="类型" style="margin-bottom:0px">
+				<Form-Item label="类型" required style="margin-bottom:0px">
 					<!-- <i-select v-model.lazy="add_type_select" multiple size="small" placeholder=""> -->
 					<i-select v-model.lazy="add_type_select" size="small" placeholder="">
 						<i-option v-for="item in add_type_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
@@ -47,10 +47,10 @@
 					<Input-Number v-model.lazy="add_totalcost" size="small" :min="1"></Input-Number>
 				</Form-Item>
 				<Form-Item label="开始日期" style="margin-bottom:0px">
-					<Date-picker v-model.lazy="add_startdate" type="date" size="small"></Date-picker>
+					<Date-picker v-model.lazy="add_startdate" type="datetime" size="small"></Date-picker>
 				</Form-Item>
-				<Form-Item label="当前结束日期" style="margin-bottom:0px">
-					<Date-picker v-model.lazy="add_currentenddate" type="date" size="small"></Date-picker>
+				<Form-Item label="结束日期" style="margin-bottom:0px">
+					<Date-picker v-model.lazy="add_currentenddate" type="datetime" size="small"></Date-picker>
 				</Form-Item>
 				<Form-Item label="详细内容" style="margin-bottom:0px">
 					<i-input v-model.lazy="add_description" size="small" type="textarea"></i-input>
@@ -82,18 +82,18 @@
 				</i-col>
 				<i-col span="23">
 					<i-row>
-						<i-col span="10">
+						<i-col span="12">
 							<Form-Item label="续约开始日期" style="margin-bottom:0px">
-								<Date-picker v-model.lazy="item.enddatebefore" type="date" size="small"></Date-picker>
+								<Date-picker v-model.lazy="item.enddatebefore" type="datetime" size="small"></Date-picker>
 							</Form-Item>
 							<Form-Item label="续约结束日期" style="margin-bottom:0px">
-								<Date-picker v-model.lazy="item.enddateafter" type="date" size="small"></Date-picker>
+								<Date-picker v-model.lazy="item.enddateafter" type="datetime" size="small"></Date-picker>
 							</Form-Item>
 							<Form-Item label="生效日期" style="margin-bottom:0px">
-								<Date-picker v-model.lazy="item.effectivedate" type="date" size="small"></Date-picker>
+								<Date-picker v-model.lazy="item.effectivedate" type="datetime" size="small"></Date-picker>
 							</Form-Item>
 						</i-col>
-						<i-col span="14">
+						<i-col span="12">
 							<Form-Item label="备注" style="margin-bottom:0px">
 								<i-input v-model.lazy="item.notes" size="small" type="textarea" rows="3"></i-input>
 							</Form-Item>
@@ -281,7 +281,14 @@ var vm_app = new Vue({
 			_this.add_startdate = '';
 			_this.add_currentenddate = '';
 			_this.piliangluruxiang_renewals = 1;
-			_this.piliangluru_renewals = [];
+			_this.piliangluru_renewals = [
+				{
+					enddatebefore: '',
+					enddateafter: '',
+					effectivedate: '',
+					notes: '',
+				},
+			];
 		},
 
 
@@ -296,8 +303,8 @@ var vm_app = new Vue({
 			var add_description = _this.add_description;
 			var add_comments = _this.add_comments;
 			var add_totalcost = _this.add_totalcost;
-			var add_startdate = _this.add_startdate ? new Date(_this.add_startdate).Format("yyyy-MM-dd") : '';
-			var add_currentenddate = _this.add_currentenddate ? new Date(_this.add_currentenddate).Format("yyyy-MM-dd") : '';
+			var add_startdate = _this.add_startdate ? new Date(_this.add_startdate).Format("yyyy-MM-dd hh:mm:ss") : '';
+			var add_currentenddate = _this.add_currentenddate ? new Date(_this.add_currentenddate).Format("yyyy-MM-dd hh:mm:ss") : '';
 			
 			// 删除空json节点
 			var piliangluru_tmp_renewals = [];
@@ -306,15 +313,16 @@ var vm_app = new Vue({
 					|| v.enddateafter == '' || v.enddateafter == undefined
 					|| v.effectivedate == '' || v.effectivedate == undefined) {
 				} else {
-					v.enddatebefore = new Date(v.enddatebefore).Format("yyyy-MM-dd");
-					v.enddateafter = new Date(v.enddateafter).Format("yyyy-MM-dd");
-					v.effectivedate = new Date(v.effectivedate).Format("yyyy-MM-dd");
+					v.enddatebefore = new Date(v.enddatebefore).Format("yyyy-MM-dd hh:mm:ss");
+					v.enddateafter = new Date(v.enddateafter).Format("yyyy-MM-dd hh:mm:ss");
+					v.effectivedate = new Date(v.effectivedate).Format("yyyy-MM-dd hh:mm:ss");
 					piliangluru_tmp_renewals.push(v);
 				}
 			}
 			var piliangluru_renewals = piliangluru_tmp_renewals;
 
-			if (add_title == '' || add_title == undefined) {
+			if (add_title == '' || add_title == undefined
+				|| add_type_select == '' || add_type_select == undefined) {
 				_this.error(false, '错误', '内容为空或不正确！');
 				_this.add_create_disabled = false;
 				return false;

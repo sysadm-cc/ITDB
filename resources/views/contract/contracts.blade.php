@@ -155,10 +155,10 @@
 						<Input-Number v-model.lazy="edit_totalcost" size="small" :min="1"></Input-Number>
 					</Form-Item>
 					<Form-Item label="开始日期" style="margin-bottom:0px">
-						<Date-picker v-model.lazy="edit_startdate" type="date" size="small"></Date-picker>
+						<Date-picker v-model.lazy="edit_startdate" type="datetime" size="small"></Date-picker>
 					</Form-Item>
-					<Form-Item label="当前结束日期" style="margin-bottom:0px">
-						<Date-picker v-model.lazy="edit_currentenddate" type="date" size="small"></Date-picker>
+					<Form-Item label="结束日期" style="margin-bottom:0px">
+						<Date-picker v-model.lazy="edit_currentenddate" type="datetime" size="small"></Date-picker>
 					</Form-Item>
 					<Form-Item label="详细内容" style="margin-bottom:0px">
 						<i-input v-model.lazy="edit_description" size="small" type="textarea"></i-input>
@@ -180,13 +180,13 @@
 			<i-row>
 				<i-col span="12">
 				<Form-Item label="续约开始日期" style="margin-bottom:0px">
-						<Date-picker v-model.lazy="subedit_renewals_enddatebefore" type="date" size="small"></Date-picker>
+						<Date-picker v-model.lazy="subedit_renewals_enddatebefore" type="datetime" size="small"></Date-picker>
 					</Form-Item>
 					<Form-Item label="续约结束日期" style="margin-bottom:0px">
-						<Date-picker v-model.lazy="subedit_renewals_enddateafter" type="date" size="small"></Date-picker>
+						<Date-picker v-model.lazy="subedit_renewals_enddateafter" type="datetime" size="small"></Date-picker>
 					</Form-Item>
 					<Form-Item label="生效日期" style="margin-bottom:0px">
-						<Date-picker v-model.lazy="subedit_renewals_effectivedate" type="date" size="small"></Date-picker>
+						<Date-picker v-model.lazy="subedit_renewals_effectivedate" type="datetime" size="small"></Date-picker>
 					</Form-Item>
 				</i-col>
 				<i-col span="12">
@@ -210,13 +210,13 @@
 			<i-row>
 				<i-col span="12">
 				<Form-Item label="续约开始日期" style="margin-bottom:0px">
-						<Date-picker v-model.lazy="subadd_renewals_enddatebefore" type="date" size="small"></Date-picker>
+						<Date-picker v-model.lazy="subadd_renewals_enddatebefore" type="datetime" size="small"></Date-picker>
 					</Form-Item>
 					<Form-Item label="续约结束日期" style="margin-bottom:0px">
-						<Date-picker v-model.lazy="subadd_renewals_enddateafter" type="date" size="small"></Date-picker>
+						<Date-picker v-model.lazy="subadd_renewals_enddateafter" type="datetime" size="small"></Date-picker>
 					</Form-Item>
 					<Form-Item label="生效日期" style="margin-bottom:0px">
-						<Date-picker v-model.lazy="subadd_renewals_effectivedate" type="date" size="small"></Date-picker>
+						<Date-picker v-model.lazy="subadd_renewals_effectivedate" type="datetime" size="small"></Date-picker>
 					</Form-Item>
 				</i-col>
 				<i-col span="12">
@@ -390,19 +390,19 @@ var vm_app = new Vue({
 				title: '总价值',
 				key: 'totalcost',
 				resizable: true,
-				width: 180,
+				width: 110,
 			},
 			{
 				title: '开始日期',
 				key: 'startdate',
 				resizable: true,
-				width: 180,
+				width: 160,
 			},
 			{
-				title: '当前结束日期',
+				title: '结束日期',
 				key: 'currentenddate',
 				resizable: true,
-				width: 180,
+				width: 160,
 			},
 			{
 				title: '合同续约',
@@ -412,7 +412,7 @@ var vm_app = new Vue({
 						title: '开始日期',
 						key: 'renewals',
 						align:'center',
-						width: 90,
+						width: 160,
 						className: 'table-info-column-renewals',
 						render: (h, params) => {
 							if (params.row.renewals!=undefined && params.row.renewals!=null) {
@@ -433,7 +433,7 @@ var vm_app = new Vue({
 						title: '结束日期',
 						key: 'renewals',
 						align:'center',
-						width: 90,
+						width: 160,
 						className: 'table-info-column-renewals',
 						render: (h, params) => {
 							if (params.row.renewals!=undefined && params.row.renewals!=null) {
@@ -454,7 +454,7 @@ var vm_app = new Vue({
 						title: '生效日期',
 						key: 'renewals',
 						align:'center',
-						width: 90,
+						width: 160,
 						className: 'table-info-column-renewals',
 						render: (h, params) => {
 							if (params.row.renewals!=undefined && params.row.renewals!=null) {
@@ -874,8 +874,8 @@ var vm_app = new Vue({
 			var description = _this.edit_description;
 			var comments = _this.edit_comments;
 			var totalcost = _this.edit_totalcost;
-			var startdate = _this.edit_startdate != '' && _this.edit_startdate != undefined ? new Date(_this.edit_startdate).Format("yyyy-MM-dd") : '';
-			var currentenddate = _this.edit_currentenddate != '' && _this.edit_currentenddate != undefined ? new Date(_this.edit_currentenddate).Format("yyyy-MM-dd") : '';
+			var startdate = _this.edit_startdate != '' && _this.edit_startdate != undefined ? new Date(_this.edit_startdate).Format("yyyy-MM-dd hh:mm:ss") : '';
+			var currentenddate = _this.edit_currentenddate != '' && _this.edit_currentenddate != undefined ? new Date(_this.edit_currentenddate).Format("yyyy-MM-dd hh:mm:ss") : '';
 
 			if (id == undefined || title == undefined || title == '' || type == undefined || type == '') {
 				_this.warning(false, '警告', '内容不能为空！');
@@ -941,9 +941,9 @@ var vm_app = new Vue({
 			var id = _this.subedit_id;
 			var subid = _this.subedit_subid;
 			var updated_at = _this.subedit_updated_at;
-			var enddatebefore = _this.subedit_renewals_enddatebefore != '' && _this.subedit_renewals_enddatebefore != undefined ? new Date(_this.subedit_renewals_enddatebefore).Format("yyyy-MM-dd") : '';
-			var enddateafter = _this.subedit_renewals_enddateafter != '' && _this.subedit_renewals_enddateafter != undefined ? new Date(_this.subedit_renewals_enddateafter).Format("yyyy-MM-dd") : '';
-			var effectivedate = _this.subedit_renewals_effectivedate != '' && _this.subedit_renewals_effectivedate != undefined ? new Date(_this.subedit_renewals_effectivedate).Format("yyyy-MM-dd") : '';
+			var enddatebefore = _this.subedit_renewals_enddatebefore != '' && _this.subedit_renewals_enddatebefore != undefined ? new Date(_this.subedit_renewals_enddatebefore).Format("yyyy-MM-dd hh:mm:ss") : '';
+			var enddateafter = _this.subedit_renewals_enddateafter != '' && _this.subedit_renewals_enddateafter != undefined ? new Date(_this.subedit_renewals_enddateafter).Format("yyyy-MM-dd hh:mm:ss") : '';
+			var effectivedate = _this.subedit_renewals_effectivedate != '' && _this.subedit_renewals_effectivedate != undefined ? new Date(_this.subedit_renewals_effectivedate).Format("yyyy-MM-dd hh:mm:ss") : '';
 			var notes = _this.subedit_renewals_notes;
 
 			if (id == undefined || subid == undefined
@@ -1041,9 +1041,9 @@ var vm_app = new Vue({
 			var _this = this;
 
 			var id = _this.subadd_id;
-			var enddatebefore = _this.subadd_renewals_enddatebefore != '' && _this.subadd_renewals_enddatebefore != undefined ? new Date(_this.subadd_renewals_enddatebefore).Format("yyyy-MM-dd") : '';
-			var enddateafter = _this.subadd_renewals_enddateafter != '' && _this.subadd_renewals_enddateafter != undefined ? new Date(_this.subadd_renewals_enddateafter).Format("yyyy-MM-dd") : '';
-			var effectivedate = _this.subadd_renewals_effectivedate != '' && _this.subadd_renewals_effectivedate != undefined ? new Date(_this.subadd_renewals_effectivedate).Format("yyyy-MM-dd") : '';
+			var enddatebefore = _this.subadd_renewals_enddatebefore != '' && _this.subadd_renewals_enddatebefore != undefined ? new Date(_this.subadd_renewals_enddatebefore).Format("yyyy-MM-dd hh:mm:ss") : '';
+			var enddateafter = _this.subadd_renewals_enddateafter != '' && _this.subadd_renewals_enddateafter != undefined ? new Date(_this.subadd_renewals_enddateafter).Format("yyyy-MM-dd hh:mm:ss") : '';
+			var effectivedate = _this.subadd_renewals_effectivedate != '' && _this.subadd_renewals_effectivedate != undefined ? new Date(_this.subadd_renewals_effectivedate).Format("yyyy-MM-dd hh:mm:ss") : '';
 			var notes = _this.subadd_renewals_notes;
 			
 			if (id == undefined) {
