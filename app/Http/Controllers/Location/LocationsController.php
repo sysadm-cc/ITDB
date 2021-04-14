@@ -226,7 +226,29 @@ class LocationsController extends Controller
 	}
 
 
-	
+	/**
+	 * 删除记录 locationDelete
+	 *
+	 * @param  int  $id
+	 * @return \Illuminate\Http\Response
+	 */
+	public function locationDelete(Request $request)
+	{
+		if (! $request->isMethod('post') || ! $request->ajax()) return null;
+
+		$id = $request->input('tableselect');
+
+		try	{
+			$result = Locations::whereIn('id', $id)->delete();
+		}
+		catch (\Exception $e) {
+			// echo 'Message: ' .$e->getMessage();
+			$result = 0;
+		}
+		
+		Cache::flush();
+		return $result;
+	}
 
 	
 

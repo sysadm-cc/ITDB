@@ -55,7 +55,9 @@
 	<i-row :gutter="16">
 		<br>
 		<i-col span="3">
-			<i-button @click="items_delete()" :disabled="locations_delete_disabled" type="warning" size="small">删除</i-button>&nbsp;<br>&nbsp;
+			<Poptip confirm word-wrap title="真的要删除这些记录吗？" @on-ok="locations_delete()">
+				<i-button :disabled="locations_delete_disabled" icon="md-remove" type="warning" size="small">删除</i-button>&nbsp;<br>&nbsp;
+			</Poptip>
 		</i-col>
 		<i-col span="3">
 			<i-button type="primary" icon="md-add" size="small" @click="locations_add()">添加新位置</i-button>
@@ -461,6 +463,35 @@ var vm_app = new Vue({
 		},
 
 
+		// 删除记录
+		locations_delete () {
+			var _this = this;
+			
+			var tableselect = _this.tableselect;
+			
+			if (tableselect[0] == undefined) return false;
+
+			var url = "{{ route('location.delete') }}";
+			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
+			axios.post(url, {
+				tableselect: tableselect
+			})
+			.then(function (response) {
+				if (response.data) {
+					_this.locations_delete_disabled = true;
+					_this.tableselect = [];
+					_this.success(false, '成功', '删除成功！');
+					_this.locationsgets(_this.page_current, _this.page_last);
+				} else {
+					_this.error(false, '失败', '删除失败！');
+				}
+			})
+			.catch(function (error) {
+				_this.error(false, '错误', '删除失败！');
+			})
+		},
+
+
 		// 主编辑前查看 - locations
 		edit_locations (row) {
 			var _this = this;
@@ -522,14 +553,14 @@ var vm_app = new Vue({
 				}
 				
 				if (response.data) {
-					_this.success(false, '成功', '保存成功！');
+					_this.success(false, '成功', '更新成功！');
 						_this.locationsgets(_this.page_current, _this.page_last);
 				} else {
-					_this.error(false, '失败', '保存失败！');
+					_this.error(false, '失败', '更新失败！');
 				}
 			})
 			.catch(function (error) {
-				_this.error(false, '错误', '保存失败！');
+				_this.error(false, '错误', '更新失败！');
 			})
 
 		},

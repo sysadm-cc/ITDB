@@ -101,7 +101,7 @@
 		<br>
 		<i-col span="3">
 			<Poptip confirm word-wrap title="真的要删除这些记录吗？" @on-ok="contracts_delete()">
-				<i-button :disabled="contracts_delete_disabled" type="warning" size="small"><Icon type="md-remove"></Icon> 删除</i-button>&nbsp;<br>&nbsp;
+				<i-button :disabled="contracts_delete_disabled" icon="md-remove" type="warning" size="small">删除</i-button>&nbsp;<br>&nbsp;
 			</Poptip>
 		</i-col>
 		<i-col span="3">
@@ -969,14 +969,14 @@ var vm_app = new Vue({
 				}
 				
 				if (response.data) {
-					_this.success(false, '成功', '保存成功！');
+					_this.success(false, '成功', '更新成功！');
 						_this.contractsgets(_this.page_current, _this.page_last);
 				} else {
-					_this.error(false, '失败', '保存失败！');
+					_this.error(false, '失败', '更新失败！');
 				}
 			})
 			.catch(function (error) {
-				_this.error(false, '错误', '保存失败！');
+				_this.error(false, '错误', '更新失败！');
 			})
 
 		},
@@ -1038,14 +1038,14 @@ var vm_app = new Vue({
 				}
 				
 				if (response.data) {
-					_this.success(false, '成功', '保存成功！');
+					_this.success(false, '成功', '更新成功！');
 						_this.contractsgets(_this.page_current, _this.page_last);
 				} else {
-					_this.error(false, '失败', '保存失败！');
+					_this.error(false, '失败', '更新失败！');
 				}
 			})
 			.catch(function (error) {
-				_this.error(false, '错误', '保存失败！');
+				_this.error(false, '错误', '更新失败！');
 			})
 
 		},

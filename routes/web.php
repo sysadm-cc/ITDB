@@ -24,11 +24,8 @@ Route::group(['prefix'=>'location', 'namespace'=>'Location', 'middleware'=>['jwt
 	// Locations Update
 	Route::post('locationUpdate', 'LocationsController@locationUpdate')->name('location.update');
 
-	// Agents Update
-	// Route::post('itemItemtypesUpdateHassoftware', 'ItemItemtypesController@itemItemtypesUpdateHassoftware')->name('item.itemtypesupdate_hassoftware');
-
-	// Agents Delete
-	// Route::post('itemItemtypesDelete', 'ItemItemtypesController@itemItemtypesDelete')->name('item.itemtypesdelete');
+	// Locations Delete
+	Route::post('locationDelete', 'LocationsController@locationDelete')->name('location.delete');
 
 	// 显示 Locations add 页面
 	Route::get('locationAdd', 'LocationsController@locationAdd')->name('location.add');
