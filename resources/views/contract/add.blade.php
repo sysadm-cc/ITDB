@@ -309,15 +309,19 @@ var vm_app = new Vue({
 			// 删除空json节点
 			var piliangluru_tmp_renewals = [];
 			for (var v of _this.piliangluru_renewals) {
-				if (v.enddatebefore == '' || v.enddatebefore == undefined
-					|| v.enddateafter == '' || v.enddateafter == undefined
-					|| v.effectivedate == '' || v.effectivedate == undefined) {
-				} else {
-					v.enddatebefore = new Date(v.enddatebefore).Format("yyyy-MM-dd hh:mm:ss");
-					v.enddateafter = new Date(v.enddateafter).Format("yyyy-MM-dd hh:mm:ss");
-					v.effectivedate = new Date(v.effectivedate).Format("yyyy-MM-dd hh:mm:ss");
+				v.enddatebefore = v.enddatebefore != '' && v.enddatebefore != undefined ? new Date(v.enddatebefore).Format("yyyy-MM-dd hh:mm:ss") : '';
+				v.enddateafter = v.enddateafter != '' && v.enddateafter != undefined ? new Date(v.enddateafter).Format("yyyy-MM-dd hh:mm:ss") : '';
+				v.effectivedate = v.effectivedate != '' && v.effectivedate != undefined ? new Date(v.effectivedate).Format("yyyy-MM-dd hh:mm:ss") : '';
+
+				// if (v.enddatebefore == '' || v.enddatebefore == undefined
+				// 	|| v.enddateafter == '' || v.enddateafter == undefined
+				// 	|| v.effectivedate == '' || v.effectivedate == undefined) {
+				// } else {
+				// 	v.enddatebefore = new Date(v.enddatebefore).Format("yyyy-MM-dd hh:mm:ss");
+				// 	v.enddateafter = new Date(v.enddateafter).Format("yyyy-MM-dd hh:mm:ss");
+				// 	v.effectivedate = new Date(v.effectivedate).Format("yyyy-MM-dd hh:mm:ss");
 					piliangluru_tmp_renewals.push(v);
-				}
+				// }
 			}
 			var piliangluru_renewals = piliangluru_tmp_renewals;
 
