@@ -27,6 +27,7 @@ class ContractsTableSeeder extends Seeder
                 'description' => null,
                 'comments' => null,
                 'totalcost' => null,
+                'currency' => null,
                 'startdate' => null,
                 'currentenddate' => null,
                 'renewals' => json_encode(array(), true),

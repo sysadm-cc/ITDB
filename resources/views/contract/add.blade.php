@@ -43,8 +43,13 @@
 				<Form-Item label="备注" style="margin-bottom:0px">
 					<i-input v-model.lazy="add_comments" size="small"></i-input>
 				</Form-Item>
-				<Form-Item label="总价值(¥)" style="margin-bottom:0px">
+				<Form-Item label="总价值" style="margin-bottom:0px">
 					<Input-Number v-model.lazy="add_totalcost" size="small" :min="1"></Input-Number>
+				</Form-Item>
+				<Form-Item label="币种" style="margin-bottom:0px">
+					<i-select v-model.lazy="add_currency_select" size="small" placeholder="">
+						<i-option v-for="item in add_currency_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+					</i-select>
 				</Form-Item>
 				<Form-Item label="开始日期" style="margin-bottom:0px">
 					<Date-picker v-model.lazy="add_startdate" type="datetime" size="small"></Date-picker>
@@ -178,6 +183,13 @@ var vm_app = new Vue({
 		add_description: '',
 		add_comments: '',
 		add_totalcost: '',
+		add_currency_select: '',
+		add_currency_options: [
+			{label: 'RMB(¥)', value: 1},
+			{label: 'USD($)', value: 2},
+			{label: 'EUR(€)', value: 3},
+			{label: 'JPY(Ұ)', value: 4},
+		],
 		add_startdate: '',
 		add_currentenddate: '',
 		// add_renewals: '',
@@ -278,6 +290,7 @@ var vm_app = new Vue({
 			_this.add_description = '';
 			_this.add_comments = '';
 			_this.add_totalcost = '';
+			_this.add_currency_select = '';
 			_this.add_startdate = '';
 			_this.add_currentenddate = '';
 			_this.piliangluruxiang_renewals = 1;
@@ -303,6 +316,7 @@ var vm_app = new Vue({
 			var add_description = _this.add_description;
 			var add_comments = _this.add_comments;
 			var add_totalcost = _this.add_totalcost;
+			var add_currency_select = _this.add_currency_select;
 			var add_startdate = _this.add_startdate ? new Date(_this.add_startdate).Format("yyyy-MM-dd hh:mm:ss") : '';
 			var add_currentenddate = _this.add_currentenddate ? new Date(_this.add_currentenddate).Format("yyyy-MM-dd hh:mm:ss") : '';
 			
@@ -341,6 +355,7 @@ var vm_app = new Vue({
 				add_description: add_description,
 				add_comments: add_comments,
 				add_totalcost: add_totalcost,
+				add_currency_select: add_currency_select,
 				add_startdate: add_startdate,
 				add_currentenddate: add_currentenddate,
 				add_renewals: piliangluru_renewals,

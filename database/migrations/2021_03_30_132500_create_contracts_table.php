@@ -21,6 +21,7 @@ class CreateContractsTable extends Migration
             $table->text('description')->nullable()->comment('合同详细描述');
             $table->string('comments')->nullable()->comment('备注');
             $table->string('totalcost')->nullable()->comment('总价值');
+            $table->integer('currency')->nullable()->comment('币种');
             $table->datetime('startdate')->nullable()->comment('开始日期');
             $table->datetime('currentenddate')->nullable()->comment('当前结束日期');
             $table->json('renewals')->nullable()->comment('合同续约');

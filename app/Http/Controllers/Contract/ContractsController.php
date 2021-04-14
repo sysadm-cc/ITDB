@@ -137,6 +137,7 @@ class ContractsController extends Controller
 		$description = $request->input('add_description');
 		$comments = $request->input('add_comments');
 		$totalcost = $request->input('add_totalcost');
+		$currency = $request->input('add_currency_select');
 		$startdate = $request->input('add_startdate');
 		$currentenddate = $request->input('add_currentenddate');
 		$renewals = $request->input('add_renewals');
@@ -149,6 +150,7 @@ class ContractsController extends Controller
 				'description' => $description,
 				'comments' => $comments,
 				'totalcost' => $totalcost,
+				'currency' => $currency,
 				'startdate' => $startdate,
 				'currentenddate' => $currentenddate,
 				'renewals' => $renewals,
@@ -248,6 +250,7 @@ class ContractsController extends Controller
 		$description = $request->input('description');
 		$comments = $request->input('comments');
 		$totalcost = $request->input('totalcost');
+		$currency = $request->input('currency');
 		$startdate = $request->input('startdate');
 		$currentenddate = $request->input('currentenddate');
 		
@@ -270,6 +273,7 @@ class ContractsController extends Controller
 					'description'		=> $description,
 					'comments'			=> $comments,
 					'totalcost'			=> $totalcost,
+					'currency'			=> $currency,
 					'startdate'			=> $startdate,
 					'currentenddate'	=> $currentenddate,
 				]);

@@ -151,8 +151,13 @@
 					<Form-Item label="备注" style="margin-bottom:0px">
 						<i-input v-model.lazy="edit_comments" size="small"></i-input>
 					</Form-Item>
-					<Form-Item label="总价值(¥)" style="margin-bottom:0px">
-						<Input-Number v-model.lazy="edit_totalcost" size="small" :min="1"></Input-Number>
+					<Form-Item label="总价值" style="margin-bottom:0px">
+						<Input-Number v-model.lazy="edit_totalcost" size="small" :min="1" style="width:50%"></Input-Number>
+					</Form-Item>
+					<Form-Item label="币种" style="margin-bottom:0px">
+						<i-select v-model.lazy="edit_currency_select" size="small" placeholder="">
+							<i-option v-for="item in edit_currency_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+						</i-select>
 					</Form-Item>
 					<Form-Item label="开始日期" style="margin-bottom:0px">
 						<Date-picker v-model.lazy="edit_startdate" type="datetime" size="small"></Date-picker>
@@ -161,7 +166,7 @@
 						<Date-picker v-model.lazy="edit_currentenddate" type="datetime" size="small"></Date-picker>
 					</Form-Item>
 					<Form-Item label="详细内容" style="margin-bottom:0px">
-						<i-input v-model.lazy="edit_description" size="small" type="textarea"></i-input>
+						<i-input v-model.lazy="edit_description" size="small" type="textarea" :rows="5"></i-input>
 					</Form-Item>
 				</i-col>
 			</i-row>
@@ -301,6 +306,14 @@ var vm_app = new Vue({
 		edit_description: '',
 		edit_comments: '',
 		edit_totalcost: '',
+		edit_currency_select: '',
+		edit_currency_options: [
+			{label: 'RMB(¥)', value: 1},
+			{label: 'USD($)', value: 2},
+			{label: 'EUR(€)', value: 3},
+			{label: 'JPY(Ұ)', value: 4},
+		],
+		edit_currency: '',
 		edit_startdate: '',
 		edit_currentenddate: '',
 		
@@ -379,6 +392,20 @@ var vm_app = new Vue({
 				key: 'description',
 				resizable: true,
 				width: 180,
+				render: (h, params) => {
+					return h('span', {
+						}, [
+						h('Poptip', {
+							props: {
+								'word-wrap': true,
+								'width': 600,
+								'trigger': 'hover',
+								'content': params.row.description,
+								'transfer': true
+							},
+						}, params.row.description == null ? '' : params.row.description.substr(0, 16) + '...')
+					]);
+				}
 			},
 			{
 				title: '备注',
@@ -390,7 +417,45 @@ var vm_app = new Vue({
 				title: '总价值',
 				key: 'totalcost',
 				resizable: true,
-				width: 110,
+				width: 130,
+				render: (h, params) => {
+					var a = params.row.totalcost;
+
+					if (a != null) {
+						switch (params.row.currency) {
+							case 1:
+								return h('span', {}, '¥'+a);break;
+							case 2:
+								return h('span', {}, '$'+a);break;
+							case 3:
+								return h('span', {}, '€'+a);break;
+							case 4:
+								return h('span', {}, 'Ұ'+a);break;
+							default:
+								return h('span', {}, a);
+						}
+					} else {
+
+					}
+				}
+			},
+			{
+				title: '币种',
+				key: 'currency',
+				width: 80,
+				render: (h, params) => {
+					switch (params.row.currency) {
+						case 1:
+							return h('span', {}, 'RMB(¥)');break;
+						case 2:
+							return h('span', {}, 'USD($)');break;
+						case 3:
+							return h('span', {}, 'EUR(€)');break;
+						case 4:
+							return h('span', {}, 'JPY(Ұ)');break;
+						default:
+					}
+				}
 			},
 			{
 				title: '开始日期',
@@ -854,6 +919,7 @@ var vm_app = new Vue({
 			_this.edit_description = row.description;
 			_this.edit_comments = row.comments;
 			_this.edit_totalcost = row.totalcost;
+			_this.edit_currency_select = row.currency;
 			_this.edit_startdate = row.startdate;
 			_this.edit_currentenddate = row.currentenddate;
 
@@ -874,6 +940,7 @@ var vm_app = new Vue({
 			var description = _this.edit_description;
 			var comments = _this.edit_comments;
 			var totalcost = _this.edit_totalcost;
+			var currency = _this.edit_currency_select;
 			var startdate = _this.edit_startdate != '' && _this.edit_startdate != undefined ? new Date(_this.edit_startdate).Format("yyyy-MM-dd hh:mm:ss") : '';
 			var currentenddate = _this.edit_currentenddate != '' && _this.edit_currentenddate != undefined ? new Date(_this.edit_currentenddate).Format("yyyy-MM-dd hh:mm:ss") : '';
 
@@ -893,6 +960,7 @@ var vm_app = new Vue({
 				description: description,
 				comments: comments,
 				totalcost: totalcost,
+				currency: currency,
 				startdate: startdate,
 				currentenddate: currentenddate,
 			})
