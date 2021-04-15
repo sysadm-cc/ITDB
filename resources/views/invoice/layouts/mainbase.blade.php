@@ -313,7 +313,7 @@ if (isMobile) {
 
 							<Submenu name="7">
 								<template slot="title">
-										<Icon type="md-build" size="20"></Icon> 机架 <span style="color:rgb(158, 167, 180);font-size:10px;">Racks</span>
+										<Icon type="md-build" size="20"></Icon> 机柜 <span style="color:rgb(158, 167, 180);font-size:10px;">Racks</span>
 								</template>
 								<Menu-item name="7-1"><Icon type="md-search" size="18"></Icon> 查询</Menu-item>
 								<Menu-item name="7-2"><Icon type="md-add" size="18"></Icon> 添加</Menu-item>
@@ -465,7 +465,7 @@ function navmenuselect (name) {
 	  window.location.href = "";
 	  break;
 
-	// 机架
+	// 机柜
 	case '7-1':
 	  window.location.href = "{{route('rack.racks')}}";
 	  break;

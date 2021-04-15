@@ -48,8 +48,8 @@ Route::group(['prefix'=>'rack', 'namespace'=>'Rack', 'middleware'=>['jwtauth']],
 	// Agents Update typedesc
 	// Route::post('itemItemtypesUpdateTypedesc', 'ItemItemtypesController@itemItemtypesUpdateTypedesc')->name('item.itemtypesupdate_typedesc');
 
-	// Agents Update
-	// Route::post('itemItemtypesUpdateHassoftware', 'ItemItemtypesController@itemItemtypesUpdateHassoftware')->name('item.itemtypesupdate_hassoftware');
+	// Racks Update
+	Route::post('rackUpdate', 'RacksController@rackUpdate')->name('rack.update');
 
 	// Racks Delete
 	Route::post('rackDelete', 'RacksController@rackDelete')->name('rack.delete');

@@ -1,7 +1,7 @@
 @extends('rack.layouts.mainbase')
 
 @section('my_title')
-机架 - 
+机柜 - 
 @parent
 @endsection
 
@@ -16,7 +16,7 @@
 
 @section('my_body')
 @parent
-<!-- <Divider orientation="left">机架</Divider> -->
+<!-- <Divider orientation="left">机柜</Divider> -->
 &nbsp;<br>
 
 <Collapse v-model="collapse_query">
@@ -60,7 +60,7 @@
 			</Poptip>
 		</i-col>
 		<i-col span="3">
-			<i-button type="primary" size="small" @click="racks_add()" icon="md-add">添加机架</i-button>
+			<i-button type="primary" size="small" @click="racks_add()" icon="md-add">添加机柜</i-button>
 		</i-col>
 		<i-col span="3">
 			<i-button type="default" size="small" @click="items_export()" icon="ios-download-outline">导出列表</i-button>
@@ -89,7 +89,7 @@
 <!-- 以下为各元素编辑窗口 -->
 
 <!-- 主编辑窗口 racks-->
-<Modal v-model="modal_edit_racks" @on-ok="update_racks" ok-text="保存" title="编辑 - 机架" width="460">
+<Modal v-model="modal_edit_racks" @on-ok="update_racks" ok-text="保存" title="编辑 - 机柜" width="460">
 	<div style="text-align:left">
 
 		<p>
@@ -249,19 +249,19 @@ var vm_app = new Vue({
 				title: '尺寸（U）',
 				key: 'usize',
 				resizable: true,
-				width: 180,
+				width: 100,
 			},
 			{
 				title: '深度（mm）',
 				key: 'depth',
 				resizable: true,
-				width: 180,
+				width: 110,
 			},
 			{
 				title: 'U数起始顺序',
 				key: 'revnums',
 				resizable: true,
-				width: 90,
+				width: 110,
 				render: (h, params) => {
 					return params.row.revnums ? h('span', {}, '1=Top') : h('span', {}, '1=Bottom')
 				},
@@ -316,7 +316,7 @@ var vm_app = new Vue({
 								'word-wrap': true,
 								'trigger': 'hover',
 								'confirm': false,
-								'content': '编辑机架信息',
+								'content': '编辑机柜信息',
 								'transfer': true
 							},
 						}, [
@@ -576,7 +576,7 @@ var vm_app = new Vue({
 			var comments = _this.edit_comments;
 
 			
-			if (id == undefined || title == undefined || title == '' || type == undefined || type == '') {
+			if (id == undefined || title == undefined || title == '') {
 				_this.warning(false, '警告', '内容不能为空！');
 				return false;
 			}
@@ -587,14 +587,13 @@ var vm_app = new Vue({
 				id: id,
 				updated_at: updated_at,
 				title: title,
-				type: type,
-				number: number,
-				description: description,
+				model: model,
+				usize: usize,
+				depth: depth,
+				revnums: revnums,
+				locationid: locationid,
+				label: label,
 				comments: comments,
-				totalcost: totalcost,
-				currency: currency,
-				startdate: startdate,
-				currentenddate: currentenddate,
 			})
 			.then(function (response) {
 				// console.log(response.data);return false;
@@ -626,7 +625,7 @@ var vm_app = new Vue({
 	},
 	mounted: function(){
 		var _this = this;
-		_this.current_nav = '机架';
+		_this.current_nav = '机柜';
 		_this.current_subnav = '查询';
 
 		// 尺寸选择

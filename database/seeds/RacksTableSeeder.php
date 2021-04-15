@@ -21,8 +21,8 @@ class RacksTableSeeder extends Seeder
             0 => 
             array (
                 'id' => 1,
-                'title' => '机架一',
-                'model' => '华为50U',
+                'title' => '机柜一号',
+                'model' => 'XX品牌XX型号50U',
                 'usize' => 50,
                 'depth' => null,
                 // 'revnums' => 0,

@@ -1,7 +1,7 @@
 @extends('rack.layouts.mainbase')
 
 @section('my_title')
-机架添加 - 
+机柜添加 - 
 @parent
 @endsection
 
@@ -16,7 +16,7 @@
 
 @section('my_body')
 @parent
-<!-- <Divider orientation="left">机架添加</Divider> -->
+<!-- <Divider orientation="left">机柜添加</Divider> -->
 &nbsp;<br>
 
 
@@ -24,7 +24,7 @@
 	<i-row :gutter="16">
 
 		<i-col span="8">
-			<Divider orientation="left">机架属性</Divider>
+			<Divider orientation="left">机柜属性</Divider>
 
 			<i-form :label-width="100">
 				<Form-Item label="名称" required style="margin-bottom:0px">
@@ -585,7 +585,7 @@ var vm_app = new Vue({
 	mounted: function(){
 		var _this = this;
 		_this.loadingbarstart();
-		_this.current_nav = '机架';
+		_this.current_nav = '机柜';
 		_this.current_subnav = '添加';
 
 
