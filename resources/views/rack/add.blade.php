@@ -51,11 +51,11 @@
 						<i-option v-for="item in add_location_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
 					</i-select>
 				</Form-Item>
-				<!-- <Form-Item label="区域/房间" style="margin-bottom:0px">
-					<i-select v-model.lazy="add_locarea_select" size="small" placeholder="">
-						<i-option v-for="item in add_locarea_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+				<Form-Item label="区域/房间" style="margin-bottom:0px">
+					<i-select v-model.lazy="add_area_select" size="small" placeholder="">
+						<i-option v-for="item in add_area_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
 					</i-select>
-				</Form-Item> -->
+				</Form-Item>
 				<Form-Item label="标签" style="margin-bottom:0px">
 					<i-input v-model.lazy="add_label" size="small"></i-input>
 				</Form-Item>
@@ -158,14 +158,11 @@ var vm_app = new Vue({
 			{label: '楼层一', value: 1},
 			{label: '楼层二', value: 2},
 		],
-		// add_locarea_select: '',
-		// add_locarea_options: [
-		// 	{label: '房间一', value: 1},
-		// 	{label: '房间二', value: 2},
-		// 	{label: '硬件销售商', value: '硬件销售商'},
-		// 	{label: '买方', value: '买方'},
-		// 	{label: '承包商', value: '承包商'},
-		// ],
+		add_area_select: '',
+		add_area_options: [
+			{label: '房间一', value: 1},
+			{label: '房间二', value: 2},
+		],
 		add_label: '',
 		add_comments: '',
 
@@ -449,7 +446,7 @@ var vm_app = new Vue({
 				// alert(key);
 				// alert(json[key]);
 				// arr.push({ obj.['value'] = key, obj.['label'] = json[key] });
-				arr.push({ value: json[k].id, label: json[k].title+' ('+json[k].building+' / '+json[k].floor+' / '+json[k].area+')' });
+				arr.push({ value: json[k].id, label: json[k].title+' ('+json[k].building+' / '+json[k].floor+')' });
 			}
 			return arr;
 			// return arr.reverse();
@@ -465,7 +462,7 @@ var vm_app = new Vue({
 			_this.add_depth = '';
 			_this.add_revnums_select = '';
 			_this.add_location_select = '';
-			// _this.add_locarea_select = '';
+			// _this.add_area_select = '';
 			_this.add_label = '';
 			_this.add_comments = '';
 		},
@@ -482,7 +479,7 @@ var vm_app = new Vue({
 			var add_depth = _this.add_depth;
 			var add_revnums_select = _this.add_revnums_select;
 			var add_location_select = _this.add_location_select;
-			// var add_locarea_select = _this.add_locarea_select;
+			// var add_area_select = _this.add_area_select;
 			var add_label = _this.add_label;
 			var add_comments = _this.add_comments;
 
@@ -502,7 +499,7 @@ var vm_app = new Vue({
 				add_depth: add_depth,
 				add_revnums_select: add_revnums_select,
 				add_location_select: add_location_select,
-				// add_locarea_select: add_locarea_select,
+				// add_area_select: add_area_select,
 				add_label: add_label,
 				add_comments: add_comments,
 			})

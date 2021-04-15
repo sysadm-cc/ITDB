@@ -281,7 +281,7 @@ var vm_app = new Vue({
 			},
 			{
 				title: '区域/房间',
-				key: 'area',
+				key: 'areas',
 				resizable: true,
 				width: 110,
 			},
@@ -414,7 +414,7 @@ var vm_app = new Vue({
 				// alert(key);
 				// alert(json[key]);
 				// arr.push({ obj.['value'] = key, obj.['label'] = json[key] });
-				arr.push({ value: json[k].id, label: json[k].title+' ('+json[k].building+' / '+json[k].floor+' / '+json[k].area+')' });
+				arr.push({ value: json[k].id, label: json[k].title+' ('+json[k].building+' / '+json[k].floor+')' });
 			}
 			return arr;
 			// return arr.reverse();
