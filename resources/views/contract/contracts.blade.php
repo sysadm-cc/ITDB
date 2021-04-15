@@ -361,12 +361,6 @@ var vm_app = new Vue({
 				resizable: true,
 				width: 160,
 			},
-			// {
-			// 	title: '类型',
-			// 	key: 'type',
-			// 	resizable: true,
-			// 	width: 180,
-			// },
 			{
 				title: '类型',
 				key: 'type',

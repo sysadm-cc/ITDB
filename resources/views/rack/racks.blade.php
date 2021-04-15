@@ -261,13 +261,13 @@ var vm_app = new Vue({
 				title: 'U数起始顺序',
 				key: 'revnums',
 				resizable: true,
-				width: 110,
+				width: 180,
 				render: (h, params) => {
-					return params.row.revnums ? h('span', {}, '1=Top') : h('span', {}, '1=Bottom')
+					return params.row.revnums ? h('span', {}, '1-Top (从上向下计数)') : h('span', {}, '1=Bottom (从下向上计数)')
 				},
 			},
 			{
-				title: '位置',
+				title: '位置/楼层',
 				key: 'locationid',
 				resizable: true,
 				width: 180,
@@ -278,6 +278,12 @@ var vm_app = new Vue({
 						}
 					}))
 				}
+			},
+			{
+				title: '区域/房间',
+				key: 'area',
+				resizable: true,
+				width: 110,
 			},
 			{
 				title: '标签',

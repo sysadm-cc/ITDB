@@ -2,9 +2,9 @@
 
 use Illuminate\Database\Seeder;
 
-use App\Models\Location\Locations;
+use App\Models\Location\Areas;
 
-class LocationsTableSeeder extends Seeder
+class AreasTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,9 +15,9 @@ class LocationsTableSeeder extends Seeder
     {
 		$nowtime = date("Y-m-d H:i:s",time());
 		
-		Locations::truncate();
+		Areas::truncate();
 
-        Locations::insert(array (
+        Areas::insert(array (
             0 => 
             array (
                 'id' => 1,

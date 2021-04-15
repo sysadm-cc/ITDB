@@ -7,6 +7,51 @@
 
 @section('my_style')
 <!-- <link rel="stylesheet" href="{{ asset('css/camera.css') }}"> -->
+<style type="text/css">
+/* 合并单元格样式 */
+.subCol>ul>li{
+      margin:0 -18px;
+      list-style:none;
+      text-Align: center;
+      padding: 9px;
+      border-bottom:1px solid #E8EAEC;
+      overflow-x: hidden;
+	  line-height: 2.2;
+}
+.subCol>ul>li:last-child{
+  border-bottom: none
+}
+
+.ivu-table .table-info-row td{
+	background-color: #2db7f5;
+	color: #fff;
+}
+.ivu-table .table-error-row td{
+	background-color: #ff6600;
+	color: #fff;
+}
+.ivu-table td.table-info-column{
+	background-color: #2db7f5;
+	color: #fff;
+}
+.ivu-table .table-info-cell-name {
+	background-color: #2db7f5;
+	color: #fff;
+}
+.ivu-table .table-info-cell-age {
+	background-color: #ff6600;
+	color: #fff;
+}
+.ivu-table .table-info-cell-address {
+	background-color: #187;
+	color: #fff;
+}
+
+.ivu-table td.table-info-column-areas {
+	background-color: #187;
+	color: #fff;
+}
+</style>
 @endsection
 
 @section('my_js')
@@ -239,12 +284,190 @@ var vm_app = new Vue({
 				resizable: true,
 				width: 180,
 			},
+			// {
+			// 	title: '区域/房间',
+			// 	key: 'area',
+			// 	resizable: true,
+			// 	width: 180,
+			// },
+
 			{
 				title: '区域/房间',
-				key: 'area',
-				resizable: true,
-				width: 180,
+				align: 'center',
+				children: [
+					{
+						title: '名称',
+						key: 'area',
+						align:'center',
+						width: 90,
+						className: 'table-info-column-areas',
+						render: (h, params) => {
+							if (params.row.area!=undefined && params.row.area!=null) {
+								return h('div', {
+									attrs: {
+										class:'subCol'
+									},
+								}, [
+									h('ul', params.row.area.map(item => {
+										return h('li', {
+										}, item.name == null || item.name == '' ? '-' : item.name)
+									}))
+								]);
+							}
+						}
+					},
+					{
+						title: 'X1',
+						key: 'area',
+						align:'center',
+						width: 60,
+						className: 'table-info-column-areas',
+						render: (h, params) => {
+							if (params.row.area!=undefined && params.row.area!=null) {
+								return h('div', {
+									attrs: {
+										class:'subCol'
+									},
+								}, [
+									h('ul', params.row.area.map(item => {
+										return h('li', {
+										}, item.x1 == null || item.x1 == '' ? '-' : item.x1)
+									}))
+								]);
+							}
+						}
+					},
+					{
+						title: 'Y1',
+						key: 'area',
+						align:'center',
+						width: 60,
+						className: 'table-info-column-areas',
+						render: (h, params) => {
+							if (params.row.area!=undefined && params.row.area!=null) {
+								return h('div', {
+									attrs: {
+										class:'subCol'
+									},
+								}, [
+									h('ul', params.row.area.map(item => {
+										return h('li', {
+										}, item.y1 == null || item.y1 == '' ? '-' : item.y1)
+									}))
+								]);
+							}
+						}
+					},
+					{
+						title: 'X2',
+						key: 'area',
+						align:'center',
+						width: 60,
+						className: 'table-info-column-areas',
+						render: (h, params) => {
+							if (params.row.area!=undefined && params.row.area!=null) {
+								return h('div', {
+									attrs: {
+										class:'subCol'
+									},
+								}, [
+									h('ul', params.row.area.map(item => {
+										return h('li', {
+										}, item.x2 == null || item.x2 == '' ? '-' : item.x2)
+									}))
+								]);
+							}
+						}
+					},
+					{
+						title: 'Y2',
+						key: 'area',
+						align:'center',
+						width: 60,
+						className: 'table-info-column-areas',
+						render: (h, params) => {
+							if (params.row.area!=undefined && params.row.area!=null) {
+								return h('div', {
+									attrs: {
+										class:'subCol'
+									},
+								}, [
+									h('ul', params.row.area.map(item => {
+										return h('li', {
+										}, item.y2 == null || item.y2 == '' ? '-' : item.y2)
+									}))
+								]);
+							}
+						}
+					},
+					{
+						title: '操作',
+						key: 'action',
+						align: 'center',
+						width: 100,
+						className: 'table-info-column-areas',
+						render: (h, params) => {
+							if (params.row.area!=undefined && params.row.area!=null) {
+								return h('div', {
+										attrs: {
+											class:'subCol'
+										},
+									}, [
+									h('ul', params.row.area.map((item, index) => {
+										return h('li', {
+										}, [
+											h('Button', {
+												props: {
+													type: 'primary',
+													size: 'small',
+													icon: 'md-create'
+												},
+												style: {
+													marginRight: '5px'
+												},
+												on: {
+													click: () => {
+														vm_app.subedit_renewals(params.row, item, index)
+													}
+												}
+											}),
+
+
+											h('Poptip', {
+												props: {
+													'word-wrap': true,
+													'trigger': 'click',
+													'confirm': true,
+													'title': '真的要删除吗？',
+													'transfer': true
+												},
+												on: {
+													'on-ok': () => {
+														vm_app.subdelete_renewals(params.row, item, index)
+													}
+												}
+											}, [
+												h('Button', {
+													props: {
+														type: 'warning',
+														size: 'small',
+														icon: 'md-remove'
+													},
+													style: {
+														marginRight: '5px'
+													},
+												})
+											]),
+
+										])
+									}))
+								]);
+							}
+						},
+					}
+				]
 			},
+
 			{
 				title: '坐标x1',
 				key: 'x1',

@@ -22,11 +22,11 @@ class Locations extends Model
      * 用于json与array互相转换
      * @var array
      */
-    // protected $casts = [
-    //     'application' => 'array',
+    protected $casts = [
+        'area' => 'array',
     //     // 'actuality' => 'array',
     //     'auditing' => 'array',
-    // ];
+    ];
 
 
 }
