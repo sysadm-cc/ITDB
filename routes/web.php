@@ -33,6 +33,15 @@ Route::group(['prefix'=>'location', 'namespace'=>'Location', 'middleware'=>['jwt
 	// Locations Create
 	Route::post('locationCreate', 'LocationsController@locationCreate')->name('location.create');
 
+	// Locations SubUpdate Areas
+	Route::post('SubupdateAreas', 'LocationsController@SubupdateAreas')->name('location.subupdateareas');
+
+	// Locations SubDelete Areas
+	Route::post('SubdeleteAreas', 'LocationsController@SubdeleteAreas')->name('location.subdeleteareas');
+
+	// Locations SubCreate Areas
+	Route::post('SubCreateAreas', 'LocationsController@SubCreateAreas')->name('location.subcreateareas');
+
 });
 
 // Racks 路由

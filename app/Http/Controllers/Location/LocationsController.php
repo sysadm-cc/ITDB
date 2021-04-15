@@ -251,7 +251,138 @@ class LocationsController extends Controller
 	}
 
 	
+	/**
+	 * areas 子项更新 SubupdateAreas
+	 *
+	 * @param  int  $id
+	 * @return \Illuminate\Http\Response
+	 */
+	public function SubupdateAreas(Request $request)
+	{
+		if (! $request->isMethod('post') || ! $request->ajax()) return null;
 
+		$id = $request->input('id');
+		$subid = $request->input('subid');
+		$updated_at = $request->input('updated_at');
+
+		$name = $request->input('name');
+		$x1 = $request->input('x1');
+		$y1 = $request->input('y1');
+		$x2 = $request->input('x2');
+		$y2 = $request->input('y2');
+
+		// 判断如果不是最新的记录，不可被编辑
+		// 因为可能有其他人在你当前表格未刷新的情况下已经更新过了
+		$res = Contracts::select('updated_at')
+			->where('id', $id)
+			->first();
+		$res_updated_at = date('Y-m-d H:i:s', strtotime($res['updated_at']));
+		if ($updated_at != $res_updated_at) return 0;
+
+		$nowtime = date("Y-m-d H:i:s",time());
+
+		// 尝试更新json
+		try	{
+			DB::beginTransaction();
+
+			// if (empty($buliangneirong) && empty($weihao) && empty($shuliang[1])) {
+				// $result = DB::update('update smt_qcreports set bushihejianshuheji = ' . $bushihejianshuheji . ', ppm = ' . $ppm . ', updated_at = "' . $nowtime . '" where id = ?', [$id]);
+			// } else {
+				$sql = 'JSON_REPLACE(areas, ';
+				$sql .= '\'$[' . $subid . '].name\', "' . $name . '", ';
+				$sql .= '\'$[' . $subid . '].x1\', "' . $x1 . '", ';
+				$sql .= '\'$[' . $subid . '].y1\', "' . $y1 . '", ';
+				$sql .= '\'$[' . $subid . '].x2\', "' . $x2 . '", ';
+				$sql .= '\'$[' . $subid . '].y2\', "' . $y2 . '")';
+
+				$result = DB::update('update locations set areas = ' . $sql . ', updated_at = "' . $nowtime . '" where id = ?', [$id]);
+			// }
+			$result = 1;
+		}
+		catch (\Exception $e) {
+			DB::rollBack();
+			// dd('Message: ' .$e->getMessage());
+			$result = 0;
+		}
+		DB::commit();
+		Cache::flush();
+		// dd($result);
+		return $result;
+	}
+
+
+	/**
+	 * areas 子项删除 SubDeleteAreas
+	 *
+	 * @param  int  $id
+	 * @return \Illuminate\Http\Response
+	 */
+	public function SubDeleteAreas(Request $request)
+	{
+		if (! $request->isMethod('post') || ! $request->ajax()) return null;
+
+		$id = $request->input('id');
+		$subid = $request->input('subid');
+
+		$sql = 'JSON_REMOVE(areas, \'$[' . $subid . ']\')';
+
+		$nowtime = date("Y-m-d H:i:s",time());
+
+		try	{
+			$result = DB::update('update locations set areas = ' . $sql . ', updated_at = "' . $nowtime . '" where id = ?', [$id]);
+		}
+		catch (\Exception $e) {
+			// dd('Message: ' .$e->getMessage());
+			$result = 0;
+		}
+		
+		Cache::flush();
+		// dd($result);
+		return $result;
+	}
+
+
+	/**
+	* Areas 子项添加 SubCreateAreas
+	*
+	* @param  int  $id
+	* @return \Illuminate\Http\Response
+	*/
+	public function SubCreateAreas(Request $request)
+	{
+		if (! $request->isMethod('post') || ! $request->ajax()) return null;
+
+		$id = $request->input('id');
+		$a['name'] = $request->input('name');
+		$a['x1'] = $request->input('x1');
+		$a['y1'] = $request->input('y1');
+		$a['x2'] = $request->input('x2');
+		$a['y2'] = $request->input('y2');
+
+		// 确认json id
+		$areas = '';
+		foreach ($a as $key => $value) {
+			$areas .= '"'. $key . '":"' . $value . '",';
+		}
+		$areas = substr($areas, 0, strlen($areas)-1);
+
+		$sql = 'JSON_MERGE_PRESERVE(areas, \'[{' . $areas . '}]\')';
+		$nowtime = date("Y-m-d H:i:s",time());
+
+		// 尝试更新（追加json）
+		try	{
+			DB::beginTransaction();
+			$result = DB::update('update locations set areas = ' . $sql . ', updated_at = "' . $nowtime . '" where id = ?', [$id]);
+		}
+		catch (\Exception $e) {
+			DB::rollBack();
+			// dd('Message: ' .$e->getMessage());
+			$result = 0;
+		}
+		DB::commit();
+		Cache::flush();
+		return $result;
+	}
 
 
 

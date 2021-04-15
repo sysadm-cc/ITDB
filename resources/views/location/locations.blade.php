@@ -178,7 +178,70 @@
 	</div>	
 </Modal>
 
+<!-- 子编辑窗口 areas-->
+<Modal v-model="modal_subedit_areas" @on-ok="subupdate_areas" ok-text="保存" title="编辑 - 区域/房间" width="640">
+	<div style="text-align:left">
 
+		<p>
+		<i-form :label-width="100">
+			<i-row>
+				<i-col span="24">
+					<Form-Item label="名称" style="margin-bottom:0px">
+						<i-input v-model.lazy="subedit_areas_name" size="small"></i-input>
+					</Form-Item>
+					<Form-Item label="坐标 x1" style="margin-bottom:0px">
+						<Input-Number v-model.lazy="subedit_areas_x1" :min="0" :max="10000" size="small"></Input-Number>
+					</Form-Item>
+					<Form-Item label="坐标 y1" style="margin-bottom:0px">
+						<Input-Number v-model.lazy="subedit_areas_y1" :min="0" :max="10000" size="small"></Input-Number>
+					</Form-Item>
+					<Form-Item label="坐标 x2" style="margin-bottom:0px">
+						<Input-Number v-model.lazy="subedit_areas_x2" :min="0" :max="10000" size="small"></Input-Number>
+					</Form-Item>
+					<Form-Item label="坐标 y2" style="margin-bottom:0px">
+						<Input-Number v-model.lazy="subedit_areas_y2" :min="0" :max="10000" size="small"></Input-Number>
+					</Form-Item>
+
+
+
+				</i-col>
+			</i-row>
+		</i-form>&nbsp;
+		</p>
+	
+	</div>	
+</Modal>
+
+<!-- 子添加窗口 areas-->
+<Modal v-model="modal_subadd_areas" @on-ok="subcreate_areas" ok-text="添加" title="添加 - 区域/房间" width="640">
+	<div style="text-align:left">
+
+		<p>
+		<i-form :label-width="100">
+			<i-row>
+				<i-col span="24">
+				<Form-Item label="名称" style="margin-bottom:0px">
+						<i-input v-model.lazy="subadd_areas_name" size="small"></i-input>
+					</Form-Item>
+					<Form-Item label="坐标 x1" style="margin-bottom:0px">
+						<Input-Number v-model.lazy="subadd_areas_x1" :min="0" :max="10000" size="small"></Input-Number>
+					</Form-Item>
+					<Form-Item label="坐标 y1" style="margin-bottom:0px">
+						<Input-Number v-model.lazy="subadd_areas_y1" :min="0" :max="10000" size="small"></Input-Number>
+					</Form-Item>
+					<Form-Item label="坐标 x2" style="margin-bottom:0px">
+						<Input-Number v-model.lazy="subadd_areas_x2" :min="0" :max="10000" size="small"></Input-Number>
+					</Form-Item>
+					<Form-Item label="坐标 y2" style="margin-bottom:0px">
+						<Input-Number v-model.lazy="subadd_areas_y2" :min="0" :max="10000" size="small"></Input-Number>
+					</Form-Item>
+				</i-col>
+			</i-row>
+		</i-form>&nbsp;
+		</p>
+
+	</div>	
+</Modal>
 
 
 <!-- <my-passwordchange></my-passwordchange>
@@ -249,6 +312,28 @@ var vm_app = new Vue({
 		edit_x2: '',
 		edit_y2: '',
 
+		// 子编辑 变量
+		modal_subedit_areas: false,
+		subedit_id: '',
+		subedit_subid: '',
+		subedit_updated_at: '',
+		subedit_areas_name: '',
+		subedit_areas_x1: '',
+		subedit_areas_y1: '',
+		subedit_areas_x2: '',
+		subedit_areas_y2: '',
+
+		// 子添加 变量
+		modal_subadd_areas: false,
+		subadd_id: '',
+		subadd_subid: '',
+		subadd_updated_at: '',
+		subadd_areas_name: '',
+		subadd_areas_x1: '',
+		subadd_areas_y1: '',
+		subadd_areas_x2: '',
+		subadd_areas_y2: '',
+
 
 		tablecolumns: [
 			{
@@ -284,31 +369,24 @@ var vm_app = new Vue({
 				resizable: true,
 				width: 180,
 			},
-			// {
-			// 	title: '区域/房间',
-			// 	key: 'area',
-			// 	resizable: true,
-			// 	width: 180,
-			// },
-
 			{
 				title: '区域/房间',
 				align: 'center',
 				children: [
 					{
 						title: '名称',
-						key: 'area',
+						key: 'areas',
 						align:'center',
 						width: 90,
 						className: 'table-info-column-areas',
 						render: (h, params) => {
-							if (params.row.area!=undefined && params.row.area!=null) {
+							if (params.row.areas!=undefined && params.row.areas!=null) {
 								return h('div', {
 									attrs: {
 										class:'subCol'
 									},
 								}, [
-									h('ul', params.row.area.map(item => {
+									h('ul', params.row.areas.map(item => {
 										return h('li', {
 										}, item.name == null || item.name == '' ? '-' : item.name)
 									}))
@@ -317,19 +395,19 @@ var vm_app = new Vue({
 						}
 					},
 					{
-						title: 'X1',
-						key: 'area',
+						title: '坐标X1',
+						key: 'areas',
 						align:'center',
-						width: 60,
+						width: 80,
 						className: 'table-info-column-areas',
 						render: (h, params) => {
-							if (params.row.area!=undefined && params.row.area!=null) {
+							if (params.row.areas!=undefined && params.row.areas!=null) {
 								return h('div', {
 									attrs: {
 										class:'subCol'
 									},
 								}, [
-									h('ul', params.row.area.map(item => {
+									h('ul', params.row.areas.map(item => {
 										return h('li', {
 										}, item.x1 == null || item.x1 == '' ? '-' : item.x1)
 									}))
@@ -338,19 +416,19 @@ var vm_app = new Vue({
 						}
 					},
 					{
-						title: 'Y1',
-						key: 'area',
+						title: '坐标Y1',
+						key: 'areas',
 						align:'center',
-						width: 60,
+						width: 80,
 						className: 'table-info-column-areas',
 						render: (h, params) => {
-							if (params.row.area!=undefined && params.row.area!=null) {
+							if (params.row.areas!=undefined && params.row.areas!=null) {
 								return h('div', {
 									attrs: {
 										class:'subCol'
 									},
 								}, [
-									h('ul', params.row.area.map(item => {
+									h('ul', params.row.areas.map(item => {
 										return h('li', {
 										}, item.y1 == null || item.y1 == '' ? '-' : item.y1)
 									}))
@@ -359,19 +437,19 @@ var vm_app = new Vue({
 						}
 					},
 					{
-						title: 'X2',
-						key: 'area',
+						title: '坐标X2',
+						key: 'areas',
 						align:'center',
-						width: 60,
+						width: 80,
 						className: 'table-info-column-areas',
 						render: (h, params) => {
-							if (params.row.area!=undefined && params.row.area!=null) {
+							if (params.row.areas!=undefined && params.row.areas!=null) {
 								return h('div', {
 									attrs: {
 										class:'subCol'
 									},
 								}, [
-									h('ul', params.row.area.map(item => {
+									h('ul', params.row.areas.map(item => {
 										return h('li', {
 										}, item.x2 == null || item.x2 == '' ? '-' : item.x2)
 									}))
@@ -380,19 +458,19 @@ var vm_app = new Vue({
 						}
 					},
 					{
-						title: 'Y2',
-						key: 'area',
+						title: '坐标Y2',
+						key: 'areas',
 						align:'center',
-						width: 60,
+						width: 80,
 						className: 'table-info-column-areas',
 						render: (h, params) => {
-							if (params.row.area!=undefined && params.row.area!=null) {
+							if (params.row.areas!=undefined && params.row.areas!=null) {
 								return h('div', {
 									attrs: {
 										class:'subCol'
 									},
 								}, [
-									h('ul', params.row.area.map(item => {
+									h('ul', params.row.areas.map(item => {
 										return h('li', {
 										}, item.y2 == null || item.y2 == '' ? '-' : item.y2)
 									}))
@@ -407,13 +485,13 @@ var vm_app = new Vue({
 						width: 100,
 						className: 'table-info-column-areas',
 						render: (h, params) => {
-							if (params.row.area!=undefined && params.row.area!=null) {
+							if (params.row.areas!=undefined && params.row.areas!=null) {
 								return h('div', {
 										attrs: {
 											class:'subCol'
 										},
 									}, [
-									h('ul', params.row.area.map((item, index) => {
+									h('ul', params.row.areas.map((item, index) => {
 										return h('li', {
 										}, [
 											h('Button', {
@@ -427,7 +505,7 @@ var vm_app = new Vue({
 												},
 												on: {
 													click: () => {
-														vm_app.subedit_renewals(params.row, item, index)
+														vm_app.subedit_areas(params.row, item, index)
 													}
 												}
 											}),
@@ -443,7 +521,7 @@ var vm_app = new Vue({
 												},
 												on: {
 													'on-ok': () => {
-														vm_app.subdelete_renewals(params.row, item, index)
+														vm_app.subdelete_areas(params.row, item, index)
 													}
 												}
 											}, [
@@ -466,31 +544,6 @@ var vm_app = new Vue({
 						},
 					}
 				]
-			},
-
-			{
-				title: '坐标x1',
-				key: 'x1',
-				resizable: true,
-				width: 80,
-			},
-			{
-				title: '坐标y1',
-				key: 'y1',
-				resizable: true,
-				width: 80,
-			},
-			{
-				title: '坐标x2',
-				key: 'x2',
-				resizable: true,
-				width: 80,
-			},
-			{
-				title: '坐标y2',
-				key: 'y2',
-				resizable: true,
-				width: 80,
 			},
 			{
 				title: '创建时间',
@@ -788,9 +841,178 @@ var vm_app = new Vue({
 
 		},
 
+		// 子编辑前查看 - areas
+		subedit_areas (row, subrow, index) {
+			var _this = this;
+
+			_this.subedit_id = row.id;
+			_this.subedit_subid = index;
+			_this.subedit_updated_at = row.updated_at;
+			_this.subedit_areas_name = subrow.name;
+			_this.subedit_areas_x1 = subrow.x1;
+			_this.subedit_areas_y1 = subrow.y1;
+			_this.subedit_areas_x2 = subrow.x2;
+			_this.subedit_areas_y2 = subrow.y2;
+
+			_this.modal_subedit_areas = true;
+		},
+
+		// 子编辑保存 - renewals
+		subupdate_areas () {
+
+			var _this = this;
+
+			var id = _this.subedit_id;
+			var subid = _this.subedit_subid;
+			var updated_at = _this.subedit_updated_at;
+			var name = _this.name;
+			var x1 = _this.x1;
+			var y1 = _this.y1; 
+			var x2 = _this.x2
+			var y2 = _this.y2;
+
+			if (id == undefined || subid == undefined) {
+				_this.warning(false, '警告', '内容选择不正确！');
+				return false;
+			}
+
+			var url = "{{ route('location.subupdateareas') }}";
+			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
+			axios.post(url, {
+				id: id,
+				subid: subid,
+				updated_at: updated_at,
+				name: name,
+				x1: x1,
+				y1: y1,
+				x2: x2,
+				y2: y2,
+			})
+			.then(function (response) {
+				// console.log(response.data);return false;
+
+				if (response.data['jwt'] == 'logout') {
+					_this.alert_logout();
+					return false;
+				}
+				
+				if (response.data) {
+					_this.success(false, '成功', '更新成功！');
+						_this.locationsgets(_this.page_current, _this.page_last);
+				} else {
+					_this.error(false, '失败', '更新失败！');
+				}
+			})
+			.catch(function (error) {
+				_this.error(false, '错误', '更新失败！');
+			})
+
+		},
 
 
+		// 子删除 - areas
+		subdelete_areas (row, subrow, index) {
+			var _this = this;
 
+			var id = row.id;
+			var subid = index;
+
+			if (id == undefined || subid == undefined) {
+				_this.warning(false, '警告', '内容选择不正确！');
+				return false;
+			}
+
+			var url = "{{ route('location.subdeleteareas') }}";
+			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
+			axios.post(url, {
+				id: id,
+				subid: subid,
+			})
+			.then(function (response) {
+				// console.log(response.data);return false;
+
+				if (response.data['jwt'] == 'logout') {
+					_this.alert_logout();
+					return false;
+				}
+				
+				if (response.data) {
+					_this.success(false, '成功', '删除成功！');
+						_this.locationsgets(_this.page_current, _this.page_last);
+				} else {
+					_this.error(false, '失败', '删除失败！');
+				}
+			})
+			.catch(function (error) {
+				_this.error(false, '错误', '删除失败！');
+			})
+		},
+
+
+		// 添加区域/房间 - 查看
+		add_areas (row) {
+			var _this = this;
+			_this.subadd_id = row.id;
+			_this.modal_subadd_areas = true;
+		},
+
+
+		// 添加区域/房间 - 保存
+		subcreate_areas () {
+			var _this = this;
+
+			var id = _this.subadd_id;
+			var name = _this.name;
+			var x1 = _this.x1;
+			var y1 = _this.y1;
+			var x2 = _this.x2;
+			var y2 = _this.y2;
+			
+			if (id == undefined) {
+				_this.warning(false, '警告', '内容选择不正确！');
+				return false;
+			}
+
+			var url = "{{ route('location.subcreateareas') }}";
+			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
+			axios.post(url, {
+				id: id,
+				name: name,
+				x1: x1,
+				y1: y1,
+				x2: x2,
+				y2: y2,
+			})
+			.then(function (response) {
+				// console.log(response.data);return false;
+
+				if (response.data['jwt'] == 'logout') {
+					_this.alert_logout();
+					return false;
+				}
+				
+				if (response.data) {
+					_this.add_clear_var();
+					_this.success(false, '成功', '添加成功！');
+					_this.locationsgets(_this.page_current, _this.page_last);
+				} else {
+					_this.error(false, '失败', '添加失败！');
+				}
+			})
+			.catch(function (error) {
+				_this.error(false, '错误', '添加失败！');
+			})
+		},
+
+
+		add_clear_var () {
+			var _this = this;
+			_this.subadd_areas_name = '';
+			_this.subadd_areas_x1 = '';
+ 			_this.subadd_areas_y1 = '';
+			_this.subadd_areas_x2 = '';
+			_this.subadd_areas_y2 = '';
+		},
 
 
 		
