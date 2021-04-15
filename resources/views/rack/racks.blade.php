@@ -143,10 +143,13 @@ var vm_app = new Vue({
 		// 删除按钮禁用
 		softs_delete_disabled: true,
 
-
-		//新增
-		// itemtypes_add_typedesc: '',
-		// itemtypes_add_hassoftware: false,
+		// 主编辑变量
+		modal_edit_contracts: false,
+		edit_id: '',
+		edit_updated_at: '',
+		edit_title: '',
+		edit_location_select: '',
+		edit_location_options: [],
 
 
 		tablecolumns: [
@@ -190,25 +193,26 @@ var vm_app = new Vue({
 				width: 180,
 			},
 			{
-				title: '起始顺序',
+				title: 'U数起始顺序',
 				key: 'revnums',
 				resizable: true,
-				width: 180,
+				width: 90,
 				render: (h, params) => {
-					return params.row.revnums ? h('div', {}, '1=Top') : h('div', {}, '1=Bottom')
+					return params.row.revnums ? h('span', {}, '1=Top') : h('span', {}, '1=Bottom')
 				},
 			},
 			{
-				title: '位置场所/楼层',
+				title: '位置',
 				key: 'locationid',
 				resizable: true,
 				width: 180,
-			},
-			{
-				title: '区域/房间',
-				key: 'locareaid',
-				resizable: true,
-				width: 180,
+				render: (h, params) => {
+					return h('span', vm_app.edit_location_options.map(item => {
+						if (params.row.locationid == item.value) {
+							return h('p', {}, item.label)
+						}
+					}))
+				}
 			},
 			{
 				title: '标签',
@@ -327,11 +331,11 @@ var vm_app = new Vue({
 		// 把laravel返回的结果转换成select能接受的格式
 		json2selectvalue (json) {
 			var arr = [];
-			for (var key in json) {
+			for (var k in json) {
 				// alert(key);
 				// alert(json[key]);
 				// arr.push({ obj.['value'] = key, obj.['label'] = json[key] });
-				arr.push({ value: key, label: json[key] });
+				arr.push({ value: json[k].id, label: json[k].title+' ('+json[k].building+' / '+json[k].floor+' / '+json[k].area+')' });
 			}
 			return arr;
 			// return arr.reverse();
@@ -408,176 +412,41 @@ var vm_app = new Vue({
 		},
 
 
-
-
-
-
-
-
-		// 更新 typedesc
-		itemtypes_update_typedesc (id, typedesc) {
+		// 获取位置信息列表
+		locationsgets () {
 			var _this = this;
-			
-			var id = id;
-			var typedesc = typedesc;
-			// _this.itemtypes_edit_id = id;
-			// _this.itemtypes_edit_statusdesc = row.itemtypes_edit_statusdesc;
-			// _this.jiaban_edit_created_at = row.created_at;
-			// _this.jiaban_edit_updated_at = row.updated_at;
-
-			var url = "{{ route('item.itemtypesupdate_typedesc') }}";
-			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
-			axios.post(url,{
-				id: id,
-				typedesc: typedesc
+			var url = "{{ route('location.gets') }}";
+			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
+			axios.get(url,{
+				params: {
+					perPage: 1000,
+					page: 1,
+				}
 			})
 			.then(function (response) {
-                // alert(index);
-				// console.log(response.data);
-				// return false;
+				// console.log(response.data);return false;
 
 				if (response.data['jwt'] == 'logout') {
 					_this.alert_logout();
 					return false;
 				}
-				
+
 				if (response.data) {
-					_this.itemtypesgets(_this.page_current, _this.page_last);
-                    // _this.$Message.success('保存成功！');
-					_this.success(false, '成功', '保存成功！');
-                } else {
-					// _this.$Message.warning('保存失败！');
-					_this.warning(false, '失败', '保存失败！');
+					_this.edit_location_options = _this.json2selectvalue(response.data.data);
+					console.log(_this.edit_location_options);
 				}
 			})
 			.catch(function (error) {
 				_this.error(false, 'Error', error);
 			})
-
-			setTimeout(() => {
-				_this.modal_jiaban_edit = true;
-			}, 500);
-
-			
 		},
 
 
-		// 删除
-		itemtypes_delete (row) {
-			var _this = this;
-			var id = row.id;
-			if (id == undefined) return false;
-			var url = "{{ route('item.itemtypesdelete') }}";
-			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
-			axios.post(url, {
-				id: id
-			})
-			.then(function (response) {
-				if (response.data['jwt'] == 'logout') {
-					_this.alert_logout();
-					return false;
-				}
-				
-				if (response.data) {
-					_this.itemtypesgets(_this.page_current, _this.page_last);
-					_this.success(false, '成功', '删除成功！');
-				} else {
-					_this.error(false, '失败', '删除失败！');
-				}
-			})
-			.catch(function (error) {
-				_this.error(false, '错误', '删除失败！');
-			})
-		},
 
 
-		//新增
-		itemtypes_create () {
-			var _this = this;
-
-			var typedesc = _this.itemtypes_add_typedesc;
-			var hassoftware = _this.itemtypes_add_hassoftware;
-
-			if (typedesc == '' || typedesc == undefined) {
-					// console.log(hassoftware);
-				// _this.error(false, '失败', '用户ID为空或不正确！');
-				return false;
-			}
-
-			var url = "{{ route('item.itemtypescreate') }}";
-			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
-			axios.post(url, {
-				typedesc: typedesc,
-				hassoftware: hassoftware,
-			})
-			.then(function (response) {
-				// console.log(response.data);
-				// return false;
-
-				if (response.data['jwt'] == 'logout') {
-					_this.alert_logout();
-					return false;
-				}
-				
- 				if (response.data) {
-					_this.itemtypes_add_typedesc = '';
-					_this.itemtypesgets(_this.page_current, _this.page_last);
-					_this.success(false, '成功', '新建成功！');
-				} else {
-					_this.error(false, '失败', '新建失败！');
-				}
-			})
-			.catch(function (error) {
-				_this.error(false, '错误', '新建失败！');
-			})
 
 
-		},
 
-		
-		// 更新 hassoftware
-		itemtypes_update_hassoftware (id, hassoftware) {
-			var _this = this;
-			
-			var id = id;
-			var hassoftware = hassoftware;
-// console.log(hassoftware);return false;
-
-			var url = "{{ route('item.itemtypesupdate_hassoftware') }}";
-			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
-			axios.post(url,{
-				id: id,
-				hassoftware: hassoftware
-			})
-			.then(function (response) {
-                // alert(index);
-				// console.log(response.data);
-				// return false;
-
-				if (response.data['jwt'] == 'logout') {
-					_this.alert_logout();
-					return false;
-				}
-				
-				if (response.data) {
-					_this.itemtypesgets(_this.page_current, _this.page_last);
-                    // _this.$Message.success('保存成功！');
-					_this.success(false, '成功', '保存成功！');
-                } else {
-					// _this.$Message.warning('保存失败！');
-					_this.warning(false, '失败', '保存失败！');
-				}
-			})
-			.catch(function (error) {
-				_this.error(false, 'Error', error);
-			})
-
-			setTimeout(() => {
-				_this.modal_jiaban_edit = true;
-			}, 500);
-
-			
-		},
 		
 
 
@@ -586,6 +455,8 @@ var vm_app = new Vue({
 		var _this = this;
 		_this.current_nav = '机架';
 		_this.current_subnav = '查询';
+
+		_this.locationsgets();
 
 		// // 显示所有
 		_this.racksgets(1, 1); // page: 1, last_page: 1

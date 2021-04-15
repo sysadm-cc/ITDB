@@ -103,7 +103,7 @@ class RacksController extends Controller
 		$depth = $request->input('add_depth');
 		$revnums = $request->input('add_revnums_select');
 		$locationid = $request->input('add_location_select');
-		$locareaid = $request->input('add_locarea_select');
+		// $locareaid = $request->input('add_locarea_select');
 		$label = $request->input('add_label');
 		$comments = $request->input('add_comments');
 		
@@ -115,7 +115,7 @@ class RacksController extends Controller
 				'depth' => $depth,
 				'revnums' => $revnums,
 				'locationid' => $locationid,
-				'locareaid' => $locareaid,
+				// 'locareaid' => $locareaid,
 				'label' => $label,
 				'comments' => $comments,
 			]);

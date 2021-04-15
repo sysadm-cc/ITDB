@@ -27,7 +27,7 @@ class RacksTableSeeder extends Seeder
                 'depth' => null,
                 // 'revnums' => 0,
                 'locationid' => 1,
-                'locareaid' => 1,
+                // 'locareaid' => 1,
                 'label' => null,
                 'comments' => null,
                 'created_at' => $nowtime,

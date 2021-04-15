@@ -20,8 +20,8 @@ class CreateRacksTable extends Migration
             $table->integer('usize')->nullable()->comment('U数');
             $table->integer('depth')->nullable()->comment('深度（mm）');
             $table->boolean('revnums')->default(false)->comment('U数顺序（默认从下向上为0，从上向下为1）');
-            $table->integer('locationid')->nullable()->comment('机架所在场所/楼层');
-            $table->integer('locareaid')->nullable()->comment('机架所在区域/房间');
+            $table->integer('locationid')->nullable()->comment('机架所在位置');
+            // $table->integer('locareaid')->nullable()->comment('机架所在区域/房间');
             $table->string('label')->nullable()->comment('标签');
             $table->string('comments')->nullable()->comment('备注');
 

@@ -24,9 +24,10 @@
 	<i-row :gutter="16">
 
 		<i-col span="8">
-			
+			<Divider orientation="left">机架属性</Divider>
+
 			<i-form :label-width="100">
-				<Form-Item label="* 名称" style="margin-bottom:0px">
+				<Form-Item label="名称" required style="margin-bottom:0px">
 					<i-input v-model.lazy="add_title" size="small"></i-input>
 				</Form-Item>
 				<Form-Item label="型号" style="margin-bottom:0px">
@@ -40,21 +41,21 @@
 				<Form-Item label="深度（mm）" style="margin-bottom:0px">
 					<Input-Number v-model.lazy="add_depth" size="small" :min="1"></Input-Number>
 				</Form-Item>
-				<Form-Item label="U数顺序" style="margin-bottom:0px">
+				<Form-Item label="U数起始顺序" style="margin-bottom:0px">
 					<i-select v-model.lazy="add_revnums_select" size="small" placeholder="">
 						<i-option v-for="item in add_revnums_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
 					</i-select>
 				</Form-Item>
-				<Form-Item label="场所/楼层" style="margin-bottom:0px">
+				<Form-Item label="位置" style="margin-bottom:0px">
 					<i-select v-model.lazy="add_location_select" size="small" placeholder="">
 						<i-option v-for="item in add_location_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
 					</i-select>
 				</Form-Item>
-				<Form-Item label="区域/房间" style="margin-bottom:0px">
+				<!-- <Form-Item label="区域/房间" style="margin-bottom:0px">
 					<i-select v-model.lazy="add_locarea_select" size="small" placeholder="">
 						<i-option v-for="item in add_locarea_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
 					</i-select>
-				</Form-Item>
+				</Form-Item> -->
 				<Form-Item label="标签" style="margin-bottom:0px">
 					<i-input v-model.lazy="add_label" size="small"></i-input>
 				</Form-Item>
@@ -98,7 +99,7 @@
 
 <Divider dashed></Divider>
 
-<i-button @click="add_create()" :disabled="add_create_disabled" size="large" type="primary">添加</i-button>
+<i-button @click="add_create()" :disabled="add_create_disabled" icon="md-add" size="large" type="primary">添加</i-button>
 
 <br>
 
@@ -163,25 +164,22 @@ var vm_app = new Vue({
 		add_depth: '',
 		add_revnums_select: '',
 		add_revnums_options: [
-			{label: '1-Bottom', value: 0},
-			{label: '1-Top', value: 1},
+			{label: '1-Bottom (从下向上计数)', value: 0},
+			{label: '1-Top (从上向下计数)', value: 1},
 		],
 		add_location_select: '',
 		add_location_options: [
 			{label: '楼层一', value: 1},
 			{label: '楼层二', value: 2},
-			{label: '硬件销售商', value: '硬件销售商'},
-			{label: '买方', value: '买方'},
-			{label: '承包商', value: '承包商'},
 		],
-		add_locarea_select: '',
-		add_locarea_options: [
-			{label: '房间一', value: 1},
-			{label: '房间二', value: 2},
-			{label: '硬件销售商', value: '硬件销售商'},
-			{label: '买方', value: '买方'},
-			{label: '承包商', value: '承包商'},
-		],
+		// add_locarea_select: '',
+		// add_locarea_options: [
+		// 	{label: '房间一', value: 1},
+		// 	{label: '房间二', value: 2},
+		// 	{label: '硬件销售商', value: '硬件销售商'},
+		// 	{label: '买方', value: '买方'},
+		// 	{label: '承包商', value: '承包商'},
+		// ],
 		add_label: '',
 		add_comments: '',
 
@@ -461,11 +459,11 @@ var vm_app = new Vue({
 		// 把laravel返回的结果转换成select能接受的格式
 		json2selectvalue (json) {
 			var arr = [];
-			for (var key in json) {
+			for (var k in json) {
 				// alert(key);
 				// alert(json[key]);
 				// arr.push({ obj.['value'] = key, obj.['label'] = json[key] });
-				arr.push({ value: key, label: json[key] });
+				arr.push({ value: json[k].id, label: json[k].title+' ('+json[k].building+' / '+json[k].floor+' / '+json[k].area+')' });
 			}
 			return arr;
 			// return arr.reverse();
@@ -481,7 +479,7 @@ var vm_app = new Vue({
 			_this.add_depth = '';
 			_this.add_revnums_select = '';
 			_this.add_location_select = '';
-			_this.add_locarea_select = '';
+			// _this.add_locarea_select = '';
 			_this.add_label = '';
 			_this.add_comments = '';
 		},
@@ -498,7 +496,7 @@ var vm_app = new Vue({
 			var add_depth = _this.add_depth;
 			var add_revnums_select = _this.add_revnums_select;
 			var add_location_select = _this.add_location_select;
-			var add_locarea_select = _this.add_locarea_select;
+			// var add_locarea_select = _this.add_locarea_select;
 			var add_label = _this.add_label;
 			var add_comments = _this.add_comments;
 
@@ -518,7 +516,7 @@ var vm_app = new Vue({
 				add_depth: add_depth,
 				add_revnums_select: add_revnums_select,
 				add_location_select: add_location_select,
-				add_locarea_select: add_locarea_select,
+				// add_locarea_select: add_locarea_select,
 				add_label: add_label,
 				add_comments: add_comments,
 			})
@@ -534,14 +532,14 @@ var vm_app = new Vue({
  				if (response.data) {
 					_this.add_clear_var();
 					// _this.itemtypesgets(_this.page_current, _this.page_last);
-					_this.success(false, '成功', '新建成功！');
+					_this.success(false, '成功', '添加成功！');
 				} else {
-					_this.error(false, '失败', '新建失败！');
+					_this.error(false, '失败', '添加失败！');
 				}
 				_this.add_create_disabled = false;
 			})
 			.catch(function (error) {
-				_this.error(false, '错误', '新建失败！');
+				_this.error(false, '错误', '添加失败！');
 				_this.add_create_disabled = false;
 			})
 
@@ -550,30 +548,35 @@ var vm_app = new Vue({
 		},
 
 
-
-
-
-
-		// ajax 获取物品类型列表
-		itemtypesgets () {
+		// 获取位置信息列表
+		locationsgets () {
 			var _this = this;
-			var url = "{{ route('item.itemtypesgets') }}";
+			var url = "{{ route('location.gets') }}";
 			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
-			axios.get(url)
+			axios.get(url,{
+				params: {
+					perPage: 1000,
+					page: 1,
+				}
+			})
 			.then(function (response) {
+				// console.log(response.data);return false;
+
 				if (response.data['jwt'] == 'logout') {
 					_this.alert_logout();
 					return false;
 				}
+
 				if (response.data) {
-					response.data.data.map(function (v, i) {
-						_this.add_itemtype_options.push({label: v.typedesc, value: v.id});
-					});
+					_this.add_location_options = _this.json2selectvalue(response.data.data);
 				}
 			})
 			.catch(function (error) {
+				_this.error(false, 'Error', error);
 			})
 		},
+
+
 	
 		
 
@@ -619,7 +622,7 @@ var vm_app = new Vue({
 
 
 
-
+		_this.locationsgets();
 
 		_this.loadingbarfinish();
 
