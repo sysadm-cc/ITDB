@@ -72,11 +72,8 @@ Route::group(['prefix'=>'file', 'namespace'=>'File', 'middleware'=>['jwtauth']],
 	// Files gets列表
 	Route::get('fileGets', 'FilesController@fileGets')->name('file.gets');
 
-	// Agents Update typedesc
-	// Route::post('itemItemtypesUpdateTypedesc', 'ItemItemtypesController@itemItemtypesUpdateTypedesc')->name('item.itemtypesupdate_typedesc');
-
-	// Agents Update
-	// Route::post('itemItemtypesUpdateHassoftware', 'ItemItemtypesController@itemItemtypesUpdateHassoftware')->name('item.itemtypesupdate_hassoftware');
+	// Files Update
+	Route::post('fileUpdate', 'FilesController@fileUpdate')->name('file.update');
 
 	// Files Delete
 	Route::post('fileDelete', 'FilesController@fileDelete')->name('file.delete');

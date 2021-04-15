@@ -27,7 +27,7 @@
 			<Divider orientation="left">文件属性</Divider>
 
 			<i-form :label-width="100">
-				<Form-Item label="* 文件名称" style="margin-bottom:0px">
+				<Form-Item label="文件名称" required style="margin-bottom:0px">
 					<i-input v-model.lazy="add_title" size="small"></i-input>
 				</Form-Item>
 				<Form-Item label="文件类型" style="margin-bottom:0px">

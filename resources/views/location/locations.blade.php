@@ -96,7 +96,7 @@
 		<i-form :label-width="100">
 			<i-row>
 				<i-col span="24">
-					<Form-Item label="* 名称" style="margin-bottom:0px">
+					<Form-Item label="名称" required style="margin-bottom:0px">
 						<i-input v-model.lazy="edit_title" size="small"></i-input>
 					</Form-Item>
 					<Form-Item label="建筑" style="margin-bottom:0px">

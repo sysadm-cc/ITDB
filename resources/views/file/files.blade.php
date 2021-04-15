@@ -85,7 +85,41 @@
 
 </Tab-pane>
 
+<!-- 以下为各元素编辑窗口 -->
 
+<!-- 主编辑窗口 locations-->
+<Modal v-model="modal_edit_files" @on-ok="update_files" ok-text="保存" title="编辑 - 文件" width="460">
+	<div style="text-align:left">
+
+		<p>
+		<i-form :label-width="100">
+			<i-row>
+				<i-col span="24">
+					<Form-Item label="文件名称" required style="margin-bottom:0px">
+						<i-input v-model.lazy="edit_title" size="small"></i-input>
+					</Form-Item>
+					<Form-Item label="文件类型" style="margin-bottom:0px">
+						<!-- <i-select v-model.lazy="add_type_select" multiple size="small" placeholder=""> -->
+						<i-select v-model.lazy="edit_type_select" size="small" placeholder="">
+							<i-option v-for="item in edit_type_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+						</i-select>
+					</Form-Item>
+					<!-- <Form-Item label="购买日期" style="margin-bottom:0px">
+						<Date-picker v-model.lazy="add_purchdate" type="daterange" size="small"></Date-picker>
+					</Form-Item> -->
+					<Form-Item label="文件名" style="margin-bottom:0px">
+						<i-input v-model.lazy="edit_filename" size="small"></i-input>
+					</Form-Item>
+					<Form-Item label="上传者" style="margin-bottom:0px">
+						<i-input v-model.lazy="edit_uploader" size="small"></i-input>
+					</Form-Item>
+				</i-col>
+			</i-row>
+		</i-form>&nbsp;
+		</p>
+	
+	</div>	
+</Modal>
 
 
 
@@ -145,10 +179,25 @@ var vm_app = new Vue({
 		// 删除按钮禁用
 		files_delete_disabled: true,
 
-
-		//新增
-		// itemtypes_add_typedesc: '',
-		// itemtypes_add_hassoftware: false,
+		// 主编辑变量
+		modal_edit_files: false,
+		edit_id: '',
+		edit_updated_at: '',
+		edit_title: '',
+		edit_type_select: '',
+		edit_type_options: [
+			{label: '合同 - Contract', value: 1},
+			{label: '认证 - License', value: 2},
+			{label: '手册 - Manual', value: 3},
+			{label: '报价 - Offer', value: 4},
+			{label: '订单 - Order', value: 5},
+			{label: '图片 - Photo', value: 6},
+			{label: '报表 - Report', value: 7},
+			{label: '服务 - Service', value: 8},
+			{label: '其他 - Other', value: 9},
+		],
+		edit_filename: '',
+		edit_uploader: '',
 
 
 		tablecolumns: [
@@ -379,29 +428,36 @@ var vm_app = new Vue({
 				width: 100,
 				fixed: 'right',
 				render: (h, params) => {
-					// if (params.row.id > 3) {
-						return h('div', [
+					return h('div', [
+
+						h('Poptip', {
+							props: {
+								'word-wrap': true,
+								'trigger': 'hover',
+								'confirm': false,
+								'content': '编辑文件属性',
+								'transfer': true
+							},
+						}, [
 							h('Button', {
 								props: {
 									type: 'primary',
 									size: 'small',
-									icon: 'md-arrow-round-down'
+									icon: 'md-create'
 								},
 								style: {
 									marginRight: '5px'
 								},
 								on: {
 									click: () => {
-										vm_app.itemtypes_delete(params.row)
+										vm_app.edit_files(params.row)
 									}
 								}
-							}, '编辑'),
-							
+							}),
+						]),
 
-						]);
-					// }
-				},
-				
+					]);
+				},				
 			}
 			@endhasanyrole
 		],
@@ -576,6 +632,66 @@ var vm_app = new Vue({
 		},
 
 
+		// 主编辑前查看 - files
+		edit_files (row) {
+			var _this = this;
+
+			_this.edit_id = row.id;
+			_this.edit_updated_at = row.updated_at;
+			_this.edit_title = row.title;
+			_this.edit_type_select = row.type;
+			_this.edit_filename = row.filename;
+			_this.edit_uploader = row.uploader;
+
+			_this.modal_edit_files = true;
+		},
+
+		// 主编辑保存 - files
+		update_files () {
+			var _this = this;
+
+			var id = _this.edit_id;
+			var updated_at = _this.edit_updated_at;
+			var title = _this.edit_title;
+			var type = _this.edit_type_select;
+			var filename = _this.edit_filename;
+			var uploader = _this.edit_uploader;
+
+			if (id == undefined || title == undefined || title == '') {
+				_this.warning(false, '警告', '内容不能为空！');
+				return false;
+			}
+
+			var url = "{{ route('file.update') }}";
+			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
+			axios.post(url, {
+				id: id,
+				updated_at: updated_at,
+				title: title,
+				type: type,
+				filename: filename,
+				uploader: uploader,
+			})
+			.then(function (response) {
+				// console.log(response.data);return false;
+
+				if (response.data['jwt'] == 'logout') {
+					_this.alert_logout();
+					return false;
+				}
+				
+				if (response.data) {
+					_this.success(false, '成功', '更新成功！');
+						_this.filesgets(_this.page_current, _this.page_last);
+				} else {
+					_this.error(false, '失败', '更新失败！');
+				}
+			})
+			.catch(function (error) {
+				_this.error(false, '错误', '更新失败！');
+			})
+
+		},
 
 
 
