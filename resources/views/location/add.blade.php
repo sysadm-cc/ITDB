@@ -36,27 +36,52 @@
 				<Form-Item label="楼层" style="margin-bottom:0px">
 					<i-input v-model.lazy="add_floor" size="small"></i-input>
 				</Form-Item>
-				<Form-Item label="区域/房间" style="margin-bottom:0px">
-					<i-input v-model.lazy="add_area" size="small"></i-input>
-				</Form-Item>
-				<Form-Item label="坐标 x1" style="margin-bottom:0px">
-					<Input-Number v-model.lazy="add_x1" :min="0" :max="10000" size="small"></Input-Number>
-				</Form-Item>
-				<Form-Item label="坐标 y1" style="margin-bottom:0px">
-					<Input-Number v-model.lazy="add_y1" :min="0" :max="10000" size="small"></Input-Number>
-				</Form-Item>
-				<Form-Item label="坐标 x2" style="margin-bottom:0px">
-					<Input-Number v-model.lazy="add_x2" :min="0" :max="10000" size="small"></Input-Number>
-				</Form-Item>
-				<Form-Item label="坐标 y2" style="margin-bottom:0px">
-					<Input-Number v-model.lazy="add_y2" :min="0" :max="10000" size="small"></Input-Number>
-				</Form-Item>
+			</i-form>
+
+			&nbsp;<br>
+
+			<Divider orientation="left">区域/房间</Divider>
+
+			↓ 批量录入&nbsp;&nbsp;
+			<Input-number v-model.lazy="piliangluruxiang_areas" @on-change="value=>piliangluru_generate_areas(value)" :min="1" :max="10" size="small" style="width: 60px"></Input-number>
+			&nbsp;项（最多10项）&nbsp;&nbsp;<br>
+
+			<i-form :label-width="100">
 				<Form-Item label="" style="margin-bottom:0px">
 					<span style="color: rgb(158, 167, 180);font-size:12px;">
 					<Icon type="md-information-circle"></Icon> 参照 TIA/EiA-942 国际标准，采用信息机房坐标位置唯一标识某一机柜，坐标单位为物理地板格数。
 					</span>
 				</Form-Item>
+
+				<span v-for="(item, index) in piliangluru_areas">
+				<br>
+
+				<i-row>
+					<i-col span="1">
+						<label class="ivu-form-item-label">
+							No.@{{index+1}}
+						</label>
+					</i-col>
+					<i-col span="23">
+						<Form-Item label="区域/房间" style="margin-bottom:0px">
+							<i-input v-model.lazy="item.area" size="small"></i-input>
+						</Form-Item>
+						<Form-Item label="坐标 x1" style="margin-bottom:0px">
+							<Input-Number v-model.lazy="item.x1" :min="0" :max="10000" size="small"></Input-Number>
+						</Form-Item>
+						<Form-Item label="坐标 y1" style="margin-bottom:0px">
+							<Input-Number v-model.lazy="item.y1" :min="0" :max="10000" size="small"></Input-Number>
+						</Form-Item>
+						<Form-Item label="坐标 x2" style="margin-bottom:0px">
+							<Input-Number v-model.lazy="item.x2" :min="0" :max="10000" size="small"></Input-Number>
+						</Form-Item>
+						<Form-Item label="坐标 y2" style="margin-bottom:0px">
+							<Input-Number v-model.lazy="item.y2" :min="0" :max="10000" size="small"></Input-Number>
+						</Form-Item>
+					</i-col>
+				</i-row>
 			</i-form>
+
 
 		</i-col>
 
@@ -146,12 +171,24 @@ var vm_app = new Vue({
 		// ],
 		add_building: '',
 		add_floor: '',
-		add_area: '',
-		add_x1: '',
-		add_y1: '',
-		add_x2: '',
-		add_y2: '',
+		// add_area: '',
+		// add_x1: '',
+		// add_y1: '',
+		// add_x2: '',
+		// add_y2: '',
 
+		// 批量录入项 - Areas
+		piliangluruxiang_areas: 1,
+		// 批量录入 - Areas
+		piliangluru_areas: [
+			{
+				name: '',
+				x1: '',
+				y1: '',
+				x2: '',
+				y2: '',
+			},
+		],
 
 
 
@@ -445,11 +482,16 @@ var vm_app = new Vue({
 			_this.add_title = '';
 			_this.add_building = '';
 			_this.add_floor = '';
-			_this.add_area = '';
-			_this.add_x1 = '';
-			_this.add_y1 = '';
-			_this.add_x2 = '';
-			_this.add_y2 = '';
+			_this.piliangluruxiang_areas = 1;
+			_this.piliangluru_areas = [
+				{
+					name: '',
+					x1: '',
+					y1: '',
+					x2: '',
+					y2: '',
+				},
+			];
 		},
 
 
@@ -461,11 +503,19 @@ var vm_app = new Vue({
 			var add_title = _this.add_title;
 			var add_building = _this.add_building;
 			var add_floor = _this.add_floor;
-			var add_area = _this.add_area;
-			var add_x1 = _this.add_x1;
-			var add_y1 = _this.add_y1;
-			var add_x2 = _this.add_x2;
-			var add_y2 = _this.add_y2;
+			var add_areas = _this.piliangluru_areas;
+
+			// 删除空json节点
+			// var piliangluru_tmp_areas = [];
+			// for (var v of _this.piliangluru_areas) {
+			// 	v.name = v.name; 
+			// 	v.x1 = v.x1;
+			// 	v.y1 = v.y1;
+			// 	v.y2 = v.y2; 
+			// 	piliangluru_tmp_areas.push(v);
+			// }
+			// var piliangluru_areas = piliangluru_tmp_areas;
+
 
 			if (add_title == '' || add_title == undefined) {
 				_this.error(false, '错误', '内容为空或不正确！');
@@ -480,11 +530,11 @@ var vm_app = new Vue({
 				add_title: add_title,
 				add_building: add_building,
 				add_floor: add_floor,
-				add_area: add_area,
-				add_x1: add_x1,
-				add_y1: add_y1,
-				add_x2: add_x2,
-				add_y2: add_y2,
+				add_areas: add_areas,
+				// add_x1: add_x1,
+				// add_y1: add_y1,
+				// add_x2: add_x2,
+				// add_y2: add_y2,
 			})
 			.then(function (response) {
 				// console.log(response.data);
@@ -514,30 +564,42 @@ var vm_app = new Vue({
 		},
 
 
-
-
-
-
-		// ajax 获取物品类型列表
-		itemtypesgets () {
-			var _this = this;
-			var url = "{{ route('item.itemtypesgets') }}";
-			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
-			axios.get(url)
-			.then(function (response) {
-				if (response.data['jwt'] == 'logout') {
-					_this.alert_logout();
-					return false;
+		// 生成piliangluru Areas
+		piliangluru_generate_areas (counts) {
+			if (counts == undefined) counts = 1;
+			var len = this.piliangluru_areas.length;
+			
+			if (counts > len) {
+				for (var i=0;i<counts-len;i++) {
+					this.piliangluru_areas.push(
+						{
+							name: '',
+							x1: '',
+							y1: '',
+							x2: '',
+							y2: '',
+						}
+					);
 				}
-				if (response.data) {
-					response.data.data.map(function (v, i) {
-						_this.add_itemtype_options.push({label: v.typedesc, value: v.id});
-					});
+			} else if (counts < len) {
+				if (this.piliangluruxiang_areas != '') {
+					for (var i=counts;i<len;i++) {
+						if (this.piliangluruxiang_areas == this.piliangluru_areas[i].value) {
+							this.piliangluruxiang_areas = '';
+							break;
+						}
+					}
 				}
-			})
-			.catch(function (error) {
-			})
-		},
+				
+				for (var i=0;i<len-counts;i++) {
+					this.piliangluru_areas.pop();
+				}
+			}			
+
+		},	
+
+
+
 	
 		
 

@@ -150,26 +150,6 @@
 					<Form-Item label="楼层" style="margin-bottom:0px">
 						<i-input v-model.lazy="edit_floor" size="small"></i-input>
 					</Form-Item>
-					<Form-Item label="区域/房间" style="margin-bottom:0px">
-						<i-input v-model.lazy="edit_area" size="small"></i-input>
-					</Form-Item>
-					<Form-Item label="坐标 x1" style="margin-bottom:0px">
-						<Input-Number v-model.lazy="edit_x1" :min="0" :max="10000" size="small"></Input-Number>
-					</Form-Item>
-					<Form-Item label="坐标 y1" style="margin-bottom:0px">
-						<Input-Number v-model.lazy="edit_y1" :min="0" :max="10000" size="small"></Input-Number>
-					</Form-Item>
-					<Form-Item label="坐标 x2" style="margin-bottom:0px">
-						<Input-Number v-model.lazy="edit_x2" :min="0" :max="10000" size="small"></Input-Number>
-					</Form-Item>
-					<Form-Item label="坐标 y2" style="margin-bottom:0px">
-						<Input-Number v-model.lazy="edit_y2" :min="0" :max="10000" size="small"></Input-Number>
-					</Form-Item>
-					<Form-Item label="" style="margin-bottom:0px">
-						<span style="color: rgb(158, 167, 180);font-size:12px;">
-						<Icon type="md-information-circle"></Icon> 参照 TIA/EiA-942 国际标准，采用信息机房坐标位置唯一标识某一机柜，坐标单位为物理地板格数。
-						</span>
-					</Form-Item>
 				</i-col>
 			</i-row>
 		</i-form>&nbsp;
@@ -179,7 +159,7 @@
 </Modal>
 
 <!-- 子编辑窗口 areas-->
-<Modal v-model="modal_subedit_areas" @on-ok="subupdate_areas" ok-text="保存" title="编辑 - 区域/房间" width="640">
+<Modal v-model="modal_subedit_areas" @on-ok="subupdate_areas" ok-text="保存" title="编辑 - 区域/房间" width="320">
 	<div style="text-align:left">
 
 		<p>
@@ -213,7 +193,7 @@
 </Modal>
 
 <!-- 子添加窗口 areas-->
-<Modal v-model="modal_subadd_areas" @on-ok="subcreate_areas" ok-text="添加" title="添加 - 区域/房间" width="640">
+<Modal v-model="modal_subadd_areas" @on-ok="subcreate_areas" ok-text="添加" title="添加 - 区域/房间" width="320">
 	<div style="text-align:left">
 
 		<p>
@@ -306,11 +286,6 @@ var vm_app = new Vue({
 		edit_title: '',
 		edit_building: '',
 		edit_floor: '',
-		edit_area: '',
-		edit_x1: '',
-		edit_y1: '',
-		edit_x2: '',
-		edit_y2: '',
 
 		// 子编辑 变量
 		modal_subedit_areas: false,
@@ -591,6 +566,32 @@ var vm_app = new Vue({
 							}),
 						]),
 
+						h('Poptip', {
+							props: {
+								'word-wrap': true,
+								'trigger': 'hover',
+								'confirm': false,
+								'content': '添加区域/房间',
+								'transfer': true
+							},
+						}, [
+							h('Button', {
+								props: {
+									type: 'default',
+									size: 'small',
+									icon: 'md-locate'
+								},
+								style: {
+									marginRight: '5px'
+								},
+								on: {
+									click: () => {
+										vm_app.add_areas(params.row)
+									}
+								}
+							})
+						]),
+
 					]);
 				},
 				
@@ -777,11 +778,6 @@ var vm_app = new Vue({
 			_this.edit_title = row.title;
 			_this.edit_building = row.building;
 			_this.edit_floor = row.floor;
-			_this.edit_area = row.area;
-			_this.edit_x1 = row.x1;
-			_this.edit_y1 = row.y1;
-			_this.edit_x2 = row.x2;
-			_this.edit_y2 = row.y2;
 
 			_this.modal_edit_locations = true;
 		},
@@ -795,11 +791,6 @@ var vm_app = new Vue({
 			var title = _this.edit_title;
 			var building = _this.edit_building;
 			var floor = _this.edit_floor;
-			var area = _this.edit_area;
-			var x1 = _this.edit_x1;
-			var y1 = _this.edit_y1;
-			var x2 = _this.edit_x2;
-			var y2 = _this.edit_y2;
 
 			if (id == undefined || title == undefined || title == '') {
 				_this.warning(false, '警告', '内容不能为空！');
@@ -814,11 +805,6 @@ var vm_app = new Vue({
 				title: title,
 				building: building,
 				floor: floor,
-				area: area,
-				x1: x1,
-				y1: y1,
-				x2: x2,
-				y2: y2,
 			})
 			.then(function (response) {
 				// console.log(response.data);return false;
@@ -857,19 +843,18 @@ var vm_app = new Vue({
 			_this.modal_subedit_areas = true;
 		},
 
-		// 子编辑保存 - renewals
+		// 子编辑保存 - areas
 		subupdate_areas () {
-
 			var _this = this;
 
 			var id = _this.subedit_id;
 			var subid = _this.subedit_subid;
 			var updated_at = _this.subedit_updated_at;
-			var name = _this.name;
-			var x1 = _this.x1;
-			var y1 = _this.y1; 
-			var x2 = _this.x2
-			var y2 = _this.y2;
+			var name = _this.subedit_areas_name;
+			var x1 = _this.subedit_areas_x1;
+			var y1 = _this.subedit_areas_y1; 
+			var x2 = _this.subedit_areas_x2;
+			var y2 = _this.subedit_areas_y2;
 
 			if (id == undefined || subid == undefined) {
 				_this.warning(false, '警告', '内容选择不正确！');
@@ -962,11 +947,11 @@ var vm_app = new Vue({
 			var _this = this;
 
 			var id = _this.subadd_id;
-			var name = _this.name;
-			var x1 = _this.x1;
-			var y1 = _this.y1;
-			var x2 = _this.x2;
-			var y2 = _this.y2;
+			var name = _this.subadd_areas_name;
+			var x1 = _this.subadd_areas_x1;
+			var y1 = _this.subadd_areas_y1;
+			var x2 = _this.subadd_areas_x2;
+			var y2 = _this.subadd_areas_y2;
 			
 			if (id == undefined) {
 				_this.warning(false, '警告', '内容选择不正确！');

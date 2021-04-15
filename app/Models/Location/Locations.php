@@ -23,7 +23,7 @@ class Locations extends Model
      * @var array
      */
     protected $casts = [
-        'area' => 'array',
+        'areas' => 'array',
     //     // 'actuality' => 'array',
     //     'auditing' => 'array',
     ];

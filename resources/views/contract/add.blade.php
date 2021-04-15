@@ -402,10 +402,10 @@ var vm_app = new Vue({
 					);
 				}
 			} else if (counts < len) {
-				if (this.piliangluruxiang_urls != '') {
+				if (this.piliangluruxiang_renewals != '') {
 					for (var i=counts;i<len;i++) {
-						if (this.piliangluruxiang_urls == this.piliangluru_renewals[i].value) {
-							this.piliangluruxiang_urls = '';
+						if (this.piliangluruxiang_renewals == this.piliangluru_renewals[i].value) {
+							this.piliangluruxiang_renewals = '';
 							break;
 						}
 					}

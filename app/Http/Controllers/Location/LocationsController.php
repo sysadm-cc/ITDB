@@ -100,22 +100,14 @@ class LocationsController extends Controller
 		$title = $request->input('add_title');
 		$building = $request->input('add_building');
 		$floor = $request->input('add_floor');
-		$area = $request->input('add_area');
-		$x1 = $request->input('add_x1');
-		$y1 = $request->input('add_y1');
-		$x2 = $request->input('add_x2');
-		$y2 = $request->input('add_y2');
+		$areas = $request->input('add_areas');
 		
 		try	{
 			$result = Locations::create([
 				'title' => $title,
 				'building' => $building,
 				'floor' => $floor,
-				'area' => $area,
-				'x1' => $x1,
-				'y1' => $y1,
-				'x2' => $x2,
-				'y2' => $y2,
+				'areas' => $areas,
 			]);
 			Cache::flush();
 		}
@@ -184,11 +176,6 @@ class LocationsController extends Controller
 		$title = $request->input('title');
 		$building = $request->input('building');
 		$floor = $request->input('floor');
-		$area = $request->input('area');
-		$x1 = $request->input('x1');
-		$y1 = $request->input('y1');
-		$x2 = $request->input('x2');
-		$y2 = $request->input('y2');
 		
 		// 判断如果不是最新的记录，不可被编辑
 		// 因为可能有其他人在你当前表格未刷新的情况下已经更新过了
@@ -206,11 +193,6 @@ class LocationsController extends Controller
 					'title'			=> $title,
 					'building'		=> $building,
 					'floor'			=> $floor,
-					'area'			=> $area,
-					'x1'			=> $x1,
-					'y1'			=> $y1,
-					'x2'			=> $x2,
-					'y2'			=> $y2,
 				]);
 			$result = 1;
 		}
@@ -273,7 +255,7 @@ class LocationsController extends Controller
 
 		// 判断如果不是最新的记录，不可被编辑
 		// 因为可能有其他人在你当前表格未刷新的情况下已经更新过了
-		$res = Contracts::select('updated_at')
+		$res = Locations::select('updated_at')
 			->where('id', $id)
 			->first();
 		$res_updated_at = date('Y-m-d H:i:s', strtotime($res['updated_at']));
