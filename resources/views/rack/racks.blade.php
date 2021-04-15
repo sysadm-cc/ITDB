@@ -55,13 +55,15 @@
 	<i-row :gutter="16">
 		<br>
 		<i-col span="3">
-			<i-button @click="items_delete()" :disabled="softs_delete_disabled" type="warning" size="small">删除</i-button>&nbsp;<br>&nbsp;
+			<Poptip confirm word-wrap title="真的要删除这些记录吗？" @on-ok="racks_delete()">
+				<i-button :disabled="racks_delete_disabled" icon="md-remove" type="warning" size="small">删除</i-button>&nbsp;<br>&nbsp;
+			</Poptip>
 		</i-col>
 		<i-col span="3">
-			<i-button type="default" size="small" @click="racks_add()"><Icon type="ios-color-wand-outline"></Icon> 添加机架</i-button>
+			<i-button type="primary" size="small" @click="racks_add()" icon="md-add">添加机架</i-button>
 		</i-col>
 		<i-col span="3">
-			<i-button type="default" size="small" @click="items_export()"><Icon type="ios-download-outline"></Icon> 导出列表</i-button>
+			<i-button type="default" size="small" @click="items_export()" icon="ios-download-outline">导出列表</i-button>
 		</i-col>
 		<i-col span="15">
 			&nbsp;
@@ -84,7 +86,58 @@
 </Tab-pane>
 
 
+<!-- 以下为各元素编辑窗口 -->
 
+<!-- 主编辑窗口 racks-->
+<Modal v-model="modal_edit_racks" @on-ok="update_racks" ok-text="保存" title="编辑 - 机架" width="460">
+	<div style="text-align:left">
+
+		<p>
+		<i-form :label-width="100">
+			<i-row>
+				<i-col span="24">
+					<Form-Item label="名称" required style="margin-bottom:0px">
+						<i-input v-model.lazy="edit_title" size="small"></i-input>
+					</Form-Item>
+					<Form-Item label="型号" style="margin-bottom:0px">
+						<i-input v-model.lazy="edit_model" size="small"></i-input>
+					</Form-Item>
+					<Form-Item label="尺寸（U）" style="margin-bottom:0px">
+						<i-select v-model.lazy="edit_usize_select" size="small" placeholder="">
+							<i-option v-for="item in edit_usize_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+						</i-select>
+					</Form-Item>
+					<Form-Item label="深度（mm）" style="margin-bottom:0px">
+						<Input-Number v-model.lazy="edit_depth" size="small" :min="1"></Input-Number>
+					</Form-Item>
+					<Form-Item label="U数起始顺序" style="margin-bottom:0px">
+						<i-select v-model.lazy="edit_revnums_select" size="small" placeholder="">
+							<i-option v-for="item in edit_revnums_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+						</i-select>
+					</Form-Item>
+					<Form-Item label="位置" style="margin-bottom:0px">
+						<i-select v-model.lazy="edit_location_select" size="small" placeholder="">
+							<i-option v-for="item in edit_location_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+						</i-select>
+					</Form-Item>
+					<!-- <Form-Item label="区域/房间" style="margin-bottom:0px">
+						<i-select v-model.lazy="edit_locarea_select" size="small" placeholder="">
+							<i-option v-for="item in edit_locarea_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+						</i-select>
+					</Form-Item> -->
+					<Form-Item label="标签" style="margin-bottom:0px">
+						<i-input v-model.lazy="edit_label" size="small"></i-input>
+					</Form-Item>
+					<Form-Item label="备注" style="margin-bottom:0px">
+						<i-input v-model.lazy="edit_comments" size="small" type="textarea"></i-input>
+					</Form-Item>
+				</i-col>
+			</i-row>
+		</i-form>&nbsp;
+		</p>
+	
+	</div>	
+</Modal>
 
 
 
@@ -141,15 +194,27 @@ var vm_app = new Vue({
 		collapse_query: '',
 
 		// 删除按钮禁用
-		softs_delete_disabled: true,
+		racks_delete_disabled: true,
 
 		// 主编辑变量
-		modal_edit_contracts: false,
+		modal_edit_racks: false,
 		edit_id: '',
 		edit_updated_at: '',
 		edit_title: '',
+		edit_model: '',
+		edit_usize_select: '',
+		edit_usize_options: [],
+		edit_depth: '',
+		edit_revnums_select: '',
+		edit_revnums_options: [
+			{label: '1-Bottom (从下向上计数)', value: 0},
+			{label: '1-Top (从上向下计数)', value: 1},
+		],
 		edit_location_select: '',
 		edit_location_options: [],
+		edit_label: '',
+		edit_comments: '',
+
 
 
 		tablecolumns: [
@@ -244,29 +309,37 @@ var vm_app = new Vue({
 				width: 100,
 				fixed: 'right',
 				render: (h, params) => {
-					// if (params.row.id > 3) {
-						return h('div', [
+					return h('div', [
+
+						h('Poptip', {
+							props: {
+								'word-wrap': true,
+								'trigger': 'hover',
+								'confirm': false,
+								'content': '编辑机架信息',
+								'transfer': true
+							},
+						}, [
 							h('Button', {
 								props: {
 									type: 'primary',
 									size: 'small',
-									icon: 'md-arrow-round-down'
+									icon: 'md-create'
 								},
 								style: {
 									marginRight: '5px'
 								},
 								on: {
 									click: () => {
-										vm_app.itemtypes_delete(params.row)
+										vm_app.edit_racks(params.row)
 									}
 								}
-							}, '编辑'),
-							
+							}),
+						]),
 
-						]);
-					// }
-				},
-				
+
+					]);
+				},				
 			}
 			@endhasanyrole
 		],
@@ -403,7 +476,35 @@ var vm_app = new Vue({
 				_this.tableselect.push(selection[i].id);
 			}
 			
-			_this.softs_delete_disabled = _this.tableselect[0] == undefined ? true : false;
+			_this.racks_delete_disabled = _this.tableselect[0] == undefined ? true : false;
+		},
+
+		// 删除记录
+		racks_delete () {
+			var _this = this;
+			
+			var tableselect = _this.tableselect;
+			
+			if (tableselect[0] == undefined) return false;
+
+			var url = "{{ route('rack.delete') }}";
+			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
+			axios.post(url, {
+				tableselect: tableselect
+			})
+			.then(function (response) {
+				if (response.data) {
+					_this.racks_delete_disabled = true;
+					_this.tableselect = [];
+					_this.success(false, '成功', '删除成功！');
+					_this.racksgets(_this.page_current, _this.page_last);
+				} else {
+					_this.error(false, '失败', '删除失败！');
+				}
+			})
+			.catch(function (error) {
+				_this.error(false, '错误', '删除失败！');
+			})
 		},
 
 		// 跳转至添加页面
@@ -433,7 +534,6 @@ var vm_app = new Vue({
 
 				if (response.data) {
 					_this.edit_location_options = _this.json2selectvalue(response.data.data);
-					console.log(_this.edit_location_options);
 				}
 			})
 			.catch(function (error) {
@@ -442,7 +542,80 @@ var vm_app = new Vue({
 		},
 
 
+		// 主编辑前查看 - racks
+		edit_racks (row) {
+			var _this = this;
 
+			_this.edit_id = row.id;
+			_this.edit_updated_at = row.updated_at;
+			_this.edit_title = row.title;
+			_this.edit_model = row.model;
+			_this.edit_usize_select = row.usize;
+			_this.edit_depth = row.depth;
+			_this.edit_revnums_select = row.revnums;
+			_this.edit_location_select = row.locationid;
+			_this.edit_label = row.label;
+			_this.edit_comments = row.comments;
+
+			_this.modal_edit_racks = true;
+		},
+
+		// 主编辑保存 - racks
+		update_racks () {
+			var _this = this;
+
+			var id = _this.edit_id;
+			var updated_at = _this.edit_updated_at;
+			var title = _this.edit_title;
+			var model = _this.edit_model;
+			var usize = _this.edit_usize_select;
+			var depth = _this.edit_depth;
+			var revnums = _this.edit_revnums_select;
+			var locationid = _this.edit_location_select;
+			var label = _this.edit_label;
+			var comments = _this.edit_comments;
+
+			
+			if (id == undefined || title == undefined || title == '' || type == undefined || type == '') {
+				_this.warning(false, '警告', '内容不能为空！');
+				return false;
+			}
+
+			var url = "{{ route('rack.update') }}";
+			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
+			axios.post(url, {
+				id: id,
+				updated_at: updated_at,
+				title: title,
+				type: type,
+				number: number,
+				description: description,
+				comments: comments,
+				totalcost: totalcost,
+				currency: currency,
+				startdate: startdate,
+				currentenddate: currentenddate,
+			})
+			.then(function (response) {
+				// console.log(response.data);return false;
+
+				if (response.data['jwt'] == 'logout') {
+					_this.alert_logout();
+					return false;
+				}
+				
+				if (response.data) {
+					_this.success(false, '成功', '更新成功！');
+						_this.racksgets(_this.page_current, _this.page_last);
+				} else {
+					_this.error(false, '失败', '更新失败！');
+				}
+			})
+			.catch(function (error) {
+				_this.error(false, '错误', '更新失败！');
+			})
+
+		},
 
 
 
@@ -455,6 +628,11 @@ var vm_app = new Vue({
 		var _this = this;
 		_this.current_nav = '机架';
 		_this.current_subnav = '查询';
+
+		// 尺寸选择
+		for (var i=50;i>=4;i--) {
+			_this.edit_usize_options.push({label: i+'U', value: i});
+		}
 
 		_this.locationsgets();
 

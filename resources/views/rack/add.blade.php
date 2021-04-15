@@ -64,20 +64,6 @@
 				</Form-Item>
 
 
-
-				<!-- <Form-Item label="购买日期" style="margin-bottom:0px">
-					<Date-picker v-model.lazy="add_purchdate" type="daterange" size="small"></Date-picker>
-				</Form-Item>
-				<Form-Item label="License数量" style="margin-bottom:0px">
-					<Input-Number v-model.lazy="add_licqty" size="small" :min="1"></Input-Number>
-				</Form-Item>
-				<Form-Item label="License类型" style="margin-bottom:0px">
-					<i-input v-model.lazy="add_lictype" size="small"></i-input>
-				</Form-Item>
-				<Form-Item label="License信息" style="margin-bottom:0px">
-					<i-input v-model.lazy="add_slicenseinfo" size="small" type="textarea"></i-input>
-				</Form-Item> -->
-
 			</i-form>
 
 
@@ -604,7 +590,7 @@ var vm_app = new Vue({
 
 
 		
-
+		// 尺寸选择
 		for (var i=50;i>=4;i--) {
 			_this.add_usize_options.push({label: i+'U', value: i});
 		}

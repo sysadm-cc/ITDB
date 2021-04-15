@@ -51,8 +51,8 @@ Route::group(['prefix'=>'rack', 'namespace'=>'Rack', 'middleware'=>['jwtauth']],
 	// Agents Update
 	// Route::post('itemItemtypesUpdateHassoftware', 'ItemItemtypesController@itemItemtypesUpdateHassoftware')->name('item.itemtypesupdate_hassoftware');
 
-	// Agents Delete
-	// Route::post('itemItemtypesDelete', 'ItemItemtypesController@itemItemtypesDelete')->name('item.itemtypesdelete');
+	// Racks Delete
+	Route::post('rackDelete', 'RacksController@rackDelete')->name('rack.delete');
 
 	// 显示 Racks add 页面
 	Route::get('rackAdd', 'RacksController@rackAdd')->name('rack.add');
