@@ -610,6 +610,7 @@ var vm_app = new Vue({
 			var depth = _this.edit_depth;
 			var revnums = _this.edit_revnums_select;
 			var locationid = _this.edit_location_select;
+			var areaid = _this.edit_area_select;
 			var label = _this.edit_label;
 			var comments = _this.edit_comments;
 
@@ -630,6 +631,7 @@ var vm_app = new Vue({
 				depth: depth,
 				revnums: revnums,
 				locationid: locationid,
+				areaid: areaid,
 				label: label,
 				comments: comments,
 			})

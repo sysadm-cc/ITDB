@@ -215,6 +215,7 @@ class RacksController extends Controller
 		$depth = $request->input('depth');
 		$revnums = $request->input('revnums');
 		$locationid = $request->input('locationid');
+		$areaid = $request->input('areaid');
 		$label = $request->input('label');
 		$comments = $request->input('comments');
 		
@@ -237,6 +238,7 @@ class RacksController extends Controller
 					'depth'			=> $depth,
 					'revnums'		=> $revnums,
 					'locationid'	=> $locationid,
+					'areaid'		=> $areaid,
 					'label'			=> $label,
 					'comments'		=> $comments,
 				]);
