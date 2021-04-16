@@ -100,7 +100,7 @@
 	<i-row :gutter="16">
 		<br>
 		<i-col span="3">
-			<Poptip confirm word-wrap title="真的要删除这些记录吗？" @on-ok="locations_delete()">
+			<Poptip confirm word-wrap title="删除将影响已有信息，真的要删除这些记录吗？" @on-ok="locations_delete()">
 				<i-button :disabled="locations_delete_disabled" icon="md-remove" type="warning" size="small">删除</i-button>&nbsp;<br>&nbsp;
 			</Poptip>
 		</i-col>
@@ -491,7 +491,7 @@ var vm_app = new Vue({
 													'word-wrap': true,
 													'trigger': 'click',
 													'confirm': true,
-													'title': '真的要删除吗？',
+													'title': '删除将影响已有信息，真的要删除吗？',
 													'transfer': true
 												},
 												on: {

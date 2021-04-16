@@ -24,9 +24,10 @@
 	<i-row :gutter="16">
 
 		<i-col span="8">
-			
+			<Divider orientation="left">发票属性</Divider>
+
 			<i-form :label-width="100">
-				<Form-Item label="* 名称" style="margin-bottom:0px">
+				<Form-Item label="名称" required style="margin-bottom:0px">
 					<i-input v-model.lazy="add_title" size="small"></i-input>
 				</Form-Item>
 				<Form-Item label="代理商" style="margin-bottom:0px">
@@ -48,16 +49,13 @@
 					<i-input v-model.lazy="add_description" type="textarea" size="small"></i-input>
 				</Form-Item>
 
-			</i-form>
-
+			</i-form>&nbsp;
 
 		</i-col>
 
 
-
-
-
 		<i-col span="16">
+		<Divider orientation="left">关联信息</Divider>
 		&nbsp;
 		</i-col>
 
@@ -69,7 +67,7 @@
 
 <Divider dashed></Divider>
 
-<i-button @click="add_create()" :disabled="add_create_disabled" size="large" type="primary">添加</i-button>
+<i-button @click="add_create()" :disabled="add_create_disabled" icon="md-add" size="large" type="primary">添加</i-button>
 
 <br>
 
