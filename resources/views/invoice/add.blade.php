@@ -30,7 +30,7 @@
 				<Form-Item label="名称" required style="margin-bottom:0px">
 					<i-input v-model.lazy="add_title" size="small"></i-input>
 				</Form-Item>
-				<Form-Item label="代理商" style="margin-bottom:0px">
+				<Form-Item label="代理商" required style="margin-bottom:0px">
 					<!-- <i-select v-model.lazy="add_agent_select" multiple size="small" placeholder=""> -->
 					<i-select v-model.lazy="add_agent_select" size="small" placeholder="">
 						<i-option v-for="item in add_agent_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
@@ -449,7 +449,8 @@ var vm_app = new Vue({
 			var add_invoicedate = _this.add_invoicedate ? new Date(_this.add_invoicedate).Format("yyyy-MM-dd") : '';
 			var add_description = _this.add_description;
 
-			if (add_title == '' || add_title == undefined) {
+			if (add_title == '' || add_title == undefined
+				|| add_agent_select == '' || add_agent_select == undefined) {
 				_this.error(false, '错误', '内容为空或不正确！');
 				_this.add_create_disabled = false;
 				return false;

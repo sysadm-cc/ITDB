@@ -99,7 +99,7 @@
 					<Form-Item label="名称" required style="margin-bottom:0px">
 						<i-input v-model.lazy="edit_title" size="small"></i-input>
 					</Form-Item>
-					<Form-Item label="代理商" style="margin-bottom:0px">
+					<Form-Item label="代理商" required style="margin-bottom:0px">
 						<i-select v-model.lazy="edit_agent_select" size="small" placeholder="">
 							<i-option v-for="item in edit_agent_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
 						</i-select>
@@ -222,6 +222,11 @@ var vm_app = new Vue({
 				key: 'agentid',
 				resizable: true,
 				width: 180,
+				render: (h, params) => {
+					return h('span', vm_app.edit_agent_options.map(item => {
+						return params.row.agentid == item.value && h('p', {}, item.label)
+					}))
+				}
 			},
 			{
 				title: '订单编号',
@@ -495,7 +500,8 @@ var vm_app = new Vue({
 			var invoicedate = _this.edit_invoicedate ? new Date(_this.edit_invoicedate).Format("yyyy-MM-dd") : '';
 			var description = _this.edit_description;
 
-			if (id == undefined || title == undefined || title == '') {
+			if (id == undefined || title == undefined || title == ''
+				|| agentid == undefined || agentid == '') {
 				_this.warning(false, '警告', '内容不能为空！');
 				return false;
 			}
