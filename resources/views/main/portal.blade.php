@@ -269,7 +269,7 @@ Main(Portal) -
 			<Card>
 				<p slot="title">
 					<Tooltip placement="top-start" max-width="220" content="Add/View Racks" theme="light">
-					<Icon type="ios-cube"></Icon> 机架 Racks
+					<Icon type="ios-cube"></Icon> 机柜 Racks
 					</Tooltip>
 					@hasanyrole('role_smt_config|role_super_admin')
 					<span style="float:right">
@@ -299,7 +299,7 @@ Main(Portal) -
 			<Card>
 				<p slot="title">
 					<Tooltip placement="top-start" max-width="220" content="Manage item locations" theme="light">
-					<Icon type="ios-pin"></Icon> 位置场所 Locations
+					<Icon type="ios-pin"></Icon> 位置/区域 Locations
 					</Tooltip>
 					@hasanyrole('role_smt_config|role_super_admin')
 					<span style="float:right">
@@ -441,10 +441,10 @@ var vm_app = new Vue({
 
 		CardList_Invoices: [
 			{
-				name: '查询',	url: "", detail: '',
+				name: '查询',	url: "{{route('invoice.invoices')}}", detail: '查询发票',
 			},
 			{
-				name: '添加',	url: "", detail: '',
+				name: '添加',	url: "{{route('invoice.add')}}", detail: '添加发票',
 			},
 			{
 				name: '',	url: '#', detail: '',
@@ -472,13 +472,13 @@ var vm_app = new Vue({
 
 		CardList_Contracts: [
 			{
-				name: '查询',	url: '#', detail: '',
+				name: '查询',	url: "{{route('contract.contracts')}}", detail: '查询合同',
 			},
 			{
-				name: '添加',	url: '#', detail: '',
+				name: '添加',	url: "{{route('contract.add')}}", detail: '添加合同',
 			},
 			{
-				name: '合同类型',	url: '#', detail: '',
+				name: '合同类型',	url: "{{route('contract.contracttypes')}}", detail: '编辑合同类型',
 			},
 			{
 				name: '',	url: '#', detail: '',
@@ -487,10 +487,10 @@ var vm_app = new Vue({
 
 		CardList_Agents: [
 			{
-				name: '查询',	url: "{{ route('agent.agents') }}", detail: '',
+				name: '查询',	url: "{{ route('agent.agents') }}", detail: '查询代理商',
 			},
 			{
-				name: '添加',	url: "{{ route('agent.create') }}", detail: '',
+				name: '添加',	url: "{{ route('agent.create') }}", detail: '添加代理商',
 			},
 			{
 				name: '',	url: '#', detail: '',
@@ -517,10 +517,10 @@ var vm_app = new Vue({
 
 		CardList_Files: [
 			{
-				name: '查询',	url: '#', detail: '',
+				name: '查询',	url: "{{route('file.files')}}", detail: '查询文件',
 			},
 			{
-				name: '添加',	url: '#', detail: '',
+				name: '添加',	url: "{{route('file.add')}}", detail: '添加文件',
 			},
 			{
 				name: '',	url: '#', detail: '',
@@ -532,10 +532,10 @@ var vm_app = new Vue({
 
 		CardList_Racks: [
 			{
-				name: '查询',	url: '#', detail: '',
+				name: '查询',	url: "{{route('rack.racks')}}", detail: '查询机柜',
 			},
 			{
-				name: '添加',	url: '#', detail: '',
+				name: '添加',	url: "{{route('rack.add')}}", detail: '添加机柜',
 			},
 			{
 				name: '',	url: '#', detail: '',
@@ -547,10 +547,10 @@ var vm_app = new Vue({
 
 		CardList_Locations: [
 			{
-				name: '查询',	url: '#', detail: '',
+				name: '查询',	url: "{{route('location.locations')}}", detail: '查询位置',
 			},
 			{
-				name: '添加',	url: '#', detail: '',
+				name: '添加',	url: "{{route('location.add')}}", detail: '添加位置',
 			},
 			{
 				name: '',	url: '#', detail: '',
