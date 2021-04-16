@@ -212,6 +212,7 @@ var vm_app = new Vue({
 		],
 		edit_location_select: '',
 		edit_location_options: [],
+		edit_area_options: [],
 		edit_label: '',
 		edit_comments: '',
 
@@ -281,9 +282,16 @@ var vm_app = new Vue({
 			},
 			{
 				title: '区域/房间',
-				key: 'areas',
+				key: 'areaid',
 				resizable: true,
-				width: 110,
+				width: 210,
+				render: (h, params) => {
+					return h('span', vm_app.edit_area_options.map(item => {
+						if (params.row.locationid + '-' + params.row.areaid == item.value) {
+							return h('p', {}, item.label)
+						}
+					}))
+				}
 			},
 			{
 				title: '标签',
@@ -410,15 +418,23 @@ var vm_app = new Vue({
 		// 把laravel返回的结果转换成select能接受的格式
 		json2selectvalue (json) {
 			var arr = [];
+			var arr1 = [];
+			var arr_tmp;
 			for (var k in json) {
-				// alert(key);
-				// alert(json[key]);
-				// arr.push({ obj.['value'] = key, obj.['label'] = json[key] });
 				arr.push({ value: json[k].id, label: json[k].title+' ('+json[k].building+' / '+json[k].floor+')' });
+				
+				arr_tmp = json[k].areas;
+
+				for (var kk in arr_tmp) {
+					arr1.push({ value: json[k].id+'-'+kk, label: arr_tmp[kk].name+' [x1: '+arr_tmp[kk].x1+',y1: '+arr_tmp[kk].y2+'], [x2: '+arr_tmp[kk].x2+',y2: '+arr_tmp[kk].y2+'])' });
+				}
 			}
-			return arr;
+			// return arr;
 			// return arr.reverse();
+			this.edit_location_options = arr;
+			this.edit_area_options = arr1;
 		},
+
 
 		//
 		racksgets (page, last_page){
@@ -441,8 +457,7 @@ var vm_app = new Vue({
 				}
 			})
 			.then(function (response) {
-				// console.log(response.data);
-				// return false;
+				// console.log(response.data);return false;
 
 				if (response.data['jwt'] == 'logout') {
 					_this.alert_logout();
@@ -450,7 +465,7 @@ var vm_app = new Vue({
 				}
 
 				if (response.data) {
-					_this.softs_delete_disabled = true;
+					_this.racks_delete_disabled = true;
 					_this.tableselect = [];
 					
 					_this.page_current = response.data.current_page;
@@ -539,7 +554,9 @@ var vm_app = new Vue({
 				}
 
 				if (response.data) {
-					_this.edit_location_options = _this.json2selectvalue(response.data.data);
+					_this.json2selectvalue(response.data.data);
+					// _this.edit_location_options = _this.json2selectvalue(response.data.data);
+					// _this.edit_area_options = _this.json2selectvalue_area(response.data.data.areas);
 				}
 			})
 			.catch(function (error) {
