@@ -98,7 +98,7 @@ class InvoicesController extends Controller
 
 		// $nowtime = date("Y-m-d H:i:s",time());
 		$title = $request->input('add_title');
-		$vendorid = 1; //$request->input('add_vendor_select');
+		$agentid = $request->input('add_agent_select');
 		$ordernumber = $request->input('add_ordernumber');
 		$buyer = $request->input('add_buyer');
 		$invoicedate = $request->input('add_invoicedate');
@@ -107,7 +107,7 @@ class InvoicesController extends Controller
 		try	{
 			$result = Invoices::create([
 				'title' => $title,
-				'vendorid' => $vendorid,
+				'agentid' => $agentid,
 				'ordernumber' => $ordernumber,
 				'buyer' => $buyer,
 				'invoicedate' => $invoicedate,
@@ -170,97 +170,7 @@ class InvoicesController extends Controller
 
 
 	
-	/**
-	 * 更新 itemtypes typedesc
-	 *
-	 * @param  int  $id
-	 * @return \Illuminate\Http\Response
-	 */
-	public function itemItemtypesUpdateTypedesc(Request $request)
-	{
-	if (! $request->isMethod('post') || ! $request->ajax()) return null;
 
-	$id = $request->input('id');
-	$typedesc = $request->input('typedesc');
-
-	// 写入数据库
-	try	{
-		DB::beginTransaction();
-		
-		$result = Item_itemtypes::where('id', $id)
-		->update([
-			'typedesc' => $typedesc,
-		]);
-
-		$result = 1;
-		Cache::flush();
-	}
-	catch (\Exception $e) {
-		// echo 'Message: ' .$e->getMessage();
-		DB::rollBack();
-		// dd('Message: ' .$e->getMessage());
-		return 0;
-	}
-
-	DB::commit();
-	// Cache::flush();
-	return $result;
-	}
-	
-
-	/**
-	 * 更新 itemtypes hassoftware
-	 *
-	 * @param  int  $id
-	 * @return \Illuminate\Http\Response
-	 */
-	public function itemItemtypesUpdateHassoftware(Request $request)
-	{
-	if (! $request->isMethod('post') || ! $request->ajax()) return null;
-
-	$id = $request->input('id');
-	$hassoftware = $request->input('hassoftware');
-
-	// 写入数据库
-	try	{
-		DB::beginTransaction();
-		
-		$result = Item_itemtypes::where('id', $id)
-		->update([
-			'hassoftware' => $hassoftware,
-		]);
-
-		$result = 1;
-		Cache::flush();
-	}
-	catch (\Exception $e) {
-		// echo 'Message: ' .$e->getMessage();
-		DB::rollBack();
-		// dd('Message: ' .$e->getMessage());
-		return 0;
-	}
-
-	DB::commit();
-	// Cache::flush();
-	return $result;
-	}
-
-
-	/**
-	 * 删除 itemtypes
-	 *
-	 * @param  int  $id
-	 * @return \Illuminate\Http\Response
-	 */
-	public function itemItemtypesDelete(Request $request)
-	{
-	if (! $request->isMethod('post') || ! $request->ajax())  return false;
-
-	$id = [$request->input('id')];
-	$result = Item_itemtypes::whereIn('id', $id)->delete();
-	Cache::flush();
-	return $result;
-	}
 
 
 

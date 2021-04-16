@@ -31,9 +31,9 @@
 					<i-input v-model.lazy="add_title" size="small"></i-input>
 				</Form-Item>
 				<Form-Item label="代理商" style="margin-bottom:0px">
-					<!-- <i-select v-model.lazy="add_vendor_select" multiple size="small" placeholder=""> -->
-					<i-select v-model.lazy="add_vendor_select" size="small" placeholder="">
-						<i-option v-for="item in add_vendor_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+					<!-- <i-select v-model.lazy="add_agent_select" multiple size="small" placeholder=""> -->
+					<i-select v-model.lazy="add_agent_select" size="small" placeholder="">
+						<i-option v-for="item in add_agent_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
 					</i-select>
 				</Form-Item>
 				<Form-Item label="订单编号" style="margin-bottom:0px">
@@ -54,7 +54,11 @@
 		</i-col>
 
 
-		<i-col span="16">
+		<i-col span="1">
+		&nbsp;
+		</i-col>
+
+		<i-col span="15">
 		<Divider orientation="left">关联信息</Divider>
 		&nbsp;
 		</i-col>
@@ -126,13 +130,10 @@ var vm_app = new Vue({
 
 		// 参数变量
 		add_title: '',
-		add_vendor_select: '',
-		add_vendor_options: [
-			{label: 'Lenovo', value: 'Lenovo'},
-			{label: 'Dell', value: 'Dell'},
-			{label: '硬件销售商', value: '硬件销售商'},
-			{label: '买方', value: '买方'},
-			{label: '承包商', value: '承包商'},
+		add_agent_select: '',
+		add_agent_options: [
+			{label: 'Lenovo', value: 1},
+			{label: 'Dell', value: 2},
 		],
 		add_ordernumber: '',
 		add_buyer: '',
@@ -415,13 +416,11 @@ var vm_app = new Vue({
 		// 把laravel返回的结果转换成select能接受的格式
 		json2selectvalue (json) {
 			var arr = [];
-			for (var key in json) {
-				// alert(key);
-				// alert(json[key]);
-				// arr.push({ obj.['value'] = key, obj.['label'] = json[key] });
-				arr.push({ value: key, label: json[key] });
+			for (var k in json) {
+				arr.push({ value: json[k].id, label: json[k],title });
 			}
-			return arr;
+			_this.add_agent_options = arr;
+			// return arr;
 			// return arr.reverse();
 		},
 
@@ -430,7 +429,7 @@ var vm_app = new Vue({
 		add_clear_var () {
 			var _this = this;
 			_this.add_title = '';
-			_this.add_vendor_select = '';
+			_this.add_agent_select = '';
 			_this.add_ordernumber = '';
 			_this.add_buyer = '';
 			_this.add_invoicedate = '';
@@ -444,7 +443,7 @@ var vm_app = new Vue({
 			_this.add_create_disabled = true;
 
 			var add_title = _this.add_title;
-			var add_vendor_select = _this.add_vendor_select;
+			var add_agent_select = _this.add_agent_select;
 			var add_ordernumber = _this.add_ordernumber;
 			var add_buyer = _this.add_buyer;
 			var add_invoicedate = _this.add_invoicedate ? new Date(_this.add_invoicedate).Format("yyyy-MM-dd") : '';
@@ -461,7 +460,7 @@ var vm_app = new Vue({
 			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
 			axios.post(url, {
 				add_title: add_title,
-				add_vendor_select: add_vendor_select,
+				add_agent_select: add_agent_select,
 				add_ordernumber: add_ordernumber,
 				add_buyer: add_buyer,
 				add_invoicedate: add_invoicedate,
@@ -479,14 +478,14 @@ var vm_app = new Vue({
  				if (response.data) {
 					_this.add_clear_var();
 					// _this.itemtypesgets(_this.page_current, _this.page_last);
-					_this.success(false, '成功', '新建成功！');
+					_this.success(false, '成功', '添加成功！');
 				} else {
-					_this.error(false, '失败', '新建失败！');
+					_this.error(false, '失败', '添加失败！');
 				}
 				_this.add_create_disabled = false;
 			})
 			.catch(function (error) {
-				_this.error(false, '错误', '新建失败！');
+				_this.error(false, '错误', '添加失败！');
 				_this.add_create_disabled = false;
 			})
 
@@ -495,30 +494,34 @@ var vm_app = new Vue({
 		},
 
 
-
-
-
-
-		// ajax 获取物品类型列表
-		itemtypesgets () {
+		// 获取代理商列表
+		agentsgets (page, last_page){
 			var _this = this;
-			var url = "{{ route('item.itemtypesgets') }}";
+			var url = "{{ route('agent.gets') }}";
 			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
-			axios.get(url)
+			axios.get(url,{
+				params: {
+					perPage: 1000,
+					page: 1,
+				}
+			})
 			.then(function (response) {
 				if (response.data['jwt'] == 'logout') {
 					_this.alert_logout();
 					return false;
 				}
 				if (response.data) {
-					response.data.data.map(function (v, i) {
-						_this.add_itemtype_options.push({label: v.typedesc, value: v.id});
-					});
+					json2selectvalue(response.data.data);
 				}
 			})
 			.catch(function (error) {
+				// _this.error(false, 'Error', error);
 			})
 		},
+
+
+
+
 	
 		
 
@@ -562,7 +565,7 @@ var vm_app = new Vue({
 		// _this.itemtypesgets();
 
 		// ajax 获取制造商列表
-
+		_this.agentsgets();
 
 
 

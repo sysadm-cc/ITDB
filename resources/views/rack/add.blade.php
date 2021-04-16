@@ -46,7 +46,7 @@
 					<i-option v-for="item in add_revnums_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
 				</i-select>
 			</Form-Item>
-			<Form-Item label="位置" style="margin-bottom:0px">
+			<Form-Item label="位置/楼层" style="margin-bottom:0px">
 				<i-select v-model.lazy="add_location_select" @on-change="onchange_location" size="small" placeholder="">
 					<i-option v-for="item in add_location_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
 				</i-select>

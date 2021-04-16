@@ -173,7 +173,7 @@ var vm_app = new Vue({
 			},
 			{
 				title: '代理商',
-				key: 'vendorid',
+				key: 'agentid',
 				resizable: true,
 				width: 180,
 			},

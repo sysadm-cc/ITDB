@@ -492,7 +492,7 @@ var vm_app = new Vue({
 						title: '电话号码',
 						key: 'contacts',
 						align:'center',
-						width: 90,
+						width: 120,
 						className: 'table-info-column-contacts',
 						render: (h, params) => {
 							if (params.row.contacts!=undefined && params.row.contacts!=null) {

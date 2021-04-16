@@ -22,7 +22,7 @@ class InvoicesTableSeeder extends Seeder
             array (
                 'id' => 1,
                 'title' => '发票一',
-                'vendorid' => 1,
+                'agentid' => 1,
                 'ordernumber' => null,
                 'buyer' => null,
                 'invoicedate' => null,
