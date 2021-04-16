@@ -64,7 +64,7 @@
 				</Form-Item>
 
 
-			</i-form>
+			</i-form>&nbsp;
 
 
 		</i-col>
@@ -79,7 +79,7 @@
 
 	</i-row>
 
-
+	
 
 
 
@@ -87,7 +87,7 @@
 
 <i-button @click="add_create()" :disabled="add_create_disabled" icon="md-add" size="large" type="primary">添加</i-button>
 
-<br>
+&nbsp;<br>
 
 
 
@@ -155,13 +155,13 @@ var vm_app = new Vue({
 		],
 		add_location_select: '',
 		add_location_options: [
-			{label: '楼层一', value: 1},
-			{label: '楼层二', value: 2},
+			// {label: '楼层一', value: 1},
+			// {label: '楼层二', value: 2},
 		],
 		add_area_select: '',
 		add_area_options: [
-			{label: '房间一', value: 1},
-			{label: '房间二', value: 2},
+			// {label: '房间一', value: 1},
+			// {label: '房间二', value: 2},
 		],
 		add_label: '',
 		add_comments: '',
@@ -452,6 +452,16 @@ var vm_app = new Vue({
 			// return arr.reverse();
 		},
 
+		// 把laravel返回的结果转换成select能接受的格式
+		json2selectvalue_location2area (json) {
+			var arr = [];
+			for (var k in json) {
+				arr.push({ value: k, label: json[k].name+' [x1: '+json[k].x1+',y1: '+json[k].y2+'], [x2: '+json[k].x2+',y2: '+json[k].y2+'])' });
+			}
+			return arr;
+			// return arr.reverse();
+		},
+
 
 		// 清除所有变量
 		add_clear_var () {
@@ -462,7 +472,7 @@ var vm_app = new Vue({
 			_this.add_depth = '';
 			_this.add_revnums_select = '';
 			_this.add_location_select = '';
-			// _this.add_area_select = '';
+			_this.add_area_select = '';
 			_this.add_label = '';
 			_this.add_comments = '';
 		},
@@ -479,7 +489,7 @@ var vm_app = new Vue({
 			var add_depth = _this.add_depth;
 			var add_revnums_select = _this.add_revnums_select;
 			var add_location_select = _this.add_location_select;
-			// var add_area_select = _this.add_area_select;
+			var add_area_select = _this.add_area_select;
 			var add_label = _this.add_label;
 			var add_comments = _this.add_comments;
 
@@ -488,7 +498,6 @@ var vm_app = new Vue({
 				_this.add_create_disabled = false;
 				return false;
 			}
-// console.log(add_itemtype_select);return false;
 
 			var url = "{{ route('rack.create') }}";
 			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
@@ -499,13 +508,12 @@ var vm_app = new Vue({
 				add_depth: add_depth,
 				add_revnums_select: add_revnums_select,
 				add_location_select: add_location_select,
-				// add_area_select: add_area_select,
+				add_area_select: add_area_select,
 				add_label: add_label,
 				add_comments: add_comments,
 			})
 			.then(function (response) {
-				// console.log(response.data);
-				// return false;
+				// console.log(response.data);return false;
 
 				if (response.data['jwt'] == 'logout') {
 					_this.alert_logout();
@@ -514,7 +522,6 @@ var vm_app = new Vue({
 				
  				if (response.data) {
 					_this.add_clear_var();
-					// _this.itemtypesgets(_this.page_current, _this.page_last);
 					_this.success(false, '成功', '添加成功！');
 				} else {
 					_this.error(false, '失败', '添加失败！');
@@ -577,22 +584,14 @@ var vm_app = new Vue({
 				}
 			})
 			.then(function (response) {
-				console.log(response.data);return false;
+				// console.log(response.data.areas);return false;
 
 				if (response.data['jwt'] == 'logout') {
 					_this.alert_logout();
 					return false;
 				}
-				
-				_this.lotshu = response.data.lotshu;
-				_this.meishu_max = response.data.lotshu;
 
-				_this.xianti = response.data.xianti;
-				_this.banci = response.data.banci;
-				_this.dianmei = response.data.dianmei;
-
-				// 生产日报中的机种生产日期，暂保留，无用（返回但没用上）
-				_this.jianchariqi = response.data.jianchariqi;
+				_this.add_area_options = _this.json2selectvalue_location2area(response.data.areas);
 			})
 			.catch(function (error) {
 				this.error(false, 'Error', error);

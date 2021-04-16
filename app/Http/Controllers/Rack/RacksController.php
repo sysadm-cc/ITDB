@@ -102,9 +102,9 @@ class RacksController extends Controller
 		$model = $request->input('add_model');
 		$usize = $request->input('add_usize');
 		$depth = $request->input('add_depth');
-		$revnums = $request->input('add_revnums_select');
+		$revnums = $request->input('add_revnums_select') ?? false;
 		$locationid = $request->input('add_location_select');
-		// $locareaid = $request->input('add_locarea_select');
+		$areaid = $request->input('add_area_select');
 		$label = $request->input('add_label');
 		$comments = $request->input('add_comments');
 		
@@ -116,14 +116,14 @@ class RacksController extends Controller
 				'depth' => $depth,
 				'revnums' => $revnums,
 				'locationid' => $locationid,
-				// 'locareaid' => $locareaid,
+				'areaid' => $areaid,
 				'label' => $label,
 				'comments' => $comments,
 			]);
 			Cache::flush();
 		}
 		catch (\Exception $e) {
-			// dd('Message: ' .$e->getMessage());
+			dd('Message: ' .$e->getMessage());
 			$result = 0;
 		}
 
@@ -271,7 +271,6 @@ class RacksController extends Controller
 			$result = Locations::select('areas')
 				->where('id', $locationid)
 				->first();
-
 		}
 		catch (\Exception $e) {
 			// dd('Message: ' .$e->getMessage());
