@@ -47,7 +47,7 @@
 					</i-select>
 				</Form-Item>
 				<Form-Item label="位置" style="margin-bottom:0px">
-					<i-select v-model.lazy="add_location_select" size="small" placeholder="">
+					<i-select v-model.lazy="add_location_select" @on-change="onchange_location" size="small" placeholder="">
 						<i-option v-for="item in add_location_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
 					</i-select>
 				</Form-Item>
@@ -559,7 +559,45 @@ var vm_app = new Vue({
 			})
 		},
 
+		// 根据位置查询区域/房间
+		onchange_location () {
+			var _this = this;
+			
+			var locationid = _this.add_location_select;
+			
+			if (locationid == '' || locationid == undefined) {
+				return false;
+			}
+			
+			var url = "{{ route('rack.location2area') }}";
+			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
+			axios.get(url,{
+				params: {
+					locationid: locationid,
+				}
+			})
+			.then(function (response) {
+				console.log(response.data);return false;
 
+				if (response.data['jwt'] == 'logout') {
+					_this.alert_logout();
+					return false;
+				}
+				
+				_this.lotshu = response.data.lotshu;
+				_this.meishu_max = response.data.lotshu;
+
+				_this.xianti = response.data.xianti;
+				_this.banci = response.data.banci;
+				_this.dianmei = response.data.dianmei;
+
+				// 生产日报中的机种生产日期，暂保留，无用（返回但没用上）
+				_this.jianchariqi = response.data.jianchariqi;
+			})
+			.catch(function (error) {
+				this.error(false, 'Error', error);
+			})
+		},
 	
 		
 

@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Admin\Config;
 use App\Models\Admin\User;
 use App\Models\Rack\Racks;
+use App\Models\Location\Locations;
 
 use DB;
 use Mail;
@@ -252,7 +253,34 @@ class RacksController extends Controller
 		return $result;
 	}
 
+	/**
+	 * 添加时根据位置列出区域/房间 Location2Area
+	 *
+	 * @param  int  $id
+	 * @return \Illuminate\Http\Response
+	 */
+	public function location2Area(Request $request)
+	{
+		if (! $request->ajax()) return null;
 
+		$locationid = $request->input('locationid');
+		
+		if ($locationid == null || $locationid == null) return 0;
+		
+		try {
+			$result = Locations::select('areas')
+				->where('id', $locationid)
+				->first();
+
+		}
+		catch (\Exception $e) {
+			// dd('Message: ' .$e->getMessage());
+			$result = 0;
+		}
+
+		return $result;
+
+	}
 	
 
 

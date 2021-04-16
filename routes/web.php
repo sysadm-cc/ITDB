@@ -69,6 +69,9 @@ Route::group(['prefix'=>'rack', 'namespace'=>'Rack', 'middleware'=>['jwtauth']],
 	// Racks Create
 	Route::post('rackCreate', 'RacksController@rackCreate')->name('rack.create');
 
+	// Racks Location2Area
+	Route::get('location2Area', 'RacksController@location2Area')->name('rack.location2area');
+
 });
 
 // Files 路由
