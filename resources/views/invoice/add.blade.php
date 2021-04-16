@@ -564,7 +564,7 @@ var vm_app = new Vue({
 		// ajax 获取物品类型列表
 		// _this.itemtypesgets();
 
-		// ajax 获取制造商列表
+		// 获取制造商列表
 		_this.agentsgets();
 
 

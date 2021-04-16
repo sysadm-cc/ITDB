@@ -166,13 +166,13 @@ Route::group(['prefix'=>'invoice', 'namespace'=>'Invoice', 'middleware'=>['jwtau
 	// Agents Update typedesc
 	// Route::post('itemItemtypesUpdateTypedesc', 'ItemItemtypesController@itemItemtypesUpdateTypedesc')->name('item.itemtypesupdate_typedesc');
 
-	// Agents Update
-	// Route::post('itemItemtypesUpdateHassoftware', 'ItemItemtypesController@itemItemtypesUpdateHassoftware')->name('item.itemtypesupdate_hassoftware');
+	// Invoices Update
+	Route::post('invoiceUpdate', 'InvoicesController@invoiceUpdate')->name('invoice.update');
 
-	// Agents Delete
-	// Route::post('itemItemtypesDelete', 'ItemItemtypesController@itemItemtypesDelete')->name('item.itemtypesdelete');
+	// Invoices Delete
+	Route::post('invoiceDelete', 'InvoicesController@invoiceDelete')->name('invoice.delete');
 
-	// 显示 Invoices add 页面
+	// 显示 Invoices Add 页面
 	Route::get('invoiceAdd', 'InvoicesController@invoiceAdd')->name('invoice.add');
 
 	// Invoices Create

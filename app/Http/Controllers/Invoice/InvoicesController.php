@@ -165,7 +165,82 @@ class InvoicesController extends Controller
 	}
 
 
+	/**
+	 * 删除记录 invoiceDelete
+	 *
+	 * @param  int  $id
+	 * @return \Illuminate\Http\Response
+	 */
+	public function invoiceDelete(Request $request)
+	{
+		if (! $request->isMethod('post') || ! $request->ajax()) return null;
 
+		$id = $request->input('tableselect');
+
+		try	{
+			$result = Invoices::whereIn('id', $id)->delete();
+		}
+		catch (\Exception $e) {
+			// echo 'Message: ' .$e->getMessage();
+			$result = 0;
+		}
+		
+		Cache::flush();
+		return $result;
+	}
+
+
+	/**
+	 * 更新 invoiceUpdate
+	 *
+	 * @param  int  $id
+	 * @return \Illuminate\Http\Response
+	 */
+	public function invoiceUpdate(Request $request)
+	{
+		if (! $request->isMethod('post') || ! $request->ajax()) return null;
+
+		$id = $request->input('id');
+		$updated_at = $request->input('updated_at');
+		$title = $request->input('title');
+		$agentid = $request->input('agentid');
+		$ordernumber = $request->input('ordernumber');
+		$buyer = $request->input('buyer');
+		$invoicedate = $request->input('invoicedate');
+		$description = $request->input('description');
+		
+		// 判断如果不是最新的记录，不可被编辑
+		// 因为可能有其他人在你当前表格未刷新的情况下已经更新过了
+		$res = Invoices::select('updated_at')
+			->where('id', $id)
+			->first();
+		$res_updated_at = date('Y-m-d H:i:s', strtotime($res['updated_at']));
+		if ($updated_at != $res_updated_at) return 0;
+
+		// 尝试更新
+		try	{
+			DB::beginTransaction();
+			$result = Invoices::where('id', $id)
+				->update([
+					'title'			=> $title,
+					'agentid'		=> $agentid,
+					'ordernumber'	=> $ordernumber,
+					'buyer'			=> $buyer,
+					'invoicedate'	=> $invoicedate,
+					'description'	=> $description,
+				]);
+			$result = 1;
+		}
+		catch (\Exception $e) {
+			DB::rollBack();
+			dd('Message: ' .$e->getMessage());
+			$result = 0;
+		}
+		DB::commit();
+		Cache::flush();
+		// dd($result);
+		return $result;
+	}
 
 
 
