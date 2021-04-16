@@ -21,63 +21,63 @@
 
 
 
-	<i-row :gutter="16">
+<i-row :gutter="16">
 
-		<i-col span="8">
-			<Divider orientation="left">机柜属性</Divider>
+	<i-col span="8">
+		<Divider orientation="left">机柜属性</Divider>
 
-			<i-form :label-width="100">
-				<Form-Item label="名称" required style="margin-bottom:0px">
-					<i-input v-model.lazy="add_title" size="small"></i-input>
-				</Form-Item>
-				<Form-Item label="型号" style="margin-bottom:0px">
-					<i-input v-model.lazy="add_model" size="small"></i-input>
-				</Form-Item>
-				<Form-Item label="尺寸（U）" style="margin-bottom:0px">
-					<i-select v-model.lazy="add_usize_select" size="small" placeholder="">
-						<i-option v-for="item in add_usize_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
-					</i-select>
-				</Form-Item>
-				<Form-Item label="深度（mm）" style="margin-bottom:0px">
-					<Input-Number v-model.lazy="add_depth" size="small" :min="1"></Input-Number>
-				</Form-Item>
-				<Form-Item label="U数起始顺序" style="margin-bottom:0px">
-					<i-select v-model.lazy="add_revnums_select" size="small" placeholder="">
-						<i-option v-for="item in add_revnums_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
-					</i-select>
-				</Form-Item>
-				<Form-Item label="位置" style="margin-bottom:0px">
-					<i-select v-model.lazy="add_location_select" @on-change="onchange_location" size="small" placeholder="">
-						<i-option v-for="item in add_location_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
-					</i-select>
-				</Form-Item>
-				<Form-Item label="区域/房间" style="margin-bottom:0px">
-					<i-select v-model.lazy="add_area_select" size="small" placeholder="">
-						<i-option v-for="item in add_area_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
-					</i-select>
-				</Form-Item>
-				<Form-Item label="标签" style="margin-bottom:0px">
-					<i-input v-model.lazy="add_label" size="small"></i-input>
-				</Form-Item>
-				<Form-Item label="备注" style="margin-bottom:0px">
-					<i-input v-model.lazy="add_comments" size="small" type="textarea"></i-input>
-				</Form-Item>
-
-
-			</i-form>&nbsp;
+		<i-form :label-width="100">
+			<Form-Item label="名称" required style="margin-bottom:0px">
+				<i-input v-model.lazy="add_title" size="small"></i-input>
+			</Form-Item>
+			<Form-Item label="型号" style="margin-bottom:0px">
+				<i-input v-model.lazy="add_model" size="small"></i-input>
+			</Form-Item>
+			<Form-Item label="尺寸（U）" style="margin-bottom:0px">
+				<i-select v-model.lazy="add_usize_select" size="small" placeholder="">
+					<i-option v-for="item in add_usize_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+				</i-select>
+			</Form-Item>
+			<Form-Item label="深度（mm）" style="margin-bottom:0px">
+				<Input-Number v-model.lazy="add_depth" size="small" :min="1"></Input-Number>
+			</Form-Item>
+			<Form-Item label="U数起始顺序" style="margin-bottom:0px">
+				<i-select v-model.lazy="add_revnums_select" size="small" placeholder="">
+					<i-option v-for="item in add_revnums_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+				</i-select>
+			</Form-Item>
+			<Form-Item label="位置" style="margin-bottom:0px">
+				<i-select v-model.lazy="add_location_select" @on-change="onchange_location" size="small" placeholder="">
+					<i-option v-for="item in add_location_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+				</i-select>
+			</Form-Item>
+			<Form-Item label="区域/房间" style="margin-bottom:0px">
+				<i-select v-model.lazy="add_area_select" size="small" placeholder="">
+					<i-option v-for="item in add_area_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+				</i-select>
+			</Form-Item>
+			<Form-Item label="标签" style="margin-bottom:0px">
+				<i-input v-model.lazy="add_label" size="small"></i-input>
+			</Form-Item>
+			<Form-Item label="备注" style="margin-bottom:0px">
+				<i-input v-model.lazy="add_comments" size="small" type="textarea"></i-input>
+			</Form-Item>
 
 
-		</i-col>
+		</i-form>&nbsp;
 
 
+	</i-col>
 
 
 
-		<i-col span="16">
-		&nbsp;
-		</i-col>
 
-	</i-row>
+
+	<i-col span="16">
+	&nbsp;
+	</i-col>
+
+</i-row>
 
 	
 

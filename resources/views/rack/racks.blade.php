@@ -116,15 +116,15 @@
 						</i-select>
 					</Form-Item>
 					<Form-Item label="位置" style="margin-bottom:0px">
-						<i-select v-model.lazy="edit_location_select" size="small" placeholder="">
+						<i-select v-model.lazy="edit_location_select" @on-change="onchange_location" size="small" placeholder="">
 							<i-option v-for="item in edit_location_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
 						</i-select>
 					</Form-Item>
-					<!-- <Form-Item label="区域/房间" style="margin-bottom:0px">
-						<i-select v-model.lazy="edit_locarea_select" size="small" placeholder="">
-							<i-option v-for="item in edit_locarea_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+					<Form-Item label="区域/房间" style="margin-bottom:0px">
+						<i-select v-model.lazy="edit_area_select" size="small" placeholder="">
+							<i-option v-for="item in edit_area_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
 						</i-select>
-					</Form-Item> -->
+					</Form-Item>
 					<Form-Item label="标签" style="margin-bottom:0px">
 						<i-input v-model.lazy="edit_label" size="small"></i-input>
 					</Form-Item>
@@ -212,7 +212,9 @@ var vm_app = new Vue({
 		],
 		edit_location_select: '',
 		edit_location_options: [],
+		edit_area_select: '',
 		edit_area_options: [],
+		edit_area_options_list: [],
 		edit_label: '',
 		edit_comments: '',
 
@@ -286,7 +288,7 @@ var vm_app = new Vue({
 				resizable: true,
 				width: 210,
 				render: (h, params) => {
-					return h('span', vm_app.edit_area_options.map(item => {
+					return h('span', vm_app.edit_area_options_list.map(item => {
 						if (params.row.locationid + '-' + params.row.areaid == item.value) {
 							return h('p', {}, item.label)
 						}
@@ -432,7 +434,17 @@ var vm_app = new Vue({
 			// return arr;
 			// return arr.reverse();
 			this.edit_location_options = arr;
-			this.edit_area_options = arr1;
+			this.edit_area_options_list = arr1;
+		},
+
+		// 把laravel返回的结果转换成select能接受的格式
+		json2selectvalue_location2area (json) {
+			var arr = [];
+			for (var k in json) {
+				arr.push({ value: parseInt(k), label: json[k].name+' [x1: '+json[k].x1+',y1: '+json[k].y2+'], [x2: '+json[k].x2+',y2: '+json[k].y2+'])' });
+			}
+			return arr;
+			// return arr.reverse();
 		},
 
 
@@ -577,8 +589,11 @@ var vm_app = new Vue({
 			_this.edit_depth = row.depth;
 			_this.edit_revnums_select = row.revnums;
 			_this.edit_location_select = row.locationid;
+			_this.edit_area_select = row.areaid;
 			_this.edit_label = row.label;
 			_this.edit_comments = row.comments;
+
+			_this.onchange_location();
 
 			_this.modal_edit_racks = true;
 		},
@@ -639,7 +654,31 @@ var vm_app = new Vue({
 
 		},
 
-
+		// 根据位置查询区域/房间
+		onchange_location () {
+			var _this = this;
+			var locationid = _this.edit_location_select;
+			if (locationid == '' || locationid == undefined) {
+				return false;
+			}
+			var url = "{{ route('rack.location2area') }}";
+			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
+			axios.get(url,{
+				params: {
+					locationid: locationid,
+				}
+			})
+			.then(function (response) {
+				if (response.data['jwt'] == 'logout') {
+					_this.alert_logout();
+					return false;
+				}
+				_this.edit_area_options = _this.json2selectvalue_location2area(response.data.areas);
+			})
+			.catch(function (error) {
+				this.error(false, 'Error', error);
+			})
+		},
 
 
 		
