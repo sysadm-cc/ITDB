@@ -132,8 +132,8 @@ var vm_app = new Vue({
 		add_title: '',
 		add_agent_select: '',
 		add_agent_options: [
-			{label: 'Lenovo', value: 1},
-			{label: 'Dell', value: 2},
+			// {label: 'Lenovo', value: 1},
+			// {label: 'Dell', value: 2},
 		],
 		add_ordernumber: '',
 		add_buyer: '',
@@ -417,10 +417,9 @@ var vm_app = new Vue({
 		json2selectvalue (json) {
 			var arr = [];
 			for (var k in json) {
-				arr.push({ value: json[k].id, label: json[k],title });
+				arr.push({ value: json[k].id, label: json[k].title });
 			}
-			_this.add_agent_options = arr;
-			// return arr;
+			return arr;
 			// return arr.reverse();
 		},
 
@@ -507,12 +506,13 @@ var vm_app = new Vue({
 				}
 			})
 			.then(function (response) {
+				// console.log(response.data.data);
 				if (response.data['jwt'] == 'logout') {
 					_this.alert_logout();
 					return false;
 				}
 				if (response.data) {
-					json2selectvalue(response.data.data);
+					_this.add_agent_options = _this.json2selectvalue(response.data.data);
 				}
 			})
 			.catch(function (error) {
@@ -541,9 +541,6 @@ var vm_app = new Vue({
 		
 
 
-	},
-	beforeCreated: function(){
-		
 	},
 	mounted: function(){
 		var _this = this;
