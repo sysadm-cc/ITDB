@@ -55,7 +55,9 @@
 	<i-row :gutter="16">
 		<br>
 		<i-col span="3">
-			<i-button @click="items_delete()" :disabled="softs_delete_disabled" type="warning" size="small">删除</i-button>&nbsp;<br>&nbsp;
+			<Poptip confirm word-wrap title="删除将影响已有信息，真的要删除这些记录吗？" @on-ok="softs_delete()">
+				<i-button :disabled="softs_delete_disabled" icon="md-remove" type="warning" size="small">删除</i-button>&nbsp;<br>&nbsp;
+			<Poptip>
 		</i-col>
 		<i-col span="2">
 			<i-button type="default" size="small" @click="softs_add()"><Icon type="ios-color-wand-outline"></Icon> 新建</i-button>
@@ -84,7 +86,60 @@
 </Tab-pane>
 
 
+<!-- 以下为各元素编辑窗口 -->
 
+<!-- 主编辑窗口 softs-->
+<Modal v-model="modal_edit_softs" @on-ok="update_softs" ok-text="保存" title="编辑 - 软件" width="460">
+	<div style="text-align:left">
+
+		<p>
+		<i-form :label-width="100">
+			<i-row>
+				<i-col span="24">
+					<Form-Item label="* 名称" style="margin-bottom:0px">
+						<i-input v-model.lazy="edit_title" size="small"></i-input>
+					</Form-Item>
+					<Form-Item label="制造商" style="margin-bottom:0px">
+						<!-- <i-select v-model.lazy="add_type_select" multiple size="small" placeholder=""> -->
+						<i-select v-model.lazy="edit_agentid_select" size="small" placeholder="">
+							<i-option v-for="item in edit_agentid_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+						</i-select>
+					</Form-Item>
+					<Form-Item label="发票" style="margin-bottom:0px">
+						<!-- <i-select v-model.lazy="add_type_select" multiple size="small" placeholder=""> -->
+						<i-select v-model.lazy="edit_invoiceid_select" size="small" placeholder="">
+							<i-option v-for="item in edit_invoiceid_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+						</i-select>
+					</Form-Item>
+					<Form-Item label="类型" style="margin-bottom:0px">
+						<Radio-Group v-model="edit_type">
+							<Radio label="Box"></Radio>
+							<Radio label="CPU"></Radio>
+							<Radio label="Core"></Radio>
+						</Radio-Group>
+					</Form-Item>
+					<Form-Item label="版本" style="margin-bottom:0px">
+						<i-input v-model.lazy="edit_version" size="small"></i-input>
+					</Form-Item>
+					<Form-Item label="购买日期" style="margin-bottom:0px">
+						<Date-picker v-model.lazy="edit_purchasedate" type="date" size="small"></Date-picker>
+					</Form-Item>
+					<Form-Item label="数量" style="margin-bottom:0px">
+						<Input-Number v-model.lazy="edit_quantity" size="small" :min="1"></Input-Number>
+					</Form-Item>
+					<Form-Item label="License信息" style="margin-bottom:0px">
+						<i-input v-model.lazy="edit_licenseinfo" size="small" type="textarea"></i-input>
+					</Form-Item>
+					<Form-Item label="备注" style="margin-top:5px" >
+						<i-input v-model.lazy="edit_comments" size="small" type="textarea"></i-input>
+					</Form-Item>
+				</i-col>
+			</i-row>
+		</i-form>&nbsp;
+		</p>
+	
+	</div>
+</Modal>
 
 
 
@@ -144,7 +199,7 @@ var vm_app = new Vue({
 		softs_delete_disabled: true,
 
 		// 主编辑变量
-		modal_edit_invoices: false,
+		modal_edit_softs: false,
 		edit_id: '',
 		edit_updated_at: '',
 		edit_title: '',
@@ -205,12 +260,6 @@ var vm_app = new Vue({
 				}
 			},
 			{
-				title: 'License 类型',
-				key: 'type',
-				resizable: true,
-				width: 180,
-			},
-			{
 				title: '版本',
 				key: 'version',
 				resizable: true,
@@ -232,16 +281,22 @@ var vm_app = new Vue({
 				width: 100,
 			},
 			{
+				title: 'License 类型',
+				key: 'type',
+				resizable: true,
+				width: 110,
+			},
+			{
 				title: 'License 信息',
 				key: 'licenseinfo',
 				resizable: true,
-				width: 180,
+				width: 160,
 			},
 			{
 				title: '备注',
 				key: 'comments',
 				resizable: true,
-				width: 100,
+				width: 160,
 			},
 			{
 				title: '创建时间',
@@ -261,27 +316,34 @@ var vm_app = new Vue({
 				width: 100,
 				fixed: 'right',
 				render: (h, params) => {
-					// if (params.row.id > 3) {
-						return h('div', [
+					return h('div', [
+
+						h('Poptip', {
+							props: {
+								'word-wrap': true,
+								'trigger': 'hover',
+								'confirm': false,
+								'content': '编辑软件属性',
+								'transfer': true
+							},
+						}, [
 							h('Button', {
 								props: {
 									type: 'primary',
 									size: 'small',
-									icon: 'md-arrow-round-down'
+									icon: 'md-create'
 								},
 								style: {
 									marginRight: '5px'
 								},
 								on: {
 									click: () => {
-										vm_app.itemtypes_delete(params.row)
+										vm_app.edit_softs(params.row)
 									}
 								}
-							}, '编辑'),
-							
-
-						]);
-					// }
+							}),
+						]),
+					]);
 				},
 				
 			}
@@ -365,7 +427,6 @@ var vm_app = new Vue({
 				page = 1;
 			}
 			
-
 			_this.loadingbarstart();
 			var url = "{{ route('soft.gets') }}";
 			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
@@ -391,7 +452,6 @@ var vm_app = new Vue({
 					_this.page_total = response.data.total;
 					_this.page_last = response.data.last_page;
 					_this.tabledata = response.data.data;
-					
 				}
 				
 				_this.loadingbarfinish();
@@ -424,10 +484,107 @@ var vm_app = new Vue({
 			window.location.href = "{{ route('soft.add') }}";
 		},
 
+		// 删除记录
+		softs_delete () {
+			var _this = this;
+			
+			var tableselect = _this.tableselect;
+			
+			if (tableselect[0] == undefined) return false;
+
+			var url = "{{ route('soft.delete') }}";
+			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
+			axios.post(url, {
+				tableselect: tableselect
+			})
+			.then(function (response) {
+				if (response.data) {
+					_this.softs_delete_disabled = true;
+					_this.tableselect = [];
+					_this.success(false, '成功', '删除成功！');
+					_this.softsgets(_this.page_current, _this.page_last);
+				} else {
+					_this.error(false, '失败', '删除失败！');
+				}
+			})
+			.catch(function (error) {
+				_this.error(false, '错误', '删除失败！');
+			})
+		},
 
 
+		// 主编辑前查看 - softs
+		edit_softs (row) {
+			var _this = this;
+
+			_this.edit_id = row.id;
+			_this.edit_updated_at = row.updated_at;
+			_this.edit_title = row.title;
 
 
+			_this.edit_agentid_select = row.agentid;
+			_this.edit_invoiceid_select = row.invoiceid;
+			_this.edit_purchasedate = row.purchasedate;
+			_this.edit_version = row.version;
+			_this.edit_quantity = row.quantity;
+			_this.edit_type = row.type;
+			_this.edit_licenseinfo = row.licenseinfo;
+			_this.edit_comments = row.comments;
+
+			_this.modal_edit_softs = true;
+		},
+
+		// 主编辑保存 - softs
+		update_softs () {
+			var _this = this;
+
+			var id = _this.edit_id;
+			var updated_at = _this.edit_updated_at;
+			var title = _this.edit_title;
+			var agentid = _this.edit_agent_select;
+			var ordernumber = _this.edit_ordernumber;
+			var buyer = _this.edit_buyer;
+			var invoicedate = _this.edit_invoicedate ? new Date(_this.edit_invoicedate).Format("yyyy-MM-dd") : '';
+			var description = _this.edit_description;
+
+			if (id == undefined || title == undefined || title == ''
+				|| agentid == undefined || agentid == '') {
+				_this.warning(false, '警告', '内容不能为空！');
+				return false;
+			}
+
+			var url = "{{ route('invoice.update') }}";
+			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
+			axios.post(url, {
+				id: id,
+				updated_at: updated_at,
+				title: title,
+				agentid: agentid,
+				ordernumber: ordernumber,
+				buyer: buyer,
+				invoicedate: invoicedate,
+				description: description,
+			})
+			.then(function (response) {
+				// console.log(response.data);return false;
+
+				if (response.data['jwt'] == 'logout') {
+					_this.alert_logout();
+					return false;
+				}
+				
+				if (response.data) {
+					_this.success(false, '成功', '更新成功！');
+						_this.invoicesgets(_this.page_current, _this.page_last);
+				} else {
+					_this.error(false, '失败', '更新失败！');
+				}
+			})
+			.catch(function (error) {
+				_this.error(false, '错误', '更新失败！');
+			})
+
+		},
 
 
 

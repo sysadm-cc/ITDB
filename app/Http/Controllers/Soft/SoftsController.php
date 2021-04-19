@@ -131,7 +131,7 @@ class SoftsController extends Controller
 
 
 	/**
-	 * 读取记录 agents
+	 * 读取记录 softs
 	 *
 	 * @param  int  $id
 	 * @return \Illuminate\Http\Response
@@ -171,102 +171,35 @@ class SoftsController extends Controller
 	}
 
 
+	/**
+	 * 删除记录 softDelete
+	 *
+	 * @param  int  $id
+	 * @return \Illuminate\Http\Response
+	 */
+	public function softDelete(Request $request)
+	{
+		if (! $request->isMethod('post') || ! $request->ajax()) return null;
+
+		$id = $request->input('tableselect');
+
+		try	{
+			$result = Softs::whereIn('id', $id)->delete();
+		}
+		catch (\Exception $e) {
+			// echo 'Message: ' .$e->getMessage();
+			$result = 0;
+		}
+		
+		Cache::flush();
+		return $result;
+	}
 
 
 
 
 	
-	/**
-	 * 更新 itemtypes typedesc
-	 *
-	 * @param  int  $id
-	 * @return \Illuminate\Http\Response
-	 */
-	public function itemItemtypesUpdateTypedesc(Request $request)
-	{
-	if (! $request->isMethod('post') || ! $request->ajax()) return null;
 
-	$id = $request->input('id');
-	$typedesc = $request->input('typedesc');
-
-	// 写入数据库
-	try	{
-		DB::beginTransaction();
-		
-		$result = Item_itemtypes::where('id', $id)
-		->update([
-			'typedesc' => $typedesc,
-		]);
-
-		$result = 1;
-		Cache::flush();
-	}
-	catch (\Exception $e) {
-		// echo 'Message: ' .$e->getMessage();
-		DB::rollBack();
-		// dd('Message: ' .$e->getMessage());
-		return 0;
-	}
-
-	DB::commit();
-	// Cache::flush();
-	return $result;
-	}
-	
-
-	/**
-	 * 更新 itemtypes hassoftware
-	 *
-	 * @param  int  $id
-	 * @return \Illuminate\Http\Response
-	 */
-	public function itemItemtypesUpdateHassoftware(Request $request)
-	{
-	if (! $request->isMethod('post') || ! $request->ajax()) return null;
-
-	$id = $request->input('id');
-	$hassoftware = $request->input('hassoftware');
-
-	// 写入数据库
-	try	{
-		DB::beginTransaction();
-		
-		$result = Item_itemtypes::where('id', $id)
-		->update([
-			'hassoftware' => $hassoftware,
-		]);
-
-		$result = 1;
-		Cache::flush();
-	}
-	catch (\Exception $e) {
-		// echo 'Message: ' .$e->getMessage();
-		DB::rollBack();
-		// dd('Message: ' .$e->getMessage());
-		return 0;
-	}
-
-	DB::commit();
-	// Cache::flush();
-	return $result;
-	}
-
-
-	/**
-	 * 删除 itemtypes
-	 *
-	 * @param  int  $id
-	 * @return \Illuminate\Http\Response
-	 */
-	public function itemItemtypesDelete(Request $request)
-	{
-	if (! $request->isMethod('post') || ! $request->ajax())  return false;
-
-	$id = [$request->input('id')];
-	$result = Item_itemtypes::whereIn('id', $id)->delete();
-	Cache::flush();
-	return $result;
-	}
 
 
 

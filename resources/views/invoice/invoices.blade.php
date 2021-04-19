@@ -300,7 +300,7 @@ var vm_app = new Vue({
 							}),
 						]),
 					]);
-				},				
+				},
 			}
 			@endhasanyrole
 		],

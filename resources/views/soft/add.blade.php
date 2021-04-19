@@ -43,7 +43,11 @@
 					</i-select>
 				</Form-Item>
 				<Form-Item label="类型" style="margin-bottom:0px">
-					<i-input v-model.lazy="add_type" size="small"></i-input>
+					<Radio-Group v-model="add_type">
+						<Radio label="Box"></Radio>
+						<Radio label="CPU"></Radio>
+						<Radio label="Core"></Radio>
+					</Radio-Group>
 				</Form-Item>
 				<Form-Item label="版本" style="margin-bottom:0px">
 					<i-input v-model.lazy="add_version" size="small"></i-input>

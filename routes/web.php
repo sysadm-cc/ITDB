@@ -197,8 +197,8 @@ Route::group(['prefix'=>'soft', 'namespace'=>'Soft', 'middleware'=>['jwtauth']],
 	// Agents Update
 	// Route::post('itemItemtypesUpdateHassoftware', 'ItemItemtypesController@itemItemtypesUpdateHassoftware')->name('item.itemtypesupdate_hassoftware');
 
-	// Agents Delete
-	// Route::post('itemItemtypesDelete', 'ItemItemtypesController@itemItemtypesDelete')->name('item.itemtypesdelete');
+	// Softs Delete
+	Route::post('softDelete', 'SoftsController@softDelete')->name('soft.delete');
 
 	// 显示 Softs add 页面
 	Route::get('softAdd', 'SoftsController@softAdd')->name('soft.add');
