@@ -447,6 +447,27 @@ var vm_app = new Vue({
 				align: 'center',
 				children: [
 					{
+						title: '序号',
+						key: 'contacts',
+						align:'center',
+						width: 70,
+						className: 'table-info-column-contacts',
+						render: (h, params) => {
+							if (params.row.contacts!=undefined && params.row.contacts!=null) {
+								return h('div', {
+									attrs: {
+										class:'subCol'
+									},
+								}, [
+									h('ul', params.row.contacts.map((item, index) => {
+										return h('li', {
+										}, ++index)
+									}))
+								]);
+							}
+						}
+					},
+					{
 						title: '联系人',
 						key: 'contacts',
 						align:'center',
@@ -618,16 +639,31 @@ var vm_app = new Vue({
 					}
 				]
 			},
-			// {
-			// 	title: 'URLs',
-			// 	key: 'urls',
-			// 	resizable: true,
-			// 	width: 180,
-			// },
 			{
 				title: '官方网站',
 				align: 'center',
 				children: [
+					{
+						title: '序号',
+						key: 'urls',
+						align:'center',
+						width: 70,
+						className: 'table-info-column-urls',
+						render: (h, params) => {
+							if (params.row.urls!=undefined && params.row.urls!=null) {
+								return h('div', {
+									attrs: {
+										class:'subCol'
+									},
+								}, [
+									h('ul', params.row.urls.map((item, index) => {
+										return h('li', {
+										}, ++index)
+									}))
+								]);
+							}
+						}
+					},
 					{
 						title: '说明',
 						key: 'urls',

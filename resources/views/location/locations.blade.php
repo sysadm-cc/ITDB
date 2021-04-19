@@ -349,6 +349,27 @@ var vm_app = new Vue({
 				align: 'center',
 				children: [
 					{
+						title: '序号',
+						key: 'areas',
+						align:'center',
+						width: 70,
+						className: 'table-info-column-areas',
+						render: (h, params) => {
+							if (params.row.areas!=undefined && params.row.areas!=null) {
+								return h('div', {
+									attrs: {
+										class:'subCol'
+									},
+								}, [
+									h('ul', params.row.areas.map((item, index) => {
+										return h('li', {
+										}, ++index)
+									}))
+								]);
+							}
+						}
+					},
+					{
 						title: '名称',
 						key: 'areas',
 						align:'center',

@@ -468,6 +468,27 @@ var vm_app = new Vue({
 				align: 'center',
 				children: [
 					{
+						title: '序号',
+						key: 'renewals',
+						align:'center',
+						width: 70,
+						className: 'table-info-column-renewals',
+						render: (h, params) => {
+							if (params.row.renewals!=undefined && params.row.renewals!=null) {
+								return h('div', {
+									attrs: {
+										class:'subCol'
+									},
+								}, [
+									h('ul', params.row.renewals.map((item, index) => {
+										return h('li', {
+										}, ++index)
+									}))
+								]);
+							}
+						}
+					},
+					{
 						title: '开始日期',
 						key: 'renewals',
 						align:'center',
