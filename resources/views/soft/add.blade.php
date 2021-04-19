@@ -27,28 +27,37 @@
 			
 			<i-form :label-width="100">
 				<Form-Item label="* 名称" style="margin-bottom:0px">
-					<i-input v-model.lazy="add_stitle" size="small"></i-input>
+					<i-input v-model.lazy="add_title" size="small"></i-input>
 				</Form-Item>
 				<Form-Item label="制造商" style="margin-bottom:0px">
 					<!-- <i-select v-model.lazy="add_type_select" multiple size="small" placeholder=""> -->
-					<i-select v-model.lazy="add_manufacturer_select" size="small" placeholder="">
-						<i-option v-for="item in add_manufacturer_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+					<i-select v-model.lazy="add_agent_select" size="small" placeholder="">
+						<i-option v-for="item in add_agent_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
 					</i-select>
 				</Form-Item>
-				<Form-Item label="购买日期" style="margin-bottom:0px">
-					<Date-picker v-model.lazy="add_purchdate" type="daterange" size="small"></Date-picker>
+				<Form-Item label="发票" style="margin-bottom:0px">
+					<!-- <i-select v-model.lazy="add_type_select" multiple size="small" placeholder=""> -->
+					<i-select v-model.lazy="add_invoice_select" size="small" placeholder="">
+						<i-option v-for="item in add_invoice_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+					</i-select>
+				</Form-Item>
+				<Form-Item label="类型" style="margin-bottom:0px">
+					<i-input v-model.lazy="add_type" size="small"></i-input>
 				</Form-Item>
 				<Form-Item label="版本" style="margin-bottom:0px">
-					<i-input v-model.lazy="add_sversion" size="small"></i-input>
+					<i-input v-model.lazy="add_version" size="small"></i-input>
 				</Form-Item>
-				<Form-Item label="License数量" style="margin-bottom:0px">
-					<Input-Number v-model.lazy="add_licqty" size="small" :min="1"></Input-Number>
+				<Form-Item label="购买日期" style="margin-bottom:0px">
+					<Date-picker v-model.lazy="add_purchasedate" type="daterange" size="small"></Date-picker>
 				</Form-Item>
-				<Form-Item label="License类型" style="margin-bottom:0px">
-					<i-input v-model.lazy="add_lictype" size="small"></i-input>
+				<Form-Item label="数量" style="margin-bottom:0px">
+					<Input-Number v-model.lazy="add_quantity" size="small" :min="1"></Input-Number>
 				</Form-Item>
 				<Form-Item label="License信息" style="margin-bottom:0px">
-					<i-input v-model.lazy="add_slicenseinfo" size="small" type="textarea"></i-input>
+					<i-input v-model.lazy="add_licenseinfo" size="small" type="textarea"></i-input>
+				</Form-Item>
+				<Form-Item label="备注" style="margin-top:5px" >
+					<i-input v-model.lazy="add_comments" size="small" type="textarea"></i-input>
 				</Form-Item>
 
 			</i-form>
@@ -130,239 +139,30 @@ var vm_app = new Vue({
 		add_create_disabled: false,
 
 		// 参数变量
-		add_stitle: '',
-		add_manufacturer_select: '',
-		add_manufacturer_options: [
-			{label: 'lenovo', value: '售卖方'},
-			{label: 'dell', value: '软件销售商'},
-			{label: '硬件销售商', value: '硬件销售商'},
-			{label: '买方', value: '买方'},
-			{label: '承包商', value: '承包商'},
+		add_title: '',
+		add_agent_select: '',
+		add_agent_options: [
+			// {label: 'lenovo', value: 1},
+			// {label: 'dell', value: 2},
 		],
-		add_purchdate: '',
-		add_sversion: '',
-		add_licqty: '1',
-		add_lictype: '',
-		add_slicenseinfo: '',
-
-
-
-
-
-
-		tablecolumns: [
-			{
-				type: 'selection',
-				width: 60,
-				align: 'center',
-				fixed: 'left'
-			},
-			{
-				title: '序号',
-				type: 'index',
-				align: 'center',
-				width: 70,
-				indexMethod: (row) => {
-					return row._index + 1 + vm_app.page_size * (vm_app.page_current - 1)
-				}
-			},
-			{
-				title: '图标',
-				key: 'id',
-				// sortable: true,
-				width: 70,
-				render: (h, params) => {
-					if (params.row.id == 1) {
-						return h('div', {}, [
-							h('Icon',{
-								props: {
-									type: 'md-bookmark',
-									size: 14,
-									color: 'blue',
-									}
-								}
-							),
-						])
-					} else if (params.row.id == 2) {
-						return h('div', {}, [
-							h('Icon',{
-								props: {
-									type: 'md-bookmark',
-									size: 14,
-									color: 'green',
-									}
-								}
-							),
-						])
-					} else if (params.row.id == 3) {
-						return h('div', {}, [
-							h('Icon',{
-								props: {
-									type: 'md-bookmark',
-									size: 14,
-									color: 'red',
-									}
-								}
-							),
-						])
-					} else if (params.row.id == 4) {
-						return h('div', {}, [
-							h('Icon',{
-								props: {
-									type: 'md-bookmark',
-									size: 14,
-									color: 'gray',
-									}
-								}
-							),
-						])
-					} else if (params.row.id == 5) {
-						return h('div', {}, [
-							h('Icon',{
-								props: {
-									type: 'md-bookmark',
-									size: 14,
-									color: 'yellow',
-									}
-								}
-							),
-						])
-					} else if (params.row.id == 6) {
-						return h('div', {}, [
-							h('Icon',{
-								props: {
-									type: 'md-bookmark',
-									size: 14,
-									color: 'black',
-									}
-								}
-							),
-						])
-					} else {
-						return h('div', {}, [
-							h('Icon',{
-								props: {
-									type: 'md-bookmark',
-									size: 14,
-									}
-								}
-							),
-						])
-					}	
-				}
-			},
-			{
-				title: '项目描述',
-				key: 'typedesc',
-				width: 180,
-				render: (h, params) => {
-					
-					return h('div', {}, [
-						h('i-input',{
-							// style:{
-							// 	color: '#ff9900'
-							// },
-							props: {
-								value: params.row.typedesc,
-								size: 'small',
-							},
-							'on': {
-								'on-blur':() => {
-									// alert(params.row.id);
-									// alert(event.target.value);
-									if (params.row.typedesc != event.target.value) {
-										vm_app.itemtypes_update_typedesc(params.row.id, event.target.value)
-									}
-								}
-							},
-						})
-					])
-				}
-			},
-			{
-				title: '可安装软件',
-				key: 'hassoftware',
-				align: 'center',
-				width: 100,
-				// render: (h, params) => {
-				// 	if (params.row.hassoftware == true) {
-				// 		return h('div', {}, '是')
-				// 	} else {
-				// 		return h('div', {}, '否')
-				// 	}
-				// }
-				render: (h, params) => {
-
-					return h('div', [
-						// params.row.deleted_at.toLocaleString()
-						// params.row.deleted_at ? '禁用' : '启用'
-						
-						h('i-switch', {
-							props: {
-								type: 'primary',
-								size: 'small',
-								value: params.row.hassoftware ? true : false
-							},
-							style: {
-								marginRight: '5px'
-							},
-							on: {
-								'on-change': (value) => {//触发事件是on-change,用双引号括起来，
-									//参数value是回调值，并没有使用到
-									vm_app.itemtypes_update_hassoftware(params.row.id, value) //params.index是拿到table的行序列，可以取到对应的表格值
-								}
-							}
-						}, 'Edit')
-						
-					]);
-				}
-			},
-			{
-				title: '创建时间',
-				key: 'created_at',
-				sortable: true,
-				width: 160
-			},
-			{
-				title: '更新时间',
-				key: 'updated_at',
-				sortable: true,
-				width: 160
-			},
-			@hasanyrole('role_super_admin')
-			{
-				title: '操作',
-				key: 'action',
-				align: 'center',
-				width: 100,
-				render: (h, params) => {
-					if (params.row.id > 3) {
-						return h('div', [
-							h('Button', {
-								props: {
-									type: 'error',
-									size: 'small'
-								},
-								style: {
-									marginRight: '5px'
-								},
-								on: {
-									click: () => {
-										vm_app.itemtypes_delete(params.row)
-									}
-								}
-							}, '删除'),
-							
-
-						]);
-					}
-				},
-				// fixed: 'right'
-			}
-			@endhasanyrole
+		add_invoice_select: '',
+		add_invoice_options: [
+			// {label: 'invoice1', value: 1},
+			// {label: 'invoice2', value: 2},
 		],
-		tabledata: [],
-		tableselect: [],
+		add_purchasedate: '',
+		add_version: '',
+		add_quantity: '1',
+		add_type: '',
+		add_licenseinfo: '',
+		add_comments: '',
+
+
+
+
+
+
+
 		
 
 		
@@ -421,11 +221,8 @@ var vm_app = new Vue({
 		// 把laravel返回的结果转换成select能接受的格式
 		json2selectvalue (json) {
 			var arr = [];
-			for (var key in json) {
-				// alert(key);
-				// alert(json[key]);
-				// arr.push({ obj.['value'] = key, obj.['label'] = json[key] });
-				arr.push({ value: key, label: json[key] });
+			for (var k in json) {
+				arr.push({ value: json[k].id, label: json[k].title });
 			}
 			return arr;
 			// return arr.reverse();
@@ -435,11 +232,11 @@ var vm_app = new Vue({
 		// 清除所有变量
 		add_clear_var () {
 			var _this = this;
-			_this.add_stitle = '';
+			_this.add_title = '';
 			_this.add_type_select = '';
-			_this.add_purchdate = '';
-			_this.add_sversion = '';
-			_this.add_licqty = '';
+			_this.add_purchasedate = '';
+			_this.add_version = '';
+			_this.add_quantity = '';
 		},
 
 
@@ -448,13 +245,13 @@ var vm_app = new Vue({
 			var _this = this;
 			_this.add_create_disabled = true;
 
-			var add_stitle = _this.add_stitle;
+			var add_title = _this.add_title;
 			var add_type_select = _this.add_type_select;
-			var add_purchdate = _this.add_purchdate;
-			var add_sversion = _this.add_sversion;
-			var add_licqty = _this.add_licqty;
+			var add_purchasedate = _this.add_purchasedate;
+			var add_version = _this.add_version;
+			var add_quantity = _this.add_quantity;
 
-			if (add_stitle == '' || add_stitle == undefined) {
+			if (add_title == '' || add_title == undefined) {
 				_this.error(false, '错误', '内容为空或不正确！');
 				_this.add_create_disabled = false;
 				return false;
@@ -464,11 +261,11 @@ var vm_app = new Vue({
 			var url = "{{ route('agent.create') }}";
 			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
 			axios.post(url, {
-				add_stitle: add_stitle,
+				add_title: add_title,
 				add_type_select: add_type_select,
-				add_purchdate: add_purchdate,
-				add_sversion: add_sversion,
-				add_licqty: add_licqty,
+				add_purchasedate: add_purchasedate,
+				add_version: add_version,
+				add_quantity: add_quantity,
 			})
 			.then(function (response) {
 				// console.log(response.data);
@@ -498,30 +295,61 @@ var vm_app = new Vue({
 		},
 
 
-
-
-
-
-		// ajax 获取物品类型列表
-		itemtypesgets () {
+		// 获取代理商列表
+		agentsgets (page, last_page){
 			var _this = this;
-			var url = "{{ route('item.itemtypesgets') }}";
+			var url = "{{ route('agent.gets') }}";
 			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
-			axios.get(url)
+			axios.get(url,{
+				params: {
+					perPage: 1000,
+					page: 1,
+				}
+			})
 			.then(function (response) {
+				// console.log(response.data.data);
 				if (response.data['jwt'] == 'logout') {
 					_this.alert_logout();
 					return false;
 				}
 				if (response.data) {
-					response.data.data.map(function (v, i) {
-						_this.add_itemtype_options.push({label: v.typedesc, value: v.id});
-					});
+					_this.add_agent_options = _this.json2selectvalue(response.data.data);
 				}
 			})
 			.catch(function (error) {
+				// _this.error(false, 'Error', error);
 			})
 		},
+
+		// 获取发票列表
+		invoicesgets (page, last_page){
+			var _this = this;
+			var url = "{{ route('invoice.gets') }}";
+			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
+			axios.get(url,{
+				params: {
+					perPage: 1000,
+					page: 1,
+				}
+			})
+			.then(function (response) {
+				// console.log(response.data.data);
+				if (response.data['jwt'] == 'logout') {
+					_this.alert_logout();
+					return false;
+				}
+				if (response.data) {
+					_this.add_invoice_options = _this.json2selectvalue(response.data.data);
+				}
+			})
+			.catch(function (error) {
+				// _this.error(false, 'Error', error);
+			})
+		},
+
+
+
+
 	
 		
 
@@ -540,9 +368,6 @@ var vm_app = new Vue({
 		
 
 
-	},
-	beforeCreated: function(){
-		
 	},
 	mounted: function(){
 		var _this = this;
@@ -564,9 +389,11 @@ var vm_app = new Vue({
 		// ajax 获取物品类型列表
 		// _this.itemtypesgets();
 
-		// ajax 获取制造商列表
+		// 获取制造商列表
+		_this.agentsgets();
 
-
+		// 获取发票列表
+		_this.invoicesgets();
 
 
 

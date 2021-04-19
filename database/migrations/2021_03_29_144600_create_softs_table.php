@@ -15,16 +15,15 @@ class CreateSoftsTable extends Migration
     {
         Schema::create('softs', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('stitle')->comment('软件名称');
+            $table->string('title')->comment('软件名称');
+            $table->integer('agentid')->nullable()->comment('制造商编号');
             $table->integer('invoiceid')->nullable()->comment('发票编号');
-            $table->string('slicenseinfo')->nullable()->comment('License信息');
-            $table->string('stype')->nullable()->comment('软件类型');
-            $table->integer('manufacturerid')->nullable()->comment('制造商编号');
-            $table->string('sversion')->nullable()->comment('版本');
-            $table->string('sinfo')->nullable()->comment('信息');
-            $table->datetime('purchdate')->nullable()->comment('购买日期');
-            $table->integer('licqty')->nullable()->comment('License数量');
-            $table->string('lictype')->nullable()->comment('License类型（Box/CPU/Core）');
+            $table->string('type')->nullable()->comment('软件License类型（Box/CPU/Core）');
+            $table->string('version')->nullable()->comment('版本');
+            $table->datetime('purchasedate')->nullable()->comment('购买日期');
+            $table->integer('quantity')->nullable()->comment('License数量');
+            $table->string('licenseinfo')->nullable()->comment('License信息');
+            $table->string('comments')->nullable()->comment('备注');
 
             $table->timestamps();
             $table->softDeletes();
