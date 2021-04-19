@@ -143,10 +143,21 @@ var vm_app = new Vue({
 		// 删除按钮禁用
 		softs_delete_disabled: true,
 
-
-		//新增
-		// itemtypes_add_typedesc: '',
-		// itemtypes_add_hassoftware: false,
+		// 主编辑变量
+		modal_edit_invoices: false,
+		edit_id: '',
+		edit_updated_at: '',
+		edit_title: '',
+		edit_agentid_select: '',
+		edit_agentid_options: [],
+		edit_invoiceid_select: '',
+		edit_invoiceid_options: [],
+		edit_purchasedate: '',
+		edit_version: '',
+		edit_quantity: '1',
+		edit_type: '',
+		edit_licenseinfo: '',
+		edit_comments: '',
 
 
 		tablecolumns: [
@@ -167,39 +178,70 @@ var vm_app = new Vue({
 			},
 			{
 				title: '名称',
-				key: 'stitle',
+				key: 'title',
 				resizable: true,
 				width: 160,
 			},
 			{
-				title: '制造商',
-				key: 'manufacturerid',
+				title: '代理商',
+				key: 'agentid',
+				resizable: true,
+				width: 180,
+				render: (h, params) => {
+					return h('span', vm_app.edit_agentid_options.map(item => {
+						return params.row.agentid == item.value && h('p', {}, item.label)
+					}))
+				}
+			},
+			{
+				title: '发票',
+				key: 'invoiceid',
+				resizable: true,
+				width: 180,
+				render: (h, params) => {
+					return h('span', vm_app.edit_invoiceid_options.map(item => {
+						return params.row.invoiceid == item.value && h('p', {}, item.label)
+					}))
+				}
+			},
+			{
+				title: 'License 类型',
+				key: 'type',
 				resizable: true,
 				width: 180,
 			},
 			{
 				title: '版本',
-				key: 'sversion',
+				key: 'version',
 				resizable: true,
 				width: 180,
 			},
 			{
 				title: '购买日期',
-				key: 'purchdate',
+				key: 'purchasedate',
+				resizable: true,
+				width: 120,
+				render: (h, params) => {
+					return params.row.purchasedate == null ? '' : h('span', {}, new Date(params.row.purchasedate).Format("yyyy-MM-dd"))
+				}
+			},
+			{
+				title: '数量',
+				key: 'quantity',
+				resizable: true,
+				width: 100,
+			},
+			{
+				title: 'License 信息',
+				key: 'licenseinfo',
 				resizable: true,
 				width: 180,
 			},
 			{
-				title: 'License数量',
-				key: 'licqty',
+				title: '备注',
+				key: 'comments',
 				resizable: true,
-				width: 180,
-			},
-			{
-				title: 'License类型',
-				key: 'lictype',
-				resizable: true,
-				width: 180,
+				width: 100,
 			},
 			{
 				title: '创建时间',
@@ -306,11 +348,8 @@ var vm_app = new Vue({
 		// 把laravel返回的结果转换成select能接受的格式
 		json2selectvalue (json) {
 			var arr = [];
-			for (var key in json) {
-				// alert(key);
-				// alert(json[key]);
-				// arr.push({ obj.['value'] = key, obj.['label'] = json[key] });
-				arr.push({ value: key, label: json[key] });
+			for (var k in json) {
+				arr.push({ value: json[k].id, label: json[k].title });
 			}
 			return arr;
 			// return arr.reverse();
@@ -337,8 +376,7 @@ var vm_app = new Vue({
 				}
 			})
 			.then(function (response) {
-				// console.log(response.data);
-				// return false;
+				// console.log(response.data);return false;
 
 				if (response.data['jwt'] == 'logout') {
 					_this.alert_logout();
@@ -393,170 +431,65 @@ var vm_app = new Vue({
 
 
 
-		// 更新 typedesc
-		itemtypes_update_typedesc (id, typedesc) {
-			var _this = this;
-			
-			var id = id;
-			var typedesc = typedesc;
-			// _this.itemtypes_edit_id = id;
-			// _this.itemtypes_edit_statusdesc = row.itemtypes_edit_statusdesc;
-			// _this.jiaban_edit_created_at = row.created_at;
-			// _this.jiaban_edit_updated_at = row.updated_at;
 
-			var url = "{{ route('item.itemtypesupdate_typedesc') }}";
-			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
-			axios.post(url,{
-				id: id,
-				typedesc: typedesc
+		// 获取代理商列表
+		agentsgets (page, last_page){
+			var _this = this;
+			var url = "{{ route('agent.gets') }}";
+			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
+			axios.get(url,{
+				params: {
+					perPage: 1000,
+					page: 1,
+				}
 			})
 			.then(function (response) {
-                // alert(index);
-				// console.log(response.data);
-				// return false;
-
+				// console.log(response.data.data);
 				if (response.data['jwt'] == 'logout') {
 					_this.alert_logout();
 					return false;
 				}
-				
 				if (response.data) {
-					_this.itemtypesgets(_this.page_current, _this.page_last);
-                    // _this.$Message.success('保存成功！');
-					_this.success(false, '成功', '保存成功！');
-                } else {
-					// _this.$Message.warning('保存失败！');
-					_this.warning(false, '失败', '保存失败！');
+					_this.edit_agentid_options = _this.json2selectvalue(response.data.data);
 				}
 			})
 			.catch(function (error) {
-				_this.error(false, 'Error', error);
+				// _this.error(false, 'Error', error);
 			})
-
-			setTimeout(() => {
-				_this.modal_jiaban_edit = true;
-			}, 500);
-
-			
 		},
 
-
-		// 删除
-		itemtypes_delete (row) {
+		// 获取发票列表
+		invoicesgets (page, last_page){
 			var _this = this;
-			var id = row.id;
-			if (id == undefined) return false;
-			var url = "{{ route('item.itemtypesdelete') }}";
-			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
-			axios.post(url, {
-				id: id
+			var url = "{{ route('invoice.gets') }}";
+			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
+			axios.get(url,{
+				params: {
+					perPage: 1000,
+					page: 1,
+				}
 			})
 			.then(function (response) {
+				// console.log(response.data.data);
 				if (response.data['jwt'] == 'logout') {
 					_this.alert_logout();
 					return false;
 				}
-				
 				if (response.data) {
-					_this.itemtypesgets(_this.page_current, _this.page_last);
-					_this.success(false, '成功', '删除成功！');
-				} else {
-					_this.error(false, '失败', '删除失败！');
+					_this.edit_invoiceid_options = _this.json2selectvalue(response.data.data);
 				}
 			})
 			.catch(function (error) {
-				_this.error(false, '错误', '删除失败！');
+				// _this.error(false, 'Error', error);
 			})
 		},
 
 
-		//新增
-		itemtypes_create () {
-			var _this = this;
-
-			var typedesc = _this.itemtypes_add_typedesc;
-			var hassoftware = _this.itemtypes_add_hassoftware;
-
-			if (typedesc == '' || typedesc == undefined) {
-					// console.log(hassoftware);
-				// _this.error(false, '失败', '用户ID为空或不正确！');
-				return false;
-			}
-
-			var url = "{{ route('item.itemtypescreate') }}";
-			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
-			axios.post(url, {
-				typedesc: typedesc,
-				hassoftware: hassoftware,
-			})
-			.then(function (response) {
-				// console.log(response.data);
-				// return false;
-
-				if (response.data['jwt'] == 'logout') {
-					_this.alert_logout();
-					return false;
-				}
-				
- 				if (response.data) {
-					_this.itemtypes_add_typedesc = '';
-					_this.itemtypesgets(_this.page_current, _this.page_last);
-					_this.success(false, '成功', '新建成功！');
-				} else {
-					_this.error(false, '失败', '新建失败！');
-				}
-			})
-			.catch(function (error) {
-				_this.error(false, '错误', '新建失败！');
-			})
 
 
-		},
 
-		
-		// 更新 hassoftware
-		itemtypes_update_hassoftware (id, hassoftware) {
-			var _this = this;
-			
-			var id = id;
-			var hassoftware = hassoftware;
-// console.log(hassoftware);return false;
 
-			var url = "{{ route('item.itemtypesupdate_hassoftware') }}";
-			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
-			axios.post(url,{
-				id: id,
-				hassoftware: hassoftware
-			})
-			.then(function (response) {
-                // alert(index);
-				// console.log(response.data);
-				// return false;
 
-				if (response.data['jwt'] == 'logout') {
-					_this.alert_logout();
-					return false;
-				}
-				
-				if (response.data) {
-					_this.itemtypesgets(_this.page_current, _this.page_last);
-                    // _this.$Message.success('保存成功！');
-					_this.success(false, '成功', '保存成功！');
-                } else {
-					// _this.$Message.warning('保存失败！');
-					_this.warning(false, '失败', '保存失败！');
-				}
-			})
-			.catch(function (error) {
-				_this.error(false, 'Error', error);
-			})
-
-			setTimeout(() => {
-				_this.modal_jiaban_edit = true;
-			}, 500);
-
-			
-		},
 		
 
 
@@ -566,7 +499,14 @@ var vm_app = new Vue({
 		_this.current_nav = '软件';
 		_this.current_subnav = '查询';
 
-		// // 显示所有
+		// 获取制造商列表
+		_this.agentsgets();
+
+		// 获取发票列表
+		_this.invoicesgets();
+
+
+		// 显示所有
 		_this.softsgets(1, 1); // page: 1, last_page: 1
 		// _this.loadapplicantgroup();
 

@@ -23,22 +23,23 @@
 
 	<i-row :gutter="16">
 
-		<i-col span="8">
-			
+		<i-col span="7">
+			<Divider orientation="left">软件属性</Divider>
+
 			<i-form :label-width="100">
 				<Form-Item label="* 名称" style="margin-bottom:0px">
 					<i-input v-model.lazy="add_title" size="small"></i-input>
 				</Form-Item>
 				<Form-Item label="制造商" style="margin-bottom:0px">
 					<!-- <i-select v-model.lazy="add_type_select" multiple size="small" placeholder=""> -->
-					<i-select v-model.lazy="add_agent_select" size="small" placeholder="">
-						<i-option v-for="item in add_agent_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+					<i-select v-model.lazy="add_agentid_select" size="small" placeholder="">
+						<i-option v-for="item in add_agentid_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
 					</i-select>
 				</Form-Item>
 				<Form-Item label="发票" style="margin-bottom:0px">
 					<!-- <i-select v-model.lazy="add_type_select" multiple size="small" placeholder=""> -->
-					<i-select v-model.lazy="add_invoice_select" size="small" placeholder="">
-						<i-option v-for="item in add_invoice_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+					<i-select v-model.lazy="add_invoiceid_select" size="small" placeholder="">
+						<i-option v-for="item in add_invoiceid_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
 					</i-select>
 				</Form-Item>
 				<Form-Item label="类型" style="margin-bottom:0px">
@@ -48,7 +49,7 @@
 					<i-input v-model.lazy="add_version" size="small"></i-input>
 				</Form-Item>
 				<Form-Item label="购买日期" style="margin-bottom:0px">
-					<Date-picker v-model.lazy="add_purchasedate" type="daterange" size="small"></Date-picker>
+					<Date-picker v-model.lazy="add_purchasedate" type="date" size="small"></Date-picker>
 				</Form-Item>
 				<Form-Item label="数量" style="margin-bottom:0px">
 					<Input-Number v-model.lazy="add_quantity" size="small" :min="1"></Input-Number>
@@ -69,7 +70,12 @@
 
 
 
+		<i-col span="1">
+		&nbsp;
+		</i-col>
+
 		<i-col span="16">
+		<Divider orientation="left">软件关联</Divider>
 		&nbsp;
 		</i-col>
 
@@ -81,7 +87,7 @@
 
 <Divider dashed></Divider>
 
-<i-button @click="add_create()" :disabled="add_create_disabled" size="large" type="primary">添加</i-button>
+<i-button @click="add_create()" :disabled="add_create_disabled" icon="md-add" size="large" type="primary">添加</i-button>
 
 <br>
 
@@ -140,13 +146,13 @@ var vm_app = new Vue({
 
 		// 参数变量
 		add_title: '',
-		add_agent_select: '',
-		add_agent_options: [
+		add_agentid_select: '',
+		add_agentid_options: [
 			// {label: 'lenovo', value: 1},
 			// {label: 'dell', value: 2},
 		],
-		add_invoice_select: '',
-		add_invoice_options: [
+		add_invoiceid_select: '',
+		add_invoiceid_options: [
 			// {label: 'invoice1', value: 1},
 			// {label: 'invoice2', value: 2},
 		],
@@ -233,10 +239,14 @@ var vm_app = new Vue({
 		add_clear_var () {
 			var _this = this;
 			_this.add_title = '';
-			_this.add_type_select = '';
-			_this.add_purchasedate = '';
+			_this.add_agentid_select = '';
+			_this.add_invoiceid_select = '';
+			_this.add_type = '';
 			_this.add_version = '';
-			_this.add_quantity = '';
+			_this.add_purchasedate = '';
+			_this.add_quantity = 1;
+			_this.add_licenseinfo = '';
+			_this.add_comments = '';
 		},
 
 
@@ -246,30 +256,36 @@ var vm_app = new Vue({
 			_this.add_create_disabled = true;
 
 			var add_title = _this.add_title;
-			var add_type_select = _this.add_type_select;
-			var add_purchasedate = _this.add_purchasedate;
+			var add_agentid_select = _this.add_agentid_select;
+			var add_invoiceid_select = _this.add_invoiceid_select;
+			var add_type = _this.add_type;
 			var add_version = _this.add_version;
+			var add_purchasedate = _this.add_purchasedate ? new Date(_this.add_purchasedate).Format("yyyy-MM-dd") : '';
 			var add_quantity = _this.add_quantity;
+			var add_licenseinfo = _this.add_licenseinfo;
+			var add_comments = _this.add_comments;
 
 			if (add_title == '' || add_title == undefined) {
 				_this.error(false, '错误', '内容为空或不正确！');
 				_this.add_create_disabled = false;
 				return false;
 			}
-// console.log(add_itemtype_select);return false;
 
-			var url = "{{ route('agent.create') }}";
+			var url = "{{ route('soft.create') }}";
 			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
 			axios.post(url, {
 				add_title: add_title,
-				add_type_select: add_type_select,
-				add_purchasedate: add_purchasedate,
+				add_agentid_select: add_agentid_select,
+				add_invoiceid_select: add_invoiceid_select,
+				add_type: add_type,
 				add_version: add_version,
+				add_purchasedate: add_purchasedate,
 				add_quantity: add_quantity,
+				add_licenseinfo: add_licenseinfo,
+				add_comments: add_comments,
 			})
 			.then(function (response) {
-				// console.log(response.data);
-				// return false;
+				// console.log(response.data);return false;
 
 				if (response.data['jwt'] == 'logout') {
 					_this.alert_logout();
@@ -278,20 +294,16 @@ var vm_app = new Vue({
 				
  				if (response.data) {
 					_this.add_clear_var();
-					// _this.itemtypesgets(_this.page_current, _this.page_last);
-					_this.success(false, '成功', '新建成功！');
+					_this.success(false, '成功', '添加成功！');
 				} else {
-					_this.error(false, '失败', '新建失败！');
+					_this.error(false, '失败', '添加失败！');
 				}
 				_this.add_create_disabled = false;
 			})
 			.catch(function (error) {
-				_this.error(false, '错误', '新建失败！');
+				_this.error(false, '错误', '添加失败！');
 				_this.add_create_disabled = false;
 			})
-
-			
-
 		},
 
 
@@ -313,7 +325,7 @@ var vm_app = new Vue({
 					return false;
 				}
 				if (response.data) {
-					_this.add_agent_options = _this.json2selectvalue(response.data.data);
+					_this.add_agentid_options = _this.json2selectvalue(response.data.data);
 				}
 			})
 			.catch(function (error) {
@@ -339,7 +351,7 @@ var vm_app = new Vue({
 					return false;
 				}
 				if (response.data) {
-					_this.add_invoice_options = _this.json2selectvalue(response.data.data);
+					_this.add_invoiceid_options = _this.json2selectvalue(response.data.data);
 				}
 			})
 			.catch(function (error) {

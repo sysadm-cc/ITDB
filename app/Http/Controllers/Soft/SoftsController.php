@@ -98,18 +98,26 @@ class SoftsController extends Controller
 
 		// $nowtime = date("Y-m-d H:i:s",time());
 		$title = $request->input('add_title');
-		$type = $request->input('add_type_select');
-		$contactinfo = $request->input('add_contactinfo');
-		$contacts = $request->input('add_contacts');
-		$urls = $request->input('add_urls');
+		$agentid = $request->input('add_agentid_select');
+		$invoiceid = $request->input('add_invoiceid_select');
+		$type = $request->input('add_type');
+		$version = $request->input('add_version');
+		$purchasedate = $request->input('add_purchasedate');
+		$quantity = $request->input('add_quantity');
+		$licenseinfo = $request->input('add_licenseinfo');
+		$comments = $request->input('add_comments');
 		
 		try	{
 			$result = Softs::create([
 				'title' => $title,
+				'agentid' => $agentid,
+				'invoiceid' => $invoiceid,
 				'type' => $type,
-				'contactinfo' => $contactinfo,
-				'contacts' => $contacts,
-				'urls' => $urls,
+				'version' => $version,
+				'purchasedate' => $purchasedate,
+				'quantity' => $quantity,
+				'licenseinfo' => $licenseinfo,
+				'comments' => $comments,
 			]);
 			Cache::flush();
 		}
