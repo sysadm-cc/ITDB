@@ -59,13 +59,13 @@
 				<i-button :disabled="softs_delete_disabled" icon="md-remove" type="warning" size="small">删除</i-button>&nbsp;<br>&nbsp;
 			<Poptip>
 		</i-col>
-		<i-col span="2">
-			<i-button type="default" size="small" @click="softs_add()"><Icon type="ios-color-wand-outline"></Icon> 新建</i-button>
+		<i-col span="3">
+			<i-button type="primary" icon="md-add" size="small" @click="softs_add()">添加软件</i-button>
 		</i-col>
-		<i-col span="2">
-			<i-button type="default" size="small" @click="items_export()"><Icon type="ios-download-outline"></Icon> 导出</i-button>
+		<i-col span="3">
+			<i-button type="default" icon="ios-download-outline" size="small" @click="items_export()">导出</i-button>
 		</i-col>
-		<i-col span="17">
+		<i-col span="15">
 			&nbsp;
 		</i-col>
 	</i-row>
@@ -570,7 +570,7 @@ var vm_app = new Vue({
 				comments: comments,
 			})
 			.then(function (response) {
-				console.log(response.data);return false;
+				// console.log(response.data);return false;
 
 				if (response.data['jwt'] == 'logout') {
 					_this.alert_logout();
@@ -589,8 +589,6 @@ var vm_app = new Vue({
 			})
 
 		},
-
-
 
 
 		// 获取代理商列表

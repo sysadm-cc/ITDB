@@ -220,7 +220,7 @@ class SoftsController extends Controller
 		
 		// 判断如果不是最新的记录，不可被编辑
 		// 因为可能有其他人在你当前表格未刷新的情况下已经更新过了
-		$res = Invoices::select('updated_at')
+		$res = Softs::select('updated_at')
 			->where('id', $id)
 			->first();
 		$res_updated_at = date('Y-m-d H:i:s', strtotime($res['updated_at']));
@@ -229,20 +229,23 @@ class SoftsController extends Controller
 		// 尝试更新
 		try	{
 			DB::beginTransaction();
-			$result = Invoices::where('id', $id)
+			$result = Softs::where('id', $id)
 				->update([
 					'title'			=> $title,
 					'agentid'		=> $agentid,
-					'ordernumber'	=> $ordernumber,
-					'buyer'			=> $buyer,
-					'invoicedate'	=> $invoicedate,
-					'description'	=> $description,
+					'invoiceid'		=> $invoiceid,
+					'purchasedate'	=> $purchasedate,
+					'version'		=> $version,
+					'quantity'		=> $quantity,
+					'type'			=> $type,
+					'licenseinfo'	=> $licenseinfo,
+					'comments'		=> $comments,
 				]);
-			$result = 1;
+			// $result = 1;
 		}
 		catch (\Exception $e) {
 			DB::rollBack();
-			dd('Message: ' .$e->getMessage());
+			// dd('Message: ' .$e->getMessage());
 			$result = 0;
 		}
 		DB::commit();

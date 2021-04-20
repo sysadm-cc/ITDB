@@ -229,11 +229,11 @@ class InvoicesController extends Controller
 					'invoicedate'	=> $invoicedate,
 					'description'	=> $description,
 				]);
-			$result = 1;
+			// $result = 1;
 		}
 		catch (\Exception $e) {
 			DB::rollBack();
-			dd('Message: ' .$e->getMessage());
+			// dd('Message: ' .$e->getMessage());
 			$result = 0;
 		}
 		DB::commit();

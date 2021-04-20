@@ -194,8 +194,8 @@ Route::group(['prefix'=>'soft', 'namespace'=>'Soft', 'middleware'=>['jwtauth']],
 	// Agents Update typedesc
 	// Route::post('itemItemtypesUpdateTypedesc', 'ItemItemtypesController@itemItemtypesUpdateTypedesc')->name('item.itemtypesupdate_typedesc');
 
-	// Agents Update
-	// Route::post('itemItemtypesUpdateHassoftware', 'ItemItemtypesController@itemItemtypesUpdateHassoftware')->name('item.itemtypesupdate_hassoftware');
+	// Softs Update
+	Route::post('softUpdate', 'SoftsController@softUpdate')->name('soft.update');
 
 	// Softs Delete
 	Route::post('softDelete', 'SoftsController@softDelete')->name('soft.delete');
