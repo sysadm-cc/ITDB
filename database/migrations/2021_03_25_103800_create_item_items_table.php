@@ -37,6 +37,8 @@ class CreateItemItemsTable extends Migration
             $table->string('function')->nullable()->comment('功能用途');
             $table->string('maintenanceinstructions')->nullable()->comment('具体使用说明');
             
+            $table->string('shop')->nullable()->comment('origin');
+            $table->string('purchprice')->nullable()->comment('购买价格');
             $table->dateTime('purchasedate')->nullable()->comment('购买日期');
             $table->integer('warrantymonths')->nullable()->unsigned()->comment('保修时长（月）');
             $table->string('warrantyinfo')->nullable()->comment('保修信息');
@@ -47,7 +49,7 @@ class CreateItemItemsTable extends Migration
             $table->integer('cpuno')->nullable()->unsigned()->comment('CPU数量');
             $table->integer('corespercpu')->nullable()->unsigned()->comment('每CPU内核数量');
 
-            $table->string('dnsname')->nullable()->comment('域名');
+            $table->string('dns')->nullable()->comment('域名');
             $table->string('maclan')->nullable()->comment('有线MAC地址');
             $table->string('macwl')->nullable()->comment('无线MAC地址');
             $table->string('ipv4lan')->nullable()->comment('有线ipv4');
@@ -59,10 +61,6 @@ class CreateItemItemsTable extends Migration
             $table->integer('switchid')->nullable()->unsigned()->comment('交换机编号');
             $table->string('switchport')->nullable()->comment('接入交换机端口号');
             $table->integer('ports')->nullable()->unsigned()->comment('网络端口数量');
-
-            $table->string('origin')->nullable()->comment('origin');
-            $table->string('purchprice')->nullable()->comment('购买价格');
-
 
             $table->timestamps();
             $table->softDeletes();

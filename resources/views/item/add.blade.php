@@ -128,7 +128,7 @@
 						<i-input v-model.lazy="add_function" size="small"></i-input>
 					</Form-Item>
 					<Form-Item label="具体使用说明" style="margin-bottom:0px">
-						<i-input v-model.lazy="add_maintenanceinstructions" size="small" type="textarea"></i-input>
+						<i-input v-model.lazy="add_maintenanceinstructions" size="small" type="textarea" :rows="4"></i-input>
 					</Form-Item>
 
 				</i-form>
@@ -141,15 +141,21 @@
 
 			<i-col span="5">
 				<Divider orientation="left">保修</Divider>
-				<i-form :label-width="100">
-					<Form-Item label="购买日期" style="margin-bottom:0px">
-						<Date-Picker v-model.lazy="add_dateofpurchase" type="date" placeholder="选择日期" size="small"></Date-Picker>
+					<i-form :label-width="100">
+					<Form-Item label="供货商" style="margin-bottom:0px">
+						<i-input v-model.lazy="add_shop" size="small"></i-input>
 					</Form-Item>
-					<Form-Item label="保修时长（月）" style="margin-bottom:0px">
+					<Form-Item label="购买价格" style="margin-bottom:0px">
+						<i-input v-model.lazy="add_purchaceprice" size="small"></i-input>
+					</Form-Item>
+					<Form-Item label="购买日期" style="margin-bottom:0px">
+						<Date-Picker v-model.lazy="add_dateofpurchase" type="date" placeholder="" size="small"></Date-Picker>
+					</Form-Item>
+					<Form-Item label="保修时长(月)" style="margin-bottom:0px">
 						<i-input v-model.lazy="add_warrantymonths" size="small"></i-input>
 					</Form-Item>
 					<Form-Item label="保修信息" style="margin-bottom:0px">
-						<i-input v-model.lazy="add_warrantyinfo" size="small"></i-input>
+						<i-input v-model.lazy="add_warrantyinfo" size="small" type="textarea"></i-input>
 					</Form-Item>
 
 				</i-form>
@@ -194,14 +200,23 @@
 					<Form-Item label="域名" style="margin-bottom:0px">
 						<i-input v-model.lazy="add_dns" size="small"></i-input>
 					</Form-Item>
-					<Form-Item label="MAC地址" style="margin-bottom:0px">
-						<i-input v-model.lazy="add_mac" size="small"></i-input>
+					<Form-Item label="有线MAC地址" style="margin-bottom:0px">
+						<i-input v-model.lazy="add_maclan" size="small"></i-input>
 					</Form-Item>
-					<Form-Item label="IPV4" style="margin-bottom:0px">
-						<i-input v-model.lazy="add_ipv4" size="small"></i-input>
+					<Form-Item label="无线MAC地址" style="margin-bottom:0px">
+						<i-input v-model.lazy="add_macwl" size="small"></i-input>
 					</Form-Item>
-					<Form-Item label="IPV6" style="margin-bottom:0px">
-						<i-input v-model.lazy="add_ipv6" size="small"></i-input>
+					<Form-Item label="有线IPV4" style="margin-bottom:0px">
+						<i-input v-model.lazy="add_ipv4lan" size="small"></i-input>
+					</Form-Item>
+					<Form-Item label="无线IPV4" style="margin-bottom:0px">
+						<i-input v-model.lazy="add_ipv4wl" size="small"></i-input>
+					</Form-Item>
+					<Form-Item label="有线IPV6" style="margin-bottom:0px">
+						<i-input v-model.lazy="add_ipv6lan" size="small"></i-input>
+					</Form-Item>
+					<Form-Item label="无线IPV6" style="margin-bottom:0px">
+						<i-input v-model.lazy="add_ipv6wl" size="small"></i-input>
 					</Form-Item>
 					<Form-Item label="远程管理IP" style="margin-bottom:0px">
 						<i-input v-model.lazy="add_remoteadminip" size="small"></i-input>
@@ -227,9 +242,9 @@
 
 				<br>
 
-				<Divider size="default" orientation="left">记账</Divider>
+				<!-- <Divider size="default" orientation="left">记账</Divider> -->
 
-				<i-form :label-width="100">
+				<!-- <i-form :label-width="100">
 					<Form-Item label="供货商/区域" style="margin-bottom:0px">
 						<i-input v-model.lazy="add_shop" size="small"></i-input>
 					</Form-Item>
@@ -237,7 +252,7 @@
 						<i-input v-model.lazy="add_purchaceprice" size="small"></i-input>
 					</Form-Item>
 
-				</i-form>
+				</i-form> -->
 				
 			</i-col>
 
@@ -379,6 +394,8 @@ var vm_app = new Vue({
 		add_maintenanceinstructions: '',
 
 		// 参数变量 - 保修
+		add_shop: '',
+		add_purchaceprice: '',
 		add_dateofpurchase: '',
 		add_warrantymonths: '',
 		add_warrantyinfo: '',
@@ -402,9 +419,12 @@ var vm_app = new Vue({
 
 		// 参数变量 - 网络
 		add_dns: '',
-		add_mac: '',
-		add_ipv4: '',
-		add_ipv6: '',
+		add_maclan: '',
+		add_macwl: '',
+		add_ipv4lan: '',
+		add_ipv4wl: '',
+		add_ipv6lan: '',
+		add_ipv6wl: '',
 		add_remoteadminip: '',
 		add_panelport: '',
 		add_switch_select: '',
@@ -421,324 +441,13 @@ var vm_app = new Vue({
 			{label: 3, value: 3},
 		],
 
-		// 参数变量 - 记账
-		add_shop: '',
-		add_purchaceprice: '',
 
 
 
 
 
 
-		// 创建
-		jiaban_add_reason: '',
-		jiaban_add_remark: '',
 
-		jiaban_add_applicantgroup: '',
-		jiaban_add_datetimerange1: [],
-		jiaban_add_category1: '',
-		jiaban_add_duration1: '',
-		jiaban_add_create_disabled1: false,
-		jiaban_add_clear_disabled1: false,
-		
-		// 批量录入applicant表
-		piliangluru_applicant: [
-			{
-				uid: '',
-				applicant: '',
-				department: '',
-				datetimerange: [],
-				category: '',
-				duration: ''
-			},
-		],
-
-		// 批量录入项
-		piliangluruxiang_applicant2: 1,
-		jiaban_add_create_disabled2: false,
-		jiaban_add_clear_disabled2: false,
-
-		//加班类别
-		option_category: [
-			{value: '平时加班', label: '平时加班'},
-			{value: '双休加班', label: '双休加班'},
-			{value: '节假日加班', label: '节假日加班'}
-		],
-
-		// 选择角色查看编辑相应权限
-		applicant_select: '',
-		applicant_options: [],
-		applicant_loading: false,
-
-		tablecolumns: [
-			{
-				type: 'selection',
-				width: 60,
-				align: 'center',
-				fixed: 'left'
-			},
-			{
-				title: '序号',
-				type: 'index',
-				align: 'center',
-				width: 70,
-				indexMethod: (row) => {
-					return row._index + 1 + vm_app.page_size * (vm_app.page_current - 1)
-				}
-			},
-			{
-				title: '图标',
-				key: 'id',
-				// sortable: true,
-				width: 70,
-				render: (h, params) => {
-					if (params.row.id == 1) {
-						return h('div', {}, [
-							h('Icon',{
-								props: {
-									type: 'md-bookmark',
-									size: 14,
-									color: 'blue',
-									}
-								}
-							),
-						])
-					} else if (params.row.id == 2) {
-						return h('div', {}, [
-							h('Icon',{
-								props: {
-									type: 'md-bookmark',
-									size: 14,
-									color: 'green',
-									}
-								}
-							),
-						])
-					} else if (params.row.id == 3) {
-						return h('div', {}, [
-							h('Icon',{
-								props: {
-									type: 'md-bookmark',
-									size: 14,
-									color: 'red',
-									}
-								}
-							),
-						])
-					} else if (params.row.id == 4) {
-						return h('div', {}, [
-							h('Icon',{
-								props: {
-									type: 'md-bookmark',
-									size: 14,
-									color: 'gray',
-									}
-								}
-							),
-						])
-					} else if (params.row.id == 5) {
-						return h('div', {}, [
-							h('Icon',{
-								props: {
-									type: 'md-bookmark',
-									size: 14,
-									color: 'yellow',
-									}
-								}
-							),
-						])
-					} else if (params.row.id == 6) {
-						return h('div', {}, [
-							h('Icon',{
-								props: {
-									type: 'md-bookmark',
-									size: 14,
-									color: 'black',
-									}
-								}
-							),
-						])
-					} else {
-						return h('div', {}, [
-							h('Icon',{
-								props: {
-									type: 'md-bookmark',
-									size: 14,
-									}
-								}
-							),
-						])
-					}	
-				}
-			},
-			{
-				title: '项目描述',
-				key: 'typedesc',
-				width: 180,
-				render: (h, params) => {
-					
-					return h('div', {}, [
-						h('i-input',{
-							// style:{
-							// 	color: '#ff9900'
-							// },
-							props: {
-								value: params.row.typedesc,
-								size: 'small',
-							},
-							'on': {
-								'on-blur':() => {
-									// alert(params.row.id);
-									// alert(event.target.value);
-									if (params.row.typedesc != event.target.value) {
-										vm_app.itemtypes_update_typedesc(params.row.id, event.target.value)
-									}
-								}
-							},
-						})
-					])
-				}
-			},
-			{
-				title: '可安装软件',
-				key: 'hassoftware',
-				align: 'center',
-				width: 100,
-				// render: (h, params) => {
-				// 	if (params.row.hassoftware == true) {
-				// 		return h('div', {}, '是')
-				// 	} else {
-				// 		return h('div', {}, '否')
-				// 	}
-				// }
-				render: (h, params) => {
-
-					return h('div', [
-						// params.row.deleted_at.toLocaleString()
-						// params.row.deleted_at ? '禁用' : '启用'
-						
-						h('i-switch', {
-							props: {
-								type: 'primary',
-								size: 'small',
-								value: params.row.hassoftware ? true : false
-							},
-							style: {
-								marginRight: '5px'
-							},
-							on: {
-								'on-change': (value) => {//触发事件是on-change,用双引号括起来，
-									//参数value是回调值，并没有使用到
-									vm_app.itemtypes_update_hassoftware(params.row.id, value) //params.index是拿到table的行序列，可以取到对应的表格值
-								}
-							}
-						}, 'Edit')
-						
-					]);
-				}
-			},
-			{
-				title: '创建时间',
-				key: 'created_at',
-				sortable: true,
-				width: 160
-			},
-			{
-				title: '更新时间',
-				key: 'updated_at',
-				sortable: true,
-				width: 160
-			},
-			@hasanyrole('role_super_admin')
-			{
-				title: '操作',
-				key: 'action',
-				align: 'center',
-				width: 100,
-				render: (h, params) => {
-					if (params.row.id > 3) {
-						return h('div', [
-							h('Button', {
-								props: {
-									type: 'error',
-									size: 'small'
-								},
-								style: {
-									marginRight: '5px'
-								},
-								on: {
-									click: () => {
-										vm_app.itemtypes_delete(params.row)
-									}
-								}
-							}, '删除'),
-							
-
-						]);
-					}
-				},
-				// fixed: 'right'
-			}
-			@endhasanyrole
-		],
-		tabledata: [],
-		tableselect: [],
-		
-		// 编辑
-		modal_jiaban_edit: false,
-		modal_jiaban_pass_loading: false,
-		modal_jiaban_deny_loading: false,
-		modal_jiaban_archived_loading: false,
-		jiaban_edit_id: '',
-		jiaban_edit_uuid: '',
-		jiaban_edit_id_of_agent: '',
-		jiaban_edit_agent: '',
-		jiaban_edit_department_of_agent: '',
-		jiaban_edit_application: '',
-		jiaban_edit_status: 0,
-		jiaban_edit_reason: '',
-		jiaban_edit_remark: '',
-		jiaban_edit_camera_imgurl: '',
-		jiaban_edit_auditing: '',
-		jiaban_edit_auditing_circulation: '',
-		jiaban_edit_auditing_index: 0,
-		jiaban_edit_auditing_id: '',
-		jiaban_edit_auditing_uid: '',
-		jiaban_edit_created_at: '',
-		jiaban_edit_updated_at: '',
-
-		// 归档窗口
-		modal_archived: false,
-
-		// 查看人员组
-		applicantgroup_select: '',
-		applicantgroup_options: [],
-		applicantgroup_input: '',
-
-		// 公司组织架构
-		treedata: [
-			{
-				title: '公司',
-				loading: false,
-				children: []
-			}
-		],
-
-		// 人员组名称，用于查看成员
-		applicantgroup_title: '',
-
-
-		// 删除
-		delete_disabled: true,
-
-		
-		// 查询过滤器
-		queryfilter_auditor: '',
-		queryfilter_created_at: '',
-		queryfilter_trashed: false,
-		
-		// 查询过滤器下拉
-		collapse_query: '',		
 		
 		
 		
@@ -835,6 +544,8 @@ var vm_app = new Vue({
 			_this.add_maintenanceinstructions = '';
 
 			// 参数变量 - 保修
+			_this.add_shop = '';
+			_this.add_purchaceprice ='';	
 			_this.add_dateofpurchase = '';
 			_this.add_warrantymonths = '';
 			_this.add_warrantyinfo = '';
@@ -848,18 +559,18 @@ var vm_app = new Vue({
 
 			// 参数变量 - 网络
 			_this.add_dns = '';
-			_this.add_mac = '';
-			_this.add_ipv4 = '';
-			_this.add_ipv6 = '';
+			_this.add_maclan = '';
+			_this.add_macwl = '';
+			_this.add_ipv4lan = '';
+			_this.add_ipv4wl = '';
+			_this.add_ipv6lan = '';
+			_this.add_ipv6wl = '';
 			_this.add_remoteadminip = '';
 			_this.add_panelport = '';
 			_this.add_switch_select = '';
 			_this.add_switchport = '';
 			_this.add_networkports_select = '';
 
-			// 参数变量 - 记账
-			_this.add_shop = '';
-			_this.add_purchaceprice ='';	
 		},
 
 
@@ -893,6 +604,8 @@ var vm_app = new Vue({
 			var add_maintenanceinstructions = _this.add_maintenanceinstructions;
 
 			// 参数变量 - 保修
+			var add_shop = _this.add_shop;
+			var add_purchaceprice = _this.add_purchaceprice;
 			var add_dateofpurchase = _this.add_dateofpurchase ? new Date(_this.add_dateofpurchase).Format("yyyy-MM-dd") : '';
 			var add_warrantymonths = _this.add_warrantymonths;
 			var add_warrantyinfo = _this.add_warrantyinfo;
@@ -906,18 +619,17 @@ var vm_app = new Vue({
 
 			// 参数变量 - 网络
 			var add_dns = _this.add_dns;
-			var add_mac = _this.add_mac;
-			var add_ipv4 = _this.add_ipv4;
-			var add_ipv6 = _this.add_ipv6;
+			var add_maclan = _this.add_maclan;
+			var add_macwl = _this.add_macwl;
+			var add_ipv4lan = _this.add_ipv4lan;
+			var add_ipv4wl = _this.add_ipv4wl;
+			var add_ipv6lan = _this.add_ipv6lan;
+			var add_ipv6wl = _this.add_ipv6wl;
 			var add_remoteadminip = _this.add_remoteadminip;
 			var add_panelport = _this.add_panelport;
 			var add_switch_select = _this.add_switch_select;
 			var add_switchport = _this.add_switchport;
 			var add_networkports_select = _this.add_networkports_select;
-
-			// 参数变量 - 记账
-			var add_shop = _this.add_shop;
-			var add_purchaceprice = _this.add_purchaceprice;
 
 			if (add_itemtype_select == '' || add_itemtype_select == undefined
 				|| add_agent_select == '' || add_agent_select == undefined
@@ -957,6 +669,8 @@ var vm_app = new Vue({
 				add_maintenanceinstructions: add_maintenanceinstructions,
 
 				// 参数变量 - 保修
+				add_shop: add_shop,
+				add_purchaceprice: add_purchaceprice,
 				add_dateofpurchase: add_dateofpurchase,
 				add_warrantymonths: add_warrantymonths,
 				add_warrantyinfo: add_warrantyinfo,
@@ -970,21 +684,17 @@ var vm_app = new Vue({
 
 				// 参数变量 - 网络
 				add_dns: add_dns,
-				add_mac: add_mac,
-				add_ipv4: add_ipv4,
-				add_ipv6: add_ipv6,
+				add_maclan: add_maclan,
+				add_macwl: add_macwl,
+				add_ipv4lan: add_ipv4lan,
+				add_ipv4wl: add_ipv4wl,
+				add_ipv6lan: add_ipv6lan,
+				add_ipv6wl: add_ipv6wl,
 				add_remoteadminip: add_remoteadminip,
 				add_panelport: add_panelport,
 				add_switch_select: add_switch_select,
 				add_switchport: add_switchport,
 				add_networkports_select: add_networkports_select,
-
-				// 参数变量 - 记账
-				add_shop: add_shop,
-				add_purchaceprice: add_purchaceprice,
-
-
-
 
 			})
 			.then(function (response) {

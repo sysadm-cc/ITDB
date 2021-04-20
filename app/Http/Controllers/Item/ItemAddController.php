@@ -72,11 +72,11 @@ class ItemAddController extends Controller
 		$add_agent_select = $request->input('add_agent_select');
 		$add_model = $request->input('add_model');
 		$add_usize_select = $request->input('add_usize_select');
+		$add_assettag = $request->input('add_assettag');
 		$add_sn1 = $request->input('add_sn1');
 		$add_sn2 = $request->input('add_sn2');
 		$add_servicetag = $request->input('add_servicetag');
 		$add_comments = $request->input('add_comments');
-		$add_label = $request->input('add_label');
 
 		// 参数变量 - 使用
 		$add_status_select = $request->input('add_status_select');
@@ -103,9 +103,12 @@ class ItemAddController extends Controller
 
 		// 参数变量 - 网络
 		$add_dns = $request->input('add_dns');
-		$add_mac = $request->input('add_mac');
-		$add_ipv4 = $request->input('add_ipv4');
-		$add_ipv6 = $request->input('add_ipv6');
+		$add_maclan = $request->input('add_maclan');
+		$add_macwl = $request->input('add_macwl');
+		$add_ipv4lan = $request->input('add_ipv4lan');
+		$add_ipv4wl = $request->input('add_ipv4wl');
+		$add_ipv6lan = $request->input('add_ipv6lan');
+		$add_ipv6wl = $request->input('add_ipv6wl');
 		$add_remoteadminip = $request->input('add_remoteadminip');
 		$add_panelport = $request->input('add_panelport');
 		$add_switch_select = $request->input('add_switch_select');
@@ -142,17 +145,19 @@ class ItemAddController extends Controller
 				'status' => $add_status_select,
 				'userid' => $add_user_select,
 				'locationid' => $add_location_select,
-				'locareaid' => $add_area_select,
+				'areaid' => $add_area_select,
 				'rackid' => $add_rack_select,
 				'rackposition' => $add_rackposition_select1,
-				'rackposdepth' => $add_rackposition_select2,
+				'rackdepth' => $add_rackposition_select2,
 				'function' => $add_function,
-				'maintenanceinfo' => $add_maintenanceinstructions,
+				'maintenanceinstructions' => $add_maintenanceinstructions,
                 
 				// 参数变量 - 保修
+				'shop' => $add_shop,
+				'purchprice' => $add_purchaceprice,				
 				'purchasedate' => $add_dateofpurchase,
 				'warrantymonths' => $add_warrantymonths,
-				'warrinfo' => $add_warrantyinfo,
+				'warrantyinfo' => $add_warrantyinfo,
                 
 				// 参数变量 - 配件
 				'hd' => $add_harddisk,
@@ -162,10 +167,13 @@ class ItemAddController extends Controller
 				'corespercpu' => $add_cpucores_select,
                 
 				// 参数变量 - 网络
-				'dnsname' => $add_dns,
-				'macs' => $add_mac,
-				'ipv4' => $add_ipv4,
-				'ipv6' => $add_ipv6,
+				'dns' => $add_dns,
+				'maclan' => $add_maclan,
+				'macwl' => $add_macwl,
+				'ipv4lan' => $add_ipv4lan,
+				'ipv4wl' => $add_ipv4wl,
+				'ipv6lan' => $add_ipv6lan,
+				'ipv6wl' => $add_ipv6wl,
 				'remadmip' => $add_remoteadminip,
 				'panelport' => $add_panelport,
 				'switchid' => $add_switch_select,
@@ -173,14 +181,11 @@ class ItemAddController extends Controller
 				'ports' => $add_networkports_select,
                 
 				// 参数变量 - 记账
-				'origin' => $add_shop,
-				'purchprice' => $add_purchaceprice,				
 			]);
 			Cache::flush();
 		}
 		catch (\Exception $e) {
-			// echo 'Message: ' .$e->getMessage();
-			return 'Message: ' .$e->getMessage();
+			dd('Message: ' .$e->getMessage());
 			$result = 0;
 		}
 

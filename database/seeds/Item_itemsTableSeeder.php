@@ -43,6 +43,8 @@ class Item_itemsTableSeeder extends Seeder
                 'function' => 'Software Firewall',
                 'maintenanceinstructions' => NULL,
 
+                'shop' => NULL,
+                'purchprice' => NULL,
                 'purchasedate' => NULL,
                 'warrantymonths' => 36,
                 'warrantyinfo' => NULL,
@@ -53,7 +55,7 @@ class Item_itemsTableSeeder extends Seeder
                 'cpuno' => NULL,
                 'corespercpu' => NULL,
 
-                'dnsname' => 'sysadm.local',
+                'dns' => 'sysadm.local',
                 'maclan' => NULL,
                 'macwl' => NULL,
                 'ipv4lan' => '10.0.0.1',
@@ -66,9 +68,6 @@ class Item_itemsTableSeeder extends Seeder
                 'switchport' => NULL,
                 'ports' => NULL,
 
-                'origin' => NULL,
-                'purchprice' => NULL,
-                
                 'created_at' => $nowtime,
                 'updated_at' => $nowtime,
                 'deleted_at' => NULL,
