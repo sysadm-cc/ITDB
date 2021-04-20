@@ -27,10 +27,10 @@
 			<Divider orientation="left">软件属性</Divider>
 
 			<i-form :label-width="100">
-				<Form-Item label="* 名称" style="margin-bottom:0px">
+				<Form-Item label="名称" required style="margin-bottom:0px">
 					<i-input v-model.lazy="add_title" size="small"></i-input>
 				</Form-Item>
-				<Form-Item label="制造商" style="margin-bottom:0px">
+				<Form-Item label="代理商" required style="margin-bottom:0px">
 					<!-- <i-select v-model.lazy="add_type_select" multiple size="small" placeholder=""> -->
 					<i-select v-model.lazy="add_agentid_select" size="small" placeholder="">
 						<i-option v-for="item in add_agentid_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
@@ -269,7 +269,8 @@ var vm_app = new Vue({
 			var add_licenseinfo = _this.add_licenseinfo;
 			var add_comments = _this.add_comments;
 
-			if (add_title == '' || add_title == undefined) {
+			if (add_title == '' || add_title == undefined
+				|| add_agentid_select == '' || add_agentid_select == undefined) {
 				_this.error(false, '错误', '内容为空或不正确！');
 				_this.add_create_disabled = false;
 				return false;

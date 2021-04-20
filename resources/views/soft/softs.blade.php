@@ -96,10 +96,10 @@
 		<i-form :label-width="100">
 			<i-row>
 				<i-col span="24">
-					<Form-Item label="* 名称" style="margin-bottom:0px">
+					<Form-Item label="名称" required style="margin-bottom:0px">
 						<i-input v-model.lazy="edit_title" size="small"></i-input>
 					</Form-Item>
-					<Form-Item label="制造商" style="margin-bottom:0px">
+					<Form-Item label="代理商" required style="margin-bottom:0px">
 						<!-- <i-select v-model.lazy="add_type_select" multiple size="small" placeholder=""> -->
 						<i-select v-model.lazy="edit_agentid_select" size="small" placeholder="">
 							<i-option v-for="item in edit_agentid_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
@@ -520,8 +520,6 @@ var vm_app = new Vue({
 			_this.edit_id = row.id;
 			_this.edit_updated_at = row.updated_at;
 			_this.edit_title = row.title;
-
-
 			_this.edit_agentid_select = row.agentid;
 			_this.edit_invoiceid_select = row.invoiceid;
 			_this.edit_purchasedate = row.purchasedate;
@@ -541,11 +539,14 @@ var vm_app = new Vue({
 			var id = _this.edit_id;
 			var updated_at = _this.edit_updated_at;
 			var title = _this.edit_title;
-			var agentid = _this.edit_agent_select;
-			var ordernumber = _this.edit_ordernumber;
-			var buyer = _this.edit_buyer;
-			var invoicedate = _this.edit_invoicedate ? new Date(_this.edit_invoicedate).Format("yyyy-MM-dd") : '';
-			var description = _this.edit_description;
+			var agentid = _this.edit_agentid_select;
+			var invoiceid = _this.edit_invoiceid_select;
+			var purchasedate = _this.edit_purchasedate ? new Date(_this.edit_purchasedate).Format("yyyy-MM-dd") : '';
+			var version = _this.edit_version;
+			var quantity = _this.edit_quantity;
+			var type = _this.edit_type;
+			var licenseinfo = _this.edit_licenseinfo;
+			var comments = _this.edit_comments;
 
 			if (id == undefined || title == undefined || title == ''
 				|| agentid == undefined || agentid == '') {
@@ -553,20 +554,23 @@ var vm_app = new Vue({
 				return false;
 			}
 
-			var url = "{{ route('invoice.update') }}";
+			var url = "{{ route('soft.update') }}";
 			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
 			axios.post(url, {
 				id: id,
 				updated_at: updated_at,
 				title: title,
 				agentid: agentid,
-				ordernumber: ordernumber,
-				buyer: buyer,
-				invoicedate: invoicedate,
-				description: description,
+				invoiceid: invoiceid,
+				purchasedate: purchasedate,
+				version: version,
+				quantity: quantity,
+				type: type,
+				licenseinfo: licenseinfo,
+				comments: comments,
 			})
 			.then(function (response) {
-				// console.log(response.data);return false;
+				console.log(response.data);return false;
 
 				if (response.data['jwt'] == 'logout') {
 					_this.alert_logout();
@@ -575,7 +579,7 @@ var vm_app = new Vue({
 				
 				if (response.data) {
 					_this.success(false, '成功', '更新成功！');
-						_this.invoicesgets(_this.page_current, _this.page_last);
+						_this.softsgets(_this.page_current, _this.page_last);
 				} else {
 					_this.error(false, '失败', '更新失败！');
 				}
