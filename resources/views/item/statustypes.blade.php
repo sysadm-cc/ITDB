@@ -21,9 +21,11 @@
 <i-row :gutter="16">
 
 	<i-col span="4">
+	<Poptip trigger="hover" content="添加状态分类">
 		<i-input v-model.lazy="statustypes_add_statusdesc">
 			<i-button slot="append" icon="md-add" @click="statustypes_add()"></i-button>
 		</i-input>
+	</Poptip>
 	</i-col>
 
 	<i-col span="20">
@@ -96,52 +98,18 @@ var vm_app = new Vue({
 		//新增
 		statustypes_add_statusdesc: '',
 
-
-
-
-
-
-
-
-		// 创建
-		jiaban_add_reason: '',
-		jiaban_add_remark: '',
-
-		jiaban_add_applicantgroup: '',
-		jiaban_add_datetimerange1: [],
-		jiaban_add_category1: '',
-		jiaban_add_duration1: '',
-		jiaban_add_create_disabled1: false,
-		jiaban_add_clear_disabled1: false,
+		// tabs索引
+		// currenttabs: 0,
+		// currenttabssub: 0,
 		
-		// 批量录入applicant表
-		piliangluru_applicant: [
-			{
-				uid: '',
-				applicant: '',
-				department: '',
-				datetimerange: [],
-				category: '',
-				duration: ''
-			},
-		],
+		// 查询过滤器
+		// queryfilter_auditor: '',
+		// queryfilter_created_at: '',
+		// queryfilter_trashed: false,
+		
+		// 查询过滤器下拉
+		// collapse_query: '',		
 
-		// 批量录入项
-		piliangluruxiang_applicant2: 1,
-		jiaban_add_create_disabled2: false,
-		jiaban_add_clear_disabled2: false,
-
-		//加班类别
-		option_category: [
-			{value: '平时加班', label: '平时加班'},
-			{value: '双休加班', label: '双休加班'},
-			{value: '节假日加班', label: '节假日加班'}
-		],
-
-		// 选择角色查看编辑相应权限
-		applicant_select: '',
-		applicant_options: [],
-		applicant_loading: false,
 
 		tablecolumns: [
 			{
@@ -293,21 +261,32 @@ var vm_app = new Vue({
 				render: (h, params) => {
 					if (params.row.id > 6) {
 						return h('div', [
-							h('Button', {
+							h('Poptip', {
 								props: {
-									type: 'error',
-									size: 'small'
-								},
-								style: {
-									marginRight: '5px'
+									'word-wrap': true,
+									'trigger': 'click',
+									'confirm': true,
+									'title': '删除将影响已有信息，真的要删除吗？',
+									'transfer': true
 								},
 								on: {
-									click: () => {
+									'on-ok': () => {
 										vm_app.statustypes_delete(params.row)
 									}
 								}
-							}, '删除'),
-							
+							}, [
+
+								h('Button', {
+									props: {
+										type: 'error',
+										size: 'small',
+										icon: 'md-remove'
+									},
+									style: {
+										marginRight: '5px'
+									},
+								}),
+							]),
 
 						]);
 					}
@@ -319,64 +298,10 @@ var vm_app = new Vue({
 		tabledata: [],
 		tableselect: [],
 		
-		// 编辑
-		modal_jiaban_edit: false,
-		modal_jiaban_pass_loading: false,
-		modal_jiaban_deny_loading: false,
-		modal_jiaban_archived_loading: false,
-		jiaban_edit_id: '',
-		jiaban_edit_uuid: '',
-		jiaban_edit_id_of_agent: '',
-		jiaban_edit_agent: '',
-		jiaban_edit_department_of_agent: '',
-		jiaban_edit_application: '',
-		jiaban_edit_status: 0,
-		jiaban_edit_reason: '',
-		jiaban_edit_remark: '',
-		jiaban_edit_camera_imgurl: '',
-		jiaban_edit_auditing: '',
-		jiaban_edit_auditing_circulation: '',
-		jiaban_edit_auditing_index: 0,
-		jiaban_edit_auditing_id: '',
-		jiaban_edit_auditing_uid: '',
-		jiaban_edit_created_at: '',
-		jiaban_edit_updated_at: '',
-
-		// 归档窗口
-		modal_archived: false,
-
-		// 查看人员组
-		applicantgroup_select: '',
-		applicantgroup_options: [],
-		applicantgroup_input: '',
-
-		// 公司组织架构
-		treedata: [
-			{
-				title: '公司',
-				loading: false,
-				children: []
-			}
-		],
-
-		// 人员组名称，用于查看成员
-		applicantgroup_title: '',
 
 
-		// 删除
-		delete_disabled: true,
 
-		// tabs索引
-		currenttabs: 0,
-		currenttabssub: 0,
-		
-		// 查询过滤器
-		queryfilter_auditor: '',
-		queryfilter_created_at: '',
-		queryfilter_trashed: false,
-		
-		// 查询过滤器下拉
-		collapse_query: '',		
+
 		
 		
 		
@@ -473,7 +398,7 @@ var vm_app = new Vue({
 				}
 
 				if (response.data) {
-					_this.delete_disabled = true;
+					// _this.delete_disabled = true;
 					_this.tableselect = [];
 					
 					_this.page_current = response.data.current_page;
@@ -504,10 +429,6 @@ var vm_app = new Vue({
 			
 			var id = id;
 			var statusdesc = statusdesc;
-			// _this.statustypes_edit_id = id;
-			// _this.statustypes_edit_statusdesc = row.statustypes_edit_statusdesc;
-			// _this.jiaban_edit_created_at = row.created_at;
-			// _this.jiaban_edit_updated_at = row.updated_at;
 
 			var url = "{{ route('item.statustypesupdate') }}";
 			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
@@ -527,10 +448,8 @@ var vm_app = new Vue({
 				
 				if (response.data) {
 					_this.statustypesgets(_this.page_current, _this.page_last);
-                    // _this.$Message.success('保存成功！');
 					_this.success(false, '成功', '保存成功！');
                 } else {
-					// _this.$Message.warning('保存失败！');
 					_this.warning(false, '失败', '保存失败！');
 				}
 			})
@@ -538,11 +457,9 @@ var vm_app = new Vue({
 				_this.error(false, 'Error', error);
 			})
 
-			setTimeout(() => {
-				_this.modal_jiaban_edit = true;
-			}, 500);
-
-			
+			// setTimeout(() => {
+			// 	_this.modal_jiaban_edit = true;
+			// }, 500);
 		},
 
 
@@ -575,7 +492,7 @@ var vm_app = new Vue({
 		},
 
 
-		//新增
+		// 新增
 		statustypes_add () {
 			var _this = this;
 
@@ -592,8 +509,7 @@ var vm_app = new Vue({
 				statusdesc: statusdesc,
 			})
 			.then(function (response) {
-				// console.log(response.data);
-				// return false;
+				// console.log(response.data);return false;
 
 				if (response.data['jwt'] == 'logout') {
 					_this.alert_logout();
@@ -603,16 +519,14 @@ var vm_app = new Vue({
  				if (response.data) {
 					_this.statustypes_add_statusdesc = '';
 					_this.statustypesgets(_this.page_current, _this.page_last);
-					_this.success(false, '成功', '新建成功！');
+					_this.success(false, '成功', '添加成功！');
 				} else {
-					_this.error(false, '失败', '新建失败！');
+					_this.error(false, '失败', '添加失败！');
 				}
 			})
 			.catch(function (error) {
-				_this.error(false, '错误', '新建失败！');
+				_this.error(false, '错误', '添加失败！');
 			})
-
-
 		},
 
 		
