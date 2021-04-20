@@ -28,35 +28,38 @@
 				<Divider size="default" orientation="left">属性</Divider>
 				
 				<i-form :label-width="100">
-					<Form-Item label="* 项目类型" style="margin-bottom:0px">
-						<i-select v-model.lazy="add_itemtype_select" size="small" placeholder="选择">
+					<Form-Item label="物品类型" required style="margin-bottom:0px">
+						<i-select v-model.lazy="add_itemtype_select" size="small" placeholder="">
 							<i-option v-for="item in add_itemtype_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
 						</i-select>
 					</Form-Item>
-					<Form-Item label="* 是否部件" style="margin-bottom:0px">
+					<Form-Item label="是否部件" required style="margin-bottom:0px">
 						<i-switch v-model.lazy="add_ispart">
 							<span slot="open">是</span>
 							<span slot="close">否</span>
 						</i-switch>
 					</Form-Item>
-					<Form-Item label="* 是否机架式" style="margin-bottom:0px">
+					<Form-Item label="是否机架式" required style="margin-bottom:0px">
 						<i-switch v-model.lazy="add_rackmountable">
 							<span slot="open">是</span>
 							<span slot="close">否</span>
 						</i-switch>
 					</Form-Item>
-					<Form-Item label="* 制造商" style="margin-bottom:0px">
-						<i-select v-model.lazy="add_manufact_select" size="small" placeholder="选择制造商">
-							<i-option v-for="item in add_manufact_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+					<Form-Item label="代理商" required style="margin-bottom:0px">
+						<i-select v-model.lazy="add_agent_select" size="small" placeholder="">
+							<i-option v-for="item in add_agent_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
 						</i-select>
 					</Form-Item>
-					<Form-Item label="* 型号" style="margin-bottom:0px">
+					<Form-Item label="型号" required style="margin-bottom:0px">
 						<i-input v-model.lazy="add_model" size="small"></i-input>
 					</Form-Item>
 					<Form-Item label="尺寸(U)" style="margin-bottom:0px">
-						<i-select v-model.lazy="add_usize_select" size="small" placeholder="选择">
+						<i-select v-model.lazy="add_usize_select" size="small" placeholder="">
 							<i-option v-for="item in add_usize_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
 						</i-select>
+					</Form-Item>
+					<Form-Item label="资产标签" style="margin-bottom:0px">
+						<i-input v-model.lazy="add_assettag" size="small"></i-input>
 					</Form-Item>
 					<Form-Item label="S/N 1" style="margin-bottom:0px">
 						<i-input v-model.lazy="add_sn1" size="small" placeholder="序列号一"></i-input>
@@ -68,10 +71,7 @@
 						<i-input v-model.lazy="add_servicetag" size="small" placeholder="服务编号"></i-input>
 					</Form-Item>
 					<Form-Item label="备注" style="margin-bottom:0px">
-						<i-input v-model.lazy="add_comments" size="small" type="textarea"></i-input>
-					</Form-Item>
-					<Form-Item label="标签" style="margin-bottom:0px">
-						<i-input v-model.lazy="add_label" size="small"></i-input>
+						<i-input v-model.lazy="add_comments" size="small" type="textarea" :rows="4"></i-input>
 					</Form-Item>
 
 				</i-form>
@@ -86,38 +86,38 @@
 			<i-col span="5">
 				<Divider size="default" orientation="left">使用</Divider>
 				<i-form :label-width="100">
-					<Form-Item label="* 状态" style="margin-bottom:0px">
-						<i-select v-model.lazy="add_status_select" size="small" placeholder="选择">
+					<Form-Item label="状态" required style="margin-bottom:0px">
+						<i-select v-model.lazy="add_status_select" size="small" placeholder="">
 							<i-option v-for="item in add_status_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
 						</i-select>
 					</Form-Item>
 					<Form-Item label="使用者" style="margin-bottom:0px">
-						<i-select v-model.lazy="add_user_select" size="small" placeholder="选择">
+						<i-select v-model.lazy="add_user_select" size="small" placeholder="">
 							<i-option v-for="item in add_user_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
 						</i-select>
 					</Form-Item>
-					<Form-Item label="位置场所" style="margin-bottom:0px">
-						<i-select v-model.lazy="add_location_select" size="small" placeholder="选择">
+					<Form-Item label="位置/楼层" style="margin-bottom:0px">
+						<i-select v-model.lazy="add_location_select" @on-change="onchange_location" size="small" placeholder="">
 							<i-option v-for="item in add_location_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
 						</i-select>
 					</Form-Item>
 					<Form-Item label="区域/房间" style="margin-bottom:0px">
-						<i-select v-model.lazy="add_area_select" size="small" placeholder="选择">
+						<i-select v-model.lazy="add_area_select" size="small" placeholder="" not-found-text="请先选择位置/楼层">
 							<i-option v-for="item in add_area_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
 						</i-select>
 					</Form-Item>
-					<Form-Item label="机架" style="margin-bottom:0px">
-						<i-select v-model.lazy="add_rack_select" size="small" placeholder="选择">
+					<Form-Item label="机柜" style="margin-bottom:0px">
+						<i-select v-model.lazy="add_rack_select" size="small" placeholder="">
 							<i-option v-for="item in add_rack_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
 						</i-select>
 					</Form-Item>
-					<Form-Item label="机架所在层高" style="margin-bottom:0px">
+					<Form-Item label="所在机架层高" style="margin-bottom:0px">
 						<i-select v-model.lazy="add_rackposition_select1" size="small" placeholder="">
 							<i-option v-for="item in add_rackposition_options1" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
 						</i-select>
 					</Form-Item>
-					<Form-Item label="机架所在深度" style="margin-bottom:0px">	
-						<i-select v-model.lazy="add_rackposition_select2" size="small" placeholder="FMB - 前中后">
+					<Form-Item label="所在机架深度" style="margin-bottom:0px">	
+						<i-select v-model.lazy="add_rackposition_select2" size="small" placeholder="">
 							<i-option v-for="item in add_rackposition_options2" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
 						</i-select>
 					</Form-Item>
@@ -255,7 +255,7 @@
 
 <Divider dashed></Divider>
 
-<i-button @click="add_create()" :disabled="add_create_disabled" size="large" type="primary">添加</i-button>
+<i-button @click="add_create()" :disabled="add_create_disabled" icon="md-add" size="large" type="primary">添加</i-button>
 
 <br>
 
@@ -320,30 +320,24 @@ var vm_app = new Vue({
 		],
 		add_ispart: false,
 		add_rackmountable: false,
-		add_manufact_select: '',
-		add_manufact_options: [
-			{label: 'lenovo', value: 1},
-			{label: 'dell', value: 2},
+		add_agent_select: '',
+		add_agent_options: [
+			// {label: 'lenovo', value: 1},
+			// {label: 'dell', value: 2},
 		],
 		add_model: '',
 		add_usize_select: '',
-		add_usize_options: [
-			// {label: 1, value: 1},
-			// {label: 2, value: 2},
-			// {label: 3, value: 3},
-		],
+		add_usize_options: [],
 		add_sn1: '',
 		add_sn2: '',
 		add_servicetag: '',
 		add_comments: '',
-		add_label: '',
+		add_assettag: '',
 
 		// 参数变量 - 使用
 		add_status_select: '',
 		add_status_options: [
-			{label: '使用中', value: 1},
-			{label: 2, value: 2},
-			{label: 3, value: 3},
+			// {label: '使用中', value: 1},
 		],
 		add_user_select: '',
 		add_user_options: [
@@ -353,21 +347,15 @@ var vm_app = new Vue({
 		],
 		add_location_select: '',
 		add_location_options: [
-			{label: '主楼，三楼', value: 1},
-			{label: 'user', value: 2},
-			{label: 3, value: 3},
+			// {label: '主楼，三楼', value: 1},
 		],
 		add_area_select: '',
 		add_area_options: [
-			{label: '6号房间', value: 1},
-			{label: 'user', value: 2},
-			{label: 3, value: 3},
+			// {label: '6号房间', value: 1},
 		],
 		add_rack_select: '',
 		add_rack_options: [
-			{label: '一号机柜', value: 1},
-			{label: 'user', value: 2},
-			{label: 3, value: 3},
+			// {label: '一号机柜', value: 1},
 		],
 		add_rackposition_select1: '',
 		add_rackposition_options1: [
@@ -377,12 +365,12 @@ var vm_app = new Vue({
 		],
 		add_rackposition_select2: '',
 		add_rackposition_options2: [
-			{label: 'FM-', value: 'FM-'},
-			{label: '-MB', value: '-MB'},
-			{label: 'F-', value: 'F-'},
-			{label: '-M-', value: '-M-'},
-			{label: '--B', value: '--B'},
-			{label: 'FMB', value: 'FMB'},
+			{label: 'FM- (前中-)', value: 'FM-'},
+			{label: '-MB (-中后)', value: '-MB'},
+			{label: 'F-- 前--', value: 'F--'},
+			{label: '-M- -中-', value: '-M-'},
+			{label: '--B --后', value: '--B'},
+			{label: 'FMB 前中后', value: 'FMB'},
 		],
 		add_function: '',
 		add_maintenanceinstructions: '',
@@ -823,14 +811,14 @@ var vm_app = new Vue({
 			_this.add_itemtype_select = '';
 			_this.add_ispart = false;
 			_this.add_rackmountable = false;
-			_this.add_manufact_select = '';
+			_this.add_agent_select = '';
 			_this.add_model = '';
 			_this.add_usize_select = '';
 			_this.add_sn1 = '';
 			_this.add_sn2 = '';
 			_this.add_servicetag = '';
 			_this.add_comments = '';
-			_this.add_label = '';
+			_this.add_assettag = '';
 
 			// 参数变量 - 使用
 			_this.add_status_select = '';
@@ -881,14 +869,14 @@ var vm_app = new Vue({
 			var add_itemtype_select = _this.add_itemtype_select;
 			var add_ispart = _this.add_ispart;
 			var add_rackmountable = _this.add_rackmountable;
-			var add_manufact_select = _this.add_manufact_select;
+			var add_agent_select = _this.add_agent_select;
 			var add_model = _this.add_model;
 			var add_usize_select = _this.add_usize_select;
 			var add_sn1 = _this.add_sn1;
 			var add_sn2 = _this.add_sn2;
 			var add_servicetag = _this.add_servicetag;
 			var add_comments = _this.add_comments;
-			var add_label = _this.add_label;
+			var add_assettag = _this.add_assettag;
 
 			// 参数变量 - 使用
 			var add_status_select = _this.add_status_select;
@@ -929,7 +917,7 @@ var vm_app = new Vue({
 			var add_purchaceprice = _this.add_purchaceprice;
 
 			if (add_itemtype_select == '' || add_itemtype_select == undefined
-				|| add_manufact_select == '' || add_manufact_select == undefined
+				|| add_agent_select == '' || add_agent_select == undefined
 				|| add_model == '' || add_model == undefined
 				|| add_status_select == '' || add_status_select == undefined) {
 				_this.error(false, '错误', '内容为空或不正确！');
@@ -945,14 +933,14 @@ var vm_app = new Vue({
 				add_itemtype_select: add_itemtype_select,
 				add_ispart: add_ispart,
 				add_rackmountable: add_rackmountable,
-				add_manufact_select: add_manufact_select,
+				add_agent_select: add_agent_select,
 				add_model: add_model,
 				add_usize_select: add_usize_select,
 				add_sn1: add_sn1,
 				add_sn2: add_sn2,
 				add_servicetag: add_servicetag,
 				add_comments: add_comments,
-				add_label: add_label,
+				add_assettag: add_assettag,
 
 				// 参数变量 - 使用
 				add_status_select: add_status_select,
@@ -1024,7 +1012,7 @@ var vm_app = new Vue({
 		},
 
 
-		// ajax 获取物品类型列表
+		// 获取物品类型列表
 		itemtypesgets () {
 			var _this = this;
 			var url = "{{ route('item.itemtypesgets') }}";
@@ -1046,10 +1034,159 @@ var vm_app = new Vue({
 		},
 	
 		
+		// 获取代理商列表
+		agentsgets (page, last_page){
+			var _this = this;
+			var url = "{{ route('agent.gets') }}";
+			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
+			axios.get(url,{
+				params: {
+					perPage: 1000,
+					page: 1,
+				}
+			})
+			.then(function (response) {
+				// console.log(response.data.data);
+				if (response.data['jwt'] == 'logout') {
+					_this.alert_logout();
+					return false;
+				}
+				if (response.data) {
+					// _this.add_agentid_options = _this.json2selectvalue(response.data.data);
+					response.data.data.map(function (v, i) {
+						_this.add_agent_options.push({label: v.title, value: v.id});
+					});
+
+				}
+			})
+			.catch(function (error) {
+				// _this.error(false, 'Error', error);
+			})
+		},
 
 
+		// 获取使用状态
+		statustypesgets (page, last_page){
+			var _this = this;
+			var url = "{{ route('item.statustypesgets') }}";
+			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
+			axios.get(url,{
+				params: {
+					perPage: 1000,
+					page: 1,
+				}
+			})
+			.then(function (response) {
+				if (response.data['jwt'] == 'logout') {
+					_this.alert_logout();
+					return false;
+				}
+				if (response.data) {
+					response.data.data.map(function (v, i) {
+						_this.add_status_options.push({label: v.statusdesc, value: v.id});
+					});
+				}
+			})
+			.catch(function (error) {
+				// _this.error(false, 'Error', error);
+			})
+		},
 
+		// 获取位置信息列表
+		locationsgets () {
+			var _this = this;
+			var url = "{{ route('location.gets') }}";
+			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
+			axios.get(url,{
+				params: {
+					perPage: 1000,
+					page: 1,
+				}
+			})
+			.then(function (response) {
+				// console.log(response.data);return false;
 
+				if (response.data['jwt'] == 'logout') {
+					_this.alert_logout();
+					return false;
+				}
+
+				if (response.data) {
+					response.data.data.map(function (v, i) {
+						_this.add_location_options.push({value: v.id, label: v.title+' ('+v.building+' / '+v.floor+')'});
+					});
+				}
+			})
+			.catch(function (error) {
+				// _this.error(false, 'Error', error);
+			})
+		},
+
+		// 根据位置查询区域/房间
+		onchange_location () {
+			var _this = this;
+			
+			var locationid = _this.add_location_select;
+			
+			if (locationid == '' || locationid == undefined) {
+				return false;
+			}
+			
+			var url = "{{ route('rack.location2area') }}";
+			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
+			axios.get(url,{
+				params: {
+					locationid: locationid,
+				}
+			})
+			.then(function (response) {
+				// console.log(response.data.areas);return false;
+
+				if (response.data['jwt'] == 'logout') {
+					_this.alert_logout();
+					return false;
+				}
+
+				if (response.data) {
+					_this.add_area_select = '';
+					_this.add_area_options = [];
+					response.data.areas.map(function (v, i) {
+						_this.add_area_options.push({value: i, label: v.name+' [x1: '+v.x1+',y1: '+v.y2+'], [x2: '+v.x2+',y2: '+v.y2+'])'});
+					});
+				}
+			})
+			.catch(function (error) {
+				// this.error(false, 'Error', error);
+			})
+		},
+	
+		// 获取机柜列表
+		racksgets () {
+			var _this = this;
+			var url = "{{ route('rack.gets') }}";
+			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
+			axios.get(url,{
+				params: {
+					perPage: 1000,
+					page: 1,
+				}
+			})
+			.then(function (response) {
+				if (response.data['jwt'] == 'logout') {
+					_this.alert_logout();
+					return false;
+				}
+
+				if (response.data) {
+					response.data.data.map(function (v, i) {
+						_this.add_rack_options.push({label: v.title, value: v.id});
+					});
+				}
+			})
+			.catch(function (error) {
+				// _this.error(false, 'Error', error);
+			})
+		},
 
 
 
@@ -1062,9 +1199,6 @@ var vm_app = new Vue({
 		
 
 
-	},
-	beforeCreated: function(){
-		
 	},
 	mounted: function(){
 		var _this = this;
@@ -1088,13 +1222,20 @@ var vm_app = new Vue({
 			_this.add_rackposition_options1.push({label: i, value: i});
 		}
 
-		// ajax 获取物品类型列表
+		// 获取物品类型列表
 		_this.itemtypesgets();
 
-		// ajax 获取制造商列表
+		// 获取制造商列表
+		_this.agentsgets();
 
+		// 获取使用状态列表
+		_this.statustypesgets();
 
+		// 获取位置列表
+		_this.locationsgets();
 
+		// 获取机柜列表
+		_this.racksgets();
 
 
 

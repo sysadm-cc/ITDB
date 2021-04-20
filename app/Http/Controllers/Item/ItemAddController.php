@@ -28,28 +28,28 @@ class ItemAddController extends Controller
 	 */
 	public function itemAdd()
 	{
-	// 获取JSON格式的jwt-auth用户响应
-	$me = response()->json(auth()->user());
+		// 获取JSON格式的jwt-auth用户响应
+		$me = response()->json(auth()->user());
 
-	// 获取JSON格式的jwt-auth用户信息（$me->getContent()），就是$me的data部分
-	$user = json_decode($me->getContent(), true);
-	// 用户信息：$user['id']、$user['name'] 等
+		// 获取JSON格式的jwt-auth用户信息（$me->getContent()），就是$me的data部分
+		$user = json_decode($me->getContent(), true);
+		// 用户信息：$user['id']、$user['name'] 等
 
-	// 获取系统配置
-	$config = Config::pluck('cfg_value', 'cfg_name')->toArray();
+		// 获取系统配置
+		$config = Config::pluck('cfg_value', 'cfg_name')->toArray();
 
-	// 获取 itemtypes 信息
-	// $info_todo = Item_itemtypes::select('id', 'statusdesc', 'created_at', 'updated_at', 'deleted_at')
-	// 	// ->where('uid_of_auditor', $user['uid'])
-	// 	// ->whereBetween('status', [1, 98])
-	// 	// ->where('archived', false)
-	// 	->limit(100)
-	// 	->orderBy('created_at', 'desc')
-	// 	->get()->toArray();
-	$info_todo = [];
+		// 获取 itemtypes 信息
+		// $info_todo = Item_itemtypes::select('id', 'statusdesc', 'created_at', 'updated_at', 'deleted_at')
+		// 	// ->where('uid_of_auditor', $user['uid'])
+		// 	// ->whereBetween('status', [1, 98])
+		// 	// ->where('archived', false)
+		// 	->limit(100)
+		// 	->orderBy('created_at', 'desc')
+		// 	->get()->toArray();
+		$info_todo = [];
 
-	$share = compact('config', 'user', 'info_todo');
-	return view('item.add', $share);
+		$share = compact('config', 'user', 'info_todo');
+		return view('item.add', $share);
 	}
 
 
@@ -69,7 +69,7 @@ class ItemAddController extends Controller
 		$add_itemtype_select = $request->input('add_itemtype_select');
 		$add_ispart = $request->input('add_ispart');
 		$add_rackmountable = $request->input('add_rackmountable');
-		$add_manufact_select = $request->input('add_manufact_select');
+		$add_agent_select = $request->input('add_agent_select');
 		$add_model = $request->input('add_model');
 		$add_usize_select = $request->input('add_usize_select');
 		$add_sn1 = $request->input('add_sn1');
@@ -129,14 +129,14 @@ class ItemAddController extends Controller
 				'itemtypeid' => $add_itemtype_select,
 				'ispart' => $add_ispart,
 				'rackmountable' => $add_rackmountable,
-				'manufacturerid' => $add_manufact_select,
+				'agentid' => $add_agent_select,
 				'model' => $add_model,
 				'usize' => $add_usize_select,
 				'sn1' => $add_sn1,
 				'sn2' => $add_sn2,
 				'servicetag' => $add_servicetag,
 				'comments' => $add_comments,
-				'label' => $add_label,
+				'assettag' => $add_assettag,
                 
 				// 参数变量 - 使用
 				'status' => $add_status_select,

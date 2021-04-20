@@ -17,7 +17,7 @@ class CreateItemItemsTable extends Migration
             $table->bigIncrements('id');
             $table->integer('itemtypeid')->nullable()->unsigned()->comment('项目类型编号');
             $table->string('function')->nullable()->comment('功能');
-            $table->integer('manufacturerid')->nullable()->unsigned()->comment('制造商编号');
+            $table->integer('agentid')->nullable()->unsigned()->comment('制造商编号');
             $table->string('model')->comment('型号');
             $table->string('servicetag')->nullable()->comment('序列号一');
             $table->string('sn1')->nullable()->comment('序列号二');
@@ -47,7 +47,7 @@ class CreateItemItemsTable extends Migration
             $table->integer('switchid')->nullable()->unsigned()->comment('交换机编号');
             $table->string('rackid')->nullable()->comment('机架编号');
             $table->integer('rackposition')->nullable()->unsigned()->comment('机架位置场所');
-            $table->string('label')->nullable()->comment('标签');
+            $table->string('assettag')->nullable()->comment('资产标签');
             $table->integer('status')->nullable()->unsigned()->comment('状态');
             $table->integer('cpuno')->nullable()->unsigned()->comment('CPU数量');
             $table->integer('corespercpu')->nullable()->unsigned()->comment('每CPU内核数量');
