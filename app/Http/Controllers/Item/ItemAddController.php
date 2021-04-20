@@ -66,6 +66,7 @@ class ItemAddController extends Controller
 		// $nowtime = date("Y-m-d H:i:s",time());
 
 		// 参数变量 - 属性
+		$add_title = $request->input('add_title');
 		$add_itemtype_select = $request->input('add_itemtype_select');
 		$add_ispart = $request->input('add_ispart');
 		$add_rackmountable = $request->input('add_rackmountable');
@@ -119,16 +120,11 @@ class ItemAddController extends Controller
 		$add_shop = $request->input('add_shop');
 		$add_purchaceprice = $request->input('add_purchaceprice');
 
-
-
-// dd($add_harddisk);
-
-
-		
 		try	{
 			$result = Item_items::create([
 
 				// 参数变量 - 属性
+				'title' => $add_title,
 				'itemtypeid' => $add_itemtype_select,
 				'ispart' => $add_ispart,
 				'rackmountable' => $add_rackmountable,
@@ -185,7 +181,7 @@ class ItemAddController extends Controller
 			Cache::flush();
 		}
 		catch (\Exception $e) {
-			dd('Message: ' .$e->getMessage());
+			// dd('Message: ' .$e->getMessage());
 			$result = 0;
 		}
 

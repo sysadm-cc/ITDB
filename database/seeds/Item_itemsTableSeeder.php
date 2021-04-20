@@ -21,6 +21,7 @@ class Item_itemsTableSeeder extends Seeder
             0 => 
             array (
                 'id' => 1,
+                'title' => 'DELL台式机',
                 'itemtypeid' => 1,
                 'ispart' => false,
                 'rackmountable' => false,

@@ -15,6 +15,7 @@ class CreateItemItemsTable extends Migration
     {
         Schema::create('item_items', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('title')->comment('物品名称');
             $table->integer('itemtypeid')->nullable()->unsigned()->comment('物品类型编号');
             $table->boolean('ispart')->default(false)->comment('是否是部件');
             $table->boolean('rackmountable')->default(false)->comment('是否机架式');

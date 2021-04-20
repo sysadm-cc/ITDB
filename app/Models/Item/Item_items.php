@@ -11,14 +11,16 @@ class Item_items extends Model
 
     // protected $dates = ['deleted_at'];
 
-	protected $fillable = [
-        'id', 'itemtypeid', 'function', 'manufacturerid', 'model', 'servicetag', 'sn1', 'sn2', 'origin', 
-        'warrantymonths', 'purchasedate', 'purchprice', 'dnsname', 'maintenanceinfo', 
-        'comments', 'ispart', 'hd', 'cpu', 'ram', 'locationid', 'userid', 'ipv4', 'ipv6', 
-        'usize', 'rackmountable', 'macs', 'remadmip', 'panelport', 'ports', 'switchport', 
-        'switchid', 'rackid', 'rackposition', 'label', 'status', 'cpuno', 'corespercpu', 
-        'rackposdepth', 'warrinfo', 'locareaid', 
-    ];
+	// protected $fillable = [
+    //     'id', 'itemtypeid', 'function', 'manufacturerid', 'model', 'servicetag', 'sn1', 'sn2', 'origin', 
+    //     'warrantymonths', 'purchasedate', 'purchprice', 'dnsname', 'maintenanceinfo', 
+    //     'comments', 'ispart', 'hd', 'cpu', 'ram', 'locationid', 'userid', 'ipv4', 'ipv6', 
+    //     'usize', 'rackmountable', 'macs', 'remadmip', 'panelport', 'ports', 'switchport', 
+    //     'switchid', 'rackid', 'rackposition', 'label', 'status', 'cpuno', 'corespercpu', 
+    //     'rackposdepth', 'warrinfo', 'locareaid', 
+    // ];
+
+    protected $guarded = [];
 
     /**
      * 这个属性应该被转换为原生类型.

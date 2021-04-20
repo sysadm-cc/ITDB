@@ -11,9 +11,11 @@ class Item_statustypes extends Model
 
     // protected $dates = ['deleted_at'];
 
-	protected $fillable = [
-        'id', 'statusdesc',
-    ];
+	// protected $fillable = [
+    //     'id', 'statusdesc',
+    // ];
+
+    protected $guarded = [];
 
     /**
      * 这个属性应该被转换为原生类型.

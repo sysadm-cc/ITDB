@@ -28,6 +28,9 @@
 				<Divider size="default" orientation="left">属性</Divider>
 				
 				<i-form :label-width="100">
+					<Form-Item label="物品名称" required style="margin-bottom:0px">
+						<i-input v-model.lazy="add_title" size="small"></i-input>
+					</Form-Item>
 					<Form-Item label="物品类型" required style="margin-bottom:0px">
 						<i-select v-model.lazy="add_itemtype_select" size="small" placeholder="">
 							<i-option v-for="item in add_itemtype_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
@@ -331,6 +334,7 @@ var vm_app = new Vue({
 		add_create_disabled: false,
 
 		// 参数变量 - 属性
+		add_title: '',
 		add_itemtype_select: '',
 		add_itemtype_options: [
 			// {label: 'fax', value: 1},
@@ -520,6 +524,7 @@ var vm_app = new Vue({
 			var _this = this;
 
 			// 参数变量 - 属性
+			_this.add_title = '';
 			_this.add_itemtype_select = '';
 			_this.add_ispart = false;
 			_this.add_rackmountable = false;
@@ -580,6 +585,7 @@ var vm_app = new Vue({
 			_this.add_create_disabled = true;
 
 			// 参数变量 - 属性
+			var add_title = _this.add_title;
 			var add_itemtype_select = _this.add_itemtype_select;
 			var add_ispart = _this.add_ispart;
 			var add_rackmountable = _this.add_rackmountable;
@@ -631,7 +637,8 @@ var vm_app = new Vue({
 			var add_switchport = _this.add_switchport;
 			var add_networkports_select = _this.add_networkports_select;
 
-			if (add_itemtype_select == '' || add_itemtype_select == undefined
+			if (add_title == '' || add_title == undefined
+				|| add_itemtype_select == '' || add_itemtype_select == undefined
 				|| add_agent_select == '' || add_agent_select == undefined
 				|| add_model == '' || add_model == undefined
 				|| add_status_select == '' || add_status_select == undefined) {
@@ -645,6 +652,7 @@ var vm_app = new Vue({
 			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
 			axios.post(url, {
 				// 参数变量 - 属性
+				add_title: add_title,
 				add_itemtype_select: add_itemtype_select,
 				add_ispart: add_ispart,
 				add_rackmountable: add_rackmountable,
@@ -698,8 +706,7 @@ var vm_app = new Vue({
 
 			})
 			.then(function (response) {
-				// console.log(response.data);
-				// return false;
+				// console.log(response.data);return false;
 
 				if (response.data['jwt'] == 'logout') {
 					_this.alert_logout();
@@ -708,15 +715,14 @@ var vm_app = new Vue({
 				
  				if (response.data) {
 					_this.add_clear_var();
-					// _this.itemtypesgets(_this.page_current, _this.page_last);
-					_this.success(false, '成功', '新建成功！');
+					_this.success(false, '成功', '添加成功！');
 				} else {
-					_this.error(false, '失败', '新建失败！');
+					_this.error(false, '失败', '添加失败！');
 				}
 				_this.add_create_disabled = false;
 			})
 			.catch(function (error) {
-				_this.error(false, '错误', '新建失败！');
+				_this.error(false, '错误', '添加失败！');
 				_this.add_create_disabled = false;
 			})
 

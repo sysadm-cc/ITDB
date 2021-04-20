@@ -228,15 +228,9 @@ var vm_app = new Vue({
 					}	
 				}
 			},
-			// {
-			// 	title: 'id',
-			// 	key: 'id',
-			// 	sortable: true,
-			// 	width: 80
-			// },
 			{
-				title: '标签',
-				key: 'label',
+				title: '资产标签',
+				key: 'assettag',
 				// sortable: true,
 				resizable: true,
 				width: 100
@@ -248,8 +242,8 @@ var vm_app = new Vue({
 				width: 100
 			},
 			{
-				title: '制造商',
-				key: 'manufacturer',
+				title: '代理商',
+				key: 'agentid',
 				resizable: true,
 				width: 100
 			},
