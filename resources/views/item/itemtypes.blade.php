@@ -267,7 +267,7 @@ var vm_app = new Vue({
 									vm_app.itemtypes_update_hassoftware(params.row.id, value) //params.index是拿到table的行序列，可以取到对应的表格值
 								}
 							}
-						}, 'Edit')
+						})
 						
 					]);
 				}

@@ -229,29 +229,107 @@ var vm_app = new Vue({
 				}
 			},
 			{
-				title: '资产标签',
-				key: 'assettag',
-				// sortable: true,
-				resizable: true,
-				width: 100
-			},
-			{
-				title: '物品类型',
-				key: 'typedesc',
-				resizable: true,
-				width: 100
-			},
-			{
-				title: '代理商',
-				key: 'agentid',
-				resizable: true,
-				width: 100
-			},
-			{
-				title: '型号',
-				key: 'model',
-				resizable: true,
-				width: 160
+			title: '物品属性',
+				align: 'center',
+				children: [
+					{
+						title: '资产标签',
+						key: 'assettag',
+						// sortable: true,
+						resizable: true,
+						width: 100
+					},
+					{
+						title: '物品类型',
+						key: 'itemtypeid',
+						resizable: true,
+						width: 100
+					},
+					{
+						title: '是否部件',
+						key: 'ispart',
+						align: 'center',
+						resizable: true,
+						width: 70,
+						render: (h, params) => {
+							if (params.row.ispart) {
+								return h('icon',{
+									props: {
+										type: 'md-radio-button-off',
+										size: '20'
+									}
+								})
+							} else {
+								return h('icon',{
+									props: {
+										type: 'md-close',
+										size: '20'
+									}
+								})
+							}
+						}
+					},
+					{
+						title: '是否机架式',
+						key: 'rackmountable',
+						align: 'center',
+						resizable: true,
+						width: 80,
+						render: (h, params) => {
+							if (params.row.rackmountable) {
+								return h('icon',{
+									props: {
+										type: 'md-radio-button-off',
+										size: '20'
+									}
+								})
+							} else {
+								return h('icon',{
+									props: {
+										type: 'md-close',
+										size: '20'
+									}
+								})
+							}
+						}
+					},
+					{
+						title: '代理商',
+						key: 'agentid',
+						resizable: true,
+						width: 100
+					},
+					{
+						title: '尺寸（单位U）',
+						key: 'usize',
+						resizable: true,
+						width: 160
+					},
+					{
+						title: '序列号1',
+						key: 'sn1',
+						resizable: true,
+						width: 160
+					},
+					{
+						title: '序列号2',
+						key: 'sn2',
+						resizable: true,
+						width: 160
+					},
+					{
+						title: '服务编号',
+						key: 'servicetag',
+						resizable: true,
+						width: 160
+					},
+					{
+						title: '备注',
+						key: 'comments',
+						resizable: true,
+						width: 160
+					},
+				]
 			},
 			{
 				title: '域名',
