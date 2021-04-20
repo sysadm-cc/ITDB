@@ -21,11 +21,9 @@
 <i-row :gutter="16">
 
 	<i-col span="4">
-	<Poptip trigger="hover" content="添加状态分类">
-		<i-input v-model.lazy="statustypes_add_statusdesc">
+		<i-input v-model.lazy="statustypes_add_statusdesc" placeholder="添加状态分类">
 			<i-button slot="append" icon="md-add" @click="statustypes_add()"></i-button>
 		</i-input>
-	</Poptip>
 	</i-col>
 
 	<i-col span="20">

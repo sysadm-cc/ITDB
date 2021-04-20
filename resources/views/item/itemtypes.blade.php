@@ -21,7 +21,7 @@
 <i-row :gutter="16">
 
 	<i-col span="4">
-		<i-input v-model.lazy="itemtypes_add_typedesc" >
+		<i-input v-model.lazy="itemtypes_add_typedesc" placeholder="添加项目分类">
 			<i-button slot="append" icon="md-add" @click="itemtypes_create()"></i-button>
 		</i-input>
 	</i-col>
@@ -111,51 +111,6 @@ var vm_app = new Vue({
 		itemtypes_add_hassoftware: false,
 
 
-
-
-
-
-
-
-		// 创建
-		jiaban_add_reason: '',
-		jiaban_add_remark: '',
-
-		jiaban_add_applicantgroup: '',
-		jiaban_add_datetimerange1: [],
-		jiaban_add_category1: '',
-		jiaban_add_duration1: '',
-		jiaban_add_create_disabled1: false,
-		jiaban_add_clear_disabled1: false,
-		
-		// 批量录入applicant表
-		piliangluru_applicant: [
-			{
-				uid: '',
-				applicant: '',
-				department: '',
-				datetimerange: [],
-				category: '',
-				duration: ''
-			},
-		],
-
-		// 批量录入项
-		piliangluruxiang_applicant2: 1,
-		jiaban_add_create_disabled2: false,
-		jiaban_add_clear_disabled2: false,
-
-		//加班类别
-		option_category: [
-			{value: '平时加班', label: '平时加班'},
-			{value: '双休加班', label: '双休加班'},
-			{value: '节假日加班', label: '节假日加班'}
-		],
-
-		// 选择角色查看编辑相应权限
-		applicant_select: '',
-		applicant_options: [],
-		applicant_loading: false,
 
 		tablecolumns: [
 			{
@@ -291,13 +246,6 @@ var vm_app = new Vue({
 				key: 'hassoftware',
 				align: 'center',
 				width: 100,
-				// render: (h, params) => {
-				// 	if (params.row.hassoftware == true) {
-				// 		return h('div', {}, '是')
-				// 	} else {
-				// 		return h('div', {}, '否')
-				// 	}
-				// }
 				render: (h, params) => {
 
 					return h('div', [
@@ -345,22 +293,32 @@ var vm_app = new Vue({
 				render: (h, params) => {
 					if (params.row.id > 3) {
 						return h('div', [
-							h('Button', {
+							h('Poptip', {
 								props: {
-									type: 'error',
-									size: 'small'
-								},
-								style: {
-									marginRight: '5px'
+									'word-wrap': true,
+									'trigger': 'click',
+									'confirm': true,
+									'title': '删除将影响已有信息，真的要删除吗？',
+									'transfer': true
 								},
 								on: {
-									click: () => {
+									'on-ok': () => {
 										vm_app.itemtypes_delete(params.row)
 									}
 								}
-							}, '删除'),
-							
+							}, [
 
+								h('Button', {
+									props: {
+										type: 'error',
+										size: 'small',
+										icon: 'md-remove'
+									},
+									style: {
+										marginRight: '5px'
+									},
+								}),
+							]),
 						]);
 					}
 				},
@@ -371,64 +329,7 @@ var vm_app = new Vue({
 		tabledata: [],
 		tableselect: [],
 		
-		// 编辑
-		modal_jiaban_edit: false,
-		modal_jiaban_pass_loading: false,
-		modal_jiaban_deny_loading: false,
-		modal_jiaban_archived_loading: false,
-		jiaban_edit_id: '',
-		jiaban_edit_uuid: '',
-		jiaban_edit_id_of_agent: '',
-		jiaban_edit_agent: '',
-		jiaban_edit_department_of_agent: '',
-		jiaban_edit_application: '',
-		jiaban_edit_status: 0,
-		jiaban_edit_reason: '',
-		jiaban_edit_remark: '',
-		jiaban_edit_camera_imgurl: '',
-		jiaban_edit_auditing: '',
-		jiaban_edit_auditing_circulation: '',
-		jiaban_edit_auditing_index: 0,
-		jiaban_edit_auditing_id: '',
-		jiaban_edit_auditing_uid: '',
-		jiaban_edit_created_at: '',
-		jiaban_edit_updated_at: '',
 
-		// 归档窗口
-		modal_archived: false,
-
-		// 查看人员组
-		applicantgroup_select: '',
-		applicantgroup_options: [],
-		applicantgroup_input: '',
-
-		// 公司组织架构
-		treedata: [
-			{
-				title: '公司',
-				loading: false,
-				children: []
-			}
-		],
-
-		// 人员组名称，用于查看成员
-		applicantgroup_title: '',
-
-
-		// 删除
-		delete_disabled: true,
-
-		// tabs索引
-		currenttabs: 0,
-		currenttabssub: 0,
-		
-		// 查询过滤器
-		queryfilter_auditor: '',
-		queryfilter_created_at: '',
-		queryfilter_trashed: false,
-		
-		// 查询过滤器下拉
-		collapse_query: '',		
 		
 		
 		
@@ -579,20 +480,18 @@ var vm_app = new Vue({
 				
 				if (response.data) {
 					_this.itemtypesgets(_this.page_current, _this.page_last);
-                    // _this.$Message.success('保存成功！');
-					_this.success(false, '成功', '保存成功！');
+					_this.success(false, '成功', '更新成功！');
                 } else {
-					// _this.$Message.warning('保存失败！');
-					_this.warning(false, '失败', '保存失败！');
+					_this.warning(false, '失败', '更新失败！');
 				}
 			})
 			.catch(function (error) {
-				_this.error(false, 'Error', error);
+				_this.error(false, '错误', '更新失败！');
 			})
 
-			setTimeout(() => {
-				_this.modal_jiaban_edit = true;
-			}, 500);
+			// setTimeout(() => {
+			// 	_this.modal_jiaban_edit = true;
+			// }, 500);
 
 			
 		},
@@ -658,13 +557,13 @@ var vm_app = new Vue({
  				if (response.data) {
 					_this.itemtypes_add_typedesc = '';
 					_this.itemtypesgets(_this.page_current, _this.page_last);
-					_this.success(false, '成功', '新建成功！');
+					_this.success(false, '成功', '添加成功！');
 				} else {
-					_this.error(false, '失败', '新建失败！');
+					_this.error(false, '失败', '添加失败！');
 				}
 			})
 			.catch(function (error) {
-				_this.error(false, '错误', '新建失败！');
+				_this.error(false, '错误', '添加失败！');
 			})
 
 
@@ -708,9 +607,9 @@ var vm_app = new Vue({
 				_this.error(false, 'Error', error);
 			})
 
-			setTimeout(() => {
-				_this.modal_jiaban_edit = true;
-			}, 500);
+			// setTimeout(() => {
+			// 	_this.modal_jiaban_edit = true;
+			// }, 500);
 
 			
 		},
