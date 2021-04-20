@@ -111,20 +111,23 @@
 							<i-option v-for="item in add_rack_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
 						</i-select>
 					</Form-Item>
-					<Form-Item label="所在机架层高" style="margin-bottom:0px">
+					<Form-Item label="所在机架高度" style="margin-bottom:0px">
 						<i-select v-model.lazy="add_rackposition_select1" size="small" placeholder="">
 							<i-option v-for="item in add_rackposition_options1" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
 						</i-select>
 					</Form-Item>
-					<Form-Item label="所在机架深度" style="margin-bottom:0px">	
+					<Form-Item label="所在机架深度" style="margin-bottom:0px">
 						<i-select v-model.lazy="add_rackposition_select2" size="small" placeholder="">
 							<i-option v-for="item in add_rackposition_options2" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
 						</i-select>
+						<span style="color: rgb(158, 167, 180);font-size:12px;">
+							<Icon type="md-information-circle"></Icon> FMB - 前中后
+						</span>
 					</Form-Item>
-					<Form-Item label="功能" style="margin-bottom:0px">
+					<Form-Item label="功能用途" style="margin-bottom:0px">
 						<i-input v-model.lazy="add_function" size="small"></i-input>
 					</Form-Item>
-					<Form-Item label="维护说明" style="margin-bottom:0px">
+					<Form-Item label="具体使用说明" style="margin-bottom:0px">
 						<i-input v-model.lazy="add_maintenanceinstructions" size="small" type="textarea"></i-input>
 					</Form-Item>
 
@@ -142,7 +145,7 @@
 					<Form-Item label="购买日期" style="margin-bottom:0px">
 						<Date-Picker v-model.lazy="add_dateofpurchase" type="date" placeholder="选择日期" size="small"></Date-Picker>
 					</Form-Item>
-					<Form-Item label="保修月份" style="margin-bottom:0px">
+					<Form-Item label="保修时长（月）" style="margin-bottom:0px">
 						<i-input v-model.lazy="add_warrantymonths" size="small"></i-input>
 					</Form-Item>
 					<Form-Item label="保修信息" style="margin-bottom:0px">
@@ -365,12 +368,12 @@ var vm_app = new Vue({
 		],
 		add_rackposition_select2: '',
 		add_rackposition_options2: [
-			{label: 'FM- (前中-)', value: 'FM-'},
-			{label: '-MB (-中后)', value: '-MB'},
-			{label: 'F-- 前--', value: 'F--'},
-			{label: '-M- -中-', value: '-M-'},
-			{label: '--B --后', value: '--B'},
-			{label: 'FMB 前中后', value: 'FMB'},
+			{label: 'FM-', value: 'FM-'},
+			{label: '-MB', value: '-MB'},
+			{label: 'F--', value: 'F--'},
+			{label: '-M-', value: '-M-'},
+			{label: '--B', value: '--B'},
+			{label: 'FMB', value: 'FMB'},
 		],
 		add_function: '',
 		add_maintenanceinstructions: '',
