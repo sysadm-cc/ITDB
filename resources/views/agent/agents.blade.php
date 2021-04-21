@@ -428,11 +428,18 @@ var vm_app = new Vue({
 				width: 210,
 				render: (h, params) => {
 					return h('span', params.row.type.map(item => {
-						if (item == 1) return h('p', {}, '售卖方 - Vendoer')
-						if (item == 2) return h('p', {}, '软件销售商 - S/W Manufacturer')
-						if (item == 3) return h('p', {}, '硬件销售商 - H/W Manufacturer')
-						if (item == 4) return h('p', {}, '购买方 - Buyer')
-						if (item == 5) return h('p', {}, '承包商 - Contractor')
+						switch (item) {
+							case 1:
+								return h('p', {}, '售卖方 - Vendoer');break;
+							case 2:
+								return h('p', {}, '软件销售商 - S/W Manufacturer');break;
+							case 3:
+								return h('p', {}, '硬件销售商 - H/W Manufacturer');break;
+							case 4:
+								return h('p', {}, '购买方 - Buyer');break;
+							case 5:
+								return h('p', {}, '承包商 - Contractor');break;
+						}
 					}))
 				}
 			},

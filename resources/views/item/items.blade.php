@@ -126,6 +126,9 @@ var vm_app = new Vue({
 		// 删除按钮禁用
 		items_delete_disabled: true,
 
+		// 
+		edit_statustype_options: [],
+
 
 		tablecolumns: [
 			{
@@ -145,173 +148,29 @@ var vm_app = new Vue({
 			},
 			{
 				title: '状态',
-				key: 'status',
+				key: 'itemtypeid',
 				align: 'center',
 				width: 50,
 				render: (h, params) => {
-					switch (params.row.id) {
-						case 1:
-							return h('div', {}, [
+					return h('span', vm_app.edit_statustype_options.map((item, index) => {
+						if (params.row.itemtypeid == item.id) {
+							return  h('Tooltip', {
+								props: {
+									'theme': 'light',
+									'placement': 'top',
+									'content': item.statusdesc,
+								},
+							}, [
 								h('Icon',{
 									props: {
 										type: 'md-bookmark',
 										size: 14,
-										color: 'blue',
-										}
+										color: item.color,
 									}
-								),
-							]);break;
-						
-						case 2:
-							return h('div', {}, [
-								h('Icon',{
-									props: {
-										type: 'md-bookmark',
-										size: 14,
-										color: 'green',
-										}
-									}
-								),
-							]);break;
-						
-						case 3:
-							return h('div', {}, [
-								h('Icon',{
-									props: {
-										type: 'md-bookmark',
-										size: 14,
-										color: 'red',
-										}
-									}
-								),
-							]);break;
-
-						case 4:
-							return h('div', {}, [
-								h('Icon',{
-									props: {
-										type: 'md-bookmark',
-										size: 14,
-										color: 'gray',
-										}
-									}
-								),
-							]);break;
-
-						case 5:
-							return h('div', {}, [
-								h('Icon',{
-									props: {
-										type: 'md-bookmark',
-										size: 14,
-										color: 'yellow',
-										}
-									}
-								),
-							]);break;
-
-						case 6:
-							return h('div', {}, [
-								h('Icon',{
-									props: {
-										type: 'md-bookmark',
-										size: 14,
-										color: 'black',
-										}
-									}
-								),
-							]);break;
-
-						default:
-							return h('div', {}, [
-								h('Icon',{
-									props: {
-										type: 'md-bookmark',
-										size: 14,
-										}
-									}
-								),
-							]);break;
-
-					}
-
-					// if (params.row.id == 1) {
-					// 	return h('div', {}, [
-					// 		h('Icon',{
-					// 			props: {
-					// 				type: 'md-bookmark',
-					// 				size: 14,
-					// 				color: 'blue',
-					// 				}
-					// 			}
-					// 		),
-					// 	])
-					// } else if (params.row.id == 2) {
-					// 	return h('div', {}, [
-					// 		h('Icon',{
-					// 			props: {
-					// 				type: 'md-bookmark',
-					// 				size: 14,
-					// 				color: 'green',
-					// 				}
-					// 			}
-					// 		),
-					// 	])
-					// } else if (params.row.id == 3) {
-					// 	return h('div', {}, [
-					// 		h('Icon',{
-					// 			props: {
-					// 				type: 'md-bookmark',
-					// 				size: 14,
-					// 				color: 'red',
-					// 				}
-					// 			}
-					// 		),
-					// 	])
-					// } else if (params.row.id == 4) {
-					// 	return h('div', {}, [
-					// 		h('Icon',{
-					// 			props: {
-					// 				type: 'md-bookmark',
-					// 				size: 14,
-					// 				color: 'gray',
-					// 				}
-					// 			}
-					// 		),
-					// 	])
-					// } else if (params.row.id == 5) {
-					// 	return h('div', {}, [
-					// 		h('Icon',{
-					// 			props: {
-					// 				type: 'md-bookmark',
-					// 				size: 14,
-					// 				color: 'yellow',
-					// 				}
-					// 			}
-					// 		),
-					// 	])
-					// } else if (params.row.id == 6) {
-					// 	return h('div', {}, [
-					// 		h('Icon',{
-					// 			props: {
-					// 				type: 'md-bookmark',
-					// 				size: 14,
-					// 				color: 'black',
-					// 				}
-					// 			}
-					// 		),
-					// 	])
-					// } else {
-					// 	return h('div', {}, [
-					// 		h('Icon',{
-					// 			props: {
-					// 				type: 'md-bookmark',
-					// 				size: 14,
-					// 				}
-					// 			}
-					// 		),
-					// 	])
-					// }	
+								}),
+							])
+						}
+					}));
 				}
 			},
 			{
@@ -392,13 +251,13 @@ var vm_app = new Vue({
 						width: 160
 					},
 					{
-						title: '序列号1',
+						title: '序列号一',
 						key: 'sn1',
 						resizable: true,
 						width: 160
 					},
 					{
-						title: '序列号2',
+						title: '序列号二',
 						key: 'sn2',
 						resizable: true,
 						width: 160
@@ -418,13 +277,99 @@ var vm_app = new Vue({
 				]
 			},
 			{
-				title: '域名',
-				key: 'dnsname',
-				width: 100
+				title: '使用情况',
+				align: 'center',
+				children: [
+					{
+						title: '状态',
+						key: 'status',
+						width: 100
+					},
+					{
+						title: '使用者',
+						key: 'userid',
+						width: 100
+					},
+					{
+						title: '位置/楼层',
+						key: 'locationid',
+						width: 100
+					},
+					{
+						title: '区域/房间',
+						key: 'areaid',
+						width: 100
+					},
+					{
+						title: '机柜',
+						key: 'rackid',
+						width: 100
+					},
+					{
+						title: '所在机架高度',
+						key: 'rackposition',
+						width: 100
+					},
+					{
+						title: '所在机架深度',
+						key: 'rackdepth',
+						width: 100
+					},
+					{
+						title: '功能用途',
+						key: 'function',
+						width: 100
+					},
+					{
+						title: '具体使用说明',
+						key: 'maintenanceinstructions',
+						width: 100
+					},
+
+				]
 			},
 			{
-				title: '服务编号',
-				key: 'servicetag',
+				title: '保修信息',
+				align: 'center',
+				children: [
+					{
+						title: '经销商',
+						key: 'shop',
+						width: 100
+					},
+					{
+						title: '购买价格',
+						key: 'purchaseprice',
+						width: 100
+					},
+					{
+						title: '购买日期',
+						key: 'purchasedate',
+						width: 100
+					},
+					{
+						title: '保修时长（月）',
+						key: 'warrantymonths',
+						width: 100
+					},
+					{
+						title: '保修信息',
+						key: 'warrantyinfo',
+						width: 100
+					},
+
+				]
+			},
+			{
+				title: '网络相关',
+				align: 'center',
+				children: [
+
+				]
+			},
+			{
+				title: '域名',
+				key: 'dnsname',
 				width: 100
 			},
 			{
@@ -757,7 +702,38 @@ var vm_app = new Vue({
 			_this.items_delete_disabled = _this.tableselect[0] == undefined ? true : false;
 		},
 
+		// 获取状态类型
+		statustypesgets () {
+			var _this = this;
+			var url = "{{ route('item.statustypesgets') }}";
+			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
+			axios.get(url,{
+				params: {
+					perPage: 1000,
+					page: 1,
+				}
+			})
+			.then(function (response) {
+				// console.log(response.data);return false;
 
+				if (response.data['jwt'] == 'logout') {
+					_this.alert_logout();
+					return false;
+				}
+
+				if (response.data) {
+					// response.data.data.map(function (v, i) {
+					// 	_this.edit_statustype_options.push({value: v.id, label: v.statusdesc});
+					// });
+					_this.edit_statustype_options = response.data.data;
+				}
+
+				
+			})
+			.catch(function (error) {
+				// _this.error(false, 'Error', error);
+			})
+		},
 		
 		
 		
@@ -770,6 +746,12 @@ var vm_app = new Vue({
 		_this.loadingbarstart();
 		_this.current_nav = '硬件';
 		_this.current_subnav = '物品查询';
+
+		// 获取状态类型
+		_this.statustypesgets();
+
+
+
 		// 显示所有记录
 		_this.itemsgets(1, 1); // page: 1, last_page: 1
 		_this.loadingbarfinish();

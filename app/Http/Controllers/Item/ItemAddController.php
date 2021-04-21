@@ -150,7 +150,7 @@ class ItemAddController extends Controller
                 
 				// 参数变量 - 保修
 				'shop' => $add_shop,
-				'purchprice' => $add_purchaceprice,				
+				'purchaseprice' => $add_purchaceprice,				
 				'purchasedate' => $add_dateofpurchase,
 				'warrantymonths' => $add_warrantymonths,
 				'warrantyinfo' => $add_warrantyinfo,

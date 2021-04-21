@@ -82,7 +82,7 @@ class ItemStatustypesController extends Controller
 		if (Cache::has($fullUrl)) {
 			$result = Cache::get($fullUrl);    //直接读取cache
 		} else {                                   //如果cache里面没有
-			$result = Item_statustypes::select('id', 'statusdesc', 'created_at', 'updated_at', 'deleted_at')
+			$result = Item_statustypes::select()
 				->limit(1000)
 				->orderBy('created_at', 'asc')
 				->paginate($perPage, ['*'], 'page', $page);

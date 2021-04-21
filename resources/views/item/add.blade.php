@@ -145,7 +145,7 @@
 			<i-col span="5">
 				<Divider orientation="left">保修</Divider>
 					<i-form :label-width="100">
-					<Form-Item label="供货商" style="margin-bottom:0px">
+					<Form-Item label="经销商" style="margin-bottom:0px">
 						<i-input v-model.lazy="add_shop" size="small"></i-input>
 					</Form-Item>
 					<Form-Item label="购买价格" style="margin-bottom:0px">

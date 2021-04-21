@@ -16,6 +16,7 @@ class CreateItemStatustypesTable extends Migration
         Schema::create('item_statustypes', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('statusdesc')->comment('状态描述');
+            $table->string('color')->nullable()->comment('颜色');
             $table->timestamps();
             $table->softDeletes();
             $table->engine = 'InnoDB';

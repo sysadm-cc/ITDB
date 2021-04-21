@@ -38,8 +38,8 @@ class CreateItemItemsTable extends Migration
             $table->string('function')->nullable()->comment('功能用途');
             $table->string('maintenanceinstructions')->nullable()->comment('具体使用说明');
             
-            $table->string('shop')->nullable()->comment('origin');
-            $table->string('purchprice')->nullable()->comment('购买价格');
+            $table->string('shop')->nullable()->comment('经销商');
+            $table->string('purchaseprice')->nullable()->comment('购买价格');
             $table->dateTime('purchasedate')->nullable()->comment('购买日期');
             $table->integer('warrantymonths')->nullable()->unsigned()->comment('保修时长（月）');
             $table->string('warrantyinfo')->nullable()->comment('保修信息');

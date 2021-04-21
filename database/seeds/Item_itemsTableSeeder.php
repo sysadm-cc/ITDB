@@ -45,7 +45,7 @@ class Item_itemsTableSeeder extends Seeder
                 'maintenanceinstructions' => NULL,
 
                 'shop' => NULL,
-                'purchprice' => NULL,
+                'purchaseprice' => NULL,
                 'purchasedate' => NULL,
                 'warrantymonths' => 36,
                 'warrantyinfo' => NULL,

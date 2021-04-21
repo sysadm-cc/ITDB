@@ -22,6 +22,7 @@ class Item_statustypesTableSeeder extends Seeder
             array (
                 'id' => 1,
                 'statusdesc' => '使用',
+                'color' => 'blue',
                 'created_at' => $nowtime,
                 'updated_at' => $nowtime,
                 'deleted_at' => NULL,
@@ -30,6 +31,7 @@ class Item_statustypesTableSeeder extends Seeder
             array (
                 'id' => 2,
                 'statusdesc' => '保留',
+                'color' => 'green',
                 'created_at' => $nowtime,
                 'updated_at' => $nowtime,
                 'deleted_at' => NULL,
@@ -38,6 +40,7 @@ class Item_statustypesTableSeeder extends Seeder
             array (
                 'id' => 3,
                 'statusdesc' => '故障',
+                'color' => 'red',
                 'created_at' => $nowtime,
                 'updated_at' => $nowtime,
                 'deleted_at' => NULL,
@@ -46,6 +49,7 @@ class Item_statustypesTableSeeder extends Seeder
             array (
                 'id' => 4,
                 'statusdesc' => '报废',
+                'color' => 'gray',
                 'created_at' => $nowtime,
                 'updated_at' => $nowtime,
                 'deleted_at' => NULL,
@@ -54,6 +58,7 @@ class Item_statustypesTableSeeder extends Seeder
             array (
                 'id' => 5,
                 'statusdesc' => '维修',
+                'color' => 'yellow',
                 'created_at' => $nowtime,
                 'updated_at' => $nowtime,
                 'deleted_at' => NULL,
@@ -62,6 +67,7 @@ class Item_statustypesTableSeeder extends Seeder
             array (
                 'id' => 6,
                 'statusdesc' => '遗失',
+                'color' => 'black',
                 'created_at' => $nowtime,
                 'updated_at' => $nowtime,
                 'deleted_at' => NULL,
