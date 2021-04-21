@@ -7,6 +7,55 @@
 
 @section('my_style')
 <!-- <link rel="stylesheet" href="{{ asset('css/camera.css') }}"> -->
+<style type="text/css">
+/* 合并单元格样式 */
+.subCol>ul>li{
+      margin:0 -18px;
+      list-style:none;
+      text-Align: center;
+      padding: 9px;
+      border-bottom:1px solid #E8EAEC;
+      overflow-x: hidden;
+	  line-height: 2.2;
+}
+.subCol>ul>li:last-child{
+  border-bottom: none
+}
+
+.ivu-table .table-info-row td{
+	background-color: #2db7f5;
+	color: #fff;
+}
+.ivu-table .table-error-row td{
+	background-color: #ff6600;
+	color: #fff;
+}
+.ivu-table td.table-info-column{
+	background-color: #2db7f5;
+	color: #fff;
+}
+.ivu-table .table-info-cell-name {
+	background-color: #2db7f5;
+	color: #fff;
+}
+.ivu-table .table-info-cell-age {
+	background-color: #ff6600;
+	color: #fff;
+}
+.ivu-table .table-info-cell-address {
+	background-color: #187;
+	color: #fff;
+}
+
+.ivu-table td.table-info-column-usage {
+	background-color: #5F9EA0;
+	color: #fff;
+}
+.ivu-table td.table-info-column-urls {
+	background-color: #187;
+	color: #fff;
+}
+</style>
 @endsection
 
 @section('my_js')
@@ -283,47 +332,56 @@ var vm_app = new Vue({
 					{
 						title: '状态',
 						key: 'status',
-						width: 100
+						width: 100,
+						className: 'table-info-column-usage',
 					},
 					{
 						title: '使用者',
 						key: 'userid',
-						width: 100
+						width: 100,
+						className: 'table-info-column-usage',
 					},
 					{
 						title: '位置/楼层',
 						key: 'locationid',
-						width: 100
+						width: 100,
+						className: 'table-info-column-usage',
 					},
 					{
 						title: '区域/房间',
 						key: 'areaid',
-						width: 100
+						width: 100,
+						className: 'table-info-column-usage',
 					},
 					{
 						title: '机柜',
 						key: 'rackid',
-						width: 100
+						width: 100,
+						className: 'table-info-column-usage',
 					},
 					{
 						title: '所在机架高度',
 						key: 'rackposition',
-						width: 100
+						width: 100,
+						className: 'table-info-column-usage',
 					},
 					{
 						title: '所在机架深度',
 						key: 'rackdepth',
-						width: 100
+						width: 100,
+						className: 'table-info-column-usage',
 					},
 					{
 						title: '功能用途',
 						key: 'function',
-						width: 100
+						width: 100,
+						className: 'table-info-column-usage',
 					},
 					{
 						title: '具体使用说明',
 						key: 'maintenanceinstructions',
-						width: 100
+						width: 100,
+						className: 'table-info-column-usage',
 					},
 
 				]
@@ -361,78 +419,110 @@ var vm_app = new Vue({
 				]
 			},
 			{
-				title: '网络相关',
+				title: '配件信息',
 				align: 'center',
 				children: [
-
+					{
+						title: '硬盘',
+						key: 'hd',
+						width: 100
+					},
+					{
+						title: '内存',
+						key: 'ram',
+						width: 100
+					},
+					{
+						title: 'CPU',
+						key: 'cpu',
+						width: 100
+					},
+					{
+						title: 'CPU数量',
+						key: 'cpuno',
+						width: 100
+					},
+					{
+						title: '每CPU内核数量',
+						key: 'corespercpu',
+						width: 100
+					},
 				]
 			},
 			{
-				title: '域名',
-				key: 'dnsname',
-				width: 100
-			},
-			{
-				title: '购买日期',
-				key: 'purchasedate',
-				width: 100
-			},
-			{
-				title: '保修时长',
-				key: 'warrantymonths',
-				// align: 'center',
-				// sortable: true,
-				width: 100
-			},
-			{
-				title: '使用者',
-				key: 'user',
-				width: 160
-			},
-
-			{
-				title: '位置场所',
-				key: 'location',
-				width: 100
-			},
-			{
-				title: '区域/房间',
-				key: 'locarea',
-				width: 100
-			},
-			{
-				title: '机架',
-				key: 'rack',
-				width: 100
-			},
-			{
-				title: '购入价格',
-				key: 'purchprice',
-				width: 100
-			},
-			{
-				title: 'Mac地址',
-				key: 'macs',
-				width: 100
-			},
-			{
-				title: 'IPv4',
-				key: 'ipv4',
-				width: 100
-			},
-			{
-				title: '管理IP',
-				key: 'remadmip',
-				width: 100
-			},
-			{
-				title: '功能',
-				key: 'function',
-				width: 100
+				title: '网络相关',
+				align: 'center',
+				children: [
+					{
+						title: '域名',
+						key: 'dns',
+						width: 100
+					},
+					{
+						title: '有线MAC地址',
+						key: 'maclan',
+						width: 100
+					},
+					{
+						title: '无线MAC地址',
+						key: 'macwl',
+						width: 100
+					},
+					{
+						title: '有线IPv4',
+						key: 'ipv4lan',
+						width: 100
+					},
+					{
+						title: '无线IPv4',
+						key: 'ipv4wl',
+						width: 100
+					},
+					{
+						title: '有线IPv6',
+						key: 'ipv6lan',
+						width: 100
+					},
+					{
+						title: '无线IPv6',
+						key: 'ipv6wl',
+						width: 100
+					},
+					{
+						title: '管理IP',
+						key: 'remadmip',
+						width: 100
+					},
+					{
+						title: '面板端口',
+						key: 'panelport',
+						width: 100
+					},
+					{
+						title: '交换机编号',
+						key: 'switchid',
+						width: 100
+					},
+					{
+						title: '接入交换机端口号',
+						key: 'switchport',
+						width: 100
+					},
+					{
+						title: '网络端口数量',
+						key: 'ports',
+						width: 100
+					},
+				]
 			},
 			{
 				title: '创建时间',
 				key: 'created_at',
+				width: 160
+			},
+			{
+				title: '更新时间',
+				key: 'updated_at',
 				width: 160
 			},
 			{
