@@ -201,6 +201,68 @@
 	</div>	
 </Modal>
 
+<!-- 主编辑窗口 usage-->
+<Modal v-model="modal_edit_items_usage" @on-ok="update_items_usage" ok-text="保存" title="编辑 - 使用情况" width="540">
+	<div style="text-align:left">
+
+		<p>
+		<i-form :label-width="100">
+		<i-row>
+			<i-col span="12">
+				
+				<Form-Item label="状态" required style="margin-bottom:0px">
+					<i-select v-model.lazy="edit_status_select" size="small" placeholder="">
+						<i-option v-for="item in edit_status_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+					</i-select>
+				</Form-Item>
+				<Form-Item label="使用者" style="margin-bottom:0px">
+					<i-select v-model.lazy="edit_user_select" size="small" placeholder="">
+						<i-option v-for="item in edit_user_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+					</i-select>
+				</Form-Item>
+				<Form-Item label="位置/楼层" style="margin-bottom:0px">
+					<i-select v-model.lazy="edit_location_select" @on-change="onchange_location" size="small" placeholder="">
+						<i-option v-for="item in edit_location_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+					</i-select>
+				</Form-Item>
+				<Form-Item label="区域/房间" style="margin-bottom:0px">
+					<i-select v-model.lazy="edit_area_select" size="small" placeholder="" not-found-text="请先选择位置/楼层">
+						<i-option v-for="item in edit_area_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+					</i-select>
+				</Form-Item>
+				<Form-Item label="机柜" style="margin-bottom:0px">
+					<i-select v-model.lazy="edit_rack_select" size="small" placeholder="">
+						<i-option v-for="item in edit_rack_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+					</i-select>
+				</Form-Item>
+				<Form-Item label="所在机架高度" style="margin-bottom:0px">
+					<i-select v-model.lazy="edit_rackposition_select1" size="small" placeholder="">
+						<i-option v-for="item in edit_rackposition_options1" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+					</i-select>
+				</Form-Item>
+				<Form-Item label="所在机架深度" style="margin-bottom:0px">
+					<i-select v-model.lazy="edit_rackposition_select2" size="small" placeholder="">
+						<i-option v-for="item in edit_rackposition_options2" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+					</i-select>
+					<span style="color: rgb(158, 167, 180);font-size:12px;">
+						<Icon type="md-information-circle"></Icon> FMB - 前中后
+					</span>
+				</Form-Item>
+				<Form-Item label="功能用途" style="margin-bottom:0px">
+					<i-input v-model.lazy="edit_function" size="small"></i-input>
+				</Form-Item>
+				<Form-Item label="具体使用说明" style="margin-bottom:0px">
+					<i-input v-model.lazy="edit_maintenanceinstructions" size="small" type="textarea" :rows="4"></i-input>
+				</Form-Item>
+
+			</i-col>
+		</i-row>
+		</i-form>
+		</p>
+		&nbsp;<br>
+	</div>	
+</Modal>
+
 @endsection
 
 @section('my_footer')
@@ -720,17 +782,18 @@ var vm_app = new Vue({
 				title: '操作',
 				key: 'action',
 				align: 'center',
-				width: 100,
+				width: 190,
 				fixed: 'right',
 				render: (h, params) => {
 					return h('div', [
 
+						// 1.物品属性
 						h('Poptip', {
 							props: {
 								'word-wrap': true,
 								'trigger': 'hover',
 								'confirm': false,
-								'content': '编辑'+params.row.title+'的信息',
+								'content': '编辑 '+params.row.title+' 的物品属性',
 								'transfer': true
 							},
 						}, [
@@ -738,18 +801,127 @@ var vm_app = new Vue({
 								props: {
 									type: 'primary',
 									size: 'small',
-									icon: 'md-create'
+									icon: 'md-build'
 								},
 								style: {
 									marginRight: '5px'
 								},
 								on: {
 									click: () => {
-										vm_app.edit_items(params.row)
+										vm_app.edit_items_properties(params.row)
 									}
 								}
 							}),
 						]),
+
+						// 2.使用情况
+						h('Poptip', {
+							props: {
+								'word-wrap': true,
+								'trigger': 'hover',
+								'confirm': false,
+								'content': '编辑 '+params.row.title+' 的使用情况',
+								'transfer': true
+							},
+						}, [
+							h('Button', {
+								props: {
+									type: 'default',
+									size: 'small',
+									icon: 'md-stats'
+								},
+								style: {
+									marginRight: '5px'
+								},
+								on: {
+									click: () => {
+										vm_app.edit_items_usage(params.row)
+									}
+								}
+							}),
+						]),
+
+						// 3.保修信息
+						h('Poptip', {
+							props: {
+								'word-wrap': true,
+								'trigger': 'hover',
+								'confirm': false,
+								'content': '编辑 '+params.row.title+' 的保修信息',
+								'transfer': true
+							},
+						}, [
+							h('Button', {
+								props: {
+									type: 'primary',
+									size: 'small',
+									icon: 'md-hammer'
+								},
+								style: {
+									marginRight: '5px'
+								},
+								on: {
+									click: () => {
+										vm_app.edit_items_warranty(params.row)
+									}
+								}
+							}),
+						]),
+
+						// 4.配件信息
+						h('Poptip', {
+							props: {
+								'word-wrap': true,
+								'trigger': 'hover',
+								'confirm': false,
+								'content': '编辑 '+params.row.title+' 的配件信息',
+								'transfer': true
+							},
+						}, [
+							h('Button', {
+								props: {
+									type: 'default',
+									size: 'small',
+									icon: 'logo-buffer'
+								},
+								style: {
+									marginRight: '5px'
+								},
+								on: {
+									click: () => {
+										vm_app.edit_items_misc(params.row)
+									}
+								}
+							}),
+						]),
+
+						// 5.网络信息
+						h('Poptip', {
+							props: {
+								'word-wrap': true,
+								'trigger': 'hover',
+								'confirm': false,
+								'content': '编辑 '+params.row.title+' 的网络信息',
+								'transfer': true
+							},
+						}, [
+							h('Button', {
+								props: {
+									type: 'primary',
+									size: 'small',
+									icon: 'md-globe'
+								},
+								style: {
+									marginRight: '5px'
+								},
+								on: {
+									click: () => {
+										vm_app.edit_items_network(params.row)
+									}
+								}
+							}),
+						]),
+
 					]);
 				},
 			}
@@ -1167,8 +1339,8 @@ var vm_app = new Vue({
 		},
 
 
-		// 主编辑前查看 - agents
-		edit_items (row) {
+		// 主编辑前查看 - items properties
+		edit_items_properties (row) {
 			var _this = this;
 
 			_this.edit_id = row.id;
@@ -1188,6 +1360,57 @@ var vm_app = new Vue({
 			_this.edit_comments = row.comments;
 			_this.edit_assettag = row.assettag;
 
+			// // 参数变量 - 使用
+			// _this.edit_status_select = row.status;
+			// _this.edit_user_select = row.user;
+			// _this.edit_location_select = row.location;
+			// _this.edit_area_select = row.area;
+			// _this.edit_rack_select = row.rack;
+			// _this.edit_rackposition_select1 = row.rackposition1;
+			// _this.edit_rackposition_select2 = row.rackposition2;
+			// _this.edit_function = row.function;
+			// _this.edit_maintenanceinstructions = row.maintenanceinstructions;
+
+			// // 参数变量 - 保修
+			// _this.edit_shop = row.shop;
+			// _this.edit_purchaceprice = row.purchaceprice;
+			// _this.edit_dateofpurchase = row.dateofpurchase;
+			// _this.edit_warrantymonths = row.warrantymonths;
+			// _this.edit_warrantyinfo = row.warrantyinfo;
+
+			// // 参数变量 - 配件
+			// _this.edit_motherboard = row.motherboard;
+			// _this.edit_harddisk = row.harddisk;
+			// _this.edit_ram = row.ram;
+			// _this.edit_cpumodel = row.cpumodel;
+			// _this.edit_cpus_select = row.cpus;
+			// _this.edit_cpucores_select = row.cpucores;
+
+			// // 参数变量 - 网络
+			// _this.edit_dns = row.dns;
+			// _this.edit_maclan = row.maclan;
+			// _this.edit_macwl = row.macwl;
+			// _this.edit_ipv4lan = row.ipv4lan;
+			// _this.edit_ipv4wl = row.ipv4wl;
+			// _this.edit_ipv6lan = row.ipv6lan;
+			// _this.edit_ipv6wl = row.ipv6wl;
+			// _this.edit_remoteadminip = row.remoteadminip;
+			// _this.edit_panelport = row.panelport;
+			// _this.edit_switch_select = row.switch;
+			// _this.edit_switchport = row.switchport;
+			// _this.edit_networkports_select = row.ports;
+
+			_this.modal_edit_items_properties = true;
+		},
+
+
+		// 主编辑前查看 - items usage
+		edit_items_usage (row) {
+			var _this = this;
+
+			_this.edit_id = row.id;
+			_this.edit_updated_at = row.updated_at;
+
 			// 参数变量 - 使用
 			_this.edit_status_select = row.status;
 			_this.edit_user_select = row.user;
@@ -1199,12 +1422,34 @@ var vm_app = new Vue({
 			_this.edit_function = row.function;
 			_this.edit_maintenanceinstructions = row.maintenanceinstructions;
 
+			_this.modal_edit_items_usage = true;
+		},
+
+
+		// 主编辑前查看 - items warranty
+		edit_items_warranty (row) {
+			var _this = this;
+
+			_this.edit_id = row.id;
+			_this.edit_updated_at = row.updated_at;
+
 			// 参数变量 - 保修
 			_this.edit_shop = row.shop;
 			_this.edit_purchaceprice = row.purchaceprice;
 			_this.edit_dateofpurchase = row.dateofpurchase;
 			_this.edit_warrantymonths = row.warrantymonths;
 			_this.edit_warrantyinfo = row.warrantyinfo;
+
+			_this.modal_edit_items_warranty = true;
+		},
+
+
+		// 主编辑前查看 - items misc
+		edit_items_misc (row) {
+			var _this = this;
+
+			_this.edit_id = row.id;
+			_this.edit_updated_at = row.updated_at;
 
 			// 参数变量 - 配件
 			_this.edit_motherboard = row.motherboard;
@@ -1213,6 +1458,17 @@ var vm_app = new Vue({
 			_this.edit_cpumodel = row.cpumodel;
 			_this.edit_cpus_select = row.cpus;
 			_this.edit_cpucores_select = row.cpucores;
+
+			_this.modal_edit_items_misc = true;
+		},
+
+
+		// 主编辑前查看 - items network
+		edit_items_network (row) {
+			var _this = this;
+
+			_this.edit_id = row.id;
+			_this.edit_updated_at = row.updated_at;
 
 			// 参数变量 - 网络
 			_this.edit_dns = row.dns;
@@ -1228,17 +1484,11 @@ var vm_app = new Vue({
 			_this.edit_switchport = row.switchport;
 			_this.edit_networkports_select = row.ports;
 
-
-
-
-
-
-
-
-			_this.modal_edit_items_properties = true;
+			_this.modal_edit_items_network = true;
 		},
 
-		// 主编辑保存 - agents
+
+		// 主编辑保存 - items properties
 		update_items_properties () {
 			var _this = this;
 
@@ -1281,6 +1531,282 @@ var vm_app = new Vue({
 				model: model,
 				usize: usize,
 				assettag: assettag,
+				sn1: sn1,
+				sn2: sn2,
+				servicetag: servicetag,
+				comments: comments,
+			})
+			.then(function (response) {
+				// console.log(response.data);return false;
+
+				if (response.data['jwt'] == 'logout') {
+					_this.alert_logout();
+					return false;
+				}
+				
+				if (response.data) {
+					_this.success(false, '成功', '更新成功！');
+						_this.itemsgets(_this.page_current, _this.page_last);
+				} else {
+					_this.error(false, '失败', '更新失败！');
+				}
+			})
+			.catch(function (error) {
+				_this.error(false, '错误', '更新失败！');
+			})
+
+		},
+
+		// 主编辑保存 - items usage
+		update_items_usage () {
+			var _this = this;
+
+			var id = _this.edit_id;
+			var updated_at = _this.edit_updated_at;
+
+			var title = _this.edit_title;
+			var itemtypeid = _this.edit_itemtype_select;
+			var ispart = _this.edit_ispart;
+			var rackmountable = _this.edit_rackmountable;
+			var agentid = _this.edit_agent_select;
+			var model = _this.edit_model;
+			var usize = _this.edit_usize_select;
+			var assettag = _this.edit_assettag;
+			var sn1 = _this.edit_sn1;
+			var sn2 = _this.edit_sn2;
+			var servicetag = _this.edit_servicetag;
+			var comments = _this.edit_comments;
+
+			if (id == undefined || title == '' || title == undefined
+				|| itemtypeid == '' || itemtypeid == undefined
+				|| agentid == '' || agentid == undefined
+				|| model == '' || model == undefined) {
+				_this.error(false, '错误', '内容为空或不正确！');
+				return false;
+			}
+
+			var url = "{{ route('item.itemsupdate_usage') }}";
+			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
+			axios.post(url, {
+				id: id,
+				updated_at: updated_at,
+				// 参数变量 - 属性
+				title: title,
+				itemtypeid: itemtypeid,
+				ispart: ispart,
+				rackmountable: rackmountable,
+				agentid: agentid,
+				model: model,
+				usize: usize,
+				assettag: assettag,
+				sn1: add_sn1,
+				sn2: add_sn2,
+				servicetag: servicetag,
+				comments: comments,
+			})
+			.then(function (response) {
+				// console.log(response.data);return false;
+
+				if (response.data['jwt'] == 'logout') {
+					_this.alert_logout();
+					return false;
+				}
+				
+				if (response.data) {
+					_this.success(false, '成功', '更新成功！');
+						_this.itemsgets(_this.page_current, _this.page_last);
+				} else {
+					_this.error(false, '失败', '更新失败！');
+				}
+			})
+			.catch(function (error) {
+				_this.error(false, '错误', '更新失败！');
+			})
+
+		},
+
+
+		// 主编辑保存 - items warranty
+		update_items_warranty () {
+			var _this = this;
+
+			var id = _this.edit_id;
+			var updated_at = _this.edit_updated_at;
+
+			var title = _this.edit_title;
+			var itemtypeid = _this.edit_itemtype_select;
+			var ispart = _this.edit_ispart;
+			var rackmountable = _this.edit_rackmountable;
+			var agentid = _this.edit_agent_select;
+			var model = _this.edit_model;
+			var usize = _this.edit_usize_select;
+			var assettag = _this.edit_assettag;
+			var sn1 = _this.edit_sn1;
+			var sn2 = _this.edit_sn2;
+			var servicetag = _this.edit_servicetag;
+			var comments = _this.edit_comments;
+
+			if (id == undefined || title == '' || title == undefined
+				|| itemtypeid == '' || itemtypeid == undefined
+				|| agentid == '' || agentid == undefined
+				|| model == '' || model == undefined) {
+				_this.error(false, '错误', '内容为空或不正确！');
+				return false;
+			}
+
+
+			var url = "{{ route('item.itemsupdate_warranty') }}";
+			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
+			axios.post(url, {
+				id: id,
+				updated_at: updated_at,
+				// 参数变量 - 属性
+				title: title,
+				itemtypeid: itemtypeid,
+				ispart: ispart,
+				rackmountable: rackmountable,
+				agentid: agentid,
+				model: model,
+				usize: usize,
+				assettag: assettag,
+				sn1: add_sn1,
+				sn2: add_sn2,
+				servicetag: servicetag,
+				comments: comments,
+			})
+			.then(function (response) {
+				// console.log(response.data);return false;
+
+				if (response.data['jwt'] == 'logout') {
+					_this.alert_logout();
+					return false;
+				}
+				
+				if (response.data) {
+					_this.success(false, '成功', '更新成功！');
+						_this.itemsgets(_this.page_current, _this.page_last);
+				} else {
+					_this.error(false, '失败', '更新失败！');
+				}
+			})
+			.catch(function (error) {
+				_this.error(false, '错误', '更新失败！');
+			})
+
+		},
+
+		// 主编辑保存 - items misc
+		update_items_misc () {
+			var _this = this;
+
+			var id = _this.edit_id;
+			var updated_at = _this.edit_updated_at;
+
+			var title = _this.edit_title;
+			var itemtypeid = _this.edit_itemtype_select;
+			var ispart = _this.edit_ispart;
+			var rackmountable = _this.edit_rackmountable;
+			var agentid = _this.edit_agent_select;
+			var model = _this.edit_model;
+			var usize = _this.edit_usize_select;
+			var assettag = _this.edit_assettag;
+			var sn1 = _this.edit_sn1;
+			var sn2 = _this.edit_sn2;
+			var servicetag = _this.edit_servicetag;
+			var comments = _this.edit_comments;
+
+			if (id == undefined || title == '' || title == undefined
+				|| itemtypeid == '' || itemtypeid == undefined
+				|| agentid == '' || agentid == undefined
+				|| model == '' || model == undefined) {
+				_this.error(false, '错误', '内容为空或不正确！');
+				return false;
+			}
+
+
+			var url = "{{ route('item.itemsupdate_misc') }}";
+			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
+			axios.post(url, {
+				id: id,
+				updated_at: updated_at,
+				// 参数变量 - 属性
+				title: title,
+				itemtypeid: itemtypeid,
+				ispart: ispart,
+				rackmountable: rackmountable,
+				agentid: agentid,
+				model: model,
+				usize: usize,
+				assettag: assettag,
+				sn1: add_sn1,
+				sn2: add_sn2,
+				servicetag: servicetag,
+				comments: comments,
+			})
+			.then(function (response) {
+				// console.log(response.data);return false;
+
+				if (response.data['jwt'] == 'logout') {
+					_this.alert_logout();
+					return false;
+				}
+				
+				if (response.data) {
+					_this.success(false, '成功', '更新成功！');
+						_this.itemsgets(_this.page_current, _this.page_last);
+				} else {
+					_this.error(false, '失败', '更新失败！');
+				}
+			})
+			.catch(function (error) {
+				_this.error(false, '错误', '更新失败！');
+			})
+
+		},
+
+		// 主编辑保存 - items network
+		update_items_network () {
+			var _this = this;
+
+			var id = _this.edit_id;
+			var updated_at = _this.edit_updated_at;
+
+			var title = _this.edit_title;
+			var itemtypeid = _this.edit_itemtype_select;
+			var ispart = _this.edit_ispart;
+			var rackmountable = _this.edit_rackmountable;
+			var agentid = _this.edit_agent_select;
+			var model = _this.edit_model;
+			var usize = _this.edit_usize_select;
+			var assettag = _this.edit_assettag;
+			var sn1 = _this.edit_sn1;
+			var sn2 = _this.edit_sn2;
+			var servicetag = _this.edit_servicetag;
+			var comments = _this.edit_comments;
+
+			if (id == undefined || title == '' || title == undefined
+				|| itemtypeid == '' || itemtypeid == undefined
+				|| agentid == '' || agentid == undefined
+				|| model == '' || model == undefined) {
+				_this.error(false, '错误', '内容为空或不正确！');
+				return false;
+			}
+
+
+			var url = "{{ route('item.itemsupdate_network') }}";
+			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
+			axios.post(url, {
+				id: id,
+				updated_at: updated_at,
+				// 参数变量 - 属性
+				title: title,
+				itemtypeid: itemtypeid,
+				ispart: ispart,
+				rackmountable: rackmountable,
+				agentid: agentid,
+				model: model,
+				usize: usize,
+				assettag: assettag,
 				sn1: add_sn1,
 				sn2: add_sn2,
 				servicetag: servicetag,
@@ -1307,6 +1833,7 @@ var vm_app = new Vue({
 
 		},
 		
+
 		// 根据位置查询区域/房间
 		onchange_location () {
 			var _this = this;

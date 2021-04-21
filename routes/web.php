@@ -269,6 +269,18 @@ Route::group(['prefix'=>'item', 'namespace'=>'Item', 'middleware'=>['jwtauth']],
 	// Items Update Properties
 	Route::post('itemItemsUpdateProperties', 'ItemItemsController@itemItemsUpdateProperties')->name('item.itemsupdate_properties');
 
+	// Items Update Usage
+	Route::post('itemItemsUpdateUsage', 'ItemItemsController@itemItemsUpdateUsage')->name('item.itemsupdate_usage');
+
+	// Items Update Warranty
+	Route::post('itemItemsUpdateWarranty', 'ItemItemsController@itemItemsUpdateWarranty')->name('item.itemsupdate_warranty');
+
+	// Items Update Misc
+	Route::post('itemItemsUpdateMisc', 'ItemItemsController@itemItemsUpdateMisc')->name('item.itemsupdate_misc');
+
+	// Items Update Network
+	Route::post('itemItemsUpdateNetwork', 'ItemItemsController@itemItemsUpdateNetwork')->name('item.itemsupdate_network');
+
 	// Itemstypes Delete
 	// Route::post('itemItemtypesDelete', 'ItemItemtypesController@itemItemtypesDelete')->name('item.itemtypesdelete');
 
