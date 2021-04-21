@@ -149,83 +149,169 @@ var vm_app = new Vue({
 				align: 'center',
 				width: 50,
 				render: (h, params) => {
-					if (params.row.id == 1) {
-						return h('div', {}, [
-							h('Icon',{
-								props: {
-									type: 'md-bookmark',
-									size: 14,
-									color: 'blue',
+					switch (params.row.id) {
+						case 1:
+							return h('div', {}, [
+								h('Icon',{
+									props: {
+										type: 'md-bookmark',
+										size: 14,
+										color: 'blue',
+										}
 									}
-								}
-							),
-						])
-					} else if (params.row.id == 2) {
-						return h('div', {}, [
-							h('Icon',{
-								props: {
-									type: 'md-bookmark',
-									size: 14,
-									color: 'green',
+								),
+							]);break;
+						
+						case 2:
+							return h('div', {}, [
+								h('Icon',{
+									props: {
+										type: 'md-bookmark',
+										size: 14,
+										color: 'green',
+										}
 									}
-								}
-							),
-						])
-					} else if (params.row.id == 3) {
-						return h('div', {}, [
-							h('Icon',{
-								props: {
-									type: 'md-bookmark',
-									size: 14,
-									color: 'red',
+								),
+							]);break;
+						
+						case 3:
+							return h('div', {}, [
+								h('Icon',{
+									props: {
+										type: 'md-bookmark',
+										size: 14,
+										color: 'red',
+										}
 									}
-								}
-							),
-						])
-					} else if (params.row.id == 4) {
-						return h('div', {}, [
-							h('Icon',{
-								props: {
-									type: 'md-bookmark',
-									size: 14,
-									color: 'gray',
+								),
+							]);break;
+
+						case 4:
+							return h('div', {}, [
+								h('Icon',{
+									props: {
+										type: 'md-bookmark',
+										size: 14,
+										color: 'gray',
+										}
 									}
-								}
-							),
-						])
-					} else if (params.row.id == 5) {
-						return h('div', {}, [
-							h('Icon',{
-								props: {
-									type: 'md-bookmark',
-									size: 14,
-									color: 'yellow',
+								),
+							]);break;
+
+						case 5:
+							return h('div', {}, [
+								h('Icon',{
+									props: {
+										type: 'md-bookmark',
+										size: 14,
+										color: 'yellow',
+										}
 									}
-								}
-							),
-						])
-					} else if (params.row.id == 6) {
-						return h('div', {}, [
-							h('Icon',{
-								props: {
-									type: 'md-bookmark',
-									size: 14,
-									color: 'black',
+								),
+							]);break;
+
+						case 6:
+							return h('div', {}, [
+								h('Icon',{
+									props: {
+										type: 'md-bookmark',
+										size: 14,
+										color: 'black',
+										}
 									}
-								}
-							),
-						])
-					} else {
-						return h('div', {}, [
-							h('Icon',{
-								props: {
-									type: 'md-bookmark',
-									size: 14,
+								),
+							]);break;
+
+						default:
+							return h('div', {}, [
+								h('Icon',{
+									props: {
+										type: 'md-bookmark',
+										size: 14,
+										}
 									}
-								}
-							),
-						])
-					}	
+								),
+							]);break;
+
+					}
+
+					// if (params.row.id == 1) {
+					// 	return h('div', {}, [
+					// 		h('Icon',{
+					// 			props: {
+					// 				type: 'md-bookmark',
+					// 				size: 14,
+					// 				color: 'blue',
+					// 				}
+					// 			}
+					// 		),
+					// 	])
+					// } else if (params.row.id == 2) {
+					// 	return h('div', {}, [
+					// 		h('Icon',{
+					// 			props: {
+					// 				type: 'md-bookmark',
+					// 				size: 14,
+					// 				color: 'green',
+					// 				}
+					// 			}
+					// 		),
+					// 	])
+					// } else if (params.row.id == 3) {
+					// 	return h('div', {}, [
+					// 		h('Icon',{
+					// 			props: {
+					// 				type: 'md-bookmark',
+					// 				size: 14,
+					// 				color: 'red',
+					// 				}
+					// 			}
+					// 		),
+					// 	])
+					// } else if (params.row.id == 4) {
+					// 	return h('div', {}, [
+					// 		h('Icon',{
+					// 			props: {
+					// 				type: 'md-bookmark',
+					// 				size: 14,
+					// 				color: 'gray',
+					// 				}
+					// 			}
+					// 		),
+					// 	])
+					// } else if (params.row.id == 5) {
+					// 	return h('div', {}, [
+					// 		h('Icon',{
+					// 			props: {
+					// 				type: 'md-bookmark',
+					// 				size: 14,
+					// 				color: 'yellow',
+					// 				}
+					// 			}
+					// 		),
+					// 	])
+					// } else if (params.row.id == 6) {
+					// 	return h('div', {}, [
+					// 		h('Icon',{
+					// 			props: {
+					// 				type: 'md-bookmark',
+					// 				size: 14,
+					// 				color: 'black',
+					// 				}
+					// 			}
+					// 		),
+					// 	])
+					// } else {
+					// 	return h('div', {}, [
+					// 		h('Icon',{
+					// 			props: {
+					// 				type: 'md-bookmark',
+					// 				size: 14,
+					// 				}
+					// 			}
+					// 		),
+					// 	])
+					// }	
 				}
 			},
 			{
@@ -256,14 +342,14 @@ var vm_app = new Vue({
 								return h('icon',{
 									props: {
 										type: 'md-radio-button-off',
-										size: '20'
+										size: '14'
 									}
 								})
 							} else {
 								return h('icon',{
 									props: {
 										type: 'md-close',
-										size: '20'
+										size: '14'
 									}
 								})
 							}
@@ -280,14 +366,14 @@ var vm_app = new Vue({
 								return h('icon',{
 									props: {
 										type: 'md-radio-button-off',
-										size: '20'
+										size: '14'
 									}
 								})
 							} else {
 								return h('icon',{
 									props: {
 										type: 'md-close',
-										size: '20'
+										size: '14'
 									}
 								})
 							}
