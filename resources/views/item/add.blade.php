@@ -167,6 +167,9 @@
 				
 				<Divider orientation="left">配件</Divider>
 				<i-form :label-width="100">
+					<Form-Item label="主板" style="margin-bottom:0px">
+						<i-input v-model.lazy="add_motherboard" size="small"></i-input>
+					</Form-Item>
 					<Form-Item label="硬盘" style="margin-bottom:0px">
 						<i-input v-model.lazy="add_harddisk" size="small"></i-input>
 					</Form-Item>
@@ -405,6 +408,7 @@ var vm_app = new Vue({
 		add_warrantyinfo: '',
 
 		// 参数变量 - 配件
+		add_motherboard: '',
 		add_harddisk: '',
 		add_ram: '',
 		add_cpumodel: '',
@@ -556,6 +560,7 @@ var vm_app = new Vue({
 			_this.add_warrantyinfo = '';
 
 			// 参数变量 - 配件
+			_this.add_motherboard = '';
 			_this.add_harddisk = '';
 			_this.add_ram = '';
 			_this.add_cpumodel = '';
@@ -617,6 +622,7 @@ var vm_app = new Vue({
 			var add_warrantyinfo = _this.add_warrantyinfo;
 
 			// 参数变量 - 配件
+			var add_motherboard = _this.add_motherboard;
 			var add_harddisk = _this.add_harddisk;
 			var add_ram = _this.add_ram;
 			var add_cpumodel = _this.add_cpumodel;
@@ -684,6 +690,7 @@ var vm_app = new Vue({
 				add_warrantyinfo: add_warrantyinfo,
 
 				// 参数变量 - 配件
+				add_motherboard: add_motherboard,
 				add_harddisk: add_harddisk,
 				add_ram: add_ram,
 				add_cpumodel: add_cpumodel,
@@ -754,7 +761,7 @@ var vm_app = new Vue({
 	
 		
 		// 获取代理商列表
-		agentsgets (page, last_page){
+		agentsgets () {
 			var _this = this;
 			var url = "{{ route('agent.gets') }}";
 			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
@@ -785,7 +792,7 @@ var vm_app = new Vue({
 
 
 		// 获取使用状态
-		statustypesgets (page, last_page){
+		statustypesgets () {
 			var _this = this;
 			var url = "{{ route('item.statustypesgets') }}";
 			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
@@ -932,11 +939,12 @@ var vm_app = new Vue({
 		// GetCurrentDatetime('getcurrentdatetime');
 
 		
-
+		// 尺寸
 		for (var i=1;i<=44;i++) {
 			_this.add_usize_options.push({label: i, value: i});
 		}
 
+		// 所在机架高度
 		for (var i=1;i<=50;i++) {
 			_this.add_rackposition_options1.push({label: i, value: i});
 		}

@@ -50,6 +50,7 @@ class Item_itemsTableSeeder extends Seeder
                 'warrantymonths' => 36,
                 'warrantyinfo' => NULL,
 
+                'motherboard' => NULL,
                 'hd' => NULL,
                 'ram' => NULL,
                 'cpu' => NULL,

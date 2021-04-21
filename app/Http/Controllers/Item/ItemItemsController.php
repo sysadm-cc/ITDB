@@ -94,6 +94,74 @@ class ItemItemsController extends Controller
 	}
 
 
+	/**
+	 * 更新 itemItemsUpdateProperties
+	 *
+	 * @param  int  $id
+	 * @return \Illuminate\Http\Response
+	 */
+	public function itemItemsUpdateProperties(Request $request)
+	{
+		if (! $request->isMethod('post') || ! $request->ajax()) return null;
+
+		$id = $request->input('id');
+		$updated_at = $request->input('updated_at');
+		$title = $request->input('title');
+		$itemtypeid = $request->input('itemtypeid');
+		$ispart = $request->input('ispart');
+		$rackmountable = $request->input('rackmountable');
+		$agentid = $request->input('agentid');
+		$model = $request->input('model');
+		$usize = $request->input('usize');
+		$assettag = $request->input('assettag');
+		$sn1 = $request->input('add_sn1');
+		$sn2 = $request->input('add_sn2');
+		$servicetag = $request->input('servicetag');
+		$comments = $request->input('comments');
+
+
+		// dd($id);
+		// dd($updated_at);
+		
+		// 判断如果不是最新的记录，不可被编辑
+		// 因为可能有其他人在你当前表格未刷新的情况下已经更新过了
+		$res = Item_items::select('updated_at')
+			->where('id', $id)
+			->first();
+		$res_updated_at = date('Y-m-d H:i:s', strtotime($res['updated_at']));
+		if ($updated_at != $res_updated_at) return 0;
+
+		// 尝试更新
+		try	{
+			DB::beginTransaction();
+			$result = Item_items::where('id', $id)
+				->update([
+					'title'			=> $title,
+					'itemtypeid'			=> $itemtypeid,
+					'ispart'	=> $ispart,
+					'rackmountable'	=> $rackmountable,
+					'agentid'	=> $agentid,
+					'model'	=> $model,
+					'usize'	=> $usize,
+					'assettag'	=> $assettag,
+					'sn1'	=> $sn1,
+					'sn2'	=> $sn2,
+					'servicetag'	=> $servicetag,
+					'comments'	=> $comments,
+				]);
+			$result = 1;
+		}
+		catch (\Exception $e) {
+			DB::rollBack();
+			// dd('Message: ' .$e->getMessage());
+			$result = 0;
+		}
+		DB::commit();
+		Cache::flush();
+		// dd($result);
+		return $result;
+	}
+
 
 
 	

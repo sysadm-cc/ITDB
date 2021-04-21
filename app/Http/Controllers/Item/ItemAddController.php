@@ -96,6 +96,7 @@ class ItemAddController extends Controller
 		$add_warrantyinfo = $request->input('add_warrantyinfo');
 
 		// 参数变量 - 配件
+		$add_motherboard = $request->input('add_motherboard');
 		$add_harddisk = $request->input('add_harddisk');
 		$add_ram = $request->input('add_ram');
 		$add_cpumodel = $request->input('add_cpumodel');
@@ -156,6 +157,7 @@ class ItemAddController extends Controller
 				'warrantyinfo' => $add_warrantyinfo,
                 
 				// 参数变量 - 配件
+				'motherboard' => $add_motherboard,
 				'hd' => $add_harddisk,
 				'ram' => $add_ram,
 				'cpu' => $add_cpumodel,

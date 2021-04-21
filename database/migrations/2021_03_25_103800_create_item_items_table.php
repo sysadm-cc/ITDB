@@ -44,6 +44,7 @@ class CreateItemItemsTable extends Migration
             $table->integer('warrantymonths')->nullable()->unsigned()->comment('保修时长（月）');
             $table->string('warrantyinfo')->nullable()->comment('保修信息');
 
+            $table->string('motherboard')->nullable()->comment('主板');
             $table->string('hd')->nullable()->comment('硬盘');
             $table->string('ram')->nullable()->comment('内存');
             $table->string('cpu')->nullable()->comment('CPU');

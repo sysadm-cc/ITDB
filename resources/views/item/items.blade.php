@@ -48,11 +48,11 @@
 }
 
 .ivu-table td.table-info-column-usage {
-	background-color: #5F9EA0;
+	background-color: #187;
 	color: #fff;
 }
-.ivu-table td.table-info-column-urls {
-	background-color: #187;
+.ivu-table td.table-info-column-misc {
+	background-color: #696969;
 	color: #fff;
 }
 </style>
@@ -75,7 +75,7 @@
 			查询条件
 			<p slot="content">
 			
-				<i-row :gutter="16">
+				<i-row>
 					<i-col span="8">
 						* login time&nbsp;&nbsp;
 						<Date-picker v-model.lazy="queryfilter_logintime" @on-change="usergets(page_current, page_last);onselectchange();" type="daterange" size="small" placement="top" style="width:200px"></Date-picker>
@@ -130,8 +130,76 @@
 		</i-col>
 	</i-row>
 
+<!-- 以下为各元素编辑窗口 -->
 
+<!-- 主编辑窗口 properties-->
+<Modal v-model="modal_edit_items_properties" @on-ok="update_items_properties" ok-text="保存" title="编辑 - 物品属性" width="540">
+	<div style="text-align:left">
 
+		<p>
+		<i-form :label-width="100">
+		<i-row>
+			<i-col span="12">
+				
+				<Form-Item label="物品名称" required style="margin-bottom:0px">
+					<i-input v-model.lazy="edit_title" size="small"></i-input>
+				</Form-Item>
+				<Form-Item label="物品类型" required style="margin-bottom:0px">
+					<i-select v-model.lazy="edit_itemtype_select" size="small" placeholder="">
+						<i-option v-for="item in edit_itemtype_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+					</i-select>
+				</Form-Item>
+				<Form-Item label="是否部件" required style="margin-bottom:0px">
+					<i-switch v-model.lazy="edit_ispart">
+						<span slot="open">是</span>
+						<span slot="close">否</span>
+					</i-switch>
+				</Form-Item>
+				<Form-Item label="是否机架式" required style="margin-bottom:0px">
+					<i-switch v-model.lazy="edit_rackmountable">
+						<span slot="open">是</span>
+						<span slot="close">否</span>
+					</i-switch>
+				</Form-Item>
+				<Form-Item label="代理商" required style="margin-bottom:0px">
+					<i-select v-model.lazy="edit_agent_select" size="small" placeholder="">
+						<i-option v-for="item in edit_agent_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+					</i-select>
+				</Form-Item>
+				<Form-Item label="型号" required style="margin-bottom:0px">
+					<i-input v-model.lazy="edit_model" size="small"></i-input>
+				</Form-Item>
+				<Form-Item label="尺寸(U)" style="margin-bottom:0px">
+					<i-select v-model.lazy="edit_usize_select" size="small" placeholder="">
+						<i-option v-for="item in edit_usize_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+					</i-select>
+				</Form-Item>
+			</i-col>
+
+			<i-col span="12">
+				<Form-Item label="资产标签" style="margin-bottom:0px">
+					<i-input v-model.lazy="edit_assettag" size="small"></i-input>
+				</Form-Item>
+				<Form-Item label="S/N 1" style="margin-bottom:0px">
+					<i-input v-model.lazy="edit_sn1" size="small" placeholder="序列号一"></i-input>
+				</Form-Item>
+				<Form-Item label="S/N 2" style="margin-bottom:0px">
+					<i-input v-model.lazy="edit_sn2" size="small" placeholder="序列号二"></i-input>
+				</Form-Item>
+				<Form-Item label="Service Tag" style="margin-bottom:0px">
+					<i-input v-model.lazy="edit_servicetag" size="small" placeholder="服务编号"></i-input>
+				</Form-Item>
+				<Form-Item label="备注" style="margin-bottom:0px">
+					<i-input v-model.lazy="edit_comments" size="small" type="textarea" :rows="4"></i-input>
+				</Form-Item>
+			</i-col>
+
+		</i-row>
+		</i-form>
+		</p>
+		&nbsp;<br>
+	</div>	
+</Modal>
 
 @endsection
 
@@ -178,6 +246,105 @@ var vm_app = new Vue({
 		// 
 		edit_statustype_options: [],
 
+		// 主编辑变量
+		modal_edit_items_properties: false,
+		modal_edit_items_usage: false,
+		modal_edit_items_warranty: false,
+		modal_edit_items_misc: false,
+		modal_edit_items_network: false,
+		edit_id: '',
+		edit_updated_at: '',
+
+		edit_title: '',
+		edit_itemtype_select: '',
+		edit_itemtype_options: [],
+		edit_ispart: false,
+		edit_rackmountable: false,
+		edit_agent_select: '',
+		edit_agent_options: [],
+		edit_model: '',
+		edit_usize_select: '',
+		edit_usize_options: [],
+		edit_sn1: '',
+		edit_sn2: '',
+		edit_servicetag: '',
+		edit_comments: '',
+		edit_assettag: '',
+
+		// 参数变量 - 使用
+		edit_status_select: '',
+		edit_status_options: [],
+		edit_user_select: '',
+		edit_user_options: [],
+		edit_location_select: '',
+		edit_location_options: [],
+		edit_area_select: '',
+		edit_area_options: [],
+		edit_rack_select: '',
+		edit_rack_options: [],
+		edit_rackposition_select1: '',
+		edit_rackposition_options1: [],
+		edit_rackposition_select2: '',
+		edit_rackposition_options2: [
+			{label: 'FM-', value: 'FM-'},
+			{label: '-MB', value: '-MB'},
+			{label: 'F--', value: 'F--'},
+			{label: '-M-', value: '-M-'},
+			{label: '--B', value: '--B'},
+			{label: 'FMB', value: 'FMB'},
+		],
+		edit_function: '',
+		edit_maintenanceinstructions: '',
+
+		// 参数变量 - 保修
+		edit_shop: '',
+		edit_purchaceprice: '',
+		edit_dateofpurchase: '',
+		edit_warrantymonths: '',
+		edit_warrantyinfo: '',
+
+		// 参数变量 - 配件
+		edit_motherboard: '',
+		edit_harddisk: '',
+		edit_ram: '',
+		edit_cpumodel: '',
+		edit_cpus_select: '',
+		edit_cpus_options: [
+			{label: 1, value: 1},
+			{label: 2, value: 2},
+			{label: 3, value: 3},
+		],
+		edit_cpucores_select: '',
+		edit_cpucores_options: [
+			{label: 1, value: 1},
+			{label: 2, value: 2},
+			{label: 3, value: 3},
+		],
+
+		// 参数变量 - 网络
+		edit_dns: '',
+		edit_maclan: '',
+		edit_macwl: '',
+		edit_ipv4lan: '',
+		edit_ipv4wl: '',
+		edit_ipv6lan: '',
+		edit_ipv6wl: '',
+		edit_remoteadminip: '',
+		edit_panelport: '',
+		edit_switch_select: '',
+		edit_switch_options: [
+			{label: 1, value: 1},
+			{label: 2, value: 2},
+			{label: 3, value: 3},
+		],
+		edit_switchport: '',
+		edit_networkports_select: '',
+		edit_networkports_options: [
+			{label: 1, value: 1},
+			{label: 2, value: 2},
+			{label: 3, value: 3},
+		],
+
 
 		tablecolumns: [
 			{
@@ -197,12 +364,12 @@ var vm_app = new Vue({
 			},
 			{
 				title: '状态',
-				key: 'itemtypeid',
+				key: 'status',
 				align: 'center',
 				width: 50,
 				render: (h, params) => {
 					return h('span', vm_app.edit_statustype_options.map((item, index) => {
-						if (params.row.itemtypeid == item.id) {
+						if (params.row.status == item.id) {
 							return  h('Tooltip', {
 								props: {
 									'theme': 'light',
@@ -234,18 +401,31 @@ var vm_app = new Vue({
 						width: 100
 					},
 					{
+						title: '物品名称',
+						key: 'title',
+						resizable: true,
+						width: 100
+					},
+					{
 						title: '物品类型',
 						key: 'itemtypeid',
 						resizable: true,
-						width: 100
+						width: 100,
+						render: (h, params) => {
+							return h('span', vm_app.edit_itemtype_options.map((item, index) => {
+								if (params.row.itemtypeid == item.value) {
+									return  h('span', {}, item.label)
+								}
+							}));
+						}
 					},
 					{
 						title: '是否部件',
 						key: 'ispart',
 						align: 'center',
-						resizable: true,
 						width: 70,
 						render: (h, params) => {
+							params.row.ispart = params.row.ispart ? true : false;
 							if (params.row.ispart) {
 								return h('icon',{
 									props: {
@@ -267,9 +447,9 @@ var vm_app = new Vue({
 						title: '是否机架式',
 						key: 'rackmountable',
 						align: 'center',
-						resizable: true,
 						width: 80,
 						render: (h, params) => {
+							params.row.rackmountable = params.row.rackmountable ? true : false;
 							if (params.row.rackmountable) {
 								return h('icon',{
 									props: {
@@ -294,10 +474,10 @@ var vm_app = new Vue({
 						width: 100
 					},
 					{
-						title: '尺寸（单位U）',
+						title: '尺寸(U)',
 						key: 'usize',
 						resizable: true,
-						width: 160
+						width: 80
 					},
 					{
 						title: '序列号一',
@@ -362,13 +542,13 @@ var vm_app = new Vue({
 					{
 						title: '所在机架高度',
 						key: 'rackposition',
-						width: 100,
+						width: 70,
 						className: 'table-info-column-usage',
 					},
 					{
 						title: '所在机架深度',
 						key: 'rackdepth',
-						width: 100,
+						width: 70,
 						className: 'table-info-column-usage',
 					},
 					{
@@ -423,29 +603,40 @@ var vm_app = new Vue({
 				align: 'center',
 				children: [
 					{
+						title: '主板',
+						key: 'motherboard',
+						width: 100,
+						className: 'table-info-column-misc',
+					},
+					{
 						title: '硬盘',
 						key: 'hd',
-						width: 100
+						width: 100,
+						className: 'table-info-column-misc',
 					},
 					{
 						title: '内存',
 						key: 'ram',
-						width: 100
+						width: 100,
+						className: 'table-info-column-misc',
 					},
 					{
 						title: 'CPU',
 						key: 'cpu',
-						width: 100
+						width: 100,
+						className: 'table-info-column-misc',
 					},
 					{
 						title: 'CPU数量',
 						key: 'cpuno',
-						width: 100
+						width: 100,
+						className: 'table-info-column-misc',
 					},
 					{
 						title: '每CPU内核数量',
 						key: 'corespercpu',
-						width: 100
+						width: 100,
+						className: 'table-info-column-misc',
 					},
 				]
 			},
@@ -530,26 +721,37 @@ var vm_app = new Vue({
 				key: 'action',
 				align: 'center',
 				width: 100,
+				fixed: 'right',
 				render: (h, params) => {
 					return h('div', [
-						h('Button', {
+
+						h('Poptip', {
 							props: {
-								type: 'primary',
-								size: 'small',
-								icon: 'md-arrow-round-down'
+								'word-wrap': true,
+								'trigger': 'hover',
+								'confirm': false,
+								'content': '编辑'+params.row.title+'的信息',
+								'transfer': true
 							},
-							style: {
-								marginRight: '5px'
-							},
-							on: {
-								click: () => {
-									vm_app.user_edit(params.row)
+						}, [
+							h('Button', {
+								props: {
+									type: 'primary',
+									size: 'small',
+									icon: 'md-create'
+								},
+								style: {
+									marginRight: '5px'
+								},
+								on: {
+									click: () => {
+										vm_app.edit_items(params.row)
+									}
 								}
-							}
-						}, 'Edit'),
+							}),
+						]),
 					]);
 				},
-				fixed: 'right'
 			}
 		],
 		tabledata: [],
@@ -825,8 +1027,324 @@ var vm_app = new Vue({
 			})
 		},
 		
+
+		// 获取物品类型列表
+		itemtypesgets () {
+			var _this = this;
+			var url = "{{ route('item.itemtypesgets') }}";
+			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
+			axios.get(url)
+			.then(function (response) {
+				if (response.data['jwt'] == 'logout') {
+					_this.alert_logout();
+					return false;
+				}
+				if (response.data) {
+					response.data.data.map(function (v, i) {
+						_this.edit_itemtype_options.push({label: v.typedesc, value: v.id});
+					});
+				}
+			})
+			.catch(function (error) {
+			})
+		},
+
+
+		// 获取代理商列表
+		agentsgets () {
+			var _this = this;
+			var url = "{{ route('agent.gets') }}";
+			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
+			axios.get(url,{
+				params: {
+					perPage: 1000,
+					page: 1,
+				}
+			})
+			.then(function (response) {
+				if (response.data['jwt'] == 'logout') {
+					_this.alert_logout();
+					return false;
+				}
+				if (response.data) {
+					response.data.data.map(function (v, i) {
+						_this.edit_agent_options.push({label: v.title, value: v.id});
+					});
+				}
+			})
+			.catch(function (error) {
+			})
+		},
+
+
+		// 获取位置信息列表
+		locationsgets () {
+			var _this = this;
+			var url = "{{ route('location.gets') }}";
+			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
+			axios.get(url,{
+				params: {
+					perPage: 1000,
+					page: 1,
+				}
+			})
+			.then(function (response) {
+				if (response.data['jwt'] == 'logout') {
+					_this.alert_logout();
+					return false;
+				}
+				if (response.data) {
+					response.data.data.map(function (v, i) {
+						_this.edit_location_options.push({value: v.id, label: v.title+' ('+v.building+' / '+v.floor+')'});
+					});
+				}
+			})
+			.catch(function (error) {
+			})
+		},
+
+		// 根据位置查询区域/房间
+		onchange_location () {
+			var _this = this;
+			
+			var locationid = _this.add_location_select;
+			
+			if (locationid == '' || locationid == undefined) {
+				return false;
+			}
+			
+			var url = "{{ route('rack.location2area') }}";
+			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
+			axios.get(url,{
+				params: {
+					locationid: locationid,
+				}
+			})
+			.then(function (response) {
+				// console.log(response.data.areas);return false;
+
+				if (response.data['jwt'] == 'logout') {
+					_this.alert_logout();
+					return false;
+				}
+
+				if (response.data) {
+					_this.edit_area_select = '';
+					_this.edit_area_options = [];
+					response.data.areas.map(function (v, i) {
+						_this.edit_area_options.push({value: i, label: v.name+' [x1: '+v.x1+',y1: '+v.y2+'], [x2: '+v.x2+',y2: '+v.y2+'])'});
+					});
+				}
+			})
+			.catch(function (error) {
+			})
+		},
+	
+		// 获取机柜列表
+		racksgets () {
+			var _this = this;
+			var url = "{{ route('rack.gets') }}";
+			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
+			axios.get(url,{
+				params: {
+					perPage: 1000,
+					page: 1,
+				}
+			})
+			.then(function (response) {
+				if (response.data['jwt'] == 'logout') {
+					_this.alert_logout();
+					return false;
+				}
+				if (response.data) {
+					response.data.data.map(function (v, i) {
+						_this.edit_rack_options.push({label: v.title, value: v.id});
+					});
+				}
+			})
+			.catch(function (error) {
+			})
+		},
+
+
+		// 主编辑前查看 - agents
+		edit_items (row) {
+			var _this = this;
+
+			_this.edit_id = row.id;
+			_this.edit_updated_at = row.updated_at;
+
+			// 参数变量 - 属性
+			_this.edit_title = row.title;
+			_this.edit_itemtype_select = row.itemtypeid;
+			_this.edit_ispart = row.ispart;
+			_this.edit_rackmountable = row.rackmountable;
+			_this.edit_agent_select = row.agentid;
+			_this.edit_model = row.model;
+			_this.edit_usize_select = row.usize;
+			_this.edit_sn1 = row.sn1;
+			_this.edit_sn2 = row.sn2;
+			_this.edit_servicetag = row.servicetag;
+			_this.edit_comments = row.comments;
+			_this.edit_assettag = row.assettag;
+
+			// 参数变量 - 使用
+			_this.edit_status_select = row.status;
+			_this.edit_user_select = row.user;
+			_this.edit_location_select = row.location;
+			_this.edit_area_select = row.area;
+			_this.edit_rack_select = row.rack;
+			_this.edit_rackposition_select1 = row.rackposition1;
+			_this.edit_rackposition_select2 = row.rackposition2;
+			_this.edit_function = row.function;
+			_this.edit_maintenanceinstructions = row.maintenanceinstructions;
+
+			// 参数变量 - 保修
+			_this.edit_shop = row.shop;
+			_this.edit_purchaceprice = row.purchaceprice;
+			_this.edit_dateofpurchase = row.dateofpurchase;
+			_this.edit_warrantymonths = row.warrantymonths;
+			_this.edit_warrantyinfo = row.warrantyinfo;
+
+			// 参数变量 - 配件
+			_this.edit_motherboard = row.motherboard;
+			_this.edit_harddisk = row.harddisk;
+			_this.edit_ram = row.ram;
+			_this.edit_cpumodel = row.cpumodel;
+			_this.edit_cpus_select = row.cpus;
+			_this.edit_cpucores_select = row.cpucores;
+
+			// 参数变量 - 网络
+			_this.edit_dns = row.dns;
+			_this.edit_maclan = row.maclan;
+			_this.edit_macwl = row.macwl;
+			_this.edit_ipv4lan = row.ipv4lan;
+			_this.edit_ipv4wl = row.ipv4wl;
+			_this.edit_ipv6lan = row.ipv6lan;
+			_this.edit_ipv6wl = row.ipv6wl;
+			_this.edit_remoteadminip = row.remoteadminip;
+			_this.edit_panelport = row.panelport;
+			_this.edit_switch_select = row.switch;
+			_this.edit_switchport = row.switchport;
+			_this.edit_networkports_select = row.ports;
+
+
+
+
+
+
+
+
+			_this.modal_edit_items_properties = true;
+		},
+
+		// 主编辑保存 - agents
+		update_items_properties () {
+			var _this = this;
+
+			var id = _this.edit_id;
+			var updated_at = _this.edit_updated_at;
+
+			var title = _this.edit_title;
+			var itemtypeid = _this.edit_itemtype_select;
+			var ispart = _this.edit_ispart;
+			var rackmountable = _this.edit_rackmountable;
+			var agentid = _this.edit_agent_select;
+			var model = _this.edit_model;
+			var usize = _this.edit_usize_select;
+			var assettag = _this.edit_assettag;
+			var sn1 = _this.edit_sn1;
+			var sn2 = _this.edit_sn2;
+			var servicetag = _this.edit_servicetag;
+			var comments = _this.edit_comments;
+
+			if (id == undefined || title == '' || title == undefined
+				|| itemtypeid == '' || itemtypeid == undefined
+				|| agentid == '' || agentid == undefined
+				|| model == '' || model == undefined) {
+				_this.error(false, '错误', '内容为空或不正确！');
+				return false;
+			}
+
+
+			var url = "{{ route('item.itemsupdate_properties') }}";
+			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
+			axios.post(url, {
+				id: id,
+				updated_at: updated_at,
+				// 参数变量 - 属性
+				title: title,
+				itemtypeid: itemtypeid,
+				ispart: ispart,
+				rackmountable: rackmountable,
+				agentid: agentid,
+				model: model,
+				usize: usize,
+				assettag: assettag,
+				sn1: add_sn1,
+				sn2: add_sn2,
+				servicetag: servicetag,
+				comments: comments,
+			})
+			.then(function (response) {
+				// console.log(response.data);return false;
+
+				if (response.data['jwt'] == 'logout') {
+					_this.alert_logout();
+					return false;
+				}
+				
+				if (response.data) {
+					_this.success(false, '成功', '更新成功！');
+						_this.itemsgets(_this.page_current, _this.page_last);
+				} else {
+					_this.error(false, '失败', '更新失败！');
+				}
+			})
+			.catch(function (error) {
+				_this.error(false, '错误', '更新失败！');
+			})
+
+		},
 		
-		
+		// 根据位置查询区域/房间
+		onchange_location () {
+			var _this = this;
+			
+			var locationid = _this.add_location_select;
+			
+			if (locationid == '' || locationid == undefined) {
+				return false;
+			}
+			
+			var url = "{{ route('rack.location2area') }}";
+			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
+			axios.get(url,{
+				params: {
+					locationid: locationid,
+				}
+			})
+			.then(function (response) {
+				// console.log(response.data.areas);return false;
+
+				if (response.data['jwt'] == 'logout') {
+					_this.alert_logout();
+					return false;
+				}
+
+				if (response.data) {
+					_this.edit_area_select = '';
+					_this.edit_area_options = [];
+					response.data.areas.map(function (v, i) {
+						_this.edit_area_options.push({value: i, label: v.name+' [x1: '+v.x1+',y1: '+v.y2+'], [x2: '+v.x2+',y2: '+v.y2+'])'});
+					});
+				}
+			})
+			.catch(function (error) {
+				// this.error(false, 'Error', error);
+			})
+		},
+
 		
 
 
@@ -839,6 +1357,32 @@ var vm_app = new Vue({
 
 		// 获取状态类型
 		_this.statustypesgets();
+
+		// 获取物品类型列表
+		_this.itemtypesgets();
+
+		// 获取制造商列表
+		_this.agentsgets();
+
+		// 获取位置列表
+		_this.locationsgets();
+
+		// 获取机柜列表
+		_this.racksgets();
+
+
+
+		// 尺寸
+		for (var i=1;i<=44;i++) {
+			_this.edit_usize_options.push({label: i, value: i});
+		}
+
+		// 所在机架高度
+		for (var i=1;i<=50;i++) {
+			_this.edit_rackposition_options1.push({label: i, value: i});
+		}
+
+
 
 
 

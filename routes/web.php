@@ -266,8 +266,8 @@ Route::group(['prefix'=>'item', 'namespace'=>'Item', 'middleware'=>['jwtauth']],
 	// Itemstypes Update typedesc
 	// Route::post('itemItemtypesUpdateTypedesc', 'ItemItemtypesController@itemItemtypesUpdateTypedesc')->name('item.itemtypesupdate_typedesc');
 
-	// Itemstypes Update
-	// Route::post('itemItemtypesUpdateHassoftware', 'ItemItemtypesController@itemItemtypesUpdateHassoftware')->name('item.itemtypesupdate_hassoftware');
+	// Items Update Properties
+	Route::post('itemItemsUpdateProperties', 'ItemItemsController@itemItemsUpdateProperties')->name('item.itemsupdate_properties');
 
 	// Itemstypes Delete
 	// Route::post('itemItemtypesDelete', 'ItemItemtypesController@itemItemtypesDelete')->name('item.itemtypesdelete');
