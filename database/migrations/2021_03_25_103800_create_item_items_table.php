@@ -16,40 +16,40 @@ class CreateItemItemsTable extends Migration
         Schema::create('item_items', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('title')->comment('物品名称');
-            $table->integer('itemtypeid')->nullable()->unsigned()->comment('物品类型编号');
+            $table->unsignedSmallInteger('itemtypeid')->nullable()->comment('物品类型编号');
             $table->boolean('ispart')->default(false)->comment('是否是部件');
             $table->boolean('rackmountable')->default(false)->comment('是否机架式');
-            $table->integer('agentid')->nullable()->unsigned()->comment('代理商编号');
+            $table->unsignedInteger('agentid')->nullable()->comment('代理商编号');
             $table->string('model')->comment('型号');
-            $table->integer('usize')->nullable()->unsigned()->comment('尺寸（单位U）');
+            $table->unsignedTinyInteger('usize')->nullable()->comment('尺寸（单位U）');
             $table->string('assettag')->nullable()->comment('资产标签');
             $table->string('sn1')->nullable()->comment('序列号1');
             $table->string('sn2')->nullable()->comment('序列号2');
             $table->string('servicetag')->nullable()->comment('服务编号');
-            $table->string('comments')->nullable()->comment('备注');
+            $table->text('comments')->nullable()->comment('备注');
 
-            $table->integer('status')->nullable()->unsigned()->comment('状态');
-            $table->integer('userid')->nullable()->unsigned()->comment('用户ID');
-            $table->integer('locationid')->nullable()->unsigned()->comment('位置/楼层');
-            $table->integer('areaid')->nullable()->unsigned()->comment('位置场所编号');
-            $table->string('rackid')->nullable()->comment('机柜编号');
+            $table->unsignedTinyInteger('status')->nullable()->comment('状态');
+            $table->unsignedInteger('userid')->nullable()->comment('用户ID');
+            $table->unsignedInteger('locationid')->nullable()->comment('位置/楼层');
+            $table->unsignedInteger('areaid')->nullable()->comment('位置场所编号');
+            $table->unsignedInteger('rackid')->nullable()->comment('机柜编号');
             $table->unsignedTinyInteger('rackposition')->nullable()->comment('所在机柜高度');
             $table->unsignedTinyInteger('rackdepth')->nullable()->comment('所在机柜深度');
             $table->string('functions')->nullable()->comment('功能用途');
-            $table->string('maintenanceinstructions')->nullable()->comment('具体使用说明');
+            $table->text('maintenanceinstructions')->nullable()->comment('具体使用说明');
             
             $table->string('shop')->nullable()->comment('经销商');
             $table->string('purchaseprice')->nullable()->comment('购买价格');
             $table->dateTime('purchasedate')->nullable()->comment('购买日期');
-            $table->integer('warrantymonths')->nullable()->unsigned()->comment('保修时长（月）');
-            $table->string('warrantyinfo')->nullable()->comment('保修信息');
+            $table->unsignedSmallInteger('warrantymonths')->nullable()->comment('保修时长(月)');
+            $table->text('warrantyinfo')->nullable()->comment('保修信息');
 
             $table->string('motherboard')->nullable()->comment('主板');
             $table->string('hd')->nullable()->comment('硬盘');
             $table->string('ram')->nullable()->comment('内存');
             $table->string('cpu')->nullable()->comment('CPU');
-            $table->integer('cpuno')->nullable()->unsigned()->comment('CPU数量');
-            $table->integer('corespercpu')->nullable()->unsigned()->comment('每CPU内核数量');
+            $table->unsignedTinyInteger('cpuno')->nullable()->comment('CPU数量');
+            $table->unsignedTinyInteger('corespercpu')->nullable()->comment('每CPU内核数量');
 
             $table->string('dns')->nullable()->comment('域名');
             $table->string('maclan')->nullable()->comment('有线MAC地址');
@@ -60,9 +60,9 @@ class CreateItemItemsTable extends Migration
             $table->string('ipv6wl')->nullable()->comment('无线ipv6');
             $table->string('remadmip')->nullable()->comment('远程管理IP');
             $table->string('panelport')->nullable()->comment('面板端口');
-            $table->integer('switchid')->nullable()->unsigned()->comment('交换机编号');
+            $table->unsignedInteger('switchid')->nullable()->comment('交换机编号');
             $table->string('switchport')->nullable()->comment('接入交换机端口号');
-            $table->integer('ports')->nullable()->unsigned()->comment('网络端口数量');
+            $table->unsignedTinyInteger('ports')->nullable()->comment('网络端口数量');
 
             $table->timestamps();
             $table->softDeletes();

@@ -462,19 +462,17 @@ var vm_app = new Vue({
 						title: '资产标签',
 						key: 'assettag',
 						// sortable: true,
-						resizable: true,
-						width: 100
+						// resizable: true,
+						width: 140
 					},
 					{
 						title: '物品名称',
 						key: 'title',
-						resizable: true,
-						width: 100
+						width: 160
 					},
 					{
 						title: '物品类型',
 						key: 'itemtypeid',
-						resizable: true,
 						width: 100,
 						render: (h, params) => {
 							return h('span', vm_app.edit_itemtype_options.map((item, index) => {
@@ -535,37 +533,36 @@ var vm_app = new Vue({
 					{
 						title: '代理商',
 						key: 'agentid',
-						resizable: true,
-						width: 100
+						width: 100,
+						render: (h, params) => {
+							return h('span', vm_app.edit_agent_options.map((item, index) => {
+								return params.row.agentid == item.value && h('span', {}, item.label)
+							}))
+						}
 					},
 					{
 						title: '尺寸(U)',
 						key: 'usize',
-						resizable: true,
 						width: 80
 					},
 					{
 						title: '序列号一',
 						key: 'sn1',
-						resizable: true,
-						width: 160
+						width: 120
 					},
 					{
 						title: '序列号二',
 						key: 'sn2',
-						resizable: true,
-						width: 160
+						width: 120
 					},
 					{
 						title: '服务编号',
 						key: 'servicetag',
-						resizable: true,
 						width: 160
 					},
 					{
 						title: '备注',
 						key: 'comments',
-						resizable: true,
 						width: 160
 					},
 				]
@@ -577,7 +574,7 @@ var vm_app = new Vue({
 					{
 						title: '状态',
 						key: 'status',
-						width: 100,
+						width: 70,
 						className: 'table-info-column-usage',
 						render: (h, params) => {
 							return h('span', vm_app.edit_status_options.map((item, index) => {
@@ -613,7 +610,7 @@ var vm_app = new Vue({
 						width: 210,
 						className: 'table-info-column-usage',
 						render: (h, params) => {
-							return h('span', vm_app.edit_area_options_list.map(item => {
+							return h('span', vm_app.edit_area_options_list.map((item, index) => {
 								if (params.row.locationid + '-' + params.row.areaid == item.value) {
 									return h('p', {}, item.label)
 								}
@@ -626,7 +623,7 @@ var vm_app = new Vue({
 						width: 100,
 						className: 'table-info-column-usage',
 						render: (h, params) => {
-							return h('span', vm_app.edit_rack_options.map(item => {
+							return h('span', vm_app.edit_rack_options.map((item, index) => {
 								return params.row.rackid == item.value && h('span', {}, item.label)
 							}))
 						}
@@ -656,13 +653,13 @@ var vm_app = new Vue({
 					{
 						title: '功能用途',
 						key: 'functions',
-						width: 100,
+						width: 120,
 						className: 'table-info-column-usage',
 					},
 					{
 						title: '具体使用说明',
 						key: 'maintenanceinstructions',
-						width: 100,
+						width: 160,
 						className: 'table-info-column-usage',
 					},
 
@@ -1244,7 +1241,7 @@ var vm_app = new Vue({
 
 				if (response.data) {
 					response.data.data.map(function (v, i) {
-						_this.edit_statustype_options.push({value: v.id, label: v.statusdesc});
+						_this.edit_statustype_options.push({value: parseInt(v.id), label: v.statusdesc});
 					});
 					_this.edit_status_options = response.data.data;
 				}
@@ -1270,7 +1267,7 @@ var vm_app = new Vue({
 				}
 				if (response.data) {
 					response.data.data.map(function (v, i) {
-						_this.edit_itemtype_options.push({label: v.typedesc, value: v.id});
+						_this.edit_itemtype_options.push({label: v.typedesc, value: parseInt(v.id)});
 					});
 				}
 			})
@@ -1297,7 +1294,7 @@ var vm_app = new Vue({
 				}
 				if (response.data) {
 					response.data.data.map(function (v, i) {
-						_this.edit_agent_options.push({label: v.title, value: v.id});
+						_this.edit_agent_options.push({label: v.title, value: parseInt(v.id)});
 					});
 				}
 			})
@@ -1382,8 +1379,9 @@ var vm_app = new Vue({
 					return false;
 				}
 				if (response.data) {
+					_this.edit_rack_options = [];
 					response.data.data.map(function (v, i) {
-						_this.edit_rack_options.push({label: v.title, value: v.id});
+						_this.edit_rack_options.push({label: v.title, value: parseInt(v.id)});
 					});
 				}
 			})
@@ -1419,8 +1417,8 @@ var vm_app = new Vue({
 			// _this.edit_location_select = row.location;
 			// _this.edit_area_select = row.area;
 			// _this.edit_rack_select = row.rack;
-			// _this.edit_rackposition_select = row.rackposition1;
-			// _this.edit_rackdepth_select = row.rackposition2;
+			// _this.edit_rackposition_select = row.rackposition;
+			// _this.edit_rackdepth_select = row.rackdepth;
 			// _this.edit_functions = row.function;
 			// _this.edit_maintenanceinstructions = row.maintenanceinstructions;
 
@@ -1470,8 +1468,8 @@ var vm_app = new Vue({
 			_this.edit_location_select = row.locationid;
 			_this.edit_area_select = row.areaid;
 			_this.edit_rack_select = row.rackid;
-			_this.edit_rackposition_select = row.rackposition1;
-			_this.edit_rackdepth_select = row.rackposition2;
+			_this.edit_rackposition_select = row.rackposition;
+			_this.edit_rackdepth_select = row.rackdepth;
 			_this.edit_functions = row.functions;
 			_this.edit_maintenanceinstructions = row.maintenanceinstructions;
 
@@ -1910,12 +1908,12 @@ var vm_app = new Vue({
 
 		// 尺寸
 		for (var i=1;i<=44;i++) {
-			_this.edit_usize_options.push({label: i, value: i});
+			_this.edit_usize_options.push({label: i, value: parseInt(i)});
 		}
 
 		// 所在机架高度
 		for (var i=1;i<=50;i++) {
-			_this.edit_rackposition_options.push({label: i, value: i});
+			_this.edit_rackposition_options.push({label: i, value: parseInt(i)});
 		}
 
 
