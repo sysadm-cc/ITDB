@@ -15,6 +15,8 @@ class CreateItemItemsTable extends Migration
     {
         Schema::create('item_items', function (Blueprint $table) {
             $table->bigIncrements('id');
+
+            // 属性
             $table->string('title')->comment('物品名称');
             $table->unsignedSmallInteger('itemtypeid')->nullable()->comment('物品类型编号');
             $table->boolean('ispart')->default(false)->comment('是否是部件');
@@ -28,6 +30,7 @@ class CreateItemItemsTable extends Migration
             $table->string('servicetag')->nullable()->comment('服务编号');
             $table->text('comments')->nullable()->comment('备注');
 
+            // 使用
             $table->unsignedTinyInteger('status')->nullable()->comment('状态');
             $table->unsignedInteger('userid')->nullable()->comment('用户ID');
             $table->unsignedInteger('locationid')->nullable()->comment('位置/楼层');
@@ -38,12 +41,14 @@ class CreateItemItemsTable extends Migration
             $table->string('functions')->nullable()->comment('功能用途');
             $table->text('maintenanceinstructions')->nullable()->comment('具体使用说明');
             
+            // 保修
             $table->string('shop')->nullable()->comment('经销商');
-            $table->string('purchaseprice')->nullable()->comment('购买价格');
+            $table->float('purchaseprice', 8, 2)->nullable()->comment('购买价格');
             $table->dateTime('purchasedate')->nullable()->comment('购买日期');
             $table->unsignedSmallInteger('warrantymonths')->nullable()->comment('保修时长(月)');
             $table->text('warrantyinfo')->nullable()->comment('保修信息');
 
+            // 配件
             $table->string('motherboard')->nullable()->comment('主板');
             $table->string('hd')->nullable()->comment('硬盘');
             $table->string('ram')->nullable()->comment('内存');
@@ -51,6 +56,7 @@ class CreateItemItemsTable extends Migration
             $table->unsignedTinyInteger('cpuno')->nullable()->comment('CPU数量');
             $table->unsignedTinyInteger('corespercpu')->nullable()->comment('每CPU内核数量');
 
+            // 网络
             $table->string('dns')->nullable()->comment('域名');
             $table->string('maclan')->nullable()->comment('有线MAC地址');
             $table->string('macwl')->nullable()->comment('无线MAC地址');

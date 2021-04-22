@@ -108,13 +108,13 @@
 		<i-col span="3">
 			<i-button @click="items_delete()" :disabled="items_delete_disabled" type="warning" size="small">删除</i-button>&nbsp;<br>&nbsp;
 		</i-col>
-		<i-col span="2">
-			<i-button type="default" size="small" @click="items_create()"><Icon type="ios-color-wand-outline"></Icon> 新建</i-button>
+		<i-col span="3">
+			<i-button type="primary" size="small" @click="items_create()" icon="md-add">添加硬件</i-button>
 		</i-col>
-		<i-col span="2">
-			<i-button type="default" size="small" @click="items_export()"><Icon type="ios-download-outline"></Icon> 导出</i-button>
+		<i-col span="3">
+			<i-button type="default" size="small" @click="items_export()" icon="ios-download-outline">导出</i-button>
 		</i-col>
-		<i-col span="17">
+		<i-col span="15">
 			&nbsp;
 		</i-col>
 	</i-row>
@@ -264,6 +264,39 @@
 	</div>	
 </Modal>
 
+<!-- 主编辑窗口 warranty-->
+<Modal v-model="modal_edit_items_warranty" @on-ok="update_items_warranty" ok-text="保存" title="编辑 - 保修信息" width="320">
+	<div style="text-align:left">
+
+		<p>
+		<i-form :label-width="100">
+		<i-row>
+			<i-col span="24">
+				<Form-Item label="经销商" style="margin-bottom:0px">
+					<i-input v-model.lazy="edit_shop" size="small"></i-input>
+				</Form-Item>
+				<Form-Item label="购买价格" style="margin-bottom:0px">
+					<Input-Number v-model.lazy="edit_purchaseprice" size="small" :min="0"></Input-Number>
+				</Form-Item>
+				<Form-Item label="购买日期" style="margin-bottom:0px">
+					<Date-Picker v-model.lazy="edit_purchasedate" type="date" placeholder="" size="small"></Date-Picker>
+				</Form-Item>
+				<Form-Item label="保修时长(月)" style="margin-bottom:0px">
+					<Input-Number v-model.lazy="edit_warrantymonths" size="small" :min="0"></Input-Number>
+				</Form-Item>
+				<Form-Item label="保修信息" style="margin-bottom:0px">
+					<i-input v-model.lazy="edit_warrantyinfo" size="small" type="textarea"></i-input>
+				</Form-Item>
+			</i-col>
+		</i-row>
+		</i-form>
+		</p>
+		&nbsp;<br>
+	</div>	
+</Modal>
+
+
+
 @endsection
 
 @section('my_footer')
@@ -363,8 +396,8 @@ var vm_app = new Vue({
 
 		// 参数变量 - 保修
 		edit_shop: '',
-		edit_purchaceprice: '',
-		edit_dateofpurchase: '',
+		edit_purchaseprice: '',
+		edit_purchasedate: '',
 		edit_warrantymonths: '',
 		edit_warrantyinfo: '',
 
@@ -682,17 +715,20 @@ var vm_app = new Vue({
 					{
 						title: '购买日期',
 						key: 'purchasedate',
-						width: 100
+						width: 110,
+						render: (h, params) => {
+							return params.row.purchasedate == null ? '' : h('span', {}, new Date(params.row.purchasedate).Format("yyyy-MM-dd"))
+						}
 					},
 					{
-						title: '保修时长（月）',
+						title: '保修时长(月)',
 						key: 'warrantymonths',
-						width: 100
+						width: 110
 					},
 					{
 						title: '保修信息',
 						key: 'warrantyinfo',
-						width: 100
+						width: 140
 					},
 
 				]
@@ -1424,8 +1460,8 @@ var vm_app = new Vue({
 
 			// // 参数变量 - 保修
 			// _this.edit_shop = row.shop;
-			// _this.edit_purchaceprice = row.purchaceprice;
-			// _this.edit_dateofpurchase = row.dateofpurchase;
+			// _this.edit_purchaseprice = row.purchaseprice;
+			// _this.edit_purchasedate = row.purchasedate;
 			// _this.edit_warrantymonths = row.warrantymonths;
 			// _this.edit_warrantyinfo = row.warrantyinfo;
 
@@ -1488,8 +1524,8 @@ var vm_app = new Vue({
 
 			// 参数变量 - 保修
 			_this.edit_shop = row.shop;
-			_this.edit_purchaceprice = row.purchaceprice;
-			_this.edit_dateofpurchase = row.dateofpurchase;
+			_this.edit_purchaseprice = row.purchaseprice;
+			_this.edit_purchasedate = row.purchasedate;
 			_this.edit_warrantymonths = row.warrantymonths;
 			_this.edit_warrantyinfo = row.warrantyinfo;
 
@@ -1676,23 +1712,13 @@ var vm_app = new Vue({
 			var id = _this.edit_id;
 			var updated_at = _this.edit_updated_at;
 
-			var title = _this.edit_title;
-			var itemtypeid = _this.edit_itemtype_select;
-			var ispart = _this.edit_ispart;
-			var rackmountable = _this.edit_rackmountable;
-			var agentid = _this.edit_agent_select;
-			var model = _this.edit_model;
-			var usize = _this.edit_usize_select;
-			var assettag = _this.edit_assettag;
-			var sn1 = _this.edit_sn1;
-			var sn2 = _this.edit_sn2;
-			var servicetag = _this.edit_servicetag;
-			var comments = _this.edit_comments;
-
-			if (id == undefined || title == '' || title == undefined
-				|| itemtypeid == '' || itemtypeid == undefined
-				|| agentid == '' || agentid == undefined
-				|| model == '' || model == undefined) {
+			var shop = _this.edit_shop;
+			var purchaseprice = _this.edit_purchaseprice;
+			var purchasedate = _this.edit_purchasedate ? new Date(_this.edit_purchasedate).Format("yyyy-MM-dd") : '';
+			var warrantymonths = _this.edit_warrantymonths;
+			var warrantyinfo = _this.edit_warrantyinfo;
+			
+			if (id == undefined) {
 				_this.error(false, '错误', '内容为空或不正确！');
 				return false;
 			}
@@ -1704,18 +1730,11 @@ var vm_app = new Vue({
 				id: id,
 				updated_at: updated_at,
 				// 参数变量 - 属性
-				title: title,
-				itemtypeid: itemtypeid,
-				ispart: ispart,
-				rackmountable: rackmountable,
-				agentid: agentid,
-				model: model,
-				usize: usize,
-				assettag: assettag,
-				sn1: add_sn1,
-				sn2: add_sn2,
-				servicetag: servicetag,
-				comments: comments,
+				shop: shop,
+				purchaseprice: purchaseprice,
+				purchasedate: purchasedate,
+				warrantymonths: warrantymonths,
+				warrantyinfo: warrantyinfo,
 			})
 			.then(function (response) {
 				// console.log(response.data);return false;
