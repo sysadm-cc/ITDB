@@ -238,13 +238,13 @@
 
 			<i-col span="12">
 				<Form-Item label="所在机架高度" style="margin-bottom:0px">
-					<i-select v-model.lazy="edit_rackposition_select1" size="small" placeholder="">
-						<i-option v-for="item in edit_rackposition_options1" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+					<i-select v-model.lazy="edit_rackposition_select" size="small" placeholder="">
+						<i-option v-for="item in edit_rackposition_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
 					</i-select>
 				</Form-Item>
 				<Form-Item label="所在机架深度" style="margin-bottom:0px">
-					<i-select v-model.lazy="edit_rackposition_select2" size="small" placeholder="">
-						<i-option v-for="item in edit_rackposition_options2" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+					<i-select v-model.lazy="edit_rackdepth_select" size="small" placeholder="">
+						<i-option v-for="item in edit_rackdepth_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
 					</i-select>
 					<span style="color: rgb(158, 167, 180);font-size:12px;">
 						<Icon type="md-information-circle"></Icon> FMB - 前中后
@@ -347,10 +347,10 @@ var vm_app = new Vue({
 		edit_area_options_list: [],
 		edit_rack_select: '',
 		edit_rack_options: [],
-		edit_rackposition_select1: '',
-		edit_rackposition_options1: [],
-		edit_rackposition_select2: '',
-		edit_rackposition_options2: [
+		edit_rackposition_select: '',
+		edit_rackposition_options: [],
+		edit_rackdepth_select: '',
+		edit_rackdepth_options: [
 			{label: 'FM-', value: 1},
 			{label: '-MB', value: 2},
 			{label: 'F--', value: 3},
@@ -625,18 +625,33 @@ var vm_app = new Vue({
 						key: 'rackid',
 						width: 100,
 						className: 'table-info-column-usage',
+						render: (h, params) => {
+							return h('span', vm_app.edit_rack_options.map(item => {
+								return params.row.rackid == item.value && h('span', {}, item.label)
+							}))
+						}
 					},
 					{
 						title: '所在机架高度',
 						key: 'rackposition',
 						width: 70,
 						className: 'table-info-column-usage',
+						render: (h, params) => {
+							if (params.row.rackposition != null) {
+								return h('span', {}, params.row.rackposition+' U')
+							}
+						}
 					},
 					{
 						title: '所在机架深度',
 						key: 'rackdepth',
 						width: 70,
 						className: 'table-info-column-usage',
+						render: (h, params) => {
+							return h('span', vm_app.edit_rackdepth_options.map((item, index) => {
+								return params.row.rackdepth == item.value && h('span', {}, item.label)
+							}));
+						}
 					},
 					{
 						title: '功能用途',
@@ -1404,8 +1419,8 @@ var vm_app = new Vue({
 			// _this.edit_location_select = row.location;
 			// _this.edit_area_select = row.area;
 			// _this.edit_rack_select = row.rack;
-			// _this.edit_rackposition_select1 = row.rackposition1;
-			// _this.edit_rackposition_select2 = row.rackposition2;
+			// _this.edit_rackposition_select = row.rackposition1;
+			// _this.edit_rackdepth_select = row.rackposition2;
 			// _this.edit_functions = row.function;
 			// _this.edit_maintenanceinstructions = row.maintenanceinstructions;
 
@@ -1455,8 +1470,8 @@ var vm_app = new Vue({
 			_this.edit_location_select = row.locationid;
 			_this.edit_area_select = row.areaid;
 			_this.edit_rack_select = row.rackid;
-			_this.edit_rackposition_select1 = row.rackposition1;
-			_this.edit_rackposition_select2 = row.rackposition2;
+			_this.edit_rackposition_select = row.rackposition1;
+			_this.edit_rackdepth_select = row.rackposition2;
 			_this.edit_functions = row.functions;
 			_this.edit_maintenanceinstructions = row.maintenanceinstructions;
 
@@ -1608,8 +1623,8 @@ var vm_app = new Vue({
 			var locationid = _this.edit_location_select;
 			var areaid = _this.edit_area_select;
 			var rackid = _this.edit_rack_select;
-			var rackposition = _this.edit_rackposition_select1;
-			var rackdepth = _this.edit_rackposition_select2;
+			var rackposition = _this.edit_rackposition_select;
+			var rackdepth = _this.edit_rackdepth_select;
 			var functions = _this.edit_functions;
 			var maintenanceinstructions = _this.edit_maintenanceinstructions;
 
@@ -1900,7 +1915,7 @@ var vm_app = new Vue({
 
 		// 所在机架高度
 		for (var i=1;i<=50;i++) {
-			_this.edit_rackposition_options1.push({label: i, value: i});
+			_this.edit_rackposition_options.push({label: i, value: i});
 		}
 
 
