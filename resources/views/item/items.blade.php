@@ -209,10 +209,9 @@
 		<i-form :label-width="100">
 		<i-row>
 			<i-col span="12">
-				
 				<Form-Item label="状态" required style="margin-bottom:0px">
-					<i-select v-model.lazy="edit_status_select" size="small" placeholder="">
-						<i-option v-for="item in edit_status_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+					<i-select v-model.lazy="edit_statustype_select" size="small" placeholder="">
+						<i-option v-for="item in edit_statustype_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
 					</i-select>
 				</Form-Item>
 				<Form-Item label="使用者" style="margin-bottom:0px">
@@ -235,6 +234,9 @@
 						<i-option v-for="item in edit_rack_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
 					</i-select>
 				</Form-Item>
+			</i-col>
+
+			<i-col span="12">
 				<Form-Item label="所在机架高度" style="margin-bottom:0px">
 					<i-select v-model.lazy="edit_rackposition_select1" size="small" placeholder="">
 						<i-option v-for="item in edit_rackposition_options1" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
@@ -249,12 +251,11 @@
 					</span>
 				</Form-Item>
 				<Form-Item label="功能用途" style="margin-bottom:0px">
-					<i-input v-model.lazy="edit_function" size="small"></i-input>
+					<i-input v-model.lazy="edit_functions" size="small"></i-input>
 				</Form-Item>
 				<Form-Item label="具体使用说明" style="margin-bottom:0px">
 					<i-input v-model.lazy="edit_maintenanceinstructions" size="small" type="textarea" :rows="4"></i-input>
 				</Form-Item>
-
 			</i-col>
 		</i-row>
 		</i-form>
@@ -305,9 +306,6 @@ var vm_app = new Vue({
 		// 删除按钮禁用
 		items_delete_disabled: true,
 
-		// 
-		edit_statustype_options: [],
-
 		// 主编辑变量
 		modal_edit_items_properties: false,
 		modal_edit_items_usage: false,
@@ -334,28 +332,33 @@ var vm_app = new Vue({
 		edit_assettag: '',
 
 		// 参数变量 - 使用
-		edit_status_select: '',
 		edit_status_options: [],
+		edit_statustype_select: '',
+		edit_statustype_options: [],
 		edit_user_select: '',
-		edit_user_options: [],
+		edit_user_options: [
+			{label: 'admin1', value: 1},
+			{label: 'user1', value: 2},
+		],
 		edit_location_select: '',
 		edit_location_options: [],
 		edit_area_select: '',
 		edit_area_options: [],
+		edit_area_options_list: [],
 		edit_rack_select: '',
 		edit_rack_options: [],
 		edit_rackposition_select1: '',
 		edit_rackposition_options1: [],
 		edit_rackposition_select2: '',
 		edit_rackposition_options2: [
-			{label: 'FM-', value: 'FM-'},
-			{label: '-MB', value: '-MB'},
-			{label: 'F--', value: 'F--'},
-			{label: '-M-', value: '-M-'},
-			{label: '--B', value: '--B'},
-			{label: 'FMB', value: 'FMB'},
+			{label: 'FM-', value: 1},
+			{label: '-MB', value: 2},
+			{label: 'F--', value: 3},
+			{label: '-M-', value: 4},
+			{label: '--B', value: 5},
+			{label: 'FMB', value: 6},
 		],
-		edit_function: '',
+		edit_functions: '',
 		edit_maintenanceinstructions: '',
 
 		// 参数变量 - 保修
@@ -430,7 +433,7 @@ var vm_app = new Vue({
 				align: 'center',
 				width: 50,
 				render: (h, params) => {
-					return h('span', vm_app.edit_statustype_options.map((item, index) => {
+					return h('span', vm_app.edit_status_options.map((item, index) => {
 						if (params.row.status == item.id) {
 							return  h('Tooltip', {
 								props: {
@@ -576,24 +579,46 @@ var vm_app = new Vue({
 						key: 'status',
 						width: 100,
 						className: 'table-info-column-usage',
+						render: (h, params) => {
+							return h('span', vm_app.edit_status_options.map((item, index) => {
+								return params.row.status == item.id && h('span', {}, item.statusdesc)
+							}));
+						}
 					},
 					{
 						title: '使用者',
 						key: 'userid',
 						width: 100,
 						className: 'table-info-column-usage',
+						render: (h, params) => {
+							return h('span', vm_app.edit_user_options.map((item, index) => {
+								return params.row.userid == item.value && h('span', {}, item.label)
+							}));
+						}
 					},
 					{
 						title: '位置/楼层',
 						key: 'locationid',
-						width: 100,
+						width: 180,
 						className: 'table-info-column-usage',
+						render: (h, params) => {
+							return h('span', vm_app.edit_location_options.map((item, index) => {
+								return params.row.locationid == item.value && h('span', {}, item.label)
+							}));
+						}
 					},
 					{
 						title: '区域/房间',
 						key: 'areaid',
-						width: 100,
+						width: 210,
 						className: 'table-info-column-usage',
+						render: (h, params) => {
+							return h('span', vm_app.edit_area_options_list.map(item => {
+								if (params.row.locationid + '-' + params.row.areaid == item.value) {
+									return h('p', {}, item.label)
+								}
+							}))
+						}
 					},
 					{
 						title: '机柜',
@@ -615,7 +640,7 @@ var vm_app = new Vue({
 					},
 					{
 						title: '功能用途',
-						key: 'function',
+						key: 'functions',
 						width: 100,
 						className: 'table-info-column-usage',
 					},
@@ -1088,11 +1113,29 @@ var vm_app = new Vue({
 		// 把laravel返回的结果转换成select能接受的格式
 		json2selectvalue (json) {
 			var arr = [];
-			for (var key in json) {
-				// alert(key);
-				// alert(json[key]);
-				// arr.push({ obj.['value'] = key, obj.['label'] = json[key] });
-				arr.push({ value: key, label: json[key] });
+			var arr1 = [];
+			var arr_tmp;
+			for (var k in json) {
+				arr.push({ value: json[k].id, label: json[k].title+' ('+json[k].building+' / '+json[k].floor+')' });
+				
+				arr_tmp = json[k].areas;
+
+				for (var kk in arr_tmp) {
+					arr1.push({ value: json[k].id+'-'+kk, label: arr_tmp[kk].name+' [x1: '+arr_tmp[kk].x1+',y1: '+arr_tmp[kk].y2+'], [x2: '+arr_tmp[kk].x2+',y2: '+arr_tmp[kk].y2+'])' });
+				}
+			}
+			// return arr;
+			// return arr.reverse();
+			this.edit_location_options = arr;
+			this.edit_area_options_list = arr1;
+		},
+
+
+		// 把laravel返回的结果转换成select能接受的格式
+		json2selectvalue_location2area (json) {
+			var arr = [];
+			for (var k in json) {
+				arr.push({ value: parseInt(k), label: json[k].name+' [x1: '+json[k].x1+',y1: '+json[k].y2+'], [x2: '+json[k].x2+',y2: '+json[k].y2+'])' });
 			}
 			return arr;
 			// return arr.reverse();
@@ -1115,7 +1158,6 @@ var vm_app = new Vue({
 				page = 1;
 			}
 			
-
 			_this.loadingbarstart();
 			var url = "{{ route('item.itemsgets') }}";
 			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
@@ -1186,10 +1228,10 @@ var vm_app = new Vue({
 				}
 
 				if (response.data) {
-					// response.data.data.map(function (v, i) {
-					// 	_this.edit_statustype_options.push({value: v.id, label: v.statusdesc});
-					// });
-					_this.edit_statustype_options = response.data.data;
+					response.data.data.map(function (v, i) {
+						_this.edit_statustype_options.push({value: v.id, label: v.statusdesc});
+					});
+					_this.edit_status_options = response.data.data;
 				}
 
 				
@@ -1266,9 +1308,10 @@ var vm_app = new Vue({
 					return false;
 				}
 				if (response.data) {
-					response.data.data.map(function (v, i) {
-						_this.edit_location_options.push({value: v.id, label: v.title+' ('+v.building+' / '+v.floor+')'});
-					});
+					_this.json2selectvalue(response.data.data);
+					// response.data.data.map(function (v, i) {
+					// 	_this.edit_location_options.push({value: v.id, label: v.title+' ('+v.building+' / '+v.floor+')'});
+					// });
 				}
 			})
 			.catch(function (error) {
@@ -1278,13 +1321,10 @@ var vm_app = new Vue({
 		// 根据位置查询区域/房间
 		onchange_location () {
 			var _this = this;
-			
-			var locationid = _this.add_location_select;
-			
+			var locationid = _this.edit_location_select;
 			if (locationid == '' || locationid == undefined) {
 				return false;
 			}
-			
 			var url = "{{ route('rack.location2area') }}";
 			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
 			axios.get(url,{
@@ -1293,20 +1333,18 @@ var vm_app = new Vue({
 				}
 			})
 			.then(function (response) {
-				// console.log(response.data.areas);return false;
-
 				if (response.data['jwt'] == 'logout') {
 					_this.alert_logout();
 					return false;
 				}
-
-				if (response.data) {
-					_this.edit_area_select = '';
-					_this.edit_area_options = [];
-					response.data.areas.map(function (v, i) {
-						_this.edit_area_options.push({value: i, label: v.name+' [x1: '+v.x1+',y1: '+v.y2+'], [x2: '+v.x2+',y2: '+v.y2+'])'});
-					});
-				}
+				_this.edit_area_options = _this.json2selectvalue_location2area(response.data.areas);
+				// if (response.data) {
+				// 	_this.edit_area_select = '';
+				// 	_this.edit_area_options = [];
+				// 	response.data.areas.map(function (v, i) {
+				// 		_this.edit_area_options.push({value: i, label: v.name+' [x1: '+v.x1+',y1: '+v.y2+'], [x2: '+v.x2+',y2: '+v.y2+'])'});
+				// 	});
+				// }
 			})
 			.catch(function (error) {
 			})
@@ -1361,14 +1399,14 @@ var vm_app = new Vue({
 			_this.edit_assettag = row.assettag;
 
 			// // 参数变量 - 使用
-			// _this.edit_status_select = row.status;
+			// _this.edit_statustype_select = row.status;
 			// _this.edit_user_select = row.user;
 			// _this.edit_location_select = row.location;
 			// _this.edit_area_select = row.area;
 			// _this.edit_rack_select = row.rack;
 			// _this.edit_rackposition_select1 = row.rackposition1;
 			// _this.edit_rackposition_select2 = row.rackposition2;
-			// _this.edit_function = row.function;
+			// _this.edit_functions = row.function;
 			// _this.edit_maintenanceinstructions = row.maintenanceinstructions;
 
 			// // 参数变量 - 保修
@@ -1412,16 +1450,18 @@ var vm_app = new Vue({
 			_this.edit_updated_at = row.updated_at;
 
 			// 参数变量 - 使用
-			_this.edit_status_select = row.status;
-			_this.edit_user_select = row.user;
-			_this.edit_location_select = row.location;
-			_this.edit_area_select = row.area;
-			_this.edit_rack_select = row.rack;
+			_this.edit_statustype_select = row.status;
+			_this.edit_user_select = row.userid;
+			_this.edit_location_select = row.locationid;
+			_this.edit_area_select = row.areaid;
+			_this.edit_rack_select = row.rackid;
 			_this.edit_rackposition_select1 = row.rackposition1;
 			_this.edit_rackposition_select2 = row.rackposition2;
-			_this.edit_function = row.function;
+			_this.edit_functions = row.functions;
 			_this.edit_maintenanceinstructions = row.maintenanceinstructions;
 
+			_this.onchange_location();
+			
 			_this.modal_edit_items_usage = true;
 		},
 
@@ -1516,7 +1556,6 @@ var vm_app = new Vue({
 				return false;
 			}
 
-
 			var url = "{{ route('item.itemsupdate_properties') }}";
 			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
 			axios.post(url, {
@@ -1546,7 +1585,7 @@ var vm_app = new Vue({
 				
 				if (response.data) {
 					_this.success(false, '成功', '更新成功！');
-						_this.itemsgets(_this.page_current, _this.page_last);
+					_this.itemsgets(_this.page_current, _this.page_last);
 				} else {
 					_this.error(false, '失败', '更新失败！');
 				}
@@ -1564,23 +1603,17 @@ var vm_app = new Vue({
 			var id = _this.edit_id;
 			var updated_at = _this.edit_updated_at;
 
-			var title = _this.edit_title;
-			var itemtypeid = _this.edit_itemtype_select;
-			var ispart = _this.edit_ispart;
-			var rackmountable = _this.edit_rackmountable;
-			var agentid = _this.edit_agent_select;
-			var model = _this.edit_model;
-			var usize = _this.edit_usize_select;
-			var assettag = _this.edit_assettag;
-			var sn1 = _this.edit_sn1;
-			var sn2 = _this.edit_sn2;
-			var servicetag = _this.edit_servicetag;
-			var comments = _this.edit_comments;
+			var status = _this.edit_statustype_select;
+			var userid = _this.edit_user_select;
+			var locationid = _this.edit_location_select;
+			var areaid = _this.edit_area_select;
+			var rackid = _this.edit_rack_select;
+			var rackposition = _this.edit_rackposition_select1;
+			var rackdepth = _this.edit_rackposition_select2;
+			var functions = _this.edit_functions;
+			var maintenanceinstructions = _this.edit_maintenanceinstructions;
 
-			if (id == undefined || title == '' || title == undefined
-				|| itemtypeid == '' || itemtypeid == undefined
-				|| agentid == '' || agentid == undefined
-				|| model == '' || model == undefined) {
+			if (id == undefined || status == '' || status == undefined) {
 				_this.error(false, '错误', '内容为空或不正确！');
 				return false;
 			}
@@ -1591,18 +1624,15 @@ var vm_app = new Vue({
 				id: id,
 				updated_at: updated_at,
 				// 参数变量 - 属性
-				title: title,
-				itemtypeid: itemtypeid,
-				ispart: ispart,
-				rackmountable: rackmountable,
-				agentid: agentid,
-				model: model,
-				usize: usize,
-				assettag: assettag,
-				sn1: add_sn1,
-				sn2: add_sn2,
-				servicetag: servicetag,
-				comments: comments,
+				status: status,
+				userid: userid,
+				locationid: locationid,
+				areaid: areaid,
+				rackid: rackid,
+				rackposition: rackposition,
+				rackdepth: rackdepth,
+				functions: functions,
+				maintenanceinstructions: maintenanceinstructions,
 			})
 			.then(function (response) {
 				// console.log(response.data);return false;
@@ -1834,43 +1864,7 @@ var vm_app = new Vue({
 		},
 		
 
-		// 根据位置查询区域/房间
-		onchange_location () {
-			var _this = this;
-			
-			var locationid = _this.add_location_select;
-			
-			if (locationid == '' || locationid == undefined) {
-				return false;
-			}
-			
-			var url = "{{ route('rack.location2area') }}";
-			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
-			axios.get(url,{
-				params: {
-					locationid: locationid,
-				}
-			})
-			.then(function (response) {
-				// console.log(response.data.areas);return false;
 
-				if (response.data['jwt'] == 'logout') {
-					_this.alert_logout();
-					return false;
-				}
-
-				if (response.data) {
-					_this.edit_area_select = '';
-					_this.edit_area_options = [];
-					response.data.areas.map(function (v, i) {
-						_this.edit_area_options.push({value: i, label: v.name+' [x1: '+v.x1+',y1: '+v.y2+'], [x2: '+v.x2+',y2: '+v.y2+'])'});
-					});
-				}
-			})
-			.catch(function (error) {
-				// this.error(false, 'Error', error);
-			})
-		},
 
 		
 

@@ -41,7 +41,7 @@ class Item_itemsTableSeeder extends Seeder
                 'rackid' => NULL,
                 'rackposition' => NULL,
                 'rackdepth' => NULL,
-                'function' => 'Software Firewall',
+                'functions' => 'Software Firewall',
                 'maintenanceinstructions' => NULL,
 
                 'shop' => NULL,

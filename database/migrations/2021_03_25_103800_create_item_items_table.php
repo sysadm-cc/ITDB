@@ -33,9 +33,9 @@ class CreateItemItemsTable extends Migration
             $table->integer('locationid')->nullable()->unsigned()->comment('位置/楼层');
             $table->integer('areaid')->nullable()->unsigned()->comment('位置场所编号');
             $table->string('rackid')->nullable()->comment('机柜编号');
-            $table->integer('rackposition')->nullable()->unsigned()->comment('所在机柜高度');
-            $table->integer('rackdepth')->nullable()->unsigned()->comment('所在机柜深度');
-            $table->string('function')->nullable()->comment('功能用途');
+            $table->unsignedTinyInteger('rackposition')->nullable()->comment('所在机柜高度');
+            $table->unsignedTinyInteger('rackdepth')->nullable()->comment('所在机柜深度');
+            $table->string('functions')->nullable()->comment('功能用途');
             $table->string('maintenanceinstructions')->nullable()->comment('具体使用说明');
             
             $table->string('shop')->nullable()->comment('经销商');

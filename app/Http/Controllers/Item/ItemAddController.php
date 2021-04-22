@@ -87,7 +87,7 @@ class ItemAddController extends Controller
 		$add_rack_select = $request->input('add_rack_select');
 		$add_rackposition_select1 = $request->input('add_rackposition_select1');
 		$add_rackposition_select2 = $request->input('add_rackposition_select2');
-		$add_function = $request->input('add_function');
+		$add_functions = $request->input('add_functions');
 		$add_maintenanceinstructions = $request->input('add_maintenanceinstructions');
 
 		// 参数变量 - 保修
@@ -146,7 +146,7 @@ class ItemAddController extends Controller
 				'rackid' => $add_rack_select,
 				'rackposition' => $add_rackposition_select1,
 				'rackdepth' => $add_rackposition_select2,
-				'function' => $add_function,
+				'functions' => $add_functions,
 				'maintenanceinstructions' => $add_maintenanceinstructions,
                 
 				// 参数变量 - 保修

@@ -128,7 +128,7 @@
 						</span>
 					</Form-Item>
 					<Form-Item label="功能用途" style="margin-bottom:0px">
-						<i-input v-model.lazy="add_function" size="small"></i-input>
+						<i-input v-model.lazy="add_functions" size="small"></i-input>
 					</Form-Item>
 					<Form-Item label="具体使用说明" style="margin-bottom:0px">
 						<i-input v-model.lazy="add_maintenanceinstructions" size="small" type="textarea" :rows="4"></i-input>
@@ -366,8 +366,8 @@ var vm_app = new Vue({
 		],
 		add_user_select: '',
 		add_user_options: [
-			{label: 'admin', value: 1},
-			{label: 'user', value: 2},
+			{label: 'admin1', value: 1},
+			{label: 'user1', value: 2},
 			{label: 3, value: 3},
 		],
 		add_location_select: '',
@@ -390,14 +390,14 @@ var vm_app = new Vue({
 		],
 		add_rackposition_select2: '',
 		add_rackposition_options2: [
-			{label: 'FM-', value: 'FM-'},
-			{label: '-MB', value: '-MB'},
-			{label: 'F--', value: 'F--'},
-			{label: '-M-', value: '-M-'},
-			{label: '--B', value: '--B'},
-			{label: 'FMB', value: 'FMB'},
+			{label: 'FM-', value: 1},
+			{label: '-MB', value: 2},
+			{label: 'F--', value: 3},
+			{label: '-M-', value: 4},
+			{label: '--B', value: 5},
+			{label: 'FMB', value: 6},
 		],
-		add_function: '',
+		add_functions: '',
 		add_maintenanceinstructions: '',
 
 		// 参数变量 - 保修
@@ -549,7 +549,7 @@ var vm_app = new Vue({
 			_this.add_rack_select = '';
 			_this.add_rackposition_select1 = '';
 			_this.add_rackposition_select2 = '';
-			_this.add_function = '';
+			_this.add_functions = '';
 			_this.add_maintenanceinstructions = '';
 
 			// 参数变量 - 保修
@@ -611,7 +611,7 @@ var vm_app = new Vue({
 			var add_rack_select = _this.add_rack_select;
 			var add_rackposition_select1 = _this.add_rackposition_select1;
 			var add_rackposition_select2 = _this.add_rackposition_select2;
-			var add_function = _this.add_function;
+			var add_functions = _this.add_functions;
 			var add_maintenanceinstructions = _this.add_maintenanceinstructions;
 
 			// 参数变量 - 保修
@@ -679,7 +679,7 @@ var vm_app = new Vue({
 				add_rack_select: add_rack_select,
 				add_rackposition_select1: add_rackposition_select1,
 				add_rackposition_select2: add_rackposition_select2,
-				add_function: add_function,
+				add_functions: add_functions,
 				add_maintenanceinstructions: add_maintenanceinstructions,
 
 				// 参数变量 - 保修
