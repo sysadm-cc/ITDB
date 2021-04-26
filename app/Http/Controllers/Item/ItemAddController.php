@@ -100,8 +100,8 @@ class ItemAddController extends Controller
 		$add_harddisk = $request->input('add_harddisk');
 		$add_ram = $request->input('add_ram');
 		$add_cpumodel = $request->input('add_cpumodel');
-		$add_cpus_select = $request->input('add_cpus_select');
-		$add_cpucores_select = $request->input('add_cpucores_select');
+		$add_cpuno = $request->input('add_cpuno');
+		$add_cpucores = $request->input('add_cpucores');
 
 		// 参数变量 - 网络
 		$add_dns = $request->input('add_dns');
@@ -160,9 +160,9 @@ class ItemAddController extends Controller
 				'motherboard' => $add_motherboard,
 				'hd' => $add_harddisk,
 				'ram' => $add_ram,
-				'cpu' => $add_cpumodel,
-				'cpuno' => $add_cpus_select,
-				'corespercpu' => $add_cpucores_select,
+				'cpumodel' => $add_cpumodel,
+				'cpuno' => $add_cpuno,
+				'cpucores' => $add_cpucores,
                 
 				// 参数变量 - 网络
 				'dns' => $add_dns,

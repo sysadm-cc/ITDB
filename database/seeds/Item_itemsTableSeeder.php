@@ -53,9 +53,9 @@ class Item_itemsTableSeeder extends Seeder
                 'motherboard' => NULL,
                 'hd' => NULL,
                 'ram' => NULL,
-                'cpu' => NULL,
+                'cpumodel' => NULL,
                 'cpuno' => NULL,
-                'corespercpu' => NULL,
+                'cpucores' => NULL,
 
                 'dns' => 'sysadm.local',
                 'maclan' => NULL,

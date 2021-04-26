@@ -295,6 +295,40 @@
 	</div>	
 </Modal>
 
+<!-- 主编辑窗口 misc-->
+<Modal v-model="modal_edit_items_misc" @on-ok="update_items_misc" ok-text="保存" title="编辑 - 配件信息" width="320">
+	<div style="text-align:left">
+
+		<p>
+		<i-form :label-width="100">
+		<i-row>
+			<i-col span="24">
+				<Form-Item label="主板" style="margin-bottom:0px">
+					<i-input v-model.lazy="edit_motherboard" size="small"></i-input>
+				</Form-Item>
+				<Form-Item label="硬盘" style="margin-bottom:0px">
+					<i-input v-model.lazy="edit_harddisk" size="small"></i-input>
+				</Form-Item>
+				<Form-Item label="内存" style="margin-bottom:0px">
+					<i-input v-model.lazy="edit_ram" size="small"></i-input>
+				</Form-Item>
+				<Form-Item label="CPU型号" style="margin-bottom:0px">
+					<i-input v-model.lazy="edit_cpumodel" size="small"></i-input>
+				</Form-Item>
+				<Form-Item label="CPU数量" style="margin-bottom:0px">
+					<Input-Number v-model.lazy="edit_cpuno" size="small" :min="1" :max="255"></Input-Number>
+				</Form-Item>
+				<Form-Item label="CPU内核数" style="margin-bottom:0px">
+					<Input-Number v-model.lazy="edit_cpucores" size="small" :min="1" :max="255"></Input-Number>
+				</Form-Item>
+			</i-col>
+		</i-row>
+		</i-form>
+		</p>
+		&nbsp;<br>
+	</div>	
+</Modal>
+
 
 
 @endsection
@@ -406,18 +440,8 @@ var vm_app = new Vue({
 		edit_harddisk: '',
 		edit_ram: '',
 		edit_cpumodel: '',
-		edit_cpus_select: '',
-		edit_cpus_options: [
-			{label: 1, value: 1},
-			{label: 2, value: 2},
-			{label: 3, value: 3},
-		],
-		edit_cpucores_select: '',
-		edit_cpucores_options: [
-			{label: 1, value: 1},
-			{label: 2, value: 2},
-			{label: 3, value: 3},
-		],
+		edit_cpuno: '',
+		edit_cpucores: '',
 
 		// 参数变量 - 网络
 		edit_dns: '',
@@ -757,20 +781,20 @@ var vm_app = new Vue({
 					},
 					{
 						title: 'CPU',
-						key: 'cpu',
+						key: 'cpumodel',
 						width: 100,
 						className: 'table-info-column-misc',
 					},
 					{
 						title: 'CPU数量',
 						key: 'cpuno',
-						width: 100,
+						width: 70,
 						className: 'table-info-column-misc',
 					},
 					{
-						title: '每CPU内核数量',
-						key: 'corespercpu',
-						width: 100,
+						title: '内核数量',
+						key: 'cpucores',
+						width: 70,
 						className: 'table-info-column-misc',
 					},
 				]
@@ -1470,8 +1494,8 @@ var vm_app = new Vue({
 			// _this.edit_harddisk = row.harddisk;
 			// _this.edit_ram = row.ram;
 			// _this.edit_cpumodel = row.cpumodel;
-			// _this.edit_cpus_select = row.cpus;
-			// _this.edit_cpucores_select = row.cpucores;
+			// _this.edit_cpuno = row.cpuno;
+			// _this.edit_cpucores = row.cpucores;
 
 			// // 参数变量 - 网络
 			// _this.edit_dns = row.dns;
@@ -1542,11 +1566,11 @@ var vm_app = new Vue({
 
 			// 参数变量 - 配件
 			_this.edit_motherboard = row.motherboard;
-			_this.edit_harddisk = row.harddisk;
+			_this.edit_harddisk = row.hd;
 			_this.edit_ram = row.ram;
 			_this.edit_cpumodel = row.cpumodel;
-			_this.edit_cpus_select = row.cpus;
-			_this.edit_cpucores_select = row.cpucores;
+			_this.edit_cpuno = row.cpuno;
+			_this.edit_cpucores = row.cpucores;
 
 			_this.modal_edit_items_misc = true;
 		},
@@ -1760,31 +1784,20 @@ var vm_app = new Vue({
 		// 主编辑保存 - items misc
 		update_items_misc () {
 			var _this = this;
-
 			var id = _this.edit_id;
 			var updated_at = _this.edit_updated_at;
 
-			var title = _this.edit_title;
-			var itemtypeid = _this.edit_itemtype_select;
-			var ispart = _this.edit_ispart;
-			var rackmountable = _this.edit_rackmountable;
-			var agentid = _this.edit_agent_select;
-			var model = _this.edit_model;
-			var usize = _this.edit_usize_select;
-			var assettag = _this.edit_assettag;
-			var sn1 = _this.edit_sn1;
-			var sn2 = _this.edit_sn2;
-			var servicetag = _this.edit_servicetag;
-			var comments = _this.edit_comments;
+			var motherboard = _this.edit_motherboard;
+			var harddisk = _this.edit_harddisk;
+			var ram = _this.edit_ram;
+			var cpumodel = _this.edit_cpumodel;
+			var cpuno = _this.edit_cpuno;
+			var cpucores = _this.edit_cpucores;
 
-			if (id == undefined || title == '' || title == undefined
-				|| itemtypeid == '' || itemtypeid == undefined
-				|| agentid == '' || agentid == undefined
-				|| model == '' || model == undefined) {
+			if (id == undefined) {
 				_this.error(false, '错误', '内容为空或不正确！');
 				return false;
 			}
-
 
 			var url = "{{ route('item.itemsupdate_misc') }}";
 			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
@@ -1792,18 +1805,12 @@ var vm_app = new Vue({
 				id: id,
 				updated_at: updated_at,
 				// 参数变量 - 属性
-				title: title,
-				itemtypeid: itemtypeid,
-				ispart: ispart,
-				rackmountable: rackmountable,
-				agentid: agentid,
-				model: model,
-				usize: usize,
-				assettag: assettag,
-				sn1: add_sn1,
-				sn2: add_sn2,
-				servicetag: servicetag,
-				comments: comments,
+				motherboard: motherboard,
+				harddisk: harddisk,
+				ram: ram,
+				cpumodel: cpumodel,
+				cpuno: cpuno,
+				cpucores: cpucores,
 			})
 			.then(function (response) {
 				// console.log(response.data);return false;

@@ -180,14 +180,10 @@
 						<i-input v-model.lazy="add_cpumodel" size="small"></i-input>
 					</Form-Item>
 					<Form-Item label="CPU数量" style="margin-bottom:0px">
-						<i-select v-model.lazy="add_cpus_select" size="small" placeholder="">
-							<i-option v-for="item in add_cpus_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
-						</i-select>
+						<Input-Number v-model.lazy="add_cpuno" size="small" :min="1" :max="255"></Input-Number>
 					</Form-Item>
 					<Form-Item label="CPU内核数" style="margin-bottom:0px">
-						<i-select v-model.lazy="add_cpucores_select" size="small" placeholder="">
-							<i-option v-for="item in add_cpucores_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
-						</i-select>
+						<Input-Number v-model.lazy="add_cpucores" size="small" :min="1" :max="255"></Input-Number>
 					</Form-Item>
 
 				</i-form>
@@ -412,18 +408,8 @@ var vm_app = new Vue({
 		add_harddisk: '',
 		add_ram: '',
 		add_cpumodel: '',
-		add_cpus_select: '',
-		add_cpus_options: [
-			{label: 1, value: 1},
-			{label: 2, value: 2},
-			{label: 3, value: 3},
-		],
-		add_cpucores_select: '',
-		add_cpucores_options: [
-			{label: 1, value: 1},
-			{label: 2, value: 2},
-			{label: 3, value: 3},
-		],
+		add_cpuno: '',
+		add_cpucores: '',
 
 		// 参数变量 - 网络
 		add_dns: '',
@@ -564,8 +550,8 @@ var vm_app = new Vue({
 			_this.add_harddisk = '';
 			_this.add_ram = '';
 			_this.add_cpumodel = '';
-			_this.add_cpus_select = '';
-			_this.add_cpucores_select = '';
+			_this.add_cpuno = '';
+			_this.add_cpucores = '';
 
 			// 参数变量 - 网络
 			_this.add_dns = '';
@@ -626,8 +612,8 @@ var vm_app = new Vue({
 			var add_harddisk = _this.add_harddisk;
 			var add_ram = _this.add_ram;
 			var add_cpumodel = _this.add_cpumodel;
-			var add_cpus_select = _this.add_cpus_select;
-			var add_cpucores_select = _this.add_cpucores_select;
+			var add_cpuno = _this.add_cpuno;
+			var add_cpucores = _this.add_cpucores;
 
 			// 参数变量 - 网络
 			var add_dns = _this.add_dns;
@@ -694,8 +680,8 @@ var vm_app = new Vue({
 				add_harddisk: add_harddisk,
 				add_ram: add_ram,
 				add_cpumodel: add_cpumodel,
-				add_cpus_select: add_cpus_select,
-				add_cpucores_select: add_cpucores_select,
+				add_cpuno: add_cpuno,
+				add_cpucores: add_cpucores,
 
 				// 参数变量 - 网络
 				add_dns: add_dns,

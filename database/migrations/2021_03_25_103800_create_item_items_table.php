@@ -52,9 +52,9 @@ class CreateItemItemsTable extends Migration
             $table->string('motherboard')->nullable()->comment('主板');
             $table->string('hd')->nullable()->comment('硬盘');
             $table->string('ram')->nullable()->comment('内存');
-            $table->string('cpu')->nullable()->comment('CPU');
+            $table->string('cpumodel')->nullable()->comment('CPU型号');
             $table->unsignedTinyInteger('cpuno')->nullable()->comment('CPU数量');
-            $table->unsignedTinyInteger('corespercpu')->nullable()->comment('每CPU内核数量');
+            $table->unsignedTinyInteger('cpucores')->nullable()->comment('每CPU内核数量');
 
             // 网络
             $table->string('dns')->nullable()->comment('域名');

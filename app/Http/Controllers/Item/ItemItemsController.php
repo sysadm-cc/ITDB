@@ -275,18 +275,12 @@ class ItemItemsController extends Controller
 
 		$id = $request->input('id');
 		$updated_at = $request->input('updated_at');
-		$title = $request->input('title');
-		$itemtypeid = $request->input('itemtypeid');
-		$ispart = $request->input('ispart');
-		$rackmountable = $request->input('rackmountable');
-		$agentid = $request->input('agentid');
-		$model = $request->input('model');
-		$usize = $request->input('usize');
-		$assettag = $request->input('assettag');
-		$sn1 = $request->input('sn1');
-		$sn2 = $request->input('sn2');
-		$servicetag = $request->input('servicetag');
-		$comments = $request->input('comments');
+		$motherboard = $request->input('motherboard');
+		$harddisk = $request->input('harddisk');
+		$ram = $request->input('ram');
+		$cpumodel = $request->input('cpumodel');
+		$cpuno = $request->input('cpuno');
+		$cpucores = $request->input('cpucores');
 
 		// 判断如果不是最新的记录，不可被编辑
 		// 因为可能有其他人在你当前表格未刷新的情况下已经更新过了
@@ -301,23 +295,17 @@ class ItemItemsController extends Controller
 			DB::beginTransaction();
 			$result = Item_items::where('id', $id)
 				->update([
-					'title'			=> $title,
-					'itemtypeid'	=> $itemtypeid,
-					'ispart'		=> $ispart,
-					'rackmountable'	=> $rackmountable,
-					'agentid'		=> $agentid,
-					'model'			=> $model,
-					'usize'			=> $usize,
-					'assettag'		=> $assettag,
-					'sn1'			=> $sn1,
-					'sn2'			=> $sn2,
-					'servicetag'	=> $servicetag,
-					'comments'		=> $comments,
+					'motherboard'	=> $motherboard,
+					'hd'			=> $harddisk,
+					'ram'			=> $ram,
+					'cpumodel'		=> $cpumodel,
+					'cpuno'			=> $cpuno,
+					'cpucores'		=> $cpucores,
 				]);
 		}
 		catch (\Exception $e) {
 			DB::rollBack();
-			// dd('Message: ' .$e->getMessage());
+			dd('Message: ' .$e->getMessage());
 			$result = 0;
 		}
 		DB::commit();
