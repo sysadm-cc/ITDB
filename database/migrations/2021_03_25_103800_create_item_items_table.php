@@ -64,10 +64,10 @@ class CreateItemItemsTable extends Migration
             $table->string('ipv4wl')->nullable()->comment('无线ipv4');
             $table->string('ipv6lan')->nullable()->comment('有线ipv6');
             $table->string('ipv6wl')->nullable()->comment('无线ipv6');
-            $table->string('remadmip')->nullable()->comment('远程管理IP');
-            $table->string('panelport')->nullable()->comment('面板端口');
-            $table->unsignedInteger('switchid')->nullable()->comment('交换机编号');
-            $table->string('switchport')->nullable()->comment('接入交换机端口号');
+            $table->string('remoteadminip')->nullable()->comment('远程管理IP');
+            $table->unsignedInteger('switchid')->nullable()->comment('接入交换机编号');
+            $table->unsignedTinyInteger('panelport')->nullable()->comment('配线架端口');
+            $table->unsignedTinyInteger('switchport')->nullable()->comment('接入交换机端口号');
             $table->unsignedTinyInteger('ports')->nullable()->comment('网络端口数量');
 
             $table->timestamps();

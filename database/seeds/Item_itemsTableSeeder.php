@@ -64,9 +64,9 @@ class Item_itemsTableSeeder extends Seeder
                 'ipv4wl' => '10.0.0.2',
                 'ipv6lan' => NULL,
                 'ipv6wl' => NULL,
-                'remadmip' => NULL,
-                'panelport' => NULL,
+                'remoteadminip' => NULL,
                 'switchid' => NULL,
+                'panelport' => NULL,
                 'switchport' => NULL,
                 'ports' => NULL,
 

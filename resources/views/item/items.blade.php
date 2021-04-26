@@ -329,6 +329,66 @@
 	</div>	
 </Modal>
 
+<!-- 主编辑窗口 network-->
+<Modal v-model="modal_edit_items_network" @on-ok="update_items_network" ok-text="保存" title="编辑 - 网络相关" width="540">
+	<div style="text-align:left">
+
+		<p>
+		<i-form :label-width="100">
+		<i-row>
+			<i-col span="12">
+				<Form-Item label="域名" style="margin-bottom:0px">
+					<i-input v-model.lazy="edit_dns" size="small"></i-input>
+				</Form-Item>
+				<Form-Item label="有线MAC地址" style="margin-bottom:0px">
+					<i-input v-model.lazy="edit_maclan" size="small"></i-input>
+				</Form-Item>
+				<Form-Item label="无线MAC地址" style="margin-bottom:0px">
+					<i-input v-model.lazy="edit_macwl" size="small"></i-input>
+				</Form-Item>
+				<Form-Item label="有线IPV4" style="margin-bottom:0px">
+					<i-input v-model.lazy="edit_ipv4lan" size="small"></i-input>
+				</Form-Item>
+				<Form-Item label="无线IPV4" style="margin-bottom:0px">
+					<i-input v-model.lazy="edit_ipv4wl" size="small"></i-input>
+				</Form-Item>
+			</i-col>
+			<i-col span="12">
+				<Form-Item label="远程管理IP" style="margin-bottom:0px">
+					<i-input v-model.lazy="edit_remoteadminip" size="small"></i-input>
+				</Form-Item>
+				<Form-Item label="接入交换机" style="margin-bottom:0px">
+					<i-select v-model.lazy="edit_switch_select" size="small" placeholder="">
+						<i-option v-for="item in edit_switch_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+					</i-select>
+				</Form-Item>
+				<Form-Item label="配线架端口" style="margin-bottom:0px">
+					<Input-Number v-model.lazy="edit_panelport" size="small" :min="1" :max="255"></Input-Number>
+				</Form-Item>
+				<Form-Item label="交换机端口" style="margin-bottom:0px">
+					<Input-Number v-model.lazy="edit_switchport" size="small" :min="1" :max="255"></Input-Number>
+				</Form-Item>
+				<Form-Item label="网络端口数" style="margin-bottom:0px">
+					<Input-Number v-model.lazy="edit_networkports" size="small" :min="1" :max="255"></Input-Number>
+				</Form-Item>
+			</i-col>
+		</i-row>
+		<i-row>
+			<i-col span="24">
+				<Form-Item label="有线IPV6" style="margin-bottom:0px">
+					<i-input v-model.lazy="edit_ipv6lan" size="small"></i-input>
+				</Form-Item>
+				<Form-Item label="无线IPV6" style="margin-bottom:0px">
+					<i-input v-model.lazy="edit_ipv6wl" size="small"></i-input>
+				</Form-Item>
+			</i-col>
+		</i-row>
+		</i-form>
+		</p>
+		&nbsp;<br>
+	</div>	
+</Modal>
+
 
 
 @endsection
@@ -460,12 +520,7 @@ var vm_app = new Vue({
 			{label: 3, value: 3},
 		],
 		edit_switchport: '',
-		edit_networkports_select: '',
-		edit_networkports_options: [
-			{label: 1, value: 1},
-			{label: 2, value: 2},
-			{label: 3, value: 3},
-		],
+		edit_networkports: '',
 
 
 		tablecolumns: [
@@ -806,62 +861,62 @@ var vm_app = new Vue({
 					{
 						title: '域名',
 						key: 'dns',
-						width: 100
+						width: 120
 					},
 					{
 						title: '有线MAC地址',
 						key: 'maclan',
-						width: 100
+						width: 140
 					},
 					{
 						title: '无线MAC地址',
 						key: 'macwl',
-						width: 100
+						width: 140
 					},
 					{
 						title: '有线IPv4',
 						key: 'ipv4lan',
-						width: 100
+						width: 130
 					},
 					{
 						title: '无线IPv4',
 						key: 'ipv4wl',
-						width: 100
+						width: 130
 					},
 					{
 						title: '有线IPv6',
 						key: 'ipv6lan',
-						width: 100
+						width: 170
 					},
 					{
 						title: '无线IPv6',
 						key: 'ipv6wl',
-						width: 100
+						width: 170
 					},
 					{
 						title: '管理IP',
-						key: 'remadmip',
-						width: 100
+						key: 'remoteadminip',
+						width: 130
 					},
 					{
 						title: '面板端口',
 						key: 'panelport',
-						width: 100
+						width: 70
 					},
 					{
-						title: '交换机编号',
+						title: '接入交换机',
 						key: 'switchid',
 						width: 100
 					},
 					{
-						title: '接入交换机端口号',
+						title: '接入端口',
 						key: 'switchport',
-						width: 100
+						width: 70
 					},
 					{
-						title: '网络端口数量',
+						title: '端口数量',
 						key: 'ports',
-						width: 100
+						width: 70
 					},
 				]
 			},
@@ -1509,7 +1564,7 @@ var vm_app = new Vue({
 			// _this.edit_panelport = row.panelport;
 			// _this.edit_switch_select = row.switch;
 			// _this.edit_switchport = row.switchport;
-			// _this.edit_networkports_select = row.ports;
+			// _this.edit_networkports = row.ports;
 
 			_this.modal_edit_items_properties = true;
 		},
@@ -1595,7 +1650,7 @@ var vm_app = new Vue({
 			_this.edit_panelport = row.panelport;
 			_this.edit_switch_select = row.switch;
 			_this.edit_switchport = row.switchport;
-			_this.edit_networkports_select = row.ports;
+			_this.edit_networkports = row.ports;
 
 			_this.modal_edit_items_network = true;
 		},

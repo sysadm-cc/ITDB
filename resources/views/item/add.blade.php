@@ -223,13 +223,13 @@
 					<Form-Item label="远程管理IP" style="margin-bottom:0px">
 						<i-input v-model.lazy="add_remoteadminip" size="small"></i-input>
 					</Form-Item>
-					<Form-Item label="面板端口" style="margin-bottom:0px">
-						<i-input v-model.lazy="add_panelport" size="small"></i-input>
-					</Form-Item>
-					<Form-Item label="交换机" style="margin-bottom:0px">
+					<Form-Item label="接入交换机" style="margin-bottom:0px">
 						<i-select v-model.lazy="add_switch_select" size="small" placeholder="">
 							<i-option v-for="item in add_switch_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
 						</i-select>
+					</Form-Item>
+					<Form-Item label="配线架端口" style="margin-bottom:0px">
+						<Input-Number v-model.lazy="add_panelport" size="small" :min="1" :max="255"></Input-Number>
 					</Form-Item>
 					<Form-Item label="交换机端口" style="margin-bottom:0px">
 						<i-input v-model.lazy="add_switchport" size="small"></i-input>
