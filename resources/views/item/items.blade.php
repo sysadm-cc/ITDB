@@ -341,31 +341,31 @@
 					<i-input v-model.lazy="edit_dns" size="small"></i-input>
 				</Form-Item>
 				<Form-Item label="有线MAC地址" style="margin-bottom:0px">
-					<i-input v-model.lazy="edit_maclan" size="small"></i-input>
+					<i-input v-model.lazy="edit_maclan" size="small" maxlength="17"></i-input>
 				</Form-Item>
 				<Form-Item label="无线MAC地址" style="margin-bottom:0px">
-					<i-input v-model.lazy="edit_macwl" size="small"></i-input>
+					<i-input v-model.lazy="edit_macwl" size="small" maxlength="17"></i-input>
 				</Form-Item>
 				<Form-Item label="有线IPV4" style="margin-bottom:0px">
-					<i-input v-model.lazy="edit_ipv4lan" size="small"></i-input>
+					<i-input v-model.lazy="edit_ipv4lan" size="small" maxlength="15"></i-input>
 				</Form-Item>
 				<Form-Item label="无线IPV4" style="margin-bottom:0px">
-					<i-input v-model.lazy="edit_ipv4wl" size="small"></i-input>
+					<i-input v-model.lazy="edit_ipv4wl" size="small" maxlength="15"></i-input>
 				</Form-Item>
 			</i-col>
 			<i-col span="12">
 				<Form-Item label="远程管理IP" style="margin-bottom:0px">
-					<i-input v-model.lazy="edit_remoteadminip" size="small"></i-input>
+					<i-input v-model.lazy="edit_remoteadminip" size="small" maxlength="15"></i-input>
+				</Form-Item>
+				<Form-Item label="配线架端口" style="margin-bottom:0px">
+					<Input-Number v-model.lazy="edit_panelport" size="small" :min="1" :max="255"></Input-Number>
 				</Form-Item>
 				<Form-Item label="接入交换机" style="margin-bottom:0px">
 					<i-select v-model.lazy="edit_switch_select" size="small" placeholder="">
 						<i-option v-for="item in edit_switch_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
 					</i-select>
 				</Form-Item>
-				<Form-Item label="配线架端口" style="margin-bottom:0px">
-					<Input-Number v-model.lazy="edit_panelport" size="small" :min="1" :max="255"></Input-Number>
-				</Form-Item>
-				<Form-Item label="交换机端口" style="margin-bottom:0px">
+				<Form-Item label="接入端口" style="margin-bottom:0px">
 					<Input-Number v-model.lazy="edit_switchport" size="small" :min="1" :max="255"></Input-Number>
 				</Form-Item>
 				<Form-Item label="网络端口数" style="margin-bottom:0px">
@@ -899,9 +899,9 @@ var vm_app = new Vue({
 						width: 130
 					},
 					{
-						title: '面板端口',
+						title: '配线架端口',
 						key: 'panelport',
-						width: 70
+						width: 80
 					},
 					{
 						title: '接入交换机',
@@ -1802,7 +1802,6 @@ var vm_app = new Vue({
 				return false;
 			}
 
-
 			var url = "{{ route('item.itemsupdate_warranty') }}";
 			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
 			axios.post(url, {
@@ -1895,27 +1894,23 @@ var vm_app = new Vue({
 			var id = _this.edit_id;
 			var updated_at = _this.edit_updated_at;
 
-			var title = _this.edit_title;
-			var itemtypeid = _this.edit_itemtype_select;
-			var ispart = _this.edit_ispart;
-			var rackmountable = _this.edit_rackmountable;
-			var agentid = _this.edit_agent_select;
-			var model = _this.edit_model;
-			var usize = _this.edit_usize_select;
-			var assettag = _this.edit_assettag;
-			var sn1 = _this.edit_sn1;
-			var sn2 = _this.edit_sn2;
-			var servicetag = _this.edit_servicetag;
-			var comments = _this.edit_comments;
+			var dns = _this.edit_dns;
+			var maclan = _this.edit_maclan;
+			var macwl = _this.edit_macwl;
+			var ipv4lan = _this.edit_ipv4lan;
+			var ipv4wl = _this.edit_ipv4wl;
+			var ipv6lan = _this.edit_ipv6lan;
+			var ipv6wl = _this.edit_ipv6wl;
+			var remoteadminip = _this.edit_remoteadminip;
+			var panelport = _this.edit_panelport;
+			var switchid = _this.edit_switch_select;
+			var switchport = _this.edit_switchport;
+			var ports = _this.edit_networkports;
 
-			if (id == undefined || title == '' || title == undefined
-				|| itemtypeid == '' || itemtypeid == undefined
-				|| agentid == '' || agentid == undefined
-				|| model == '' || model == undefined) {
+			if (id == undefined) {
 				_this.error(false, '错误', '内容为空或不正确！');
 				return false;
 			}
-
 
 			var url = "{{ route('item.itemsupdate_network') }}";
 			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
@@ -1923,18 +1918,18 @@ var vm_app = new Vue({
 				id: id,
 				updated_at: updated_at,
 				// 参数变量 - 属性
-				title: title,
-				itemtypeid: itemtypeid,
-				ispart: ispart,
-				rackmountable: rackmountable,
-				agentid: agentid,
-				model: model,
-				usize: usize,
-				assettag: assettag,
-				sn1: add_sn1,
-				sn2: add_sn2,
-				servicetag: servicetag,
-				comments: comments,
+				dns: dns,
+				maclan: maclan,
+				macwl: macwl,
+				ipv4lan: ipv4lan,
+				ipv4wl: ipv4wl,
+				ipv6lan: ipv6lan,
+				ipv6wl: ipv6wl,
+				remoteadminip: remoteadminip,
+				panelport: panelport,
+				switchid: switchid,
+				switchport: switchport,
+				ports: ports,
 			})
 			.then(function (response) {
 				// console.log(response.data);return false;

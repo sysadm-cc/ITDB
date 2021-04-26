@@ -203,16 +203,16 @@
 						<i-input v-model.lazy="add_dns" size="small"></i-input>
 					</Form-Item>
 					<Form-Item label="有线MAC地址" style="margin-bottom:0px">
-						<i-input v-model.lazy="add_maclan" size="small"></i-input>
+						<i-input v-model.lazy="add_maclan" size="small" maxlength="17"></i-input>
 					</Form-Item>
 					<Form-Item label="无线MAC地址" style="margin-bottom:0px">
-						<i-input v-model.lazy="add_macwl" size="small"></i-input>
+						<i-input v-model.lazy="add_macwl" size="small" maxlength="17"></i-input>
 					</Form-Item>
 					<Form-Item label="有线IPV4" style="margin-bottom:0px">
-						<i-input v-model.lazy="add_ipv4lan" size="small"></i-input>
+						<i-input v-model.lazy="add_ipv4lan" size="small" maxlength="15"></i-input>
 					</Form-Item>
 					<Form-Item label="无线IPV4" style="margin-bottom:0px">
-						<i-input v-model.lazy="add_ipv4wl" size="small"></i-input>
+						<i-input v-model.lazy="add_ipv4wl" size="small" maxlength="15"></i-input>
 					</Form-Item>
 					<Form-Item label="有线IPV6" style="margin-bottom:0px">
 						<i-input v-model.lazy="add_ipv6lan" size="small"></i-input>
@@ -221,17 +221,17 @@
 						<i-input v-model.lazy="add_ipv6wl" size="small"></i-input>
 					</Form-Item>
 					<Form-Item label="远程管理IP" style="margin-bottom:0px">
-						<i-input v-model.lazy="add_remoteadminip" size="small"></i-input>
+						<i-input v-model.lazy="add_remoteadminip" size="small" maxlength="15"></i-input>
+					</Form-Item>
+					<Form-Item label="配线架端口" style="margin-bottom:0px">
+						<Input-Number v-model.lazy="add_panelport" size="small" :min="1" :max="255"></Input-Number>
 					</Form-Item>
 					<Form-Item label="接入交换机" style="margin-bottom:0px">
 						<i-select v-model.lazy="add_switch_select" size="small" placeholder="">
 							<i-option v-for="item in add_switch_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
 						</i-select>
 					</Form-Item>
-					<Form-Item label="配线架端口" style="margin-bottom:0px">
-						<Input-Number v-model.lazy="add_panelport" size="small" :min="1" :max="255"></Input-Number>
-					</Form-Item>
-					<Form-Item label="交换机端口" style="margin-bottom:0px">
+					<Form-Item label="接入端口" style="margin-bottom:0px">
 						<i-input v-model.lazy="add_switchport" size="small"></i-input>
 					</Form-Item>
 					<Form-Item label="网络端口数" style="margin-bottom:0px">
