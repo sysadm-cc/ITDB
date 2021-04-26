@@ -106,10 +106,12 @@
 	<i-row :gutter="16">
 		<br>
 		<i-col span="3">
-			<i-button @click="items_delete()" :disabled="items_delete_disabled" type="warning" size="small">删除</i-button>&nbsp;<br>&nbsp;
+			<Poptip confirm word-wrap title="真的要删除这些记录吗？" @on-ok="items_delete()">
+				<i-button :disabled="items_delete_disabled" icon="md-remove" type="warning" size="small">删除</i-button>&nbsp;<br>&nbsp;
+			</Poptip>
 		</i-col>
 		<i-col span="3">
-			<i-button type="primary" size="small" @click="items_create()" icon="md-add">添加硬件</i-button>
+			<i-button type="primary" size="small" @click="items_add()" icon="md-add">添加硬件</i-button>
 		</i-col>
 		<i-col span="3">
 			<i-button type="default" size="small" @click="items_export()" icon="ios-download-outline">导出</i-button>
@@ -743,7 +745,7 @@ var vm_app = new Vue({
 					{
 						title: '所在机架高度',
 						key: 'rackposition',
-						width: 70,
+						width: 80,
 						className: 'table-info-column-usage',
 						render: (h, params) => {
 							if (params.row.rackposition != null) {
@@ -754,7 +756,7 @@ var vm_app = new Vue({
 					{
 						title: '所在机架深度',
 						key: 'rackdepth',
-						width: 70,
+						width: 80,
 						className: 'table-info-column-usage',
 						render: (h, params) => {
 							return h('span', vm_app.edit_rackdepth_options.map((item, index) => {
@@ -1334,6 +1336,42 @@ var vm_app = new Vue({
 			
 			_this.items_delete_disabled = _this.tableselect[0] == undefined ? true : false;
 		},
+
+
+		// 删除记录
+		items_delete () {
+			var _this = this;
+			
+			var tableselect = _this.tableselect;
+			
+			if (tableselect[0] == undefined) return false;
+
+			var url = "{{ route('item.itemsdelete') }}";
+			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
+			axios.post(url, {
+				tableselect: tableselect
+			})
+			.then(function (response) {
+				if (response.data) {
+					_this.items_delete_disabled = true;
+					_this.tableselect = [];
+					_this.success(false, '成功', '删除成功！');
+					_this.itemsgets(_this.page_current, _this.page_last);
+				} else {
+					_this.error(false, '失败', '删除失败！');
+				}
+			})
+			.catch(function (error) {
+				_this.error(false, '错误', '删除失败！');
+			})
+		},
+
+
+		// 跳转至添加页面
+		items_add () {
+			window.location.href = "{{ route('item.add') }}";
+		},
+
 
 		// 获取状态类型
 		statustypesgets () {

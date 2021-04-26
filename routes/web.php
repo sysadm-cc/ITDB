@@ -281,8 +281,8 @@ Route::group(['prefix'=>'item', 'namespace'=>'Item', 'middleware'=>['jwtauth']],
 	// Items Update Network
 	Route::post('itemItemsUpdateNetwork', 'ItemItemsController@itemItemsUpdateNetwork')->name('item.itemsupdate_network');
 
-	// Itemstypes Delete
-	// Route::post('itemItemtypesDelete', 'ItemItemtypesController@itemItemtypesDelete')->name('item.itemtypesdelete');
+	// Items Delete
+	Route::post('itemItemsDelete', 'ItemItemsController@itemItemsDelete')->name('item.itemsdelete');
 
 	// Itemstypes Create
 	// Route::post('itemAddCreate', 'ItemAddController@itemAddCreate')->name('item.addcreate');

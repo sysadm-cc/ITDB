@@ -377,6 +377,30 @@ class ItemItemsController extends Controller
 	}
 
 
+	/**
+	 * 删除记录 itemItemsDelete
+	 *
+	 * @param  int  $id
+	 * @return \Illuminate\Http\Response
+	 */
+	public function itemItemsDelete(Request $request)
+	{
+		if (! $request->isMethod('post') || ! $request->ajax()) return null;
+
+		$id = $request->input('tableselect');
+
+		try	{
+			$result = Item_items::whereIn('id', $id)->delete();
+		}
+		catch (\Exception $e) {
+			// echo 'Message: ' .$e->getMessage();
+			$result = 0;
+		}
+		
+		Cache::flush();
+		return $result;
+	}
+
 
 	
 }
