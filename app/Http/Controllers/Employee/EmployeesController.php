@@ -96,7 +96,13 @@ class EmployeesController extends Controller
     {
 		if (! $request->isMethod('post') || ! $request->ajax()) return false;
 
+		$nowtime = date("Y-m-d H:i:s",time());
 		$employees = $request->input('add_employees');
+		
+		foreach ($employees as $key => $value) {
+			$employees[$key]['created_at'] = $nowtime;
+			$employees[$key]['updated_at'] = $nowtime;
+		}
 
 		try	{
 			// 此处如用insert可以直接参数为二维数组，但不能更新created_at和updated_at字段。
@@ -111,7 +117,7 @@ class EmployeesController extends Controller
 			Cache::flush();
 		}
 		catch (\Exception $e) {
-			dd('Message: ' .$e->getMessage());
+			// dd('Message: ' .$e->getMessage());
 			$result = 0;
 		}
 

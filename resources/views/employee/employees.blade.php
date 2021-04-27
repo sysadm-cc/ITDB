@@ -1,7 +1,7 @@
-@extends('agent.layouts.mainbase')
+@extends('employee.layouts.mainbase')
 
 @section('my_title')
-代理商 - 
+用户 - 
 @parent
 @endsection
 
@@ -66,7 +66,7 @@
 
 @section('my_body')
 @parent
-<!-- <Divider orientation="left">代理商</Divider> -->
+<!-- <Divider orientation="left">用户</Divider> -->
 &nbsp;<br>
 
 <Collapse v-model="collapse_query">
@@ -105,12 +105,12 @@
 	<i-row :gutter="16">
 		<br>
 		<i-col span="3">
-			<Poptip confirm word-wrap title="真的要删除这些记录吗？" @on-ok="agents_delete()">
-				<i-button :disabled="agents_delete_disabled" icon="md-remove" type="warning" size="small">删除</i-button>&nbsp;<br>&nbsp;
+			<Poptip confirm word-wrap title="真的要删除这些记录吗？" @on-ok="employees_delete()">
+				<i-button :disabled="employees_delete_disabled" icon="md-remove" type="warning" size="small">删除</i-button>&nbsp;<br>&nbsp;
 			</Poptip>
 		</i-col>
 		<i-col span="3">
-			<i-button type="primary" icon="md-add" size="small" @click="agents_add()">添加代理商</i-button>
+			<i-button type="primary" icon="md-add" size="small" @click="employees_add()">添加用户</i-button>
 		</i-col>
 		<i-col span="3">
 			<i-button type="default" icon="md-download" size="small" @click="items_export()">导出列表</i-button>
@@ -134,8 +134,8 @@
 
 <!-- 以下为各元素编辑窗口 -->
 
-<!-- 主编辑窗口 agents-->
-<Modal v-model="modal_edit_agents" @on-ok="update_agents" ok-text="保存" title="编辑 - 代理商" width="640">
+<!-- 主编辑窗口 employees-->
+<Modal v-model="modal_edit_employees" @on-ok="update_employees" ok-text="保存" title="编辑 - 代理商" width="640">
 	<div style="text-align:left">
 
 		<p>
@@ -163,131 +163,7 @@
 	</div>	
 </Modal>
 
-<!-- 子编辑窗口 contacts-->
-<Modal v-model="modal_subedit_contacts" @on-ok="subupdate_contacts" ok-text="保存" title="编辑 - 代理商联系方式" width="640">
-	<div style="text-align:left">
 
-		<p>
-		<i-form :label-width="90">
-			<i-row>
-				<i-col span="12">
-					<Form-Item label="名称" style="margin-bottom:0px">
-						<i-input v-model.lazy="subedit_contacts_name" size="small"></i-input>
-					</Form-Item>
-					<Form-Item label="电话号码" style="margin-bottom:0px">
-						<i-input v-model.lazy="subedit_contacts_phonenumber" size="small"></i-input>
-					</Form-Item>
-				</i-col>
-				<i-col span="12">
-					<Form-Item label="角色" style="margin-bottom:0px">
-						<i-input v-model.lazy="subedit_contacts_role" size="small"></i-input>
-					</Form-Item>
-					<Form-Item label="电子邮件" style="margin-bottom:0px">
-						<i-input v-model.lazy="subedit_contacts_email" size="small"></i-input>
-					</Form-Item>
-				</i-col>
-			</i-row>
-			<i-row>
-				<i-col span="24">
-					<Form-Item label="备注" style="margin-bottom:0px">
-						<i-input v-model.lazy="subedit_contacts_comments" size="small" type="textarea"></i-input>
-					</Form-Item>
-				</i-col>
-			</i-row>
-			</i-form>&nbsp;
-		</p>
-	
-	</div>	
-</Modal>
-
-<!-- 子编辑窗口 urls-->
-<Modal v-model="modal_subedit_urls" @on-ok="subupdate_urls" ok-text="保存" title="编辑 - 代理商官方网站" width="640">
-	<div style="text-align:left">
-
-		<p>
-		<i-form :label-width="90">
-			<i-row>
-				<i-col span="24">
-					<Form-Item label="URL" style="margin-bottom:0px">
-						<i-input v-model.lazy="subedit_urls_url" size="small"></i-input>
-					</Form-Item>
-				</i-col>
-			</i-row>
-			<i-row>
-				<i-col span="24">
-					<Form-Item label="说明" style="margin-bottom:0px">
-						<i-input v-model.lazy="subedit_urls_description" size="small"></i-input>
-					</Form-Item>
-				</i-col>
-			</i-row>
-		</i-form>&nbsp;
-		</p>
-	
-	</div>	
-</Modal>
-
-<!-- 子添加窗口 contacts-->
-<Modal v-model="modal_subadd_contacts" @on-ok="subcreate_contacts" ok-text="添加" title="添加 - 代理商联系方式" width="640">
-	<div style="text-align:left">
-
-		<p>
-		<i-form :label-width="90">
-			<i-row>
-				<i-col span="12">
-					<Form-Item label="名称" style="margin-bottom:0px">
-						<i-input v-model.lazy="subadd_contacts_name" size="small"></i-input>
-					</Form-Item>
-					<Form-Item label="电话号码" style="margin-bottom:0px">
-						<i-input v-model.lazy="subadd_contacts_phonenumber" size="small"></i-input>
-					</Form-Item>
-				</i-col>
-				<i-col span="12">
-					<Form-Item label="角色" style="margin-bottom:0px">
-						<i-input v-model.lazy="subadd_contacts_role" size="small"></i-input>
-					</Form-Item>
-					<Form-Item label="电子邮件" style="margin-bottom:0px">
-						<i-input v-model.lazy="subadd_contacts_email" size="small"></i-input>
-					</Form-Item>
-				</i-col>
-			</i-row>
-			<i-row>
-				<i-col span="24">
-					<Form-Item label="备注" style="margin-bottom:0px">
-						<i-input v-model.lazy="subadd_contacts_comments" size="small" type="textarea"></i-input>
-					</Form-Item>
-				</i-col>
-			</i-row>
-			</i-form>&nbsp;
-		</p>
-	
-	</div>	
-</Modal>
-
-<!-- 子添加窗口 urls-->
-<Modal v-model="modal_subadd_urls" @on-ok="subcreate_urls" ok-text="添加" title="添加 - 代理商官方网站" width="640">
-	<div style="text-align:left">
-
-		<p>
-		<i-form :label-width="90">
-			<i-row>
-				<i-col span="24">
-					<Form-Item label="URL" style="margin-bottom:0px">
-						<i-input v-model.lazy="subadd_urls_url" size="small"></i-input>
-					</Form-Item>
-				</i-col>
-			</i-row>
-			<i-row>
-				<i-col span="24">
-					<Form-Item label="说明" style="margin-bottom:0px">
-						<i-input v-model.lazy="subadd_urls_description" size="small"></i-input>
-					</Form-Item>
-				</i-col>
-			</i-row>
-		</i-form>&nbsp;
-		</p>
-	
-	</div>	
-</Modal>
 
 
 
@@ -327,8 +203,8 @@ var vm_app = new Vue({
 		current_nav: '',
 		current_subnav: '',
 		
-		sideractivename: '5-1',
-		sideropennames: ['5'],
+		sideractivename: '9-1',
+		sideropennames: ['9'],
 		
 		//分页
 		page_current: 1,
@@ -346,10 +222,10 @@ var vm_app = new Vue({
 		collapse_query: '',
 
 		// 删除按钮禁用
-		agents_delete_disabled: true,
+		employees_delete_disabled: true,
 
 		// 主编辑变量
-		modal_edit_agents: false,
+		modal_edit_employees: false,
 		edit_id: '',
 		edit_updated_at: '',
 		edit_title: '',
@@ -416,369 +292,42 @@ var vm_app = new Vue({
 				}
 			},
 			{
-				title: '名称',
-				key: 'title',
+				title: '姓名',
+				key: 'name',
 				resizable: true,
-				width: 160,
+				width: 140,
 			},
 			{
-				title: '类型',
-				key: 'type',
-				resizable: true,
-				width: 210,
-				render: (h, params) => {
-					return h('span', params.row.type.map(item => {
-						switch (item) {
-							case 1:
-								return h('p', {}, '售卖方 - Vendoer');break;
-							case 2:
-								return h('p', {}, '软件销售商 - S/W Manufacturer');break;
-							case 3:
-								return h('p', {}, '硬件销售商 - H/W Manufacturer');break;
-							case 4:
-								return h('p', {}, '购买方 - Buyer');break;
-							case 5:
-								return h('p', {}, '承包商 - Contractor');break;
-						}
-					}))
-				}
-			},
-			{
-				title: '备注',
-				key: 'contactinfo',
+				title: '用户ID',
+				key: 'userid',
 				resizable: true,
 				width: 180,
 			},
 			{
-				title: '联系方式',
-				align: 'center',
-				children: [
-					{
-						title: '序号',
-						key: 'contacts',
-						align:'center',
-						width: 70,
-						className: 'table-info-column-contacts',
-						render: (h, params) => {
-							if (params.row.contacts!=undefined && params.row.contacts!=null) {
-								return h('div', {
-									attrs: {
-										class:'subCol'
-									},
-								}, [
-									h('ul', params.row.contacts.map((item, index) => {
-										return h('li', {
-										}, ++index)
-									}))
-								]);
-							}
-						}
-					},
-					{
-						title: '联系人',
-						key: 'contacts',
-						align:'center',
-						width: 90,
-						className: 'table-info-column-contacts',
-						render: (h, params) => {
-							if (params.row.contacts!=undefined && params.row.contacts!=null) {
-								return h('div', {
-									attrs: {
-										class:'subCol'
-									},
-								}, [
-									h('ul', params.row.contacts.map(item => {
-										return h('li', {
-										}, item.name == null || item.name == '' ? '-' : item.name)
-									}))
-								]);
-							}
-						}
-					},
-					{
-						title: '角色',
-						key: 'contacts',
-						align:'center',
-						width: 90,
-						className: 'table-info-column-contacts',
-						render: (h, params) => {
-							if (params.row.contacts!=undefined && params.row.contacts!=null) {
-								return h('div', {
-									attrs: {
-										class:'subCol'
-									},
-								}, [
-									h('ul', params.row.contacts.map(item => {
-										return h('li', {
-										}, item.role == null || item.role == '' ? '-' : item.role)
-									}))
-								]);
-							}
-						}
-					},
-					{
-						title: '电话号码',
-						key: 'contacts',
-						align:'center',
-						width: 120,
-						className: 'table-info-column-contacts',
-						render: (h, params) => {
-							if (params.row.contacts!=undefined && params.row.contacts!=null) {
-								return h('div', {
-									attrs: {
-										class:'subCol'
-									},
-								}, [
-									h('ul', params.row.contacts.map(item => {
-										return h('li', {
-										}, item.phonenumber == null || item.phonenumber == '' ? '-' : item.phonenumber)
-									}))
-								]);
-							}
-						}
-					},
-					{
-						title: '电子邮件',
-						key: 'contacts',
-						align:'center',
-						width: 170,
-						className: 'table-info-column-contacts',
-						render: (h, params) => {
-							if (params.row.contacts!=undefined && params.row.contacts!=null) {
-								return h('div', {
-									attrs: {
-										class:'subCol'
-									},
-								}, [
-									h('ul', params.row.contacts.map(item => {
-										return h('li', {
-										}, item.email == null || item.email == '' ? '-' : item.email)
-									}))
-								]);
-							}
-						}
-					},
-					{
-						title: '备注',
-						key: 'contacts',
-						align:'center',
-						width: 170,
-						className: 'table-info-column-contacts',
-						render: (h, params) => {
-							if (params.row.contacts!=undefined && params.row.contacts!=null) {
-								return h('div', {
-									attrs: {
-										class:'subCol'
-									},
-								}, [
-									h('ul', params.row.contacts.map(item => {
-										return h('li', {
-										}, item.comments == null || item.comments == '' ? '-' : item.comments)
-									}))
-								]);
-							}
-						}
-					},
-					{
-						title: '操作',
-						key: 'action',
-						align: 'center',
-						width: 100,
-						className: 'table-info-column-contacts',
-						render: (h, params) => {
-							if (params.row.contacts!=undefined && params.row.contacts!=null) {
-								return h('div', {
-										attrs: {
-											class:'subCol'
-										},
-									}, [
-									h('ul', params.row.contacts.map((item, index) => {
-										return h('li', {
-										}, [
-											h('Button', {
-												props: {
-													type: 'primary',
-													size: 'small',
-													icon: 'md-create'
-												},
-												style: {
-													marginRight: '5px'
-												},
-												on: {
-													click: () => {
-														vm_app.subedit_contacts(params.row, item, index)
-													}
-												}
-											}),
-
-
-											h('Poptip', {
-												props: {
-													'word-wrap': true,
-													'trigger': 'click',
-													'confirm': true,
-													'title': '真的要删除吗？',
-													'transfer': true
-												},
-												on: {
-													'on-ok': () => {
-														vm_app.subdelete_contacts(params.row, item, index)
-													}
-												}
-											}, [
-												h('Button', {
-													props: {
-														type: 'warning',
-														size: 'small',
-														icon: 'md-remove'
-													},
-													style: {
-														marginRight: '5px'
-													},
-												})
-											]),
-
-										])
-									}))
-								]);
-							}
-						},
-					}
-				]
+				title: '部门',
+				key: 'department',
+				resizable: true,
+				width: 180,
 			},
 			{
-				title: '官方网站',
-				align: 'center',
-				children: [
-					{
-						title: '序号',
-						key: 'urls',
-						align:'center',
-						width: 70,
-						className: 'table-info-column-urls',
-						render: (h, params) => {
-							if (params.row.urls!=undefined && params.row.urls!=null) {
-								return h('div', {
-									attrs: {
-										class:'subCol'
-									},
-								}, [
-									h('ul', params.row.urls.map((item, index) => {
-										return h('li', {
-										}, ++index)
-									}))
-								]);
-							}
-						}
-					},
-					{
-						title: '说明',
-						key: 'urls',
-						align:'center',
-						width: 110,
-						className: 'table-info-column-urls',
-						render: (h, params) => {
-							if (params.row.urls!=undefined && params.row.urls!=null) {
-								return h('div', {
-									attrs: {
-										class:'subCol'
-									},
-								}, [
-									h('ul', params.row.urls.map(item => {
-										return h('li', {
-										}, item.description == null || item.description == '' ? '-' : item.description)
-									}))
-								]);
-							}
-						}
-					},
-					{
-						title: 'URL',
-						key: 'urls',
-						align:'center',
-						width: 170,
-						className: 'table-info-column-urls',
-						render: (h, params) => {
-							if (params.row.urls!=undefined && params.row.urls!=null) {
-								return h('div', {
-									attrs: {
-										class:'subCol'
-									},
-								}, [
-									h('ul', params.row.urls.map(item => {
-										return h('li', {
-										}, item.url == null || item.url == '' ? '-' : item.url)
-									}))
-								]);
-							}
-						}
-					},
-					{
-						title: '操作',
-						key: 'action',
-						align: 'center',
-						width: 100,
-						className: 'table-info-column-urls',
-						render: (h, params) => {
-							if (params.row.urls!=undefined && params.row.urls!=null) {
-								return h('div', {
-										attrs: {
-											class:'subCol'
-										},
-									}, [
-									h('ul', params.row.urls.map((item, index) => {
-										return h('li', {
-										}, [
-											h('Button', {
-												props: {
-													type: 'primary',
-													size: 'small',
-													icon: 'md-create'
-												},
-												style: {
-													marginRight: '5px'
-												},
-												on: {
-													click: () => {
-														vm_app.subedit_urls(params.row, item, index)
-													}
-												}
-											}),
-
-
-											h('Poptip', {
-												props: {
-													'word-wrap': true,
-													'trigger': 'click',
-													'confirm': true,
-													'title': '真的要删除吗？',
-													'transfer': true
-												},
-												on: {
-													'on-ok': () => {
-														vm_app.subdelete_urls(params.row, item, index)
-													}
-												}
-											}, [
-												h('Button', {
-													props: {
-														type: 'warning',
-														size: 'small',
-														icon: 'md-remove'
-													},
-													style: {
-														marginRight: '5px'
-													},
-												})
-											]),
-
-										])
-									}))
-								]);
-							}
-						},
+				title: '电子邮件',
+				key: 'email',
+				resizable: true,
+				width: 180,
+			},
+			{
+				title: '性别',
+				key: 'gender',
+				width: 70,
+				render: (h, params) => {
+					console.log(params.row.gender);
+					switch (params.row.gender) {
+						case 1:
+							return h('span', {}, '男');break;
+						case 0:
+							return h('span', {}, '女');break;
 					}
-				]
+				}
 			},
 			{
 				title: '创建时间',
@@ -820,63 +369,13 @@ var vm_app = new Vue({
 								},
 								on: {
 									click: () => {
-										vm_app.edit_agents(params.row)
+										vm_app.edit_employees(params.row)
 									}
 								}
 							}),
 						]),
 
-						h('Poptip', {
-							props: {
-								'word-wrap': true,
-								'trigger': 'hover',
-								'confirm': false,
-								'content': '添加'+params.row.title+'的联系方式',
-								'transfer': true
-							},
-						}, [
-							h('Button', {
-								props: {
-									type: 'default',
-									size: 'small',
-									icon: 'md-contacts'
-								},
-								style: {
-									marginRight: '5px'
-								},
-								on: {
-									click: () => {
-										vm_app.add_contacts(params.row)
-									}
-								}
-							})
-						]),
 
-						h('Poptip', {
-							props: {
-								'word-wrap': true,
-								'trigger': 'hover',
-								'confirm': false,
-								'content': '添加'+params.row.title+'的官方网站',
-								'transfer': true
-							},
-						}, [
-							h('Button', {
-								props: {
-									type: 'default',
-									size: 'small',
-									icon: 'md-home'
-								},
-								style: {
-									marginRight: '5px'
-								},
-								on: {
-									click: () => {
-										vm_app.add_urls(params.row)
-									}
-								}
-							}),
-						]),
 
 					]);
 				},
@@ -956,7 +455,7 @@ var vm_app = new Vue({
 		},
 
 		//
-		agentsgets (page, last_page){
+		employeesgets (page, last_page){
 			var _this = this;
 			
 			if (page > last_page) {
@@ -967,7 +466,7 @@ var vm_app = new Vue({
 			
 
 			_this.loadingbarstart();
-			var url = "{{ route('agent.gets') }}";
+			var url = "{{ route('employee.gets') }}";
 			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
 			axios.get(url,{
 				params: {
@@ -985,7 +484,7 @@ var vm_app = new Vue({
 				}
 
 				if (response.data) {
-					_this.agents_delete_disabled = true;
+					_this.employees_delete_disabled = true;
 					_this.tableselect = [];
 					
 					_this.page_current = response.data.current_page;
@@ -1005,7 +504,7 @@ var vm_app = new Vue({
 	
 		// 切换当前页
 		oncurrentpagechange (currentpage) {
-			this.agentsgets(currentpage, this.page_last);
+			this.employeesgets(currentpage, this.page_last);
 		},
 
 		// 表格选择
@@ -1017,28 +516,28 @@ var vm_app = new Vue({
 				_this.tableselect.push(selection[i].id);
 			}
 			
-			_this.agents_delete_disabled = _this.tableselect[0] == undefined ? true : false;
+			_this.employees_delete_disabled = _this.tableselect[0] == undefined ? true : false;
 		},
 
 		// 删除记录
-		agents_delete () {
+		employees_delete () {
 			var _this = this;
 			
 			var tableselect = _this.tableselect;
 			
 			if (tableselect[0] == undefined) return false;
 
-			var url = "{{ route('agent.delete') }}";
+			var url = "{{ route('employee.delete') }}";
 			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
 			axios.post(url, {
 				tableselect: tableselect
 			})
 			.then(function (response) {
 				if (response.data) {
-					_this.agents_delete_disabled = true;
+					_this.employees_delete_disabled = true;
 					_this.tableselect = [];
 					_this.success(false, '成功', '删除成功！');
-					_this.agentsgets(_this.page_current, _this.page_last);
+					_this.employeesgets(_this.page_current, _this.page_last);
 				} else {
 					_this.error(false, '失败', '删除失败！');
 				}
@@ -1049,221 +548,13 @@ var vm_app = new Vue({
 		},
 
 		// 跳转至添加页面
-		agents_add () {
-			window.location.href = "{{ route('agent.add') }}";
+		employees_add () {
+			window.location.href = "{{ route('employee.add') }}";
 		},
 
 
-		// 子编辑前查看 - contacts
-		subedit_contacts (row, subrow, index) {
-			var _this = this;
-
-			_this.subedit_id = row.id;
-			_this.subedit_subid = index;
-			_this.subedit_updated_at = row.updated_at;
-			_this.subedit_contacts_name = subrow.name;
-			_this.subedit_contacts_role = subrow.role;
-			_this.subedit_contacts_phonenumber = subrow.phonenumber;
-			_this.subedit_contacts_email = subrow.email;
-			_this.subedit_contacts_comments = subrow.comments;
-
-			_this.modal_subedit_contacts = true;
-		},
-
-		// 子编辑保存 - contacts
-		subupdate_contacts () {
-
-			var _this = this;
-
-			var id = _this.subedit_id;
-			var subid = _this.subedit_subid;
-			var updated_at = _this.subedit_updated_at;
-			var name = _this.subedit_contacts_name;
-			var role = _this.subedit_contacts_role;
-			var phonenumber = _this.subedit_contacts_phonenumber;
-			var email = _this.subedit_contacts_email;
-			var comments = _this.subedit_contacts_comments;
-			
-			if (id == undefined || subid == undefined) {
-				_this.warning(false, '警告', '内容选择不正确！');
-				return false;
-			}
-
-			var url = "{{ route('agent.subupdatecontacts') }}";
-			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
-			axios.post(url, {
-				id: id,
-				subid: subid,
-				updated_at: updated_at,
-				name: name,
-				role: role,
-				phonenumber: phonenumber,
-				email: email,
-				comments: comments,
-			})
-			.then(function (response) {
-				// console.log(response.data);return false;
-
-				if (response.data['jwt'] == 'logout') {
-					_this.alert_logout();
-					return false;
-				}
-				
-				if (response.data) {
-					_this.success(false, '成功', '更新成功！');
-						_this.agentsgets(_this.page_current, _this.page_last);
-				} else {
-					_this.error(false, '失败', '更新失败！');
-				}
-			})
-			.catch(function (error) {
-				_this.error(false, '错误', '更新失败！');
-			})
-
-		},
-
-		// 子删除 - contacts
-		subdelete_contacts (row, subrow, index) {
-			var _this = this;
-
-			var id = row.id;
-			var subid = index;
-
-			if (id == undefined || subid == undefined) {
-				_this.warning(false, '警告', '内容选择不正确！');
-				return false;
-			}
-
-			var url = "{{ route('agent.subdeletecontacts') }}";
-			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
-			axios.post(url, {
-				id: id,
-				subid: subid,
-			})
-			.then(function (response) {
-				// console.log(response.data);return false;
-
-				if (response.data['jwt'] == 'logout') {
-					_this.alert_logout();
-					return false;
-				}
-				
-				if (response.data) {
-					_this.success(false, '成功', '删除成功！');
-					// if (_this.qcdate_filter[0] != '' && _this.qcdate_filter != undefined) {
-						_this.agentsgets(_this.page_current, _this.page_last);
-					// }
-				} else {
-					_this.error(false, '失败', '删除失败！');
-				}
-			})
-			.catch(function (error) {
-				_this.error(false, '错误', '删除失败！');
-			})
-
-		},
-
-		// 子编辑前查看 - urls
-		subedit_urls (row, subrow, index) {
-			var _this = this;
-
-			_this.subedit_id = row.id;
-			_this.subedit_subid = index;
-			_this.subedit_updated_at = row.updated_at;
-			_this.subedit_urls_url = subrow.url;
-			_this.subedit_urls_description = subrow.description;
-
-			_this.modal_subedit_urls = true;
-		},
-
-		// 子编辑保存 - urls
-		subupdate_urls () {
-
-			var _this = this;
-
-			var id = _this.subedit_id;
-			var subid = _this.subedit_subid;
-			var updated_at = _this.subedit_updated_at;
-			var myurl = _this.subedit_urls_url;
-			var description = _this.subedit_urls_description;
-			
-			if (id == undefined || subid == undefined) {
-				_this.warning(false, '警告', '内容选择不正确！');
-				return false;
-			}
-
-			var url = "{{ route('agent.subupdateurls') }}";
-			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
-			axios.post(url, {
-				id: id,
-				subid: subid,
-				updated_at: updated_at,
-				myurl: myurl,
-				description: description,
-			})
-			.then(function (response) {
-				// console.log(response.data);return false;
-
-				if (response.data['jwt'] == 'logout') {
-					_this.alert_logout();
-					return false;
-				}
-				
-				if (response.data) {
-					_this.success(false, '成功', '更新成功！');
-						_this.agentsgets(_this.page_current, _this.page_last);
-				} else {
-					_this.error(false, '失败', '更新失败！');
-				}
-			})
-			.catch(function (error) {
-				_this.error(false, '错误', '更新失败！');
-			})
-
-		},
-
-		// 子删除 - urls
-		subdelete_urls (row, subrow, index) {
-			var _this = this;
-
-			var id = row.id;
-			var subid = index;
-
-			if (id == undefined || subid == undefined) {
-				_this.warning(false, '警告', '内容选择不正确！');
-				return false;
-			}
-
-			var url = "{{ route('agent.subdeleteurls') }}";
-			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
-			axios.post(url, {
-				id: id,
-				subid: subid,
-			})
-			.then(function (response) {
-				// console.log(response.data);
-				// return false;
-
-				if (response.data['jwt'] == 'logout') {
-					_this.alert_logout();
-					return false;
-				}
-				
-				if (response.data) {
-					_this.success(false, '成功', '删除成功！');
-						_this.agentsgets(_this.page_current, _this.page_last);
-				} else {
-					_this.error(false, '失败', '删除失败！');
-				}
-			})
-			.catch(function (error) {
-				_this.error(false, '错误', '删除失败！');
-			})
-
-		},
-
-		// 主编辑前查看 - agents
-		edit_agents (row) {
+		// 主编辑前查看 - employees
+		edit_employees (row) {
 			var _this = this;
 
 			_this.edit_id = row.id;
@@ -1272,11 +563,11 @@ var vm_app = new Vue({
 			_this.edit_type_select = row.type;
 			_this.edit_contactinfo = row.contactinfo;
 
-			_this.modal_edit_agents = true;
+			_this.modal_edit_employees = true;
 		},
 
-		// 主编辑保存 - agents
-		update_agents () {
+		// 主编辑保存 - employees
+		update_employees () {
 			var _this = this;
 
 			var id = _this.edit_id;
@@ -1290,7 +581,7 @@ var vm_app = new Vue({
 				return false;
 			}
 
-			var url = "{{ route('agent.update') }}";
+			var url = "{{ route('employee.update') }}";
 			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
 			axios.post(url, {
 				id: id,
@@ -1309,7 +600,7 @@ var vm_app = new Vue({
 				
 				if (response.data) {
 					_this.success(false, '成功', '更新成功！');
-						_this.agentsgets(_this.page_current, _this.page_last);
+						_this.employeesgets(_this.page_current, _this.page_last);
 				} else {
 					_this.error(false, '失败', '更新失败！');
 				}
@@ -1321,110 +612,7 @@ var vm_app = new Vue({
 		},
 
 
-		// 添加联系方式 - 查看
-		add_contacts (row) {
-			var _this = this;
-			_this.subadd_id = row.id;
-			_this.modal_subadd_contacts = true;
-		},
 
-
-		// 添加联系方式 - 保存
-		subcreate_contacts () {
-			var _this = this;
-
-			var id = _this.subadd_id;
-			var name = _this.subadd_contacts_name;
-			var role = _this.subadd_contacts_role;
-			var phonenumber = _this.subadd_contacts_phonenumber;
-			var email = _this.subadd_contacts_email;
-			var comments = _this.subadd_contacts_comments;
-			
-			if (id == undefined) {
-				_this.warning(false, '警告', '内容选择不正确！');
-				return false;
-			}
-
-			var url = "{{ route('agent.subcreatecontacts') }}";
-			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
-			axios.post(url, {
-				id: id,
-				name: name,
-				role: role,
-				phonenumber: phonenumber,
-				email: email,
-				comments: comments,
-			})
-			.then(function (response) {
-				// console.log(response.data);return false;
-
-				if (response.data['jwt'] == 'logout') {
-					_this.alert_logout();
-					return false;
-				}
-				
-				if (response.data) {
-					_this.add_clear_var();
-					_this.success(false, '成功', '添加成功！');
-					_this.agentsgets(_this.page_current, _this.page_last);
-				} else {
-					_this.error(false, '失败', '添加失败！');
-				}
-			})
-			.catch(function (error) {
-				_this.error(false, '错误', '添加失败！');
-			})
-		},
-
-
-		// 添加官方网站 - 查看
-		add_urls (row) {
-			var _this = this;
-			_this.subadd_id = row.id;
-			_this.modal_subadd_urls = true;
-		},
-
-
-		// 添加官方网站 - 保存
-		subcreate_urls () {
-			var _this = this;
-
-			var id = _this.subadd_id;
-			var myurl = _this.subadd_urls_url;
-			var description = _this.subadd_urls_description;
-			
-			if (id == undefined) {
-				_this.warning(false, '警告', '内容选择不正确！');
-				return false;
-			}
-
-			var url = "{{ route('agent.subcreateurls') }}";
-			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
-			axios.post(url, {
-				id: id,
-				myurl: myurl,
-				description: description,
-			})
-			.then(function (response) {
-				// console.log(response.data);return false;
-
-				if (response.data['jwt'] == 'logout') {
-					_this.alert_logout();
-					return false;
-				}
-				
-				if (response.data) {
-					_this.add_clear_var();
-					_this.success(false, '成功', '添加成功！');
-					_this.agentsgets(_this.page_current, _this.page_last);
-				} else {
-					_this.error(false, '失败', '添加失败！');
-				}
-			})
-			.catch(function (error) {
-				_this.error(false, '错误', '添加失败！');
-			})
-		},
 
 		
 		// 清除所有添加变量
@@ -1447,11 +635,11 @@ var vm_app = new Vue({
 	},
 	mounted: function(){
 		var _this = this;
-		_this.current_nav = '代理商';
+		_this.current_nav = '用户';
 		_this.current_subnav = '查询';
 
 		// // 显示所有
-		_this.agentsgets(1, 1); // page: 1, last_page: 1
+		_this.employeesgets(1, 1); // page: 1, last_page: 1
 		// _this.loadapplicantgroup();
 
 		// GetCurrentDatetime('getcurrentdatetime');
