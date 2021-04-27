@@ -16,10 +16,10 @@ class CreateEmployeesTable extends Migration
         Schema::create('employees', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name')->unique()->comment('姓名');
-            $table->string('userid')->unique()->comment('用户ID');
-            $table->string('email')->unique()->nullable()->comment('电子邮件');
+            $table->string('userid')->unique()->nullable()->comment('用户ID');
+            $table->string('email')->nullable()->comment('电子邮件');
             $table->string('department')->nullable()->comment('部门');
-            $table->boolean('gender')->nullable()->comment('性别');
+            $table->boolean('gender')->default(true)->nullable()->comment('性别');
             $table->timestamps();
             $table->softDeletes();
             $table->engine = 'InnoDB';

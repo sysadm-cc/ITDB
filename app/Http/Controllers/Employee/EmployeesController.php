@@ -96,33 +96,22 @@ class EmployeesController extends Controller
     {
 		if (! $request->isMethod('post') || ! $request->ajax()) return false;
 
-		// $nowtime = date("Y-m-d H:i:s",time());
-		$title = $request->input('add_title');
-		$agentid = $request->input('add_agentid_select');
-		$invoiceid = $request->input('add_invoiceid_select');
-		$type = $request->input('add_type');
-		$version = $request->input('add_version');
-		$purchasedate = $request->input('add_purchasedate');
-		$quantity = $request->input('add_quantity');
-		$licenseinfo = $request->input('add_licenseinfo');
-		$comments = $request->input('add_comments');
-		
+		$employees = $request->input('add_employees');
+
 		try	{
-			$result = Employees::create([
-				'title' => $title,
-				'agentid' => $agentid,
-				'invoiceid' => $invoiceid,
-				'type' => $type,
-				'version' => $version,
-				'purchasedate' => $purchasedate,
-				'quantity' => $quantity,
-				'licenseinfo' => $licenseinfo,
-				'comments' => $comments,
-			]);
+			// 此处如用insert可以直接参数为二维数组，但不能更新created_at和updated_at字段。
+			// $result = Employees::create([
+			// 	'name' => $employees['name'],
+			// 	'userid' => $employees['userid'],
+			// 	'department' => $employees['department'],
+			// 	'email' => $employees['email'],
+			// 	'gender' => $employees['gender'],
+			// ]);
+			$result = Employees::insert($employees) ? 1 : 0;
 			Cache::flush();
 		}
 		catch (\Exception $e) {
-			// dd('Message: ' .$e->getMessage());
+			dd('Message: ' .$e->getMessage());
 			$result = 0;
 		}
 

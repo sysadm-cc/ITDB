@@ -1,7 +1,7 @@
 @extends('employee.layouts.mainbase')
 
 @section('my_title')
-代理商添加 - 
+用户添加 - 
 @parent
 @endsection
 
@@ -16,112 +16,62 @@
 
 @section('my_body')
 @parent
-<!-- <Divider orientation="left">代理商添加</Divider> -->
+<!-- <Divider orientation="left">用户添加</Divider> -->
 
-<i-row :gutter="16">
+<i-row>
 
-	<i-col span="7">
+	<i-col span="24">
 		<Divider orientation="left">用户属性</Divider>
-		<i-form :label-width="100">
-			<Form-Item label="名称" required style="margin-bottom:0px">
-				<i-input v-model.lazy="add_title" size="small"></i-input>
-			</Form-Item>
-			<Form-Item label="类型" required style="margin-bottom:0px">
-				<i-select v-model.lazy="add_type_select" size="small" multiple clearable placeholder="">
-					<i-option v-for="item in add_type_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
-				</i-select>
-				<Poptip word-wrap trigger="hover" placement="bottom" width="300" content="售卖方及购买方将出现在发票及合同模块中；售卖方及购买方将出现在发票及合同模块中；硬件销售商将出现的物品模块中；软件销售商将出现在合同模块中；承包商将出现的合同模块中。">
-					<span style="color: rgb(158, 167, 180);font-size:12px;">
-					<Icon type="md-information-circle"></Icon> 此项可多选。
-					</span>
-				</Poptip>
-			</Form-Item>
-			<Form-Item label="备注" style="margin-bottom:0px">
-				<i-input v-model.lazy="add_contactinfo" size="small" type="textarea" placeholder="地址、电话号码以及其他信息..."></i-input>
-			</Form-Item>
-		</i-form>
-
-	</i-col>
-
-	<i-col span="1">
-	&nbsp;
-	</i-col>
-
-	<i-col span="16">
-		<Divider orientation="left">代理商联系方式</Divider>
 
 		↓ 批量录入&nbsp;&nbsp;
-		<Input-number v-model.lazy="piliangluruxiang_contacts" @on-change="value=>piliangluru_generate_contracts(value)" :min="1" :max="10" size="small" style="width: 60px"></Input-number>
+		<Input-number v-model.lazy="piliangluruxiang_employees" @on-change="value=>piliangluru_generate_employees(value)" :min="1" :max="10" size="small" style="width: 60px"></Input-number>
 		&nbsp;项（最多10项）&nbsp;&nbsp;<br>
 
-		<span v-for="(item, index) in piliangluru_contacts">
+		<span v-for="(item, index) in piliangluru_employees">
 		<br>
-		<i-form :label-width="90">
+		<i-form :label-width="80">
 		<i-row>
 			<i-col span="1">
 				<label class="ivu-form-item-label">
 					No.@{{index+1}}
 				</label>
 			</i-col>
-			<i-col span="8">
-				<Form-Item label="名称" style="margin-bottom:0px">
+			<i-col span="5">
+				<Form-Item label="姓名" style="margin-bottom:0px">
 					<i-input v-model.lazy="item.name" size="small"></i-input>
 				</Form-Item>
-				<Form-Item label="电话号码" style="margin-bottom:0px">
-					<i-input v-model.lazy="item.phonenumber" size="small"></i-input>
+			</i-col>
+			<i-col span="5">
+				<Form-Item label="用户ID" style="margin-bottom:0px">
+					<i-input v-model.lazy="item.userid" size="small"></i-input>
 				</Form-Item>
 			</i-col>
-			<i-col span="8">
-				<Form-Item label="角色" style="margin-bottom:0px">
-					<i-input v-model.lazy="item.role" size="small"></i-input>
+			<i-col span="5">
+				<Form-Item label="部门" style="margin-bottom:0px">
+					<i-input v-model.lazy="item.department" size="small"></i-input>
 				</Form-Item>
+			</i-col>
+			<i-col span="5">
 				<Form-Item label="电子邮件" style="margin-bottom:0px">
 					<i-input v-model.lazy="item.email" size="small"></i-input>
 				</Form-Item>
 			</i-col>
-			<i-col span="7">
-				<Form-Item label="备注" style="margin-bottom:0px">
-					<i-input v-model.lazy="item.comments" size="small" type="textarea"></i-input>
+			<i-col span="3">
+				<Form-Item label="性别" style="margin-bottom:0px">
+					<i-switch v-model.lazy="item.gender">
+						<span slot="open">男</span>
+						<span slot="close">女</span>
+					</i-switch>
 				</Form-Item>
 			</i-col>
 		</i-row>
 		</i-form>&nbsp;
 		</span>
 
-&nbsp;<br>
-
-		<Divider orientation="left">代理商网站</Divider>
-
-		↓ 批量录入&nbsp;&nbsp;
-		<Input-number v-model.lazy="piliangluruxiang_urls" @on-change="value=>piliangluru_generate_urls(value)" :min="1" :max="10" size="small" style="width: 60px"></Input-number>
-		&nbsp;项（最多10项）&nbsp;&nbsp;<br>
-
-		<span v-for="(item, index) in piliangluru_urls">
-		<br>
-		<i-form :label-width="90">
-		<i-row>
-			<i-col span="1">
-				<label class="ivu-form-item-label">
-					No.@{{index+1}}
-				</label>
-			</i-col>
-			<i-col span="9">
-			<Form-Item label="说明" style="margin-bottom:0px">
-				<i-input v-model.lazy="item.description" size="small"></i-input>
-			</Form-Item>
-			</i-col>
-			<i-col span="14">
-			<Form-Item label="网址" style="margin-bottom:0px">
-				<i-input v-model.lazy="item.url" size="small"></i-input>
-			</Form-Item>
-			</i-col>
-		</i-row>
-		</i-form>
 	</i-col>
 
 </i-row>
 
-&nbsp;
 
 <Divider dashed></Divider>
 
@@ -166,8 +116,8 @@ var vm_app = new Vue({
 		current_nav: '',
 		current_subnav: '',
 		
-		sideractivename: '5-2',
-		sideropennames: ['5'],
+		sideractivename: '9-2',
+		sideropennames: ['9'],
 		
 		//分页
 		page_current: 1,
@@ -197,15 +147,15 @@ var vm_app = new Vue({
 		add_urls: [],
 
 		// 批量录入项 - 联络方式
-		piliangluruxiang_contacts: 1,
+		piliangluruxiang_employees: 1,
 		// 批量录入 - 联络方式
-		piliangluru_contacts: [
+		piliangluru_employees: [
 			{
 				name: '',
-				phonenumber: '',
+				userid: '',
 				email: '',
-				role: '',
-				comments: ''
+				department: '',
+				gender: true
 			},
 		],
 
@@ -295,30 +245,16 @@ var vm_app = new Vue({
 
 		// 清除所有变量
 		add_clear_var () {
-			var _this = this;
-			_this.add_title = '';
-			_this.add_type_select = [];
-			_this.add_contactinfo = '';
-
-			_this.piliangluru_contacts = [
+			this.piliangluru_employees = [
 				{
 					name: '',
-					phonenumber: '',
+					userid: '',
 					email: '',
-					role: '',
-					comments: '',
+					department: '',
+					gender: true,
 				}
 			];
-			_this.piliangluruxiang_contacts = 1;
-
-			_this.piliangluru_urls = [
-				{
-					description: '',
-					url: '',
-				}
-			];
-			_this.piliangluruxiang_urls = 1;
-
+			this.piliangluruxiang_employees = 1;
 		},
 
 
@@ -327,44 +263,27 @@ var vm_app = new Vue({
 			var _this = this;
 			_this.add_create_disabled = true;
 
-			var add_title = _this.add_title;
-			var add_type_select = _this.add_type_select;
-			var add_contactinfo = _this.add_contactinfo;
-
 			// 删除空json节点
-			var piliangluru_tmp_contacts = [];
-			for (var v of _this.piliangluru_contacts) {
+			var piliangluru_tmp_employees = [];
+			for (var v of _this.piliangluru_employees) {
 				if (v.name == '' || v.name == undefined) {
 				} else {
-					piliangluru_tmp_contacts.push(v);
+					// v.gender = v.gender ? 1 : 0;
+					piliangluru_tmp_employees.push(v);
 				}
 			}
-			var add_contacts = piliangluru_tmp_contacts;
+			var add_employees = piliangluru_tmp_employees;
 
-			// 删除空json节点
-			var piliangluru_tmp_urls = [];
-			for (var v of _this.piliangluru_urls) {
-				if (v.url == '' || v.url == undefined) {
-				} else {
-					piliangluru_tmp_urls.push(v);
-				}
-			}
-			var add_urls = piliangluru_tmp_urls;
-
-			if (add_title == '' || add_title == undefined) {
-				_this.error(false, '错误', '内容为空或不正确！');
-				_this.add_create_disabled = false;
-				return false;
-			}
+			// if (add_title == '' || add_title == undefined) {
+			// 	_this.error(false, '错误', '内容为空或不正确！');
+			// 	_this.add_create_disabled = false;
+			// 	return false;
+			// }
 
 			var url = "{{ route('employee.create') }}";
 			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
 			axios.post(url, {
-				add_title: add_title,
-				add_type_select: add_type_select,
-				add_contactinfo: add_contactinfo,
-				add_contacts: add_contacts,
-				add_urls: add_urls,
+				add_employees: add_employees,
 			})
 			.then(function (response) {
 				// console.log(response.data);return false;
@@ -376,15 +295,14 @@ var vm_app = new Vue({
 				
  				if (response.data) {
 					_this.add_clear_var();
-					// _this.itemtypesgets(_this.page_current, _this.page_last);
 					_this.success(false, '成功', '添加成功！');
 				} else {
-					_this.error(false, '失败', '添加失败！');
+					_this.error(false, '失败', '添加失败！姓名或电子邮件可能已存在！');
 				}
 				_this.add_create_disabled = false;
 			})
 			.catch(function (error) {
-				_this.error(false, '错误', '添加失败！');
+				_this.error(false, '错误', '添加失败！姓名或电子邮件可能已存在！');
 				_this.add_create_disabled = false;
 			})
 
@@ -394,38 +312,36 @@ var vm_app = new Vue({
 
 
 		// 生成piliangluru 联系方式
-		piliangluru_generate_contracts (counts) {
+		piliangluru_generate_employees (counts) {
 			if (counts == undefined) counts = 1;
-			var len = this.piliangluru_contacts.length;
+			var len = this.piliangluru_employees.length;
 			
 			if (counts > len) {
 				for (var i=0;i<counts-len;i++) {
-					// this.piliangluru.push({value: 'piliangluru'+parseInt(len+i+1)});
-					this.piliangluru_contacts.push(
+					this.piliangluru_employees.push(
 						{
 							name: '',
-							phonenumber: '',
+							userid: '',
 							email: '',
-							role: '',
-							comments: ''
+							department: '',
+							gender: true
 						}
 					);
 				}
 			} else if (counts < len) {
-				if (this.piliangluruxiang_contacts != '') {
+				if (this.piliangluruxiang_employees != '') {
 					for (var i=counts;i<len;i++) {
-						if (this.piliangluruxiang_contacts == this.piliangluru_contacts[i].value) {
-							this.piliangluruxiang_contacts = '';
+						if (this.piliangluruxiang_employees == this.piliangluru_employees[i].value) {
+							this.piliangluruxiang_employees = '';
 							break;
 						}
 					}
 				}
 				
 				for (var i=0;i<len-counts;i++) {
-					this.piliangluru_contacts.pop();
+					this.piliangluru_employees.pop();
 				}
 			}			
-
 		},	
 
 		// 生成piliangluru 网站
@@ -483,7 +399,7 @@ var vm_app = new Vue({
 	mounted: function(){
 		var _this = this;
 		_this.loadingbarstart();
-		_this.current_nav = '代理商';
+		_this.current_nav = '用户';
 		_this.current_subnav = '添加';
 
 
