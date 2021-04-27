@@ -2,9 +2,9 @@
 
 use Illuminate\Database\Seeder;
 
-use App\Models\Item\Item_statustypes;
+use App\Models\Employee\Employees;
 
-class Item_statustypesTableSeeder extends Seeder
+class EmployeesTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,9 +15,9 @@ class Item_statustypesTableSeeder extends Seeder
     {
 		$nowtime = date("Y-m-d H:i:s",time());
 		
-		Item_statustypes::truncate();
+		Employees::truncate();
 		
-        Item_statustypes::insert(array (
+        Employees::insert(array (
             0 => 
             array (
                 'id' => 1,

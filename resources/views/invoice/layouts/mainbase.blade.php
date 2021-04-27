@@ -489,10 +489,10 @@ function navmenuselect (name) {
 
 	// 用户
 	case '9-1':
-	  window.location.href = "{{route('portal')}}";
+	  window.location.href = "{{route('employee.employees')}}";
 	  break;
 	case '9-2':
-	  window.location.href = "{{route('portal')}}";
+	  window.location.href = "{{route('employee.add')}}";
 	  break;
 	case '9-3':
 	  window.location.href = "";

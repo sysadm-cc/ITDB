@@ -11,6 +11,31 @@
 |
 */
 
+// Employees 路由
+// Route::group(['prefix'=>'renshi', 'namespace'=>'Admin', 'middleware'=>['jwtauth','permission:permission_admin_permission|permission_super_admin']], function() {
+Route::group(['prefix'=>'employee', 'namespace'=>'Employee', 'middleware'=>['jwtauth']], function() {
+
+	// 显示 Employees 页面
+	Route::get('employeeEmployees', 'EmployeesController@employeeEmployees')->name('employee.employees');
+
+	// Employees gets列表
+	Route::get('employeeGets', 'EmployeesController@employeeGets')->name('employee.gets');
+
+	// Employees Update
+	Route::post('employeeUpdate', 'EmployeesController@employeeUpdate')->name('employee.update');
+
+	// Employees Delete
+	Route::post('employeeDelete', 'EmployeesController@employeeDelete')->name('employee.delete');
+
+	// 显示 Employees Add 页面
+	Route::get('employeeAdd', 'EmployeesController@employeeAdd')->name('employee.add');
+
+	// Employees Create
+	Route::post('employeeCreate', 'EmployeesController@employeeCreate')->name('employee.create');
+
+});
+	
+
 // Locations 路由
 // Route::group(['prefix'=>'renshi', 'namespace'=>'Admin', 'middleware'=>['jwtauth','permission:permission_admin_permission|permission_super_admin']], function() {
 Route::group(['prefix'=>'location', 'namespace'=>'Location', 'middleware'=>['jwtauth']], function() {
@@ -188,10 +213,10 @@ Route::group(['prefix'=>'soft', 'namespace'=>'Soft', 'middleware'=>['jwtauth']],
 	// 显示 Softs 页面
 	Route::get('softSofts', 'SoftsController@softSofts')->name('soft.softs');
 
-	// Agents gets列表
+	// Softs gets列表
 	Route::get('softGets', 'SoftsController@softGets')->name('soft.gets');
 
-	// Agents Update typedesc
+	// Softs Update typedesc
 	// Route::post('itemItemtypesUpdateTypedesc', 'ItemItemtypesController@itemItemtypesUpdateTypedesc')->name('item.itemtypesupdate_typedesc');
 
 	// Softs Update
