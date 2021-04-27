@@ -320,7 +320,6 @@ var vm_app = new Vue({
 				key: 'gender',
 				width: 70,
 				render: (h, params) => {
-					console.log(params.row.gender);
 					switch (params.row.gender) {
 						case 1:
 							return h('span', {}, '男');break;
