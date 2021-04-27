@@ -65,11 +65,9 @@
 
 @section('my_body')
 @parent
+<!-- <Divider orientation="left">物品查询</Divider> -->
+&nbsp;<br>
 
-<Divider orientation="left">物品查询</Divider>
-
-
-	
 	<Collapse v-model="collapse_query">
 		<Panel name="1">
 			查询条件

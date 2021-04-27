@@ -172,7 +172,7 @@ class ItemAddController extends Controller
 				'ipv4wl' => $add_ipv4wl,
 				'ipv6lan' => $add_ipv6lan,
 				'ipv6wl' => $add_ipv6wl,
-				'remadmip' => $add_remoteadminip,
+				'remoteadminip' => $add_remoteadminip,
 				'panelport' => $add_panelport,
 				'switchid' => $add_switch_select,
 				'switchport' => $add_switchport,
