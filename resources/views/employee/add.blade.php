@@ -26,10 +26,10 @@
 		↓ 批量录入&nbsp;&nbsp;
 		<Input-number v-model.lazy="piliangluruxiang_employees" @on-change="value=>piliangluru_generate_employees(value)" :min="1" :max="10" size="small" style="width: 60px"></Input-number>
 		&nbsp;项（最多10项）&nbsp;&nbsp;<br>
+		<br>
 
 		<span v-for="(item, index) in piliangluru_employees">
-		<br>
-		<i-form :label-width="80">
+		<i-form :label-width="80" ref="item" :model="item" :rules="ruleValidate">
 		<i-row>
 			<i-col span="1">
 				<label class="ivu-form-item-label">
@@ -37,23 +37,23 @@
 				</label>
 			</i-col>
 			<i-col span="5">
-				<Form-Item label="姓名" style="margin-bottom:0px">
+				<Form-Item label="姓名" prop="name" style="margin-bottom:0px">
 					<i-input v-model.lazy="item.name" size="small"></i-input>
 				</Form-Item>
 			</i-col>
 			<i-col span="5">
-				<Form-Item label="用户ID" style="margin-bottom:0px">
+				<Form-Item label="用户ID" prop="userid" style="margin-bottom:0px">
 					<i-input v-model.lazy="item.userid" size="small"></i-input>
 				</Form-Item>
 			</i-col>
 			<i-col span="5">
-				<Form-Item label="部门" style="margin-bottom:0px">
+				<Form-Item label="部门" prop="department" style="margin-bottom:0px">
 					<i-input v-model.lazy="item.department" size="small"></i-input>
 				</Form-Item>
 			</i-col>
 			<i-col span="5">
-				<Form-Item label="电子邮件" style="margin-bottom:0px">
-					<i-input v-model.lazy="item.email" size="small"></i-input>
+				<Form-Item label="电子邮件" prop="email" style="margin-bottom:0px">
+					<i-input v-model="item.email" size="small"></i-input>
 				</Form-Item>
 			</i-col>
 			<i-col span="3">
@@ -171,8 +171,21 @@ var vm_app = new Vue({
 
 
 
+		ruleValidate: {
+			name: [
+				{ required: true, message: '姓名不可为空', trigger: 'blur' }
+			],
+			userid: [
 
+			],
+			department: [
 
+			],
+			// 变量名和校验规则名必须一致，比如 item.email 和 email
+			email: [
+				{ type: 'email', message: '邮件地址格式不正确', trigger: 'blur' }
+			],
+		},
 
 		
 
