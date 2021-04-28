@@ -232,7 +232,7 @@ class EmployeesController extends Controller
 		}
 		catch (\Exception $e) {
 			DB::rollBack();
-			dd('Message: ' .$e->getMessage());
+			// dd('Message: ' .$e->getMessage());
 			$result = 0;
 		}
 		DB::commit();
