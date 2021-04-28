@@ -203,19 +203,15 @@ class EmployeesController extends Controller
 
 		$id = $request->input('id');
 		$updated_at = $request->input('updated_at');
-		$title = $request->input('title');
-		$agentid = $request->input('agentid');
-		$invoiceid = $request->input('invoiceid');
-		$purchasedate = $request->input('purchasedate');
-		$version = $request->input('version');
-		$quantity = $request->input('quantity');
-		$type = $request->input('type');
-		$licenseinfo = $request->input('licenseinfo');
-		$comments = $request->input('comments');
+		$name = $request->input('name');
+		$userid = $request->input('userid');
+		$department = $request->input('department');
+		$email = $request->input('email');
+		$gender = $request->input('gender');
 		
 		// 判断如果不是最新的记录，不可被编辑
 		// 因为可能有其他人在你当前表格未刷新的情况下已经更新过了
-		$res = Softs::select('updated_at')
+		$res = Employees::select('updated_at')
 			->where('id', $id)
 			->first();
 		$res_updated_at = date('Y-m-d H:i:s', strtotime($res['updated_at']));
@@ -226,21 +222,17 @@ class EmployeesController extends Controller
 			DB::beginTransaction();
 			$result = Employees::where('id', $id)
 				->update([
-					'title'			=> $title,
-					'agentid'		=> $agentid,
-					'invoiceid'		=> $invoiceid,
-					'purchasedate'	=> $purchasedate,
-					'version'		=> $version,
-					'quantity'		=> $quantity,
-					'type'			=> $type,
-					'licenseinfo'	=> $licenseinfo,
-					'comments'		=> $comments,
+					'name'			=> $name,
+					'userid'		=> $userid,
+					'department'	=> $department,
+					'email'			=> $email,
+					'gender'		=> $gender,
 				]);
 			// $result = 1;
 		}
 		catch (\Exception $e) {
 			DB::rollBack();
-			// dd('Message: ' .$e->getMessage());
+			dd('Message: ' .$e->getMessage());
 			$result = 0;
 		}
 		DB::commit();

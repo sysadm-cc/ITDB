@@ -135,25 +135,32 @@
 <!-- 以下为各元素编辑窗口 -->
 
 <!-- 主编辑窗口 employees-->
-<Modal v-model="modal_edit_employees" @on-ok="update_employees" ok-text="保存" title="编辑 - 代理商" width="640">
+<Modal v-model="modal_edit_employees" @on-ok="update_employees" ok-text="保存" title="编辑 - 用户" width="460">
 	<div style="text-align:left">
 
 		<p>
-		<i-form :label-width="90">
+		<i-form :label-width="80" ref="edit_employee" :model="edit_employee" :rules="ruleValidate">
 			<i-row>
-				<i-col span="24">
-					<Form-Item label="名称" required style="margin-bottom:0px">
-						<i-input v-model.lazy="edit_title" size="small"></i-input>
+				<i-col span="12">
+					<Form-Item label="姓名" prop="edit_name">
+						<i-input v-model.lazy="edit_employee.edit_name" size="small"></i-input>
 					</Form-Item>
-					<Form-Item label="类型" required style="margin-bottom:0px">
-						<Poptip word-wrap trigger="hover" placement="top" width="300" content="售卖方及购买方将出现在发票及合同模块中；售卖方及购买方将出现在发票及合同模块中；硬件销售商将出现的物品模块中；软件销售商将出现在合同模块中；承包商将出现的合同模块中。">
-							<i-select v-model.lazy="edit_type_select" size="small" multiple clearable placeholder="">
-								<i-option v-for="item in edit_type_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
-							</i-select>
-						</Poptip>
+					<Form-Item label="部门" prop="edit_department">
+						<i-input v-model.lazy="edit_employee.edit_department" size="small"></i-input>
 					</Form-Item>
-					<Form-Item label="备注" style="margin-bottom:0px">
-						<i-input v-model.lazy="edit_contactinfo" size="small" type="textarea"></i-input>
+					<Form-Item label="性别">
+						<i-switch v-model.lazy="edit_employee.edit_gender">
+							<span slot="open">男</span>
+							<span slot="close">女</span>
+						</i-switch>
+					</Form-Item>
+				</i-col>
+				<i-col span="12">
+					<Form-Item label="用户ID" prop="edit_userid">
+						<i-input v-model.lazy="edit_employee.edit_userid" size="small"></i-input>
+					</Form-Item>
+					<Form-Item label="电子邮件" prop="edit_email">
+						<i-input v-model="edit_employee.edit_email" size="small"></i-input>
 					</Form-Item>
 				</i-col>
 			</i-row>
@@ -228,50 +235,33 @@ var vm_app = new Vue({
 		modal_edit_employees: false,
 		edit_id: '',
 		edit_updated_at: '',
-		edit_title: '',
-		edit_type_select: [],
-		edit_type_options: [
-			{label: '售卖方 - Vendoer', value: 1},
-			{label: '软件销售商 - S/W Manufacturer', value: 2},
-			{label: '硬件销售商 - H/W Manufacturer', value: 3},
-			{label: '购买方 - Buyer', value: 4},
-			{label: '承包商 - Contractor', value: 5},
-		],
-		edit_contactinfo: '',
+
+		edit_employee: {
+			edit_name: '',
+			edit_userid: '',
+			edit_department: '',
+			edit_email: '',
+			edit_gender: true,
+		},
+
+		ruleValidate: {
+			edit_name: [
+				{ required: true, message: '姓名不可为空', trigger: 'blur' }
+			],
+			edit_userid: [
+
+			],
+			edit_department: [
+
+			],
+			// 变量名和校验规则名必须一致，比如 item.email 和 email
+			edit_email: [
+				{ type: 'email', message: '邮件地址格式不正确', trigger: 'blur' }
+			],
+		},
 
 
-		// 子编辑 变量
-		modal_subedit_contacts: false,
-		modal_subedit_urls: false,
-		subedit_id: '',
-		subedit_subid: '',
-		subedit_updated_at: '',
 
-		subedit_contacts_name: '',
-		subedit_contacts_role: '',
-		subedit_contacts_phonenumber: '',
-		subedit_contacts_email: '',
-		subedit_contacts_comments: '',
-
-		subedit_urls_url: '',
-		subedit_urls_description: '',
-		
-
-		// 子添加 变量
-		modal_subadd_contacts: false,
-		modal_subadd_urls: false,
-		subadd_id: '',
-		subadd_subid: '',
-		subadd_updated_at: '',
-
-		subadd_contacts_name: '',
-		subadd_contacts_role: '',
-		subadd_contacts_phonenumber: '',
-		subadd_contacts_email: '',
-		subadd_contacts_comments: '',
-
-		subadd_urls_url: '',
-		subadd_urls_description: '',
 
 
 
@@ -353,7 +343,7 @@ var vm_app = new Vue({
 								'word-wrap': true,
 								'trigger': 'hover',
 								'confirm': false,
-								'content': '编辑'+params.row.title+'的信息',
+								'content': '编辑 '+params.row.name+' 的信息',
 								'transfer': true
 							},
 						}, [
@@ -558,9 +548,11 @@ var vm_app = new Vue({
 
 			_this.edit_id = row.id;
 			_this.edit_updated_at = row.updated_at;
-			_this.edit_title = row.title;
-			_this.edit_type_select = row.type;
-			_this.edit_contactinfo = row.contactinfo;
+			_this.edit_employee.edit_name = row.name;
+			_this.edit_employee.edit_userid = row.userid;
+			_this.edit_employee.edit_department = row.department;
+			_this.edit_employee.edit_email = row.email;
+			_this.edit_employee.edit_gender = row.gender == 1 ? true : false;
 
 			_this.modal_edit_employees = true;
 		},
@@ -571,11 +563,13 @@ var vm_app = new Vue({
 
 			var id = _this.edit_id;
 			var updated_at = _this.edit_updated_at;
-			var title = _this.edit_title;
-			var type = _this.edit_type_select;
-			var contactinfo = _this.edit_contactinfo;
+			var name = _this.edit_employee.edit_name;
+			var userid = _this.edit_employee.edit_userid;
+			var department = _this.edit_employee.edit_department;
+			var email = _this.edit_employee.edit_email;
+			var gender = _this.edit_employee.edit_gender;
 
-			if (id == undefined || title == undefined || title == '' || type == undefined || type == '') {
+			if (id == undefined || name == undefined || name == '') {
 				_this.warning(false, '警告', '内容不能为空！');
 				return false;
 			}
@@ -585,9 +579,11 @@ var vm_app = new Vue({
 			axios.post(url, {
 				id: id,
 				updated_at: updated_at,
-				title: title,
-				type: type,
-				contactinfo: contactinfo,
+				name: name,
+				userid: userid,
+				department: department,
+				email: email,
+				gender: gender,
 			})
 			.then(function (response) {
 				// console.log(response.data);return false;
