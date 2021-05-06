@@ -213,10 +213,10 @@ Main(Portal) -
 			<Card>
 				<p slot="title">
 					<Tooltip placement="top-start" max-width="220" content="View items by type, by user, by agent" theme="light">
-					<Icon type="ios-browsers"></Icon> 树形浏览 Tree Explorer
+					<Icon type="ios-people"></Icon> 用户 Users
 					</Tooltip>
 				</p>
-				<p v-for="item in CardList_TreeExplorer">
+				<p v-for="item in CardList_Users">
 					<span v-if="item.name">
 						<a :href="item.url" target="_blank"><Icon type="ios-link"></Icon>&nbsp;&nbsp;@{{ item.name }}</a>
 						<span style="float:right">
@@ -411,182 +411,182 @@ var vm_app = new Vue({
 
 		CardList_Hardware: [
 			{
-				name: '查询',	url: "{{ route('item.items') }}", detail: '查询硬件信息',
+				name: '查询', url: "{{ route('item.items') }}", detail: '查询硬件信息',
 			},
 			{
-				name: '添加',	url: "{{ route('item.add') }}", detail: '添加硬件信息',
+				name: '添加', url: "{{ route('item.add') }}", detail: '添加硬件信息',
 			},
 			{
-				name: '项目类型',	url: "{{ route('item.itemtypes') }}", detail: '查看/修改项目类型',
+				name: '项目类型', url: "{{ route('item.itemtypes') }}", detail: '查看/修改项目类型',
 			},
 			{
-				name: '状态类型',	url: "{{ route('item.statustypes') }}", detail: '查看/修改状态类型',
+				name: '状态类型', url: "{{ route('item.statustypes') }}", detail: '查看/修改状态类型',
 			},
 		],
 
 		CardList_Software: [
 			{
-				name: '查询',	url: "{{ route('soft.softs') }}", detail: '查询软件信息',
+				name: '查询', url: "{{ route('soft.softs') }}", detail: '查询软件信息',
 			},
 			{
-				name: '添加',	url: "{{ route('soft.add') }}", detail: '添加软件信息',
+				name: '添加', url: "{{ route('soft.add') }}", detail: '添加软件信息',
 			},
 			{
-				name: '',	url: '#', detail: '',
+				name: '', url: '#', detail: '',
 			},
 			{
-				name: '',	url: '#', detail: '',
+				name: '', url: '#', detail: '',
 			},
 		],
 
 		CardList_Invoices: [
 			{
-				name: '查询',	url: "{{route('invoice.invoices')}}", detail: '查询发票',
+				name: '查询', url: "{{route('invoice.invoices')}}", detail: '查询发票',
 			},
 			{
-				name: '添加',	url: "{{route('invoice.add')}}", detail: '添加发票',
+				name: '添加', url: "{{route('invoice.add')}}", detail: '添加发票',
 			},
 			{
-				name: '',	url: '#', detail: '',
+				name: '', url: '#', detail: '',
 			},
 			{
-				name: '',	url: '#', detail: '',
+				name: '', url: '#', detail: '',
 			},
 		],
 
 		// 每行最后一个，也就是第四个必须保持4行
 		CardList_Reports: [
 			{
-				name: '报表',	url: '#', detail: '',
+				name: '报表', url: '#', detail: '',
 			},
 			{
-				name: '',	url: '#', detail: '',
+				name: '树状浏览', url: '#', detail: '',
 			},
 			{
-				name: '',	url: '#', detail: '',
+				name: '', url: '#', detail: '',
 			},
 			{
-				name: '',	url: '#', detail: '',
+				name: '', url: '#', detail: '',
 			},
 		],
 
 		CardList_Contracts: [
 			{
-				name: '查询',	url: "{{route('contract.contracts')}}", detail: '查询合同',
+				name: '查询', url: "{{route('contract.contracts')}}", detail: '查询合同',
 			},
 			{
-				name: '添加',	url: "{{route('contract.add')}}", detail: '添加合同',
+				name: '添加', url: "{{route('contract.add')}}", detail: '添加合同',
 			},
 			{
-				name: '合同类型',	url: "{{route('contract.contracttypes')}}", detail: '编辑合同类型',
+				name: '合同类型', url: "{{route('contract.contracttypes')}}", detail: '编辑合同类型',
 			},
 			{
-				name: '',	url: '#', detail: '',
+				name: '', url: '#', detail: '',
 			},
 		],
 
 		CardList_Agents: [
 			{
-				name: '查询',	url: "{{ route('agent.agents') }}", detail: '查询代理商',
+				name: '查询', url: "{{ route('agent.agents') }}", detail: '查询代理商',
 			},
 			{
-				name: '添加',	url: "{{ route('agent.create') }}", detail: '添加代理商',
+				name: '添加', url: "{{ route('agent.create') }}", detail: '添加代理商',
 			},
 			{
-				name: '',	url: '#', detail: '',
+				name: '', url: '#', detail: '',
 			},
 			{
-				name: '',	url: '#', detail: '',
+				name: '', url: '#', detail: '',
 			},
 		],
 
-		CardList_TreeExplorer: [
+		CardList_Users: [
 			{
-				name: '浏览',	url: '#', detail: '',
+				name: '用户', url: "{{route('employee.employees')}}", detail: '',
 			},
 			{
-				name: '',	url: '#', detail: '',
+				name: '', url: '#', detail: '',
 			},
 			{
-				name: '',	url: '#', detail: '',
+				name: '', url: '#', detail: '',
 			},
 			{
-				name: '',	url: '#', detail: '',
+				name: '', url: '#', detail: '',
 			},
 		],
 
 		CardList_Files: [
 			{
-				name: '查询',	url: "{{route('file.files')}}", detail: '查询文件',
+				name: '查询', url: "{{route('file.files')}}", detail: '查询文件',
 			},
 			{
-				name: '添加',	url: "{{route('file.add')}}", detail: '添加文件',
+				name: '添加', url: "{{route('file.add')}}", detail: '添加文件',
 			},
 			{
-				name: '',	url: '#', detail: '',
+				name: '', url: '#', detail: '',
 			},
 			{
-				name: '',	url: '#', detail: '',
+				name: '', url: '#', detail: '',
 			},
 		],
 
 		CardList_Racks: [
 			{
-				name: '查询',	url: "{{route('rack.racks')}}", detail: '查询机柜',
+				name: '查询', url: "{{route('rack.racks')}}", detail: '查询机柜',
 			},
 			{
-				name: '添加',	url: "{{route('rack.add')}}", detail: '添加机柜',
+				name: '添加', url: "{{route('rack.add')}}", detail: '添加机柜',
 			},
 			{
-				name: '',	url: '#', detail: '',
+				name: '', url: '#', detail: '',
 			},
 			{
-				name: '',	url: '#', detail: '',
+				name: '', url: '#', detail: '',
 			},
 		],
 
 		CardList_Locations: [
 			{
-				name: '查询',	url: "{{route('location.locations')}}", detail: '查询位置',
+				name: '查询', url: "{{route('location.locations')}}", detail: '查询位置',
 			},
 			{
-				name: '添加',	url: "{{route('location.add')}}", detail: '添加位置',
+				name: '添加', url: "{{route('location.add')}}", detail: '添加位置',
 			},
 			{
-				name: '',	url: '#', detail: '',
+				name: '', url: '#', detail: '',
 			},
 			{
-				name: '',	url: '#', detail: '',
+				name: '', url: '#', detail: '',
 			},
 		],
 
 		CardList_PrintLabels: [
 			{
-				name: '标签',	url: '#', detail: '',
+				name: '标签', url: '#', detail: '',
 			},
 			{
-				name: '',	url: '#', detail: '',
+				name: '', url: '#', detail: '',
 			},
 			{
-				name: '',	url: '#', detail: '',
+				name: '', url: '#', detail: '',
 			},
 			{
-				name: '',	url: '#', detail: '',
+				name: '', url: '#', detail: '',
 			},
 		],
 
 		CardList_Settings: [
 			{
-				name: '系统配置',	url: '#', detail: '',
+				name: '系统配置', url: '#', detail: '',
 			},
 			{
-				name: '用户',	url: '#', detail: '',
-			},
-			{
-				name: '',	url: '#', detail: '',
+				name: '管理员', url: "#", detail: '',
 			},
 			{
 				name: '',	url: '#', detail: '',
+			},
+			{
+				name: '', url: '#', detail: '',
 			},
 		],
 
