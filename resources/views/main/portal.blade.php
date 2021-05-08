@@ -212,11 +212,11 @@ Main(Portal) -
 		<i-col span="5">
 			<Card>
 				<p slot="title">
-					<Tooltip placement="top-start" max-width="220" content="View items by type, by user, by agent" theme="light">
-					<Icon type="ios-people"></Icon> 用户 Users
+					<Tooltip placement="top-start" max-width="220" content="View employees which using items" theme="light">
+					<Icon type="ios-people"></Icon> 使用者 Employees
 					</Tooltip>
 				</p>
-				<p v-for="item in CardList_Users">
+				<p v-for="item in CardList_Employees">
 					<span v-if="item.name">
 						<a :href="item.url" target="_blank"><Icon type="ios-link"></Icon>&nbsp;&nbsp;@{{ item.name }}</a>
 						<span style="float:right">
@@ -500,9 +500,9 @@ var vm_app = new Vue({
 			},
 		],
 
-		CardList_Users: [
+		CardList_Employees: [
 			{
-				name: '用户', url: "{{route('employee.employees')}}", detail: '',
+				name: '使用者', url: "{{route('employee.employees')}}", detail: '',
 			},
 			{
 				name: '', url: '#', detail: '',

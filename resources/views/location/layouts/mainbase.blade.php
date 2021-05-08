@@ -329,7 +329,7 @@ if (isMobile) {
 
 							<Submenu name="9">
 								<template slot="title">
-										<Icon type="md-person" size="20"></Icon> 用户 <span style="color:rgb(158, 167, 180);font-size:10px;">Users</span>
+										<Icon type="md-person" size="20"></Icon> 使用者 <span style="color:rgb(158, 167, 180);font-size:10px;">Employees</span>
 								</template>
 								<Menu-item name="9-1"><Icon type="md-search" size="18"></Icon> 查询</Menu-item>
 								<Menu-item name="9-2"><Icon type="md-add" size="18"></Icon> 添加</Menu-item>
