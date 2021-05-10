@@ -334,6 +334,14 @@ if (isMobile) {
 								<Menu-item name="9-1"><Icon type="md-search" size="18"></Icon> 查询</Menu-item>
 								<Menu-item name="9-2"><Icon type="md-add" size="18"></Icon> 添加</Menu-item>
 							</Submenu>
+
+							<Submenu name="10">
+								<template slot="title">
+										<Icon type="md-analytics" size="20"></Icon> 事件 <span style="color:rgb(158, 167, 180);font-size:10px;">Events</span>
+								</template>
+								<Menu-item name="10-1"><Icon type="md-search" size="18"></Icon> 查询</Menu-item>
+								<Menu-item name="10-2"><Icon type="md-add" size="18"></Icon> 添加</Menu-item>
+							</Submenu>
 		
 						</i-menu>
 					</div>
@@ -487,7 +495,7 @@ function navmenuselect (name) {
 	  window.location.href = "";
 	  break;
 
-	// 用户
+	// 使用者
 	case '9-1':
 	  window.location.href = "{{route('employee.employees')}}";
 	  break;
@@ -495,6 +503,17 @@ function navmenuselect (name) {
 	  window.location.href = "{{route('employee.add')}}";
 	  break;
 	case '9-3':
+	  window.location.href = "";
+	  break;
+
+	// 事件
+	case '10-1':
+	  window.location.href = "{{route('event.events')}}";
+	  break;
+	case '10-2':
+	  window.location.href = "{{route('event.add')}}";
+	  break;
+	case '10-3':
 	  window.location.href = "";
 	  break;
 
