@@ -26,57 +26,49 @@
 		↓ 批量录入&nbsp;&nbsp;
 		<Input-number v-model.lazy="piliangluruxiang_events" @on-change="value=>piliangluru_generate_events(value)" :min="1" :max="10" size="small" style="width: 60px"></Input-number>
 		&nbsp;项（最多10项）&nbsp;&nbsp;<br>
-		<br>
 
 		<span v-for="(item, index) in piliangluru_events">
+		<Divider dashed></Divider>
 		<i-form :label-width="80" ref="item" :model="item" :rules="ruleValidate">
 		<i-row>
-			<i-col span="1">
+			<!-- <i-col span="1">
 				<label class="ivu-form-item-label">
 					No.@{{index+1}}
 				</label>
-			</i-col>
+			</i-col> -->
 			<i-col span="5">
 				<Form-Item label="事件类型" prop="type" style="margin-bottom:0px">
 					<i-input v-model.lazy="item.type" size="small"></i-input>
 				</Form-Item>
-			</i-col>
-			<i-col span="5">
 				<Form-Item label="事件描述" prop="description" style="margin-bottom:0px">
 					<i-input v-model.lazy="item.description" size="small"></i-input>
-				</Form-Item>
-			</i-col>
-			<i-col span="5">
-				<Form-Item label="处理方法" prop="resolution" style="margin-bottom:0px">
-					<i-input v-model.lazy="item.resolution" size="small"></i-input>
-				</Form-Item>
-			</i-col>
-			<i-col span="5">
-				<Form-Item label="更换部件" prop="part" style="margin-bottom:0px">
-					<i-input v-model.lazy="item.part" size="small"></i-input>
-				</Form-Item>
-			</i-col>
-			<i-col span="5">
-				<Form-Item label="更换部件名称或型号" prop="partname" style="margin-bottom:0px">
-					<i-input v-model="item.partname" size="small"></i-input>
 				</Form-Item>
 			</i-col>
 			<i-col span="5">
 				<Form-Item label="开始时间" prop="startdate" style="margin-bottom:0px">
 					<i-input v-model="item.startdate" size="small"></i-input>
 				</Form-Item>
+				<Form-Item label="处理方法" prop="resolution" style="margin-bottom:0px">
+					<i-input v-model.lazy="item.resolution" size="small" type="text" :autosize="{minRows: 1,maxRows: 3}"></i-input>
+				</Form-Item>
 			</i-col>
 			<i-col span="5">
 				<Form-Item label="结束时间" prop="enddate" style="margin-bottom:0px">
 					<i-input v-model="item.enddate" size="small"></i-input>
+				</Form-Item>
+				<Form-Item label="更换部件" prop="part" style="margin-bottom:0px">
+					<i-input v-model.lazy="item.part" size="small"></i-input>
 				</Form-Item>
 			</i-col>
 			<i-col span="5">
 				<Form-Item label="维修人员" prop="maintainer" style="margin-bottom:0px">
 					<i-input v-model="item.maintainer" size="small"></i-input>
 				</Form-Item>
+				<Form-Item label="更换部件名称型号" prop="partname" style="margin-bottom:0px">
+					<i-input v-model="item.partname" size="small"></i-input>
+				</Form-Item>
 			</i-col>
-			<i-col span="3">
+			<i-col span="4">
 				<Form-Item label="是否修好" style="margin-bottom:0px">
 					<i-switch v-model.lazy="item.isok">
 						<span slot="open">是</span>
@@ -85,7 +77,7 @@
 				</Form-Item>
 			</i-col>
 		</i-row>
-		</i-form>&nbsp;
+		</i-form>
 		</span>
 
 	</i-col>
@@ -93,7 +85,7 @@
 </i-row>
 
 
-<Divider dashed></Divider>
+<Divider></Divider>
 
 <i-button @click="add_create()" :disabled="add_create_disabled" icon="md-add" size="large" type="primary">添加</i-button>
 
