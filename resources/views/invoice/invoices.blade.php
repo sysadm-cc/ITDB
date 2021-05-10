@@ -253,6 +253,20 @@ var vm_app = new Vue({
 				key: 'description',
 				resizable: true,
 				width: 180,
+				render: (h, params) => {
+					return h('span', {
+						}, [
+						h('Poptip', {
+							props: {
+								'word-wrap': true,
+								'width': 600,
+								'trigger': 'hover',
+								'content': params.row.description,
+								'transfer': true
+							},
+						}, params.row.description == null ? '' : params.row.description.length <=16 ? params.row.description : params.row.description.substr(0, 16) + '...')
+					]);
+				}
 			},
 			{
 				title: '创建时间',

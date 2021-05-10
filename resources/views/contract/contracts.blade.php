@@ -397,7 +397,7 @@ var vm_app = new Vue({
 								'content': params.row.description,
 								'transfer': true
 							},
-						}, params.row.description == null ? '' : params.row.description.substr(0, 16) + '...')
+						}, params.row.description == null ? '' : params.row.description.length <=16 ? params.row.description : params.row.description.substr(0, 16) + '...')
 					]);
 				}
 			},
