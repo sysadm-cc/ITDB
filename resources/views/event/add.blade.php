@@ -25,7 +25,7 @@
 
 		↓ 批量录入&nbsp;&nbsp;
 		<Input-number v-model.lazy="piliangluruxiang_events" @on-change="value=>piliangluru_generate_events(value)" :min="1" :max="10" size="small" style="width: 60px"></Input-number>
-		&nbsp;项（最多10项）&nbsp;&nbsp;<br>
+		&nbsp;项（最多10项）&nbsp;
 
 		<span v-for="(item, index) in piliangluru_events">
 		<Divider dashed></Divider>
@@ -302,16 +302,18 @@ var vm_app = new Vue({
 					|| v.description == '' || v.description == undefined
 					|| v.resolution == '' || v.resolution == undefined) {
 				} else {
-					// v.isok = v.isok ? 1 : 0;
 
 					v.startdate = v.startdate ? new Date(v.startdate).Format("yyyy-MM-dd hh:mm:ss") : '';
 					v.enddate = v.enddate ? new Date(v.currentenddate).Format("yyyy-MM-dd hh:mm:ss") : '';
-
 
 					piliangluru_tmp_events.push(v);
 				}
 			}
 			var add_events = piliangluru_tmp_events;
+			if(add_events.length == 0) {
+				_this.add_create_disabled = false;return false;
+			}
+
 			// console.log(add_events);return false;
 
 			// if (add_title == '' || add_title == undefined) {
