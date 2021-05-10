@@ -15,7 +15,7 @@ class CreateEventsTable extends Migration
     {
         Schema::create('events', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('type')->nullable()->comment('事件类型');
+            $table->unsignedTinyInteger('type')->comment('事件类型');
             $table->string('description')->comment('事件描述');
             $table->text('resolution')->comment('处理方法');
             $table->unsignedTinyInteger('part')->nullable()->comment('更换部件');

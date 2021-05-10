@@ -21,7 +21,7 @@ class EventsTableSeeder extends Seeder
             0 => 
             array (
                 'id' => 1,
-                'type' => '硬件故障',
+                'type' => 1,
                 'description' => '主板故障',
                 'resolution' => '更换主板',
                 'maintainer' => '网管小贾',
@@ -33,7 +33,7 @@ class EventsTableSeeder extends Seeder
             1 => 
             array (
                 'id' => 2,
-                'type' => '软件故障',
+                'type' => 2,
                 'description' => '.Net组件错误',
                 'resolution' => '重新安装.Net组件',
                 'maintainer' => '孔大力',

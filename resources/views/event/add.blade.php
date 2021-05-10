@@ -38,7 +38,9 @@
 			</i-col> -->
 			<i-col span="5">
 				<Form-Item label="事件类型" prop="type" style="margin-bottom:0px">
-					<i-input v-model.lazy="item.type" size="small"></i-input>
+					<i-select v-model.lazy="item.type" size="small" placeholder="">
+						<i-option v-for="item in type_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+					</i-select>
 				</Form-Item>
 				<Form-Item label="事件描述" prop="description" style="margin-bottom:0px">
 					<i-input v-model.lazy="item.description" size="small"></i-input>
@@ -46,18 +48,20 @@
 			</i-col>
 			<i-col span="5">
 				<Form-Item label="开始时间" prop="startdate" style="margin-bottom:0px">
-					<i-input v-model="item.startdate" size="small"></i-input>
+					<Date-picker v-model.lazy="item.startdate" type="datetime" size="small"></Date-picker>
 				</Form-Item>
 				<Form-Item label="处理方法" prop="resolution" style="margin-bottom:0px">
-					<i-input v-model.lazy="item.resolution" size="small" type="text" :autosize="{minRows: 1,maxRows: 3}"></i-input>
+					<i-input v-model.lazy="item.resolution" size="small" type="textarea" :autosize="{minRows: 2,maxRows: 3}"></i-input>
 				</Form-Item>
 			</i-col>
 			<i-col span="5">
 				<Form-Item label="结束时间" prop="enddate" style="margin-bottom:0px">
-					<i-input v-model="item.enddate" size="small"></i-input>
+					<Date-picker v-model.lazy="item.enddate" type="datetime" size="small"></Date-picker>
 				</Form-Item>
 				<Form-Item label="更换部件" prop="part" style="margin-bottom:0px">
-					<i-input v-model.lazy="item.part" size="small"></i-input>
+					<i-select v-model.lazy="item.part" size="small" placeholder="">
+						<i-option v-for="item in part_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+					</i-select>
 				</Form-Item>
 			</i-col>
 			<i-col span="5">
@@ -145,18 +149,20 @@ var vm_app = new Vue({
 		add_create_disabled: false,
 
 		// 参数变量
-		add_title: '',
-		add_type_select: [],
-		add_type_options: [
-			{label: '售卖方 - Vendor', value: 1},
-			{label: '软件销售商 - S/W Manufacturer', value: 2},
-			{label: '硬件销售商 - H/W Manufacturer', value: 3},
-			{label: '购买方 - Buyer', value: 4},
-			{label: '承包商 - Contractor', value: 5},
+		type_options: [
+			{label: '硬件故障', value: 1},
+			{label: '软件故障', value: 2},
+			{label: '资产移动', value: 3},
+			{label: '物品更换', value: 4},
+			{label: '其他', value: 5},
 		],
-		add_contactinfo: '',
-		add_contacts: [],
-		add_urls: [],
+		part_options: [
+			{label: '硬盘', value: 1},
+			{label: '内存', value: 2},
+			{label: 'CPU', value: 3},
+			{label: '主板', value: 4},
+			{label: '其他', value: 5},
+		],
 
 		// 批量录入项 - 联络方式
 		piliangluruxiang_events: 1,
@@ -180,17 +186,19 @@ var vm_app = new Vue({
 
 		ruleValidate: {
 			type: [
-				{ required: true, message: '事件类型不可为空', trigger: 'blur' }
+				{ required: true, message: ' ', trigger: 'blur' }
 			],
 			description: [
-
+				{ required: true, message: ' ', trigger: 'blur' }
 			],
-			part: [
-
+			resolution: [
+				{ required: true, message: ' ', trigger: 'blur' }
 			],
-			// 变量名和校验规则名必须一致，比如 item.partname 和 partname
-			partname: [
-				{ type: 'partname', message: '邮件地址格式不正确', trigger: 'blur' }
+			startdate: [
+				{ type: 'date', message: '', trigger: 'blur' }
+			],
+			enddate: [
+				{ type: 'date', message: '', trigger: 'blur' }
 			],
 		},
 
@@ -290,13 +298,21 @@ var vm_app = new Vue({
 			// 删除空json节点
 			var piliangluru_tmp_events = [];
 			for (var v of _this.piliangluru_events) {
-				if (v.type == '' || v.type == undefined) {
+				if (v.type == '' || v.type == undefined
+					|| v.description == '' || v.description == undefined
+					|| v.resolution == '' || v.resolution == undefined) {
 				} else {
 					// v.isok = v.isok ? 1 : 0;
+
+					v.startdate = v.startdate ? new Date(v.startdate).Format("yyyy-MM-dd hh:mm:ss") : '';
+					v.enddate = v.enddate ? new Date(v.currentenddate).Format("yyyy-MM-dd hh:mm:ss") : '';
+
+
 					piliangluru_tmp_events.push(v);
 				}
 			}
 			var add_events = piliangluru_tmp_events;
+			// console.log(add_events);return false;
 
 			// if (add_title == '' || add_title == undefined) {
 			// 	_this.error(false, '错误', '内容为空或不正确！');
@@ -310,6 +326,7 @@ var vm_app = new Vue({
 				add_events: add_events,
 			})
 			.then(function (response) {
+				// _this.add_create_disabled = false;
 				// console.log(response.data);return false;
 
 				if (response.data['jwt'] == 'logout') {
@@ -321,12 +338,12 @@ var vm_app = new Vue({
 					_this.add_clear_var();
 					_this.success(false, '成功', '添加成功！');
 				} else {
-					_this.error(false, '失败', '添加失败！姓名或电子邮件可能已存在！');
+					_this.error(false, '失败', '添加失败！');
 				}
 				_this.add_create_disabled = false;
 			})
 			.catch(function (error) {
-				_this.error(false, '错误', '添加失败！姓名或电子邮件可能已存在！');
+				_this.error(false, '错误', '添加失败！');
 				_this.add_create_disabled = false;
 			})
 
