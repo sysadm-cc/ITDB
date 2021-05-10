@@ -15,11 +15,11 @@ class CreateEventsTable extends Migration
     {
         Schema::create('events', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('type')->nullable()->comment('故障类型');
-            $table->string('description')->comment('故障描述');
+            $table->string('type')->nullable()->comment('事件类型');
+            $table->string('description')->comment('事件描述');
+            $table->text('resolution')->comment('处理方法');
             $table->unsignedTinyInteger('part')->nullable()->comment('更换部件');
             $table->string('partname')->nullable()->comment('更换部件名称或型号');
-            $table->text('resolution')->comment('处理方法');
             $table->datetime('startdate')->nullable()->comment('开始时间');
             $table->datetime('enddate')->nullable()->comment('结束时间');
             $table->string('maintainer')->nullable()->comment('维修人员');

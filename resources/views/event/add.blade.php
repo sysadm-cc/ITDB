@@ -24,11 +24,11 @@
 		<Divider orientation="left">事件属性</Divider>
 
 		↓ 批量录入&nbsp;&nbsp;
-		<Input-number v-model.lazy="piliangluruxiang_employees" @on-change="value=>piliangluru_generate_employees(value)" :min="1" :max="10" size="small" style="width: 60px"></Input-number>
+		<Input-number v-model.lazy="piliangluruxiang_events" @on-change="value=>piliangluru_generate_events(value)" :min="1" :max="10" size="small" style="width: 60px"></Input-number>
 		&nbsp;项（最多10项）&nbsp;&nbsp;<br>
 		<br>
 
-		<span v-for="(item, index) in piliangluru_employees">
+		<span v-for="(item, index) in piliangluru_events">
 		<i-form :label-width="80" ref="item" :model="item" :rules="ruleValidate">
 		<i-row>
 			<i-col span="1">
@@ -37,30 +37,50 @@
 				</label>
 			</i-col>
 			<i-col span="5">
-				<Form-Item label="姓名" prop="name" style="margin-bottom:0px">
-					<i-input v-model.lazy="item.name" size="small"></i-input>
+				<Form-Item label="事件类型" prop="type" style="margin-bottom:0px">
+					<i-input v-model.lazy="item.type" size="small"></i-input>
 				</Form-Item>
 			</i-col>
 			<i-col span="5">
-				<Form-Item label="事件ID" prop="userid" style="margin-bottom:0px">
-					<i-input v-model.lazy="item.userid" size="small"></i-input>
+				<Form-Item label="事件描述" prop="description" style="margin-bottom:0px">
+					<i-input v-model.lazy="item.description" size="small"></i-input>
 				</Form-Item>
 			</i-col>
 			<i-col span="5">
-				<Form-Item label="部门" prop="department" style="margin-bottom:0px">
-					<i-input v-model.lazy="item.department" size="small"></i-input>
+				<Form-Item label="处理方法" prop="resolution" style="margin-bottom:0px">
+					<i-input v-model.lazy="item.resolution" size="small"></i-input>
 				</Form-Item>
 			</i-col>
 			<i-col span="5">
-				<Form-Item label="电子邮件" prop="email" style="margin-bottom:0px">
-					<i-input v-model="item.email" size="small"></i-input>
+				<Form-Item label="更换部件" prop="part" style="margin-bottom:0px">
+					<i-input v-model.lazy="item.part" size="small"></i-input>
+				</Form-Item>
+			</i-col>
+			<i-col span="5">
+				<Form-Item label="更换部件名称或型号" prop="partname" style="margin-bottom:0px">
+					<i-input v-model="item.partname" size="small"></i-input>
+				</Form-Item>
+			</i-col>
+			<i-col span="5">
+				<Form-Item label="开始时间" prop="startdate" style="margin-bottom:0px">
+					<i-input v-model="item.startdate" size="small"></i-input>
+				</Form-Item>
+			</i-col>
+			<i-col span="5">
+				<Form-Item label="结束时间" prop="enddate" style="margin-bottom:0px">
+					<i-input v-model="item.enddate" size="small"></i-input>
+				</Form-Item>
+			</i-col>
+			<i-col span="5">
+				<Form-Item label="维修人员" prop="maintainer" style="margin-bottom:0px">
+					<i-input v-model="item.maintainer" size="small"></i-input>
 				</Form-Item>
 			</i-col>
 			<i-col span="3">
-				<Form-Item label="性别" style="margin-bottom:0px">
-					<i-switch v-model.lazy="item.gender">
-						<span slot="open">男</span>
-						<span slot="close">女</span>
+				<Form-Item label="是否修好" style="margin-bottom:0px">
+					<i-switch v-model.lazy="item.isok">
+						<span slot="open">是</span>
+						<span slot="close">否</span>
 					</i-switch>
 				</Form-Item>
 			</i-col>
@@ -116,8 +136,8 @@ var vm_app = new Vue({
 		current_nav: '',
 		current_subnav: '',
 		
-		sideractivename: '9-2',
-		sideropennames: ['9'],
+		sideractivename: '10-2',
+		sideropennames: ['10'],
 		
 		//分页
 		page_current: 1,
@@ -147,43 +167,38 @@ var vm_app = new Vue({
 		add_urls: [],
 
 		// 批量录入项 - 联络方式
-		piliangluruxiang_employees: 1,
+		piliangluruxiang_events: 1,
 		// 批量录入 - 联络方式
-		piliangluru_employees: [
+		piliangluru_events: [
 			{
-				name: '',
-				userid: '',
-				email: '',
-				department: '',
-				gender: true
+				type: '',
+				description: '',
+				resolution: '',
+				part: '',
+				partname: '',
+				startdate: '',
+				enddate: '',
+				maintainer: '',
+				isok: true
 			},
 		],
 
-		// 批量录入项 - URLs
-		piliangluruxiang_urls: 1,
-		// 批量录入 - URLs
-		piliangluru_urls: [
-			{
-				description: '',
-				url: '',
-			},
-		],
 
 
 
 		ruleValidate: {
-			name: [
-				{ required: true, message: '姓名不可为空', trigger: 'blur' }
+			type: [
+				{ required: true, message: '事件类型不可为空', trigger: 'blur' }
 			],
-			userid: [
+			description: [
 
 			],
-			department: [
+			part: [
 
 			],
-			// 变量名和校验规则名必须一致，比如 item.email 和 email
-			email: [
-				{ type: 'email', message: '邮件地址格式不正确', trigger: 'blur' }
+			// 变量名和校验规则名必须一致，比如 item.partname 和 partname
+			partname: [
+				{ type: 'partname', message: '邮件地址格式不正确', trigger: 'blur' }
 			],
 		},
 
@@ -258,16 +273,20 @@ var vm_app = new Vue({
 
 		// 清除所有变量
 		add_clear_var () {
-			this.piliangluru_employees = [
+			this.piliangluru_events = [
 				{
-					name: '',
-					userid: '',
-					email: '',
-					department: '',
-					gender: true,
+					type: '',
+					description: '',
+					resolution: '',
+					part: '',
+					partname: '',
+					startdate: '',
+					enddate: '',
+					maintainer: '',
+					isok: true,
 				}
 			];
-			this.piliangluruxiang_employees = 1;
+			this.piliangluruxiang_events = 1;
 		},
 
 
@@ -277,15 +296,15 @@ var vm_app = new Vue({
 			_this.add_create_disabled = true;
 
 			// 删除空json节点
-			var piliangluru_tmp_employees = [];
-			for (var v of _this.piliangluru_employees) {
-				if (v.name == '' || v.name == undefined) {
+			var piliangluru_tmp_events = [];
+			for (var v of _this.piliangluru_events) {
+				if (v.type == '' || v.type == undefined) {
 				} else {
-					// v.gender = v.gender ? 1 : 0;
-					piliangluru_tmp_employees.push(v);
+					// v.isok = v.isok ? 1 : 0;
+					piliangluru_tmp_events.push(v);
 				}
 			}
-			var add_employees = piliangluru_tmp_employees;
+			var add_events = piliangluru_tmp_events;
 
 			// if (add_title == '' || add_title == undefined) {
 			// 	_this.error(false, '错误', '内容为空或不正确！');
@@ -293,10 +312,10 @@ var vm_app = new Vue({
 			// 	return false;
 			// }
 
-			var url = "{{ route('employee.create') }}";
+			var url = "{{ route('event.create') }}";
 			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
 			axios.post(url, {
-				add_employees: add_employees,
+				add_events: add_events,
 			})
 			.then(function (response) {
 				// console.log(response.data);return false;
@@ -325,89 +344,60 @@ var vm_app = new Vue({
 
 
 		// 生成piliangluru 联系方式
-		piliangluru_generate_employees (counts) {
+		piliangluru_generate_events (counts) {
 			if (counts == undefined) counts = 1;
-			var len = this.piliangluru_employees.length;
+			var len = this.piliangluru_events.length;
 			
 			if (counts > len) {
 				for (var i=0;i<counts-len;i++) {
-					this.piliangluru_employees.push(
+					this.piliangluru_events.push(
 						{
-							name: '',
-							userid: '',
-							email: '',
-							department: '',
-							gender: true
-						}
-					);
-				}
-			} else if (counts < len) {
-				if (this.piliangluruxiang_employees != '') {
-					for (var i=counts;i<len;i++) {
-						if (this.piliangluruxiang_employees == this.piliangluru_employees[i].value) {
-							this.piliangluruxiang_employees = '';
-							break;
-						}
-					}
-				}
-				
-				for (var i=0;i<len-counts;i++) {
-					this.piliangluru_employees.pop();
-				}
-			}			
-		},	
-
-		// 生成piliangluru 网站
-		piliangluru_generate_urls (counts) {
-			if (counts == undefined) counts = 1;
-			var len = this.piliangluru_urls.length;
-			
-			if (counts > len) {
-				for (var i=0;i<counts-len;i++) {
-					// this.piliangluru.push({value: 'piliangluru'+parseInt(len+i+1)});
-					this.piliangluru_urls.push(
-						{
+							type: '',
 							description: '',
-							url: '',
+							resolution: '',
+							part: '',
+							partname: '',
+							startdate: '',
+							enddate: '',
+							maintainer: '',
+							isok: true
 						}
 					);
 				}
 			} else if (counts < len) {
-				if (this.piliangluruxiang_urls != '') {
+				if (this.piliangluruxiang_events != '') {
 					for (var i=counts;i<len;i++) {
-						if (this.piliangluruxiang_urls == this.piliangluru_urls[i].value) {
-							this.piliangluruxiang_urls = '';
+						if (this.piliangluruxiang_events == this.piliangluru_events[i].value) {
+							this.piliangluruxiang_events = '';
 							break;
 						}
 					}
 				}
 				
 				for (var i=0;i<len-counts;i++) {
-					this.piliangluru_urls.pop();
+					this.piliangluru_events.pop();
 				}
 			}			
-
 		},	
-		
-
-
-
-
-
-
-
-
-
 
 
 		
 
+
+
+
+
+
+
+
+
+
+
+		
+
 		
 
 
-	},
-	beforeCreated: function(){
-		
 	},
 	mounted: function(){
 		var _this = this;

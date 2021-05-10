@@ -634,7 +634,7 @@ var vm_app = new Vue({
 		_this.current_subnav = '查询';
 
 		// // 显示所有
-		_this.employeesgets(1, 1); // page: 1, last_page: 1
+		_this.eventsgets(1, 1); // page: 1, last_page: 1
 		// _this.loadapplicantgroup();
 
 		// GetCurrentDatetime('getcurrentdatetime');
