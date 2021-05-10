@@ -135,13 +135,66 @@
 <!-- 以下为各元素编辑窗口 -->
 
 <!-- 主编辑窗口 events-->
-<Modal v-model="modal_edit_events" @on-ok="update_events" ok-text="保存" title="编辑 - 事件" width="460">
+<Modal v-model="modal_edit_events" @on-ok="update_events" ok-text="保存" title="编辑 - 事件" width="720">
 	<div style="text-align:left">
 
 		<p>
 		<i-form :label-width="80" ref="edit_event" :model="edit_event" :rules="ruleValidate">
 			<i-row>
-				<i-col span="12">
+				<i-col span="8">
+					<Form-Item label="事件类型" prop="type" style="margin-bottom:0px">
+						<i-select v-model.lazy="edit_event.edit_type" clearable size="small" placeholder="">
+							<i-option v-for="item in edit_type_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+						</i-select>
+					</Form-Item>
+					<Form-Item label="事件描述" prop="description" style="margin-bottom:0px">
+						<i-input v-model.lazy="edit_event.edit_description" clearable size="small"></i-input>
+					</Form-Item>
+					<Form-Item label="处理方法" prop="resolution" style="margin-bottom:0px">
+						<i-input v-model.lazy="edit_event.edit_resolution" size="small" type="textarea" :autosize="{minRows: 3,maxRows: 4}"></i-input>
+					</Form-Item>
+				</i-col>
+				<i-col span="8">
+					<Form-Item label="开始时间" prop="startdate" style="margin-bottom:0px">
+						<Date-picker v-model.lazy="edit_event.edit_startdate" type="datetime" size="small"></Date-picker>
+					</Form-Item>
+					<Form-Item label="结束时间" prop="enddate" style="margin-bottom:0px">
+						<Date-picker v-model.lazy="edit_event.edit_enddate" type="datetime" size="small"></Date-picker>
+					</Form-Item>
+					<Form-Item label="维修人员" prop="maintainer" style="margin-bottom:0px">
+						<i-input v-model="edit_event.edit_maintainer" clearable size="small"></i-input>
+					</Form-Item>
+				</i-col>
+				<i-col span="8">
+					<Form-Item label="更换部件" prop="part" style="margin-bottom:0px">
+						<i-select v-model.lazy="edit_event.part" clearable size="small" placeholder="">
+							<i-option v-for="item in edit_part_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
+						</i-select>
+					</Form-Item>
+					<Form-Item label="更换部件名称型号" prop="partname" style="margin-bottom:0px">
+						<i-input v-model="edit_event.edit_partname" clearable size="small"></i-input>
+					</Form-Item>
+					<Form-Item label="是否修好" style="margin-bottom:0px">
+						<i-switch v-model.lazy="edit_event.edit_isok">
+							<span slot="open">是</span>
+							<span slot="close">否</span>
+						</i-switch>
+					</Form-Item>
+				</i-col>
+
+
+
+
+
+
+
+
+
+
+
+
+
+				<!-- <i-col span="12">
 					<Form-Item label="姓名" prop="edit_name">
 						<i-input v-model.lazy="edit_event.edit_name" size="small"></i-input>
 					</Form-Item>
@@ -162,7 +215,7 @@
 					<Form-Item label="电子邮件" prop="edit_email">
 						<i-input v-model="edit_event.edit_email" size="small"></i-input>
 					</Form-Item>
-				</i-col>
+				</i-col> -->
 			</i-row>
 		</i-form>&nbsp;
 		</p>
@@ -257,11 +310,15 @@ var vm_app = new Vue({
 		edit_updated_at: '',
 
 		edit_event: {
-			edit_name: '',
-			edit_userid: '',
-			edit_department: '',
-			edit_email: '',
-			edit_gender: true,
+			edit_type: '',
+			edit_description: '',
+			edit_resolution: '',
+			edit_part: '',
+			edit_partname: '',
+			edit_startdate: '',
+			edit_enddate: '',
+			edit_maintainer: '',
+			edit_isok: true
 		},
 
 		ruleValidate: {
@@ -410,7 +467,7 @@ var vm_app = new Vue({
 								'word-wrap': true,
 								'trigger': 'hover',
 								'confirm': false,
-								'content': '编辑 '+params.row.name+' 的信息',
+								'content': '编辑事件ID：'+params.row.id+' 的信息',
 								'transfer': true
 							},
 						}, [
@@ -615,11 +672,16 @@ var vm_app = new Vue({
 
 			_this.edit_id = row.id;
 			_this.edit_updated_at = row.updated_at;
-			_this.edit_event.edit_name = row.name;
-			_this.edit_event.edit_userid = row.userid;
-			_this.edit_event.edit_department = row.department;
-			_this.edit_event.edit_email = row.email;
-			_this.edit_event.edit_gender = row.gender == 1 ? true : false;
+
+			_this.edit_event.edit_type = row.type;
+			_this.edit_event.edit_description = row.description;
+			_this.edit_event.edit_resolution = row.resolution;
+			_this.edit_event.edit_part = row.part;
+			_this.edit_event.edit_partname = row.partname;
+			_this.edit_event.edit_startdate = row.startdate;
+			_this.edit_event.edit_enddate = row.enddate;
+			_this.edit_event.edit_maintainer = row.maintainer;
+			_this.edit_event.edit_isok = row.isok == 1 ? true : false;
 
 			_this.modal_edit_events = true;
 		},
@@ -630,13 +692,20 @@ var vm_app = new Vue({
 
 			var id = _this.edit_id;
 			var updated_at = _this.edit_updated_at;
-			var name = _this.edit_event.edit_name;
-			var userid = _this.edit_event.edit_userid;
-			var department = _this.edit_event.edit_department;
-			var email = _this.edit_event.edit_email;
-			var gender = _this.edit_event.edit_gender;
 
-			if (id == undefined || name == undefined || name == '') {
+			var type = _this.edit_event.edit_type;
+			var description = _this.edit_event.edit_description;
+			var resolution = _this.edit_event.edit_resolution;
+			var part = _this.edit_event.edit_part;
+			var partname = _this.edit_event.edit_partname;
+			var startdate = _this.edit_event.edit_startdate ? new Date(_this.edit_event.edit_startdate).Format("yyyy-MM-dd hh:mm:ss") : '';
+			var enddate = _this.edit_event.edit_enddate ? new Date(_this.edit_event.edit_enddate).Format("yyyy-MM-dd hh:mm:ss") : '';
+			var maintainer = _this.edit_event.edit_maintainer;
+			var isok = _this.edit_event.edit_isok;
+			
+			if (id == undefined || type == undefined || type == ''
+				|| description == undefined || description == ''
+				|| resolution == undefined || resolution == '') {
 				_this.warning(false, '警告', '内容不能为空！');
 				return false;
 			}
@@ -646,11 +715,15 @@ var vm_app = new Vue({
 			axios.post(url, {
 				id: id,
 				updated_at: updated_at,
-				name: name,
-				userid: userid,
-				department: department,
-				email: email,
-				gender: gender,
+				type: type,
+				description: description,
+				resolution: resolution,
+				part: part,
+				partname: partname, 
+				startdate: startdate,
+				enddate: enddate,
+				maintainer: maintainer,
+				isok: isok,
 			})
 			.then(function (response) {
 				// console.log(response.data);return false;

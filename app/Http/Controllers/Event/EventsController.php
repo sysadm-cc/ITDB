@@ -203,12 +203,16 @@ class EventsController extends Controller
 
 		$id = $request->input('id');
 		$updated_at = $request->input('updated_at');
-		$name = $request->input('name');
-		$userid = $request->input('userid');
-		$department = $request->input('department');
-		$email = $request->input('email');
-		$gender = $request->input('gender');
-		
+		$type = $request->input('type');
+		$description = $request->input('description');
+		$resolution = $request->input('resolution');
+		$part = $request->input('part');
+		$partname = $request->input('partname');
+		$startdate = $request->input('startdate');
+		$enddate = $request->input('enddate');
+		$maintainer = $request->input('maintainer');
+		$isok = $request->input('isok');
+
 		// 判断如果不是最新的记录，不可被编辑
 		// 因为可能有其他人在你当前表格未刷新的情况下已经更新过了
 		$res = Events::select('updated_at')
@@ -222,11 +226,15 @@ class EventsController extends Controller
 			DB::beginTransaction();
 			$result = Events::where('id', $id)
 				->update([
-					'name'			=> $name,
-					'userid'		=> $userid,
-					'department'	=> $department,
-					'email'			=> $email,
-					'gender'		=> $gender,
+					'type'			=> $type,
+					'description'	=> $description,
+					'resolution'	=> $resolution,
+					'part'			=> $part,
+					'partname'		=> $partname,
+					'startdate'		=> $startdate,
+					'enddate'		=> $enddate,
+					'maintainer'	=> $maintainer,
+					'isok'			=> $isok,
 				]);
 			// $result = 1;
 		}
