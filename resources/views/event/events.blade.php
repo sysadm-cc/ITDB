@@ -1,7 +1,7 @@
-@extends('employee.layouts.mainbase')
+@extends('event.layouts.mainbase')
 
 @section('my_title')
-使用者 - 
+事件 - 
 @parent
 @endsection
 
@@ -66,7 +66,7 @@
 
 @section('my_body')
 @parent
-<!-- <Divider orientation="left">使用者</Divider> -->
+<!-- <Divider orientation="left">事件</Divider> -->
 &nbsp;<br>
 
 <Collapse v-model="collapse_query">
@@ -110,7 +110,7 @@
 			</Poptip>
 		</i-col>
 		<i-col span="3">
-			<i-button type="primary" icon="md-add" size="small" @click="employees_add()">添加使用者</i-button>
+			<i-button type="primary" icon="md-add" size="small" @click="employees_add()">添加事件</i-button>
 		</i-col>
 		<i-col span="3">
 			<i-button type="default" icon="md-download" size="small" @click="items_export()">导出列表</i-button>
@@ -135,7 +135,7 @@
 <!-- 以下为各元素编辑窗口 -->
 
 <!-- 主编辑窗口 employees-->
-<Modal v-model="modal_edit_employees" @on-ok="update_employees" ok-text="保存" title="编辑 - 使用者" width="460">
+<Modal v-model="modal_edit_employees" @on-ok="update_employees" ok-text="保存" title="编辑 - 事件" width="460">
 	<div style="text-align:left">
 
 		<p>
@@ -156,7 +156,7 @@
 					</Form-Item>
 				</i-col>
 				<i-col span="12">
-					<Form-Item label="使用者ID" prop="edit_userid">
+					<Form-Item label="事件ID" prop="edit_userid">
 						<i-input v-model.lazy="edit_employee.edit_userid" size="small"></i-input>
 					</Form-Item>
 					<Form-Item label="电子邮件" prop="edit_email">
@@ -288,7 +288,7 @@ var vm_app = new Vue({
 				width: 140,
 			},
 			{
-				title: '使用者ID',
+				title: '事件ID',
 				key: 'userid',
 				resizable: true,
 				width: 180,
@@ -630,7 +630,7 @@ var vm_app = new Vue({
 	},
 	mounted: function(){
 		var _this = this;
-		_this.current_nav = '使用者';
+		_this.current_nav = '事件';
 		_this.current_subnav = '查询';
 
 		// // 显示所有

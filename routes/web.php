@@ -11,6 +11,30 @@
 |
 */
 
+// Events 路由
+// Route::group(['prefix'=>'renshi', 'namespace'=>'Admin', 'middleware'=>['jwtauth','permission:permission_admin_permission|permission_super_admin']], function() {
+Route::group(['prefix'=>'event', 'namespace'=>'Event', 'middleware'=>['jwtauth']], function() {
+
+	// 显示 Events 页面
+	Route::get('eventEvents', 'EventsController@eventEvents')->name('event.events');
+
+	// Events gets列表
+	Route::get('eventGets', 'EventsController@eventGets')->name('event.gets');
+
+	// Events Update
+	Route::post('eventUpdate', 'EventsController@eventUpdate')->name('event.update');
+
+	// Events Delete
+	Route::post('eventDelete', 'EventsController@eventDelete')->name('event.delete');
+
+	// 显示 Events Add 页面
+	Route::get('eventAdd', 'EventsController@eventAdd')->name('event.add');
+
+	// Events Create
+	Route::post('eventCreate', 'EventsController@eventCreate')->name('event.create');
+
+});
+
 // Employees 路由
 // Route::group(['prefix'=>'renshi', 'namespace'=>'Admin', 'middleware'=>['jwtauth','permission:permission_admin_permission|permission_super_admin']], function() {
 Route::group(['prefix'=>'employee', 'namespace'=>'Employee', 'middleware'=>['jwtauth']], function() {

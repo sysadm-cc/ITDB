@@ -1,7 +1,7 @@
-@extends('employee.layouts.mainbase')
+@extends('event.layouts.mainbase')
 
 @section('my_title')
-使用者添加 - 
+事件添加 - 
 @parent
 @endsection
 
@@ -16,12 +16,12 @@
 
 @section('my_body')
 @parent
-<!-- <Divider orientation="left">使用者添加</Divider> -->
+<!-- <Divider orientation="left">事件添加</Divider> -->
 
 <i-row>
 
 	<i-col span="24">
-		<Divider orientation="left">使用者属性</Divider>
+		<Divider orientation="left">事件属性</Divider>
 
 		↓ 批量录入&nbsp;&nbsp;
 		<Input-number v-model.lazy="piliangluruxiang_employees" @on-change="value=>piliangluru_generate_employees(value)" :min="1" :max="10" size="small" style="width: 60px"></Input-number>
@@ -42,7 +42,7 @@
 				</Form-Item>
 			</i-col>
 			<i-col span="5">
-				<Form-Item label="使用者ID" prop="userid" style="margin-bottom:0px">
+				<Form-Item label="事件ID" prop="userid" style="margin-bottom:0px">
 					<i-input v-model.lazy="item.userid" size="small"></i-input>
 				</Form-Item>
 			</i-col>
@@ -412,7 +412,7 @@ var vm_app = new Vue({
 	mounted: function(){
 		var _this = this;
 		_this.loadingbarstart();
-		_this.current_nav = '使用者';
+		_this.current_nav = '事件';
 		_this.current_subnav = '添加';
 
 
