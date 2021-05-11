@@ -135,7 +135,7 @@
 <!-- 以下为各元素编辑窗口 -->
 
 <!-- 主编辑窗口 events-->
-<Modal v-model="modal_edit_events" @on-ok="update_events" ok-text="保存" title="编辑 - 事件" width="720">
+<Modal v-model="modal_edit_events" @on-ok="update_events" ok-text="保存" title="编辑 - 事件" width="840">
 	<div style="text-align:left">
 
 		<p>

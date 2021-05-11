@@ -92,6 +92,9 @@
 <Divider></Divider>
 
 <i-button @click="add_create()" :disabled="add_create_disabled" icon="md-add" size="large" type="primary">添加</i-button>
+&nbsp;&nbsp;
+
+<i-button @click="events_events()" icon="md-search" size="large">跳转至查询</i-button>
 
 &nbsp;
 
@@ -392,7 +395,11 @@ var vm_app = new Vue({
 		},	
 
 
-		
+		// 跳转至查询页面
+		events_events () {
+			window.location.href = "{{ route('event.events') }}";
+		},
+
 
 
 
