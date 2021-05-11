@@ -66,6 +66,9 @@
 <Divider dashed></Divider>
 
 <i-button @click="add_create()" :disabled="add_create_disabled" icon="md-add" size="large" type="primary">添加</i-button>
+&nbsp;&nbsp;
+
+<i-button @click="files_files()" icon="md-search" size="large">跳转至查询</i-button>
 
 <br>
 
@@ -489,51 +492,33 @@ var vm_app = new Vue({
 		},
 
 
-
-
-
-
-		// ajax 获取物品类型列表
-		itemtypesgets () {
-			var _this = this;
-			var url = "{{ route('item.itemtypesgets') }}";
-			axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
-			axios.get(url)
-			.then(function (response) {
-				if (response.data['jwt'] == 'logout') {
-					_this.alert_logout();
-					return false;
-				}
-				if (response.data) {
-					response.data.data.map(function (v, i) {
-						_this.add_itemtype_options.push({label: v.typedesc, value: v.id});
-					});
-				}
-			})
-			.catch(function (error) {
-			})
+		// 跳转至查询页面
+		files_files () {
+			window.location.href = "{{ route('file.files') }}";
 		},
+
+
+
+
 	
-		
-
-
-
-
-
-
-
-
-
-
-
-		
 
 		
 
 
-	},
-	beforeCreated: function(){
+
+
+
+
+
+
+
+
+
 		
+
+		
+
+
 	},
 	mounted: function(){
 		var _this = this;

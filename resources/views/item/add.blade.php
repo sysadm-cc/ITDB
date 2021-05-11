@@ -276,6 +276,9 @@
 <Divider dashed></Divider>
 
 <i-button @click="add_create()" :disabled="add_create_disabled" icon="md-add" size="large" type="primary">添加</i-button>
+&nbsp;&nbsp;
+
+<i-button @click="items_items()" icon="md-search" size="large">跳转至查询</i-button>
 
 <br>
 
@@ -901,6 +904,10 @@ var vm_app = new Vue({
 		},
 
 
+		// 跳转至查询页面
+		items_items () {
+			window.location.href = "{{ route('item.items') }}";
+		},
 
 
 

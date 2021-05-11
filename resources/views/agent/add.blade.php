@@ -126,6 +126,9 @@
 <Divider dashed></Divider>
 
 <i-button @click="add_create()" :disabled="add_create_disabled" icon="md-add" size="large" type="primary">添加</i-button>
+&nbsp;&nbsp;
+
+<i-button @click="agents_agents()" icon="md-search" size="large">跳转至查询</i-button>
 
 &nbsp;
 
@@ -461,6 +464,10 @@ var vm_app = new Vue({
 		},	
 		
 
+		// 跳转至查询页面
+		agents_agents () {
+			window.location.href = "{{ route('agent.agents') }}";
+		},
 
 
 
@@ -476,9 +483,6 @@ var vm_app = new Vue({
 		
 
 
-	},
-	beforeCreated: function(){
-		
 	},
 	mounted: function(){
 		var _this = this;
