@@ -20,7 +20,18 @@ class JwtAuth
 
 	// 请求前处理内容
 	// return $next($request);
-	
+
+	$config = Config::pluck('cfg_value', 'cfg_name')->toArray();
+
+	// 判断日期
+	$dateofcurrent = date("Y-m-d H:i:s",time());
+	$dateofsetup = date(decode4openssl(substr($config['SITE_EXPIRED_DATE'], 1)));
+
+	if (!isDatetime($dateofsetup) || strtotime($dateofcurrent) > strtotime($dateofsetup)) {
+		die(decode4openssl('uoq++Q9L/RSu6I3Y0aAky59ViFLabwXNRFtWkQnTt3DmbPxavhdj42J0bSpyaaLjireSFG63uaHIYU4DOV+qfoj/EYywGRP00VoBzdhSVnnggDXfhdQfNZQ0pRroEWG7UsunyhckGQxCUqzuN/D/RzpB0YSzNIwBXpazT8V5axEaEqBnNhKwA4wrbyEk87hXyU9/TfVSIwcixfv4a/MKSQ=='));
+	}
+
+
 	// 验证sitekey和appkey
 	$config = Config::pluck('cfg_value', 'cfg_name')->toArray();
 	$site_key = $config['SITE_KEY'];

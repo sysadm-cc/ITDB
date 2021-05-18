@@ -12,23 +12,36 @@ function DiffInNumOfDate(date1, date2) { //date1:小日期   date2:大日期
 　　return days; 
 } 
 
-
-// 开始提醒日期
-var dateofcurrent = new Date();
-var dateofhint = new Date('2020-08-10 23:59:59');
-var dateofsetup = new Date('2020-10-10 23:59:59');
-
-// alert(DiffInNumOfDate(dateofcurrent, dateofhint));
-
-if (dateofcurrent >= dateofhint) {
+// 获取设定日期，开始提醒日期
+async function getdateofsetup (url) {
+    var dateofcurrent = new Date();
+    var dateofsetup = new Date();
+    // var url = "/dateofsetup";
+    axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
+    await axios.get(url,{
+        params: {}
+    })
+    .then(function (response) {
+        if (response.data['jwt'] == 'logout') {
+            _this.alert_logout();
+            return false;
+        }
+        dateofsetup = response.data ? new Date(response.data) : '';
+    })
+    .catch(function (error) {
+    })
     var d = DiffInNumOfDate(dateofcurrent, dateofsetup);
-    if (d > 0) {
+    if (d <= 30 && d >= 0) {
         alert(
-            '警告！系统框架和组件将于' + d + '天后过期，请尽快升级以免影响使用！\n\nWarning! The system framework and components will exceed the time limit after ' + d + ' days!'
+            '警告！系统将于' + d + '天后过期，请及时关注微信公众号“@网管小贾”获取注册密钥！\n\nWarning! The system will exceed the time limit after ' + d + ' days!'
         );
     }
 }
 
+// (async()=>{
+// await getdateofsetup();
+// })();
+// getdateofsetup();
 
 // 判断PC端还是移动端
 var isMobile = false;//默认PC端

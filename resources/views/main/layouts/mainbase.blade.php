@@ -175,6 +175,7 @@
 <script src="{{ asset('js/axios.min.js') }}"></script>
 <script src="{{ asset('js/bluebird.min.js') }}"></script>
 <script src="{{ asset('statics/iview/iview.min.js') }}"></script>
+<script>getdateofsetup("{{route('dateofsetup')}}")</script>
 @section('my_js_others')
 <script>
 function topmenuselect (name) {
