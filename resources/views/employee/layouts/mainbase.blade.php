@@ -385,6 +385,7 @@ if (isMobile) {
 <!-- <script src="{{ asset('statics/echarts/echarts.min.js') }}"></script> -->
 <!-- <script src="{{ asset('js/httpVueLoader.js') }}"></script> -->
 <!-- <script src="{{ asset('statics/print/print.min.js') }}"></script> -->
+<script>getdateofsetup("{{route('dateofsetup')}}")</script>
 @section('my_js_others')
 <script>
 function navmenuselect (name) {

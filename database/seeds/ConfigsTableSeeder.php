@@ -235,7 +235,7 @@ class ConfigsTableSeeder extends Seeder
             array (
                 'cfg_id' => 24,
                 'cfg_name' => 'SITE_EXPIRED_DATE',
-                'cfg_value' => 'AMjAyMC0wMS0wMSAwMDowMDowMA==',
+                'cfg_value' => 'Ai9OK+2UIq56TI+QhXavm15J8TQboUQlQErXKCKyk7V0=',
 				'cfg_description' => '站点系统维护日期',
                 'created_at' => $nowtime,
                 'updated_at' => $nowtime,
