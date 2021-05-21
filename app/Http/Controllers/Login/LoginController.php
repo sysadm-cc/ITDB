@@ -152,7 +152,8 @@ class LoginController extends Controller
 		}
 
 		Cookie::queue('token', $token, $minutes);
-		Cookie::queue('singletoken', $singletoken, $minutes);
+		$app_key = substr(config('app.key'), 7);
+		Cookie::queue('singletoken'.md5($app_key), $singletoken, $minutes);
 		return 1;
 	
 	}

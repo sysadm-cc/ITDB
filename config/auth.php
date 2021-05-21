@@ -15,7 +15,8 @@ return [
 
     'defaults' => [
         // 'guard' => 'web',
-        'guard' => 'api',
+        // 'guard' => 'api',
+        'guard' => 'itdb',
         'passwords' => 'users',
     ],
 
@@ -44,6 +45,12 @@ return [
 
         'api' => [
             // 'driver' => 'token',
+            'driver' => 'jwt',
+            'provider' => 'users',
+            'hash' => false,
+        ],
+
+        'itdb' => [
             'driver' => 'jwt',
             'provider' => 'users',
             'hash' => false,
