@@ -39,8 +39,8 @@
 				<!-- <Form-Item label="购买日期" style="margin-bottom:0px">
 					<Date-picker v-model.lazy="add_purchdate" type="daterange" size="small"></Date-picker>
 				</Form-Item> -->
-				<Form-Item label="文件名" style="margin-bottom:0px">
-					<i-input v-model.lazy="add_filename" size="small"></i-input>
+				<Form-Item label="原始文件名" style="margin-bottom:0px">
+					<i-input v-model.lazy="add_originalfilename" size="small"></i-input>
 				</Form-Item>
 				<Form-Item label="上传者" style="margin-bottom:0px">
 					<i-input v-model.lazy="add_uploader" size="small"></i-input>
@@ -160,7 +160,8 @@ var vm_app = new Vue({
 			{label: '服务 - Service', value: 8},
 			{label: '其他 - Other', value: 9},
 		],
-		add_filename: '',
+		add_originalfilename: '',
+		add_fullfilepath: '',
 		add_uploader: '',
 
 		// 上传文件参数
@@ -459,7 +460,8 @@ var vm_app = new Vue({
 			var _this = this;
 			_this.add_title = '';
 			_this.add_type_select = '';
-			_this.add_filename = '';
+			_this.add_originalfilename = '';
+			_this.add_fullfilepath = '';
 			_this.add_uploader = '';
 		},
 
@@ -471,7 +473,8 @@ var vm_app = new Vue({
 
 			var add_title = _this.add_title;
 			var add_type_select = _this.add_type_select;
-			var add_filename = _this.add_filename;
+			var add_originalfilename = _this.add_originalfilename;
+			var add_fullfilepath = _this.add_fullfilepath;
 			var add_uploader = _this.add_uploader;
 
 			if (add_title == '' || add_title == undefined) {
@@ -486,7 +489,8 @@ var vm_app = new Vue({
 			axios.post(url, {
 				add_title: add_title,
 				add_type_select: add_type_select,
-				add_filename: add_filename,
+				add_originalfilename: add_originalfilename,
+				add_fullfilepath: add_fullfilepath,
 				add_uploader: add_uploader,
 			})
 			.then(function (response) {
@@ -565,18 +569,25 @@ var vm_app = new Vue({
 				contentType: false, // 告诉axios不要去设置Content-Type请求头
 			})
 			.then(function (response) {
-				console.log(response.data);return false;
+				// console.log(response.data);return false;
 
 				if (response.data['jwt'] == 'logout') {
 					_this.alert_logout();
 					return false;
 				}
 				
-				if (response.data == 1) {
-					_this.success(false, '成功', '导入成功！');
-				} else {
-					_this.error(false, '失败', '导入失败！');
-				}
+				var x = response.data.split('|')
+				
+
+				_this.add_originalfilename = x[0];
+				_this.add_fullfilepath = x[1];
+				console.log(_this.add_originalfilename);
+				console.log(_this.add_fullfilepath);
+				// if (response.data == 1) {
+				// 	_this.success(false, '成功', '导入成功！');
+				// } else {
+				// 	_this.error(false, '失败', '导入失败！');
+				// }
 				
 				setTimeout( function () {
 					_this.file = null;
