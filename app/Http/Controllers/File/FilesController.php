@@ -15,6 +15,7 @@ use Maatwebsite\Excel\Facades\Excel;
 // use App\Exports\Renshi\jiaban_applicantExport;
 // use Spatie\Permission\Models\Role;
 // use Spatie\Permission\Models\Permission;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Cache;
 use Ramsey\Uuid\Uuid;
 
@@ -235,7 +236,68 @@ class FilesController extends Controller
 	}
 
 	
+	/**
+	 * 上传 fileUpload
+	 *
+	 * @param  int  $id
+	 * @return \Illuminate\Http\Response
+	 */
+	public function fileUpload(Request $request)
+	{
+		if (! $request->isMethod('post') || ! $request->ajax()) return null;
 
+		// 接收文件
+		$fileCharater = $request->file('myfile');
+		// dd($fileCharater);
+ 
+		$result = 1;
+
+		if ($fileCharater->isValid()) { //括号里面的是必须加的哦
+			//如果括号里面的不加上的话，下面的方法也无法调用的
+
+			//获取文件的扩展名 
+			$ext = $fileCharater->extension();
+			// dd($ext);
+			if ($ext != 'xls' && $ext != 'xlsx') {
+				$result = 0;
+			}
+
+			//获取文件的绝对路径
+			// $path = $fileCharater->path();
+			// dd($path);
+
+			//定义文件名
+			$filename = date('Y-m-d-h-i-s').'.'.$ext;
+			// $filename = 'importmpoint.'.$ext;
+			// dd($filename);
+
+			//存储文件。使用 storeAs 方法，它接受路径、文件名和磁盘名作为其参数
+			// $path = $request->photo->storeAs('images', 'filename.jpg', 's3');
+			$fileCharater->storeAs('tmpfiles', $filename);
+			// dd($filename);
+		} else {
+			$result = 0;
+		}
+		
+		// 导入excel文件内容
+		// try {
+		// 	// 先清空表
+		// 	Smt_mpoint::truncate();
+			
+		// 	$ret = Excel::import(new mpointImport, 'excel/'.$filename);
+		// 	// dd($ret);
+		// 	$result = 1;
+		// } catch (\Exception $e) {
+		// 	// echo 'Message: ' .$e->getMessage();
+		// 	$result = 0;
+		// } finally {
+		// 	Storage::delete('excel/'.$filename);
+		// }
+		
+		Storage::move('tmpfiles/'.$filename, 'files/'.$filename);
+
+		return $result;
+	}
 
 
 

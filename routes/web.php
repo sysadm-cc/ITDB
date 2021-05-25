@@ -145,6 +145,9 @@ Route::group(['prefix'=>'file', 'namespace'=>'File', 'middleware'=>['jwtauth']],
 	// Files Create
 	Route::post('fileCreate', 'FilesController@fileCreate')->name('file.create');
 
+	// Files 上传
+	Route::post('fileUpload', 'FilesController@fileUpload')->name('file.upload');
+
 });
 
 // Contracts 路由

@@ -45,6 +45,17 @@
 				<Form-Item label="上传者" style="margin-bottom:0px">
 					<i-input v-model.lazy="add_uploader" size="small"></i-input>
 				</Form-Item>
+				<Form-Item label="上传文件" style="margin-bottom:0px">
+					<Upload
+						:before-upload="uploadstart"
+						:show-upload-list="false"
+						:format="['xls','xlsx']"
+						:on-format-error="handleFormatError"
+						:max-size="2048"
+						action="/">
+						<i-button icon="ios-cloud-upload-outline" :loading="loadingStatus" :disabled="uploaddisabled" size="small">@{{ loadingStatus ? '上传中...' : '浏览...' }}</i-button>
+					</Upload>
+				</Form-Item>
 			</i-form>
 		</i-col>
 
@@ -142,6 +153,10 @@ var vm_app = new Vue({
 		add_filename: '',
 		add_uploader: '',
 
+		// 上传文件参数
+		file: null,
+		loadingStatus: false,
+		uploaddisabled: false,
 
 
 
@@ -498,7 +513,79 @@ var vm_app = new Vue({
 		},
 
 
+		// upload
+		handleFormatError (file) {
+			this.$Notice.warning({
+				title: 'The file format is incorrect',
+				desc: 'File format of ' + file.name + ' is incorrect, please select <strong>xls</strong> or <strong>xlsx</strong>.'
+			});
+		},
+		handleMaxSize (file) {
+			this.$Notice.warning({
+				title: 'Exceeding file size limit',
+				desc: 'File  ' + file.name + ' is too large, no more than <strong>2M</strong>.'
+			});
+		},
+		handleUpload (file) {
+			this.file = file;
+			return false;
+		},
+		uploadstart (file) {
+			var _this = this;
+			_this.file = file;
+			_this.uploaddisabled = true;
+			_this.loadingStatus = true;
 
+			
+			let formData = new FormData()
+			// formData.append('file',e.target.files[0])
+			formData.append('myfile',_this.file)
+			// console.log(formData.get('file'));
+			
+			// return false;
+			
+			var url = "{{ route('file.upload') }}";
+			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
+			axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
+			axios({
+				url: url,
+				method: 'post',
+				data: formData,
+				processData: false,// 告诉axios不要去处理发送的数据(重要参数)
+				contentType: false, // 告诉axios不要去设置Content-Type请求头
+			})
+			.then(function (response) {
+				if (response.data['jwt'] == 'logout') {
+					_this.alert_logout();
+					return false;
+				}
+				
+				if (response.data == 1) {
+					_this.success(false, '成功', '导入成功！');
+				} else {
+					_this.error(false, '失败', '导入失败！');
+				}
+				
+				setTimeout( function () {
+					_this.file = null;
+					_this.loadingStatus = false;
+					_this.uploaddisabled = false;
+				}, 1000);
+				
+			})
+			.catch(function (error) {
+				_this.error(false, 'Error', error);
+				setTimeout( function () {
+					_this.file = null;
+					_this.loadingStatus = false;
+					_this.uploaddisabled = false;
+				}, 1000);
+			})
+		},
+		uploadcancel () {
+			this.file = null;
+			// this.loadingStatus = false;
+		},
 
 	
 
