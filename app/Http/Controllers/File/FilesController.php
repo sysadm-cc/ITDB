@@ -244,16 +244,21 @@ class FilesController extends Controller
 	 */
 	public function fileUpload(Request $request)
 	{
+		Storage::deleteDirectory('tmp');
+		
 		if (! $request->isMethod('post') || ! $request->ajax()) return null;
 
 		// 接收文件
 		$fileCharater = $request->file('myfile');
-		// dd($fileCharater);
+		// dd($fileCharater->getClientOriginalName());
  
 		$result = 1;
 
 		if ($fileCharater->isValid()) { //括号里面的是必须加的哦
 			//如果括号里面的不加上的话，下面的方法也无法调用的
+
+			$path = Storage::putFile('tmp', $fileCharater);
+			dd($path);
 
 			//获取文件的扩展名 
 			$ext = $fileCharater->extension();
@@ -273,7 +278,7 @@ class FilesController extends Controller
 
 			//存储文件。使用 storeAs 方法，它接受路径、文件名和磁盘名作为其参数
 			// $path = $request->photo->storeAs('images', 'filename.jpg', 's3');
-			$fileCharater->storeAs('tmpfiles', $filename);
+			$fileCharater->storeAs('tmp', $filename);
 			// dd($filename);
 		} else {
 			$result = 0;
@@ -294,7 +299,7 @@ class FilesController extends Controller
 		// 	Storage::delete('excel/'.$filename);
 		// }
 		
-		Storage::move('tmpfiles/'.$filename, 'files/'.$filename);
+		// Storage::move('tmp/'.$filename, 'files/'.$filename);
 
 		return $result;
 	}

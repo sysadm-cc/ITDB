@@ -48,12 +48,22 @@
 				<Form-Item label="上传文件" style="margin-bottom:0px">
 					<Upload
 						:before-upload="uploadstart"
-						:show-upload-list="false"
+						:show-upload-list="true"
 						:format="['xls','xlsx']"
 						:on-format-error="handleFormatError"
 						:max-size="2048"
+						type="drag"
+						:disabled="uploaddisabled"
 						action="/">
-						<i-button icon="ios-cloud-upload-outline" :loading="loadingStatus" :disabled="uploaddisabled" size="small">@{{ loadingStatus ? '上传中...' : '浏览...' }}</i-button>
+						<Cell-Group>
+							<Cell title="" :disabled="uploaddisabled" >
+								<div style="padding: 20px 0" :loading="loadingStatus">
+									<Icon type="ios-cloud-upload" size="52" style="color: #3399ff"></Icon>
+									<p>@{{ loadingStatus ? '上传中，稍等...' : '拖动或点击文件上传' }}</p>
+								</div>
+							</Cell>
+						</Cell-Group>
+						<!-- <i-button icon="ios-cloud-upload-outline" :loading="loadingStatus" :disabled="uploaddisabled" size="small">@{{ loadingStatus ? '上传中...' : '浏览并上传...' }}</i-button> -->
 					</Upload>
 				</Form-Item>
 			</i-form>
@@ -555,6 +565,8 @@ var vm_app = new Vue({
 				contentType: false, // 告诉axios不要去设置Content-Type请求头
 			})
 			.then(function (response) {
+				console.log(response.data);return false;
+
 				if (response.data['jwt'] == 'logout') {
 					_this.alert_logout();
 					return false;
