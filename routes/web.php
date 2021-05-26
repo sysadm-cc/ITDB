@@ -148,6 +148,9 @@ Route::group(['prefix'=>'file', 'namespace'=>'File', 'middleware'=>['jwtauth']],
 	// Files 上传
 	Route::post('fileUpload', 'FilesController@fileUpload')->name('file.upload');
 
+	// Files 上传删除
+	Route::post('fileUploadremove', 'FilesController@fileUploadRemove')->name('file.uploadremove');
+
 });
 
 // Contracts 路由

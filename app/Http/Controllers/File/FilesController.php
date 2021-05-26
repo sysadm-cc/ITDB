@@ -100,14 +100,18 @@ class FilesController extends Controller
 		// $nowtime = date("Y-m-d H:i:s",time());
 		$title = $request->input('add_title');
 		$type = $request->input('add_type_select');
-		$filename = $request->input('add_filename');
+		$originalfilename = $request->input('add_originalfilename');
+		$remotefilename = $request->input('add_remotefilename');
 		$uploader = $request->input('add_uploader');
 		
 		try	{
+			Storage::move('tmp/'.$remotefilename, 'files/'.$remotefilename);
+
 			$result = Files::create([
 				'title' => $title,
 				'type' => $type,
-				'filename' => $filename,
+				'originalfilename' => $originalfilename,
+				'remotefilename' => $remotefilename,
 				'uploader' => $uploader,
 			]);
 			Cache::flush();
@@ -244,7 +248,7 @@ class FilesController extends Controller
 	 */
 	public function fileUpload(Request $request)
 	{
-		Storage::deleteDirectory('tmp');
+		// Storage::deleteDirectory('tmp');
 		
 		if (! $request->isMethod('post') || ! $request->ajax()) return null;
 
@@ -259,8 +263,10 @@ class FilesController extends Controller
 
 			$originalname = $fileCharater->getClientOriginalName();
 			$fullpath = Storage::putFile('tmp', $fileCharater);
+			$f = explode('/', $fullpath);
+			$remotefilename = $f[1];
 
-			$result = $originalname . '|' . $fullpath;
+			$result = $originalname . '|' . $remotefilename;
 
 			//获取文件的扩展名 
 			// $ext = $fileCharater->extension();
@@ -300,6 +306,20 @@ class FilesController extends Controller
 		// Storage::move('tmp/'.$filename, 'files/'.$filename);
 
 		return $result;
+	}
+	
+	/**
+	 * 上传 fileUploadRemove
+	 *
+	 * @param  int  $id
+	 * @return \Illuminate\Http\Response
+	 */
+	public function fileUploadRemove(Request $request)
+	{
+		if (! $request->isMethod('post') || ! $request->ajax()) return null;
+		$remotefilename = $request->input('remotefilename');
+		$result = Storage::delete('tmp/'.$remotefilename);
+		return $result ? 1 : 0;
 	}
 
 

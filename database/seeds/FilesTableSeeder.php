@@ -24,7 +24,7 @@ class FilesTableSeeder extends Seeder
                 'title' => '文件一',
                 'type' => 1,
                 'originalfilename' => 'xxx.pdf',
-                'fullfilepath' => 'files/xxx.pdf',
+                'remotefilename' => 'files/xxx.pdf',
                 'uploader' => 'admin',
                 'created_at' => $nowtime,
                 'updated_at' => $nowtime,

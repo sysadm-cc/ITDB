@@ -48,9 +48,10 @@
 				<Form-Item label="上传文件" style="margin-bottom:0px">
 					<Upload
 						:before-upload="uploadstart"
-						:show-upload-list="true"
+						show-upload-list="true"
 						:format="['xls','xlsx']"
 						:on-format-error="handleFormatError"
+						:on-remove="handleRemove"
 						:max-size="2048"
 						type="drag"
 						:disabled="uploaddisabled"
@@ -161,14 +162,13 @@ var vm_app = new Vue({
 			{label: '其他 - Other', value: 9},
 		],
 		add_originalfilename: '',
-		add_fullfilepath: '',
+		add_remotefilename: '',
 		add_uploader: '',
 
 		// 上传文件参数
 		file: null,
 		loadingStatus: false,
 		uploaddisabled: false,
-
 
 
 
@@ -461,7 +461,7 @@ var vm_app = new Vue({
 			_this.add_title = '';
 			_this.add_type_select = '';
 			_this.add_originalfilename = '';
-			_this.add_fullfilepath = '';
+			_this.add_remotefilename = '';
 			_this.add_uploader = '';
 		},
 
@@ -474,7 +474,7 @@ var vm_app = new Vue({
 			var add_title = _this.add_title;
 			var add_type_select = _this.add_type_select;
 			var add_originalfilename = _this.add_originalfilename;
-			var add_fullfilepath = _this.add_fullfilepath;
+			var add_remotefilename = _this.add_remotefilename;
 			var add_uploader = _this.add_uploader;
 
 			if (add_title == '' || add_title == undefined) {
@@ -490,7 +490,7 @@ var vm_app = new Vue({
 				add_title: add_title,
 				add_type_select: add_type_select,
 				add_originalfilename: add_originalfilename,
-				add_fullfilepath: add_fullfilepath,
+				add_remotefilename: add_remotefilename,
 				add_uploader: add_uploader,
 			})
 			.then(function (response) {
@@ -544,71 +544,90 @@ var vm_app = new Vue({
 			this.file = file;
 			return false;
 		},
-		uploadstart (file) {
+		async handleRemove (file) {
+			var _this = this;
+
+			// let formData = new FormData()
+			// formData.append('myfile', _this.file)
+			// console.log(formData.get('myfile').name);return false;
+
+			var remotefilename = _this.add_remotefilename;
+			
+			var url = "{{ route('file.uploadremove') }}";
+			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
+			await axios.post(url, {
+				remotefilename: remotefilename
+			})
+			.then(function (response) {
+				if (response.data == 1) {
+					_this.success(false, '成功', '移除成功！');
+				} else {
+					_this.error(false, '失败', '移除失败！');
+				}
+			})
+			.catch(function (error) {
+				_this.error(false, '错误', '移除失败！');
+			})
+
+			_this.uploaddisabled = false;
+
+
+		},
+		async uploadstart (file) {
 			var _this = this;
 			_this.file = file;
 			_this.uploaddisabled = true;
 			_this.loadingStatus = true;
 
-			
 			let formData = new FormData()
 			// formData.append('file',e.target.files[0])
-			formData.append('myfile',_this.file)
-			// console.log(formData.get('file'));
-			
-			// return false;
+			formData.append('myfile', _this.file)
+			// console.log(formData.get('myfile').name);return false;
 			
 			var url = "{{ route('file.upload') }}";
 			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
 			axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
-			axios({
+			await axios({
 				url: url,
 				method: 'post',
 				data: formData,
-				processData: false,// 告诉axios不要去处理发送的数据(重要参数)
+				processData: false, // 告诉axios不要去处理发送的数据(重要参数)
 				contentType: false, // 告诉axios不要去设置Content-Type请求头
 			})
 			.then(function (response) {
 				// console.log(response.data);return false;
 
 				if (response.data['jwt'] == 'logout') {
-					_this.alert_logout();
-					return false;
+					_this.alert_logout();return false;
 				}
 				
 				var x = response.data.split('|')
-				
-
 				_this.add_originalfilename = x[0];
-				_this.add_fullfilepath = x[1];
-				console.log(_this.add_originalfilename);
-				console.log(_this.add_fullfilepath);
+				_this.add_remotefilename = x[1];
+
 				// if (response.data == 1) {
 				// 	_this.success(false, '成功', '导入成功！');
 				// } else {
 				// 	_this.error(false, '失败', '导入失败！');
 				// }
 				
-				setTimeout( function () {
-					_this.file = null;
-					_this.loadingStatus = false;
-					_this.uploaddisabled = false;
-				}, 1000);
-				
 			})
 			.catch(function (error) {
 				_this.error(false, 'Error', error);
-				setTimeout( function () {
-					_this.file = null;
-					_this.loadingStatus = false;
-					_this.uploaddisabled = false;
-				}, 1000);
 			})
+
+			setTimeout( function () {
+				_this.file = null;
+				_this.loadingStatus = false;
+				// _this.uploaddisabled = false;
+			}, 1000);
+
 		},
 		uploadcancel () {
 			this.file = null;
 			// this.loadingStatus = false;
 		},
+		
 
 	
 

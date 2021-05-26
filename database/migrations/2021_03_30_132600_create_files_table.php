@@ -18,7 +18,7 @@ class CreateFilesTable extends Migration
             $table->string('title')->comment('文件名称');
             $table->integer('type')->nullable()->comment('文件类型');
             $table->string('originalfilename')->nullable()->comment('原始文件名');
-            $table->string('fullfilepath')->nullable()->comment('文件路径');
+            $table->string('remotefilename')->nullable()->comment('远程文件名');
             $table->string('uploader')->nullable()->comment('上传者');
 
             $table->timestamps();
