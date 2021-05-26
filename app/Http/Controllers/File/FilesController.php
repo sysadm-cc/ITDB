@@ -95,14 +95,21 @@ class FilesController extends Controller
      */
     public function fileCreate(Request $request)
     {
-		if (! $request->isMethod('post') || ! $request->ajax()) return false;
+		if (! $request->isMethod('post') || ! $request->ajax()) return null;
 
 		// $nowtime = date("Y-m-d H:i:s",time());
 		$title = $request->input('add_title');
 		$type = $request->input('add_type_select');
 		$originalfilename = $request->input('add_originalfilename');
+		if (! $originalfilename) return null;
 		$remotefilename = $request->input('add_remotefilename');
-		$uploader = $request->input('add_uploader');
+		if (! $remotefilename) return null;
+		$owner = $request->input('add_owner');
+
+		// 获取JSON格式的jwt-auth用户响应
+		$me = response()->json(auth()->user());
+		$user = json_decode($me->getContent(), true);
+		$uploader = $user['name'];
 		
 		try	{
 			Storage::move('tmp/'.$remotefilename, 'files/'.$remotefilename);
@@ -112,12 +119,13 @@ class FilesController extends Controller
 				'type' => $type,
 				'originalfilename' => $originalfilename,
 				'remotefilename' => $remotefilename,
+				'owner' => $owner,
 				'uploader' => $uploader,
 			]);
 			Cache::flush();
 		}
 		catch (\Exception $e) {
-			// dd('Message: ' .$e->getMessage());
+			dd('Message: ' .$e->getMessage());
 			$result = 0;
 		}
 

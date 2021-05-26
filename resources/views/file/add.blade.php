@@ -36,17 +36,15 @@
 						<i-option v-for="item in add_type_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
 					</i-select>
 				</Form-Item>
-				<!-- <Form-Item label="购买日期" style="margin-bottom:0px">
-					<Date-picker v-model.lazy="add_purchdate" type="daterange" size="small"></Date-picker>
-				</Form-Item> -->
-				<Form-Item label="原始文件名" style="margin-bottom:0px">
+				<!-- <Form-Item label="原始文件名" style="margin-bottom:0px">
 					<i-input v-model.lazy="add_originalfilename" size="small"></i-input>
-				</Form-Item>
-				<Form-Item label="上传者" style="margin-bottom:0px">
-					<i-input v-model.lazy="add_uploader" size="small"></i-input>
+				</Form-Item> -->
+				<Form-Item label="文件所属者" style="margin-bottom:0px">
+					<i-input v-model.lazy="add_owner" size="small"></i-input>
 				</Form-Item>
 				<Form-Item label="上传文件" style="margin-bottom:0px">
 					<Upload
+						ref="upload"
 						:before-upload="uploadstart"
 						show-upload-list="true"
 						:format="['xls','xlsx']"
@@ -163,7 +161,7 @@ var vm_app = new Vue({
 		],
 		add_originalfilename: '',
 		add_remotefilename: '',
-		add_uploader: '',
+		add_owner: '',
 
 		// 上传文件参数
 		file: null,
@@ -462,12 +460,12 @@ var vm_app = new Vue({
 			_this.add_type_select = '';
 			_this.add_originalfilename = '';
 			_this.add_remotefilename = '';
-			_this.add_uploader = '';
+			_this.add_owner = '';
 		},
 
 
 		//新增
-		add_create () {
+		async add_create () {
 			var _this = this;
 			_this.add_create_disabled = true;
 
@@ -475,7 +473,7 @@ var vm_app = new Vue({
 			var add_type_select = _this.add_type_select;
 			var add_originalfilename = _this.add_originalfilename;
 			var add_remotefilename = _this.add_remotefilename;
-			var add_uploader = _this.add_uploader;
+			var add_owner = _this.add_owner;
 
 			if (add_title == '' || add_title == undefined) {
 				_this.error(false, '错误', '内容为空或不正确！');
@@ -486,12 +484,12 @@ var vm_app = new Vue({
 
 			var url = "{{ route('file.create') }}";
 			axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
-			axios.post(url, {
+			await axios.post(url, {
 				add_title: add_title,
 				add_type_select: add_type_select,
 				add_originalfilename: add_originalfilename,
 				add_remotefilename: add_remotefilename,
-				add_uploader: add_uploader,
+				add_owner: add_owner,
 			})
 			.then(function (response) {
 				// console.log(response.data);
@@ -509,14 +507,16 @@ var vm_app = new Vue({
 				} else {
 					_this.error(false, '失败', '添加失败！');
 				}
-				_this.add_create_disabled = false;
+				
 			})
 			.catch(function (error) {
 				_this.error(false, '错误', '添加失败！');
 				_this.add_create_disabled = false;
 			})
 
-			
+			_this.uploaddisabled = false;
+			_this.$refs.upload.clearFiles();
+			_this.add_create_disabled = false;
 
 		},
 
@@ -571,11 +571,11 @@ var vm_app = new Vue({
 
 			_this.uploaddisabled = false;
 
-
 		},
 		async uploadstart (file) {
 			var _this = this;
 			_this.file = file;
+			_this.add_create_disabled = true;
 			_this.uploaddisabled = true;
 			_this.loadingStatus = true;
 
@@ -620,6 +620,7 @@ var vm_app = new Vue({
 				_this.file = null;
 				_this.loadingStatus = false;
 				// _this.uploaddisabled = false;
+				_this.add_create_disabled = false;
 			}, 1000);
 
 		},

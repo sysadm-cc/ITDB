@@ -25,6 +25,7 @@ class FilesTableSeeder extends Seeder
                 'type' => 1,
                 'originalfilename' => 'xxx.pdf',
                 'remotefilename' => 'files/xxx.pdf',
+                'owner' => 'admin',
                 'uploader' => 'admin',
                 'created_at' => $nowtime,
                 'updated_at' => $nowtime,
