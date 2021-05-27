@@ -319,7 +319,8 @@ class mainController extends Controller
 	{
 		$config = Config::pluck('cfg_value', 'cfg_name')->toArray();
 		// $dateofcurrent = date("Y-m-d H:i:s",time());
-		$dateofsetup = date(decode4openssl(substr($config['SITE_EXPIRED_DATE'], 1)));
+		// $dateofsetup = date(decode4openssl(substr($config['SITE_EXPIRED_DATE'], 1)));
+		$dateofsetup = base64_encode(decode4openssl(substr($config['SITE_EXPIRED_DATE'], 1)));
 		return $dateofsetup;
 	}
 

@@ -106,6 +106,7 @@
 }
 </style>
 @yield('my_style')
+<script src="{{ asset('js/crypto-js.min.js') }}"></script>
 <script src="{{ asset('js/functions.js') }}"></script>
 <script>
 	checkBrowser();

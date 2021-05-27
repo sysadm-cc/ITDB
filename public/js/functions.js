@@ -26,7 +26,14 @@ async function getdateofsetup (url) {
             _this.alert_logout();
             return false;
         }
-        dateofsetup = response.data ? new Date(response.data) : '';
+
+        if (response.data) {
+            var base64Str = CryptoJS.enc.Base64.parse(response.data);
+            var utf8Str = CryptoJS.enc.Utf8.stringify(base64Str);
+            dateofsetup = new Date(utf8Str);
+        } else {
+            dateofsetup = '';
+        }
     })
     .catch(function (error) {
     })
