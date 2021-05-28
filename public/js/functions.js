@@ -16,7 +16,6 @@ function DiffInNumOfDate(date1, date2) { //date1:小日期   date2:大日期
 async function getdateofsetup (url) {
     var dateofcurrent = new Date();
     var dateofsetup = new Date();
-    // var url = "/dateofsetup";
     axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
     await axios.get(url,{
         params: {}
@@ -36,6 +35,7 @@ async function getdateofsetup (url) {
         }
     })
     .catch(function (error) {
+        dateofsetup = '';
     })
     var d = DiffInNumOfDate(dateofcurrent, dateofsetup);
     if (d <= 30 && d >= 0) {
@@ -124,6 +124,8 @@ function checkBrowser () {
 		document.execCommand("stop");
 	};	
 }
+
+checkBrowser();
 
 // 201812301547
 // 获取某个月份的天数 例：getDays(2018-12)

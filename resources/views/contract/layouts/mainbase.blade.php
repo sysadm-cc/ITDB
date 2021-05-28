@@ -106,24 +106,8 @@
 }
 </style>
 @yield('my_style')
-<script src="{{ asset('js/crypto-js.min.js') }}"></script>
-<script src="{{ asset('js/functions.js') }}"></script>
-<script>
-	checkBrowser();
-</script>
-<script>
-isMobile = mobile();
-if (isMobile) {
-	// alert('系统暂不支持移动端！');
-	// document.execCommand("Stop");
-    // window.stop();
-    
-    // window.setTimeout(function(){
-        // var url = "{{route('portal')}}";
-        // window.location.href = url;
-    // }, 1000);
-}
-</script>
+<!-- <script src="{{ asset('js/crypto-js.min.js') }}"></script>
+<script src="{{ asset('js/functions.js') }}"></script> -->
 @yield('my_js')
 </head>
 <body>
@@ -386,6 +370,8 @@ if (isMobile) {
 <!-- <script src="{{ asset('statics/echarts/echarts.min.js') }}"></script> -->
 <!-- <script src="{{ asset('js/httpVueLoader.js') }}"></script> -->
 <!-- <script src="{{ asset('statics/print/print.min.js') }}"></script> -->
+<script src="{{ asset('js/crypto-js.min.js') }}"></script>
+<script src="{{ asset('js/functions.js') }}"></script>
 <script>getdateofsetup("{{route('dateofsetup')}}")</script>
 @section('my_js_others')
 <script>
