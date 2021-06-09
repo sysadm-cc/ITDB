@@ -167,7 +167,7 @@
 				</i-col>
 				<i-col span="8">
 					<Form-Item label="更换部件" prop="part" style="margin-bottom:0px">
-						<i-select v-model.lazy="edit_event.part" clearable size="small" placeholder="">
+						<i-select v-model.lazy="edit_event.edit_part" clearable size="small" placeholder="">
 							<i-option v-for="item in edit_part_options" :value="item.value" :key="item.value">@{{ item.label }}</i-option>
 						</i-select>
 					</Form-Item>
