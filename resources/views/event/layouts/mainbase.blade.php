@@ -36,9 +36,11 @@
     <!--background: #5b6270;-->
     border-radius: 3px;
     float: left;
-    position: relative;
-    top: 15px;
-    left: 40px;
+    position: fixed;
+    top: 0px;
+    left: 10px;
+	z-index: 999;
+	background: #fff;
 }
 .layout-breadcrumb{
 	<!-- padding: 10px 15px 0; -->
@@ -48,7 +50,7 @@
     border-radius: 3px;
     float: left;
     position: relative;
-    top: 5px;
+    top: 0px;
     left: 20px;
 }
 .layout-nav{
