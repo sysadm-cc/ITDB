@@ -30,10 +30,10 @@
 	background: #fff;
 	box-shadow: 0 1px 1px rgba(0,0,0,.1);
 }
-.layout-logo{
+.layout-logo0{
     /* width: 100px; */
     /* height: 30px; */
-    <!--background: #5b6270;-->
+    /* background: #5b6270; */
     border-radius: 3px;
     float: left;
     position: fixed;
@@ -42,11 +42,18 @@
 	z-index: 999;
 	background: #fff;
 }
-.layout-breadcrumb{
-	<!-- padding: 10px 15px 0; -->
-    width: 100px;
+.layout-logo{
+    width: 280px;
     height: 30px;
-    <!--background: #5b6270;-->
+    border-radius: 3px;
+    float: left;
+    position: relative;
+    top: 0px;
+    left: 20px;
+}
+.layout-breadcrumb{
+    width: 260px;
+    height: 30px;
     border-radius: 3px;
     float: left;
     position: relative;
@@ -56,9 +63,9 @@
 .layout-nav{
 	float: right;
 	position: relative;
-    <!--width: 420px;-->
+    /* width: 420px; */
     margin: 0 auto;
-    margin-right: 210px;
+    margin-right: 10px;
 }
 .layout-footer-center{
     text-align: center;
@@ -116,13 +123,18 @@
 <div id="app" v-cloak>
     <div class="layout">
 		<Layout>
-			<Layout>
             <!--头部导航-->
 			<div style="z-index: 999;">
-				<Header :style="{position: 'fixed', width: '100%', marginLeft: '200px'}">
+				<Header :style="{position: 'fixed', width: '100%', marginLeft: '0px'}">
 				<Layout>
 				<i-menu mode="horizontal" theme="light" :active-name="isfullscreen == true ? '1' : '3'" @on-select="name=>topmenuselect(name)">
-					<!--<div class="layout-logo">qqqqqqqqqqqq</div>-->
+					<div class="layout-logo">
+						<a href="{{route('portal')}}">
+							<span style="font-size: 16px; font-weight: bold; color: rgb(70, 76, 91);">{{$config['SITE_TITLE']}}</span>
+						</a>
+						<span style="font-size: 12px; font-weight: bold; color: rgb(70, 76, 91);">{{$config['SITE_VERSION']}}</span>
+					</div>
+
 					<!--面包屑-->
 					<div class="layout-breadcrumb">
 						<Breadcrumb>
@@ -210,7 +222,7 @@
 							<Menu-Item name="3-2"><Icon type="ios-create-outline"></Icon>修改密码</Menu-Item>
 							<Menu-Item name="3-3"><Icon type="ios-exit-outline"></Icon>退出登录</Menu-Item>
 						</Submenu>
-						</div>
+					</div>
 
 				</i-menu>
 				</Layout>
@@ -230,12 +242,13 @@
 				</Layout>
 				</Header>
 			</div>
-			</Layout>
-
+			
+			<div style="height: 60px;">&nbsp;</div>
 			<Layout>
 				<!--左侧导航菜单-->
-				<Sider hide-trigger :style="{background: '#fff', position: 'fixed', height: '100vh', left: 0, overflow: 'auto'}">
-					<div style="height: 60px;">
+				<!-- <div style="height: 60px;">&nbsp;</div> -->
+				<Sider hide-trigger :style="{background: '#fff', position: 'fixed', height: 'calc(100vh - 60px)', left: 0, overflow: 'auto'}">
+					<!-- <div style="height: 60px;">
 						<div class="layout-logo">
 							<a href="{{route('portal')}}">
 								<span style="font-size: 16px; font-weight: bold; color: rgb(70, 76, 91);">{{$config['SITE_TITLE']}}</span>
@@ -243,7 +256,7 @@
 								<span style="font-size: 12px; font-weight: bold; color: rgb(70, 76, 91);">{{$config['SITE_VERSION']}}</span>
 							</a>
 						</div>
-					</div>
+					</div> -->
 					<div id="menu">
 						<i-menu :active-name="sideractivename" theme="light" width="auto" :open-names="sideropennames" @on-select="name=>navmenuselect(name)" accordion>
 
@@ -335,7 +348,6 @@
 				</Sider>
 			</Layout>
 			
-			<div><br><br><br><br></div>
 			<Layout :style="{padding: '0 12px 24px', marginLeft: '200px'}">
 				<!--内容主体-->
 				<Content :style="{padding: '0px 12px', minHeight: '500px', background: '#fff'}">
