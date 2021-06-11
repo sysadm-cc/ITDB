@@ -132,7 +132,7 @@
 						<a href="{{route('portal')}}">
 							<span style="font-size: 16px; font-weight: bold; color: rgb(70, 76, 91);">{{$config['SITE_TITLE']}}</span>
 						</a>
-						<span style="font-size: 12px; font-weight: bold; color: rgb(70, 76, 91);">{{$config['SITE_VERSION']}}</span>
+						<span style="font-size: 12px; color: rgb(158, 167, 180);">{{$config['SITE_VERSION']}}</span>
 					</div>
 
 					<!--面包屑-->
