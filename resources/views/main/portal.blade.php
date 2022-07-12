@@ -43,10 +43,8 @@ Main(Portal) -
 				<p v-for="item in CardList_Hardware">
 					<span v-if="item.name">
 						<a :href="item.url" target="_blank"><Icon type="ios-link"></Icon>&nbsp;&nbsp;@{{ item.name }}</a>
-						<span style="float:right">
-							<span style="color: rgb(158, 167, 180);font-size:10px;">
-								@{{ item.detail }}
-							</span>
+						<span style="float:right;color:rgb(158,167,180);font-size:10px;">
+							@{{ item.detail }}
 						</span>
 					</span>
 					<span v-else>
@@ -75,10 +73,8 @@ Main(Portal) -
 				<p v-for="item in CardList_Software">
 					<span v-if="item.name">
 						<a :href="item.url" target="_blank"><Icon type="ios-link"></Icon>&nbsp;&nbsp;@{{ item.name }}</a>
-						<span style="float:right">
-							<span style="color: rgb(158, 167, 180);font-size:10px;">
-								@{{ item.detail }}
-							</span>
+						<span style="float:right;color:rgb(158,167,180);font-size:10px;">
+							@{{ item.detail }}
 						</span>
 					</span>
 					<span v-else>
@@ -102,7 +98,7 @@ Main(Portal) -
 				<p v-for="item in CardList_Invoices">
 					<span v-if="item.name">
 						<a :href="item.url" target="_blank"><Icon type="ios-link"></Icon>&nbsp;&nbsp;@{{ item.name }}</a>
-						<span style="float:right">
+						<span style="float:right;color:rgb(158,167,180);font-size:10px;">
 							@{{ item.detail }}
 						</span>
 					</span>
@@ -128,7 +124,7 @@ Main(Portal) -
 				<p v-for="item in CardList_Reports">
 					<span v-if="item.name">
 						<a :href="item.url" target="_blank"><Icon type="ios-link"></Icon>&nbsp;&nbsp;@{{ item.name }}</a>
-						<span style="float:right">
+						<span style="float:right;color:rgb(158,167,180);font-size:10px;">
 							@{{ item.detail }}
 						</span>
 					</span>
@@ -164,7 +160,7 @@ Main(Portal) -
 				<p v-for="item in CardList_Contracts">
 					<span v-if="item.name">
 						<a :href="item.url" target="_blank"><Icon type="ios-link"></Icon>&nbsp;&nbsp;@{{ item.name }}</a>
-						<span style="float:right">
+						<span style="float:right;color:rgb(158,167,180);font-size:10px;">
 							@{{ item.detail }}
 						</span>
 					</span>
@@ -194,7 +190,7 @@ Main(Portal) -
 				<p v-for="item in CardList_Agents">
 					<span v-if="item.name">
 						<a :href="item.url" target="_blank"><Icon type="ios-link"></Icon>&nbsp;&nbsp;@{{ item.name }}</a>
-						<span style="float:right">
+						<span style="float:right;color:rgb(158,167,180);font-size:10px;">
 							@{{ item.detail }}
 						</span>
 					</span>
@@ -219,7 +215,7 @@ Main(Portal) -
 				<p v-for="item in CardList_Employees">
 					<span v-if="item.name">
 						<a :href="item.url" target="_blank"><Icon type="ios-link"></Icon>&nbsp;&nbsp;@{{ item.name }}</a>
-						<span style="float:right">
+						<span style="float:right;color:rgb(158,167,180);font-size:10px;">
 							@{{ item.detail }}
 						</span>
 					</span>
@@ -245,7 +241,7 @@ Main(Portal) -
 				<p v-for="item in CardList_Files">
 					<span v-if="item.name">
 						<a :href="item.url" target="_blank"><Icon type="ios-link"></Icon>&nbsp;&nbsp;@{{ item.name }}</a>
-						<span style="float:right">
+						<span style="float:right;color:rgb(158,167,180);font-size:10px;">
 							@{{ item.detail }}
 						</span>
 					</span>
@@ -280,7 +276,7 @@ Main(Portal) -
 				<p v-for="item in CardList_Racks">
 					<span v-if="item.name">
 						<a :href="item.url" target="_blank"><Icon type="ios-link"></Icon>&nbsp;&nbsp;@{{ item.name }}</a>
-						<span style="float:right">
+						<span style="float:right;color:rgb(158,167,180);font-size:10px;">
 							@{{ item.detail }}
 						</span>
 					</span>
@@ -310,7 +306,7 @@ Main(Portal) -
 				<p v-for="item in CardList_Locations">
 					<span v-if="item.name">
 						<a :href="item.url" target="_blank"><Icon type="ios-link"></Icon>&nbsp;&nbsp;@{{ item.name }}</a>
-						<span style="float:right">
+						<span style="float:right;color:rgb(158,167,180);font-size:10px;">
 							@{{ item.detail }}
 						</span>
 					</span>
@@ -335,7 +331,7 @@ Main(Portal) -
 				<p v-for="item in CardList_PrintLabels">
 					<span v-if="item.name">
 						<a :href="item.url" target="_blank"><Icon type="ios-link"></Icon>&nbsp;&nbsp;@{{ item.name }}</a>
-						<span style="float:right">
+						<span style="float:right;color:rgb(158,167,180);font-size:10px;">
 							@{{ item.detail }}
 						</span>
 					</span>
@@ -361,7 +357,7 @@ Main(Portal) -
 				<p v-for="item in CardList_Settings">
 					<span v-if="item.name">
 						<a :href="item.url" target="_blank"><Icon type="ios-link"></Icon>&nbsp;&nbsp;@{{ item.name }}</a>
-						<span style="float:right">
+						<span style="float:right;color:rgb(158,167,180);font-size:10px;">
 							@{{ item.detail }}
 						</span>
 					</span>
