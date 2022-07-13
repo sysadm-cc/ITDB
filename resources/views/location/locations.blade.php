@@ -373,7 +373,7 @@ var vm_app = new Vue({
 						title: '名称',
 						key: 'areas',
 						align:'center',
-						width: 90,
+						width: 120,
 						className: 'table-info-column-areas',
 						render: (h, params) => {
 							if (params.row.areas!=undefined && params.row.areas!=null) {

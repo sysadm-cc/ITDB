@@ -100,7 +100,7 @@ class RacksController extends Controller
 		// $nowtime = date("Y-m-d H:i:s",time());
 		$title = $request->input('add_title');
 		$model = $request->input('add_model');
-		$usize = $request->input('add_usize');
+		$usize = $request->input('add_usize_select');
 		$depth = $request->input('add_depth');
 		$revnums = $request->input('add_revnums_select') ?? false;
 		$locationid = $request->input('add_location_select');
